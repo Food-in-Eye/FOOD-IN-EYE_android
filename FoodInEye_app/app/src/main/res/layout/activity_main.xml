@@ -22,6 +22,7 @@
         android:/>
 
     <Button
+        android:id="@+id/startBtn"
         android:layout_width="180dp"
         android:layout_height="90dp"
         android:text="Start🔒"
