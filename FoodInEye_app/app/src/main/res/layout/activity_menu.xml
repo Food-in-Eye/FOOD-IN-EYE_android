@@ -30,7 +30,7 @@
             android:id="@+id/myPageBtn"
             android:layout_width="35dp"
             android:layout_height="25dp"
-            android:background="@drawable/myPage_btn"
+            android:background="@drawable/mypage_btn"
             android:layout_marginRight="5dp"/>
 
     </LinearLayout>
