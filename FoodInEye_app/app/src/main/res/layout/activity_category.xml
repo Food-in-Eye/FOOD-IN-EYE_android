@@ -9,38 +9,28 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_gravity="right"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp">
 
         <Button
             android:id="@+id/findBtn"
-            android:layout_width="60dp"
-            android:layout_height="40dp"
-            android:text="find"
-            android:textSize="10dp"
-            android:textColor="@color/navy"
-            android:textStyle="bold"
+            android:layout_width="30dp"
+            android:layout_height="25dp"
+            android:background="@drawable/find_btn"
             android:layout_marginRight="5dp"/>
 
         <Button
             android:id="@+id/basketBtn"
-            android:layout_width="60dp"
-            android:layout_height="40dp"
-            android:text="basket"
-            android:textSize="10dp"
-            android:textColor="@color/navy"
-            android:textStyle="bold"
-            android:padding="10dp"
+            android:layout_width="35dp"
+            android:layout_height="25dp"
+            android:background="@drawable/basket_btn"
             android:layout_marginRight="5dp"/>
 
         <Button
             android:id="@+id/myPageBtn"
-            android:layout_width="60dp"
-            android:layout_height="40dp"
-            android:text="myPage"
-            android:textSize="10dp"
-            android:textColor="@color/navy"
-            android:textStyle="bold"
-            android:padding="10dp"
+            android:layout_width="35dp"
+            android:layout_height="25dp"
+            android:background="@drawable/myPage_btn"
             android:layout_marginRight="5dp"/>
 
     </LinearLayout>
