@@ -14,7 +14,7 @@ public class CategoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
 
-        Button s1Btn = (Button) findViewById(R.id.s1Btn);
+        Button s1Btn = (Button) findViewById(R.id.sBtn);
         s1Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
