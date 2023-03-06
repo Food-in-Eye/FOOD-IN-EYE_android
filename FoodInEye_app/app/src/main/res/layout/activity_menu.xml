@@ -48,87 +48,89 @@
     <LinearLayout
         android:layout_width="350dp"
         android:layout_height="450dp"
-        android:orientation="vertical"
         android:layout_gravity="center"
+        android:layout_marginTop="20dp"
         android:background="@drawable/navy_rec"
-        android:layout_marginTop="20dp">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="가게 1"
-                android:textSize="15dp"
-                android:textColor="@color/navy"
-                android:textStyle="bold"
                 android:layout_gravity="center"
-                android:layout_marginRight="5dp"/>
+                android:layout_marginRight="5dp"
+                android:text="가게 1"
+                android:textColor="@color/navy"
+                android:textSize="15dp"
+                android:textStyle="bold" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="가게 1"
-                android:textSize="15dp"
-                android:textColor="@color/navy"
-                android:textStyle="bold"
                 android:layout_gravity="center"
-                android:layout_marginRight="5dp"/>
+                android:layout_marginRight="5dp"
+                android:text="가게 1"
+                android:textColor="@color/navy"
+                android:textSize="15dp"
+                android:textStyle="bold" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="가게 1"
-                android:textSize="15dp"
-                android:textColor="@color/navy"
-                android:textStyle="bold"
                 android:layout_gravity="center"
-                android:layout_marginRight="5dp"/>
+                android:layout_marginRight="5dp"
+                android:text="가게 1"
+                android:textColor="@color/navy"
+                android:textSize="15dp"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/smBtn"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:text="메뉴 1"
-                android:textSize="18dp"
-                android:textColor="@color/white"
-                android:background="@drawable/navy_rec_30"
                 android:layout_gravity="center"
-                android:layout_marginRight="15dp"/>
+                android:layout_marginRight="15dp"
+                android:background="@drawable/navy_rec_30"
+                android:text="메뉴 1"
+                android:textColor="@color/white"
+                android:textSize="18dp" />
+
             <Button
                 android:id="@+id/s1m2Btn"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:text="메뉴 2"
-                android:textSize="18dp"
-                android:textColor="@color/white"
-                android:background="@drawable/navy_rec_30"
                 android:layout_gravity="center"
-                android:layout_marginRight="15dp"/>
+                android:layout_marginRight="15dp"
+                android:background="@drawable/navy_rec_30"
+                android:text="메뉴 2"
+                android:textColor="@color/white"
+                android:textSize="18dp" />
+
             <Button
                 android:id="@+id/s1m3Btn"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:text="메뉴 3"
-                android:textSize="18dp"
-                android:textColor="@color/white"
-                android:background="@drawable/navy_rec_30"
                 android:layout_gravity="center"
-                android:layout_marginRight="15dp"/>
+                android:layout_marginRight="15dp"
+                android:background="@drawable/navy_rec_30"
+                android:text="메뉴 3"
+                android:textColor="@color/white"
+                android:textSize="18dp" />
 
         </LinearLayout>
 
