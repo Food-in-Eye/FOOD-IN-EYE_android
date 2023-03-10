@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/shopping_cart_bg">
+
+    <TextView
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="오늘의 초밥\n- 기본: 10pc (13,000원)"
+        android:textSize="13dp"
+        android:textColor="@color/black"
+        android:padding="20dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="160dp"/>
+
+    <View
+        android:layout_width="300dp"
+        android:layout_height="1dp"
+        android:background="@color/navy"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="오늘의 초밥\n- 기본: 10pc (13,000원)"
+        android:textSize="13dp"
+        android:textColor="@color/black"
+        android:padding="20dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"/>
+
+    <View
+        android:layout_width="300dp"
+        android:layout_height="1dp"
+        android:background="@color/navy"
+        android:layout_gravity="center"/>
+
+    <Button
+        android:id="@+id/moreBtn"
+        android:layout_width="100dp"
+        android:layout_height="35dp"
+        android:text="+ 더 담으러 가기"
+        android:textSize="11dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:background="@drawable/pink_rec_30"
+        android:padding="5dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_marginTop="165dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="총 26,000원"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:padding="10dp"
+            android:layout_gravity="center"/>
+
+        <Button
+            android:id="@+id/payBtn"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:text="주문하기"
+            android:textSize="12dp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:background="@drawable/pink_srec_30"
+            android:padding="5dp"/>
+
+    </LinearLayout>
+
+
+
+
+
+
+
+
+</LinearLayout>
