@@ -36,72 +36,16 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="center">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Best menu"
-                android:textSize="18dp"
-                android:textColor="@color/navy"
-                android:textStyle="bold"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"/>
-
-            <ImageView
-                android:layout_width="150dp"
-                android:layout_height="130dp"
-                android:background="@drawable/category_image"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="center"
-            android:layout_marginLeft="40dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Recommended"
-                android:textSize="18dp"
-                android:textColor="@color/navy"
-                android:textStyle="bold"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"/>
-
-            <ImageView
-                android:layout_width="150dp"
-                android:layout_height="130dp"
-                android:background="@drawable/category_image"/>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
         android:layout_width="350dp"
         android:layout_height="340dp"
         android:orientation="vertical"
         android:layout_gravity="center"
-        android:background="@drawable/navy_rec"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Menu"
+            android:text="School Food"
             android:textSize="30dp"
             android:textColor="@color/navy"
             android:textStyle="bold"
