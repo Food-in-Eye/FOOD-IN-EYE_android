@@ -35,22 +35,56 @@
 
     </LinearLayout>
 
+
+    <!--가게 list-->
     <LinearLayout
         android:layout_width="350dp"
-        android:layout_height="340dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="center"
         android:layout_marginTop="10dp">
 
-        <TextView
+        <LinearLayout
+            android:layout_width="230dp"
+            android:layout_height="40dp"
+            android:orientation="vertical"
+            android:background="@drawable/orange_rectop_300"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="School Food"
+                android:textSize="28dp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_gravity="center"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/navy"
+            android:layout_marginTop="10dp"/>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="School Food"
-            android:textSize="30dp"
-            android:textColor="@color/navy"
-            android:textStyle="bold"
+            android:orientation="vertical"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="10dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_margin="10dp"
+                android:id="@+id/recyclerView_GameList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </LinearLayout>
+
+
 
         <Button
             android:id="@+id/sBtn"
