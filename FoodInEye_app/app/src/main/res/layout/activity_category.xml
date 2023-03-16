@@ -77,8 +77,8 @@
             android:layout_marginTop="10dp">
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView_StoreList"
                 android:layout_margin="10dp"
-                android:id="@+id/recyclerView_GameList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 
