@@ -84,20 +84,6 @@
 
         </LinearLayout>
 
-
-
-        <Button
-            android:id="@+id/sBtn"
-            android:layout_width="280dp"
-            android:layout_height="wrap_content"
-            android:text="가게 1"
-            android:textSize="18dp"
-            android:textColor="@color/white"
-            android:background="@drawable/navy_rec_30"
-            android:paddingRight="110dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"/>
-
     </LinearLayout>
 
 
