@@ -9,11 +9,14 @@ public class StoreItem {
 
     @SerializedName("request")
     public String request;
+    @SerializedName("status")
+    public String status;
     @SerializedName("response")
     public List<Stores> response;
 
     @Override
     public String toString(){
-        return "StoreItem{"+"body="+response +"}";
+        return "request"+request+"status"+status+
+                "StoreItem{"+"body="+response +"}";
     }
 }
