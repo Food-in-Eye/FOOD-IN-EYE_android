@@ -42,7 +42,8 @@
             android:background="@drawable/category_go_btn"
             android:backgroundTint="@color/navy"
             android:layout_gravity="center"
-            android:gravity="right"/>
+            android:gravity="right"
+            android:layout_marginRight="20dp"/>
 
     </LinearLayout>
 

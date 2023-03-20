@@ -1,6 +1,7 @@
 package com.example.foodineye_app;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,13 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(@NonNull StoreAdapter.MyViewHolder holder, int position) {
 
-        holder.storeName.setText(storesList.get(position).getName());
+        //Bind the data for each item in the list
+        Stores store = storesList.get(position);
+        holder.storeName.setText(store.getName());
+
+        //Set the background color for each item in the list
+        int color = store.isOpen() ? Color.LTGRAY : Color.WHITE;
+        holder.itemView.setBackgroundColor(color);
     }
 
     @Override

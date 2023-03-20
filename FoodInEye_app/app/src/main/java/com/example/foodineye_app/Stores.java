@@ -30,6 +30,13 @@ public class Stores {
     @Expose
     private String m_id;
 
+    // status == 2 -> Close, status == 1 -> Open
+    public boolean isOpen(){
+        if (status == 2){
+            return true;
+        }else return false;
+    }
+
     public String getName() {
         return name;
     }
