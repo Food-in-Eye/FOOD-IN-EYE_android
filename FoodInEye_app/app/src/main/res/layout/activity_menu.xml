@@ -35,29 +35,18 @@
 
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Menu"
-        android:textSize="30dp"
-        android:textColor="@color/navy"
-        android:textStyle="bold"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"/>
-
     <LinearLayout
         android:layout_width="350dp"
-        android:layout_height="450dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/navy_rec"
-        android:orientation="vertical">
+        android:layout_marginTop="10dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
             <Button
@@ -75,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginRight="5dp"
-                android:text="가게 1"
+                android:text="가게 2"
                 android:textColor="@color/navy"
                 android:textSize="15dp"
                 android:textStyle="bold" />
@@ -85,12 +74,31 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginRight="5dp"
-                android:text="가게 1"
+                android:text="가게 3"
                 android:textColor="@color/navy"
                 android:textSize="15dp"
                 android:textStyle="bold" />
 
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/navy"
+            android:layout_marginTop="10dp"/>
+
+    </LinearLayout>
+
+    <!--Menu판-->
+    <LinearLayout
+        android:layout_width="350dp"
+        android:layout_height="450dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/navy_rec"
+        android:orientation="vertical">
+
+
 
         <LinearLayout
             android:layout_width="wrap_content"
