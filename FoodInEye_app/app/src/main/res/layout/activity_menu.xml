@@ -42,50 +42,37 @@
         android:layout_gravity="center"
         android:layout_marginTop="10dp">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
+        <!--TabLayout
+        app:tabMode="scrollable"-->
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginRight="5dp"
-                android:text="가게 1"
-                android:textColor="@color/navy"
-                android:textSize="15dp"
-                android:textStyle="bold" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginRight="5dp"
-                android:text="가게 2"
-                android:textColor="@color/navy"
-                android:textSize="15dp"
-                android:textStyle="bold" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginRight="5dp"
-                android:text="가게 3"
-                android:textColor="@color/navy"
-                android:textSize="15dp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-        <View
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/store_tab"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/navy"
-            android:layout_marginTop="10dp"/>
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="가게 1"
+                android:textColor="@color/black"/>
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="가게 2"
+                android:background=""/>
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="가게 3"/>
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="가게 4"/>
+
+        </com.google.android.material.tabs.TabLayout>
 
     </LinearLayout>
 
@@ -98,49 +85,26 @@
         android:background="@drawable/navy_rec"
         android:orientation="vertical">
 
+        <FrameLayout
+            android:id="@+id/store_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/store_tab">
 
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+
+        </FrameLayout>
+
+        <Button
+            android:id="@+id/smBtn"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/smBtn"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginRight="15dp"
-                android:background="@drawable/navy_rec_30"
-                android:text="메뉴 1"
-                android:textColor="@color/white"
-                android:textSize="18dp" />
-
-            <Button
-                android:id="@+id/s1m2Btn"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginRight="15dp"
-                android:background="@drawable/navy_rec_30"
-                android:text="메뉴 2"
-                android:textColor="@color/white"
-                android:textSize="18dp" />
-
-            <Button
-                android:id="@+id/s1m3Btn"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginRight="15dp"
-                android:background="@drawable/navy_rec_30"
-                android:text="메뉴 3"
-                android:textColor="@color/white"
-                android:textSize="18dp" />
-
-        </LinearLayout>
+            android:layout_marginRight="15dp"
+            android:background="@drawable/navy_rec_30"
+            android:text="메뉴 1"
+            android:textColor="@color/white"
+            android:textSize="18dp" />
 
     </LinearLayout>
 
