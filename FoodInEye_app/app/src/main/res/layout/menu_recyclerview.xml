@@ -13,7 +13,7 @@
         android:textColor="@color/black"
         android:textSize="18dp"
         android:background="@drawable/menu_detail_image"
-        android:paddingTop="55dp"
+        android:paddingTop="50dp"
         android:paddingLeft="35dp"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"/>
