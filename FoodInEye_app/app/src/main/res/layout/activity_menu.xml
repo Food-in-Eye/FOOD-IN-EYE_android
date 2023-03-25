@@ -45,6 +45,7 @@
         <!--TabLayout
         app:tabMode="scrollable"-->
 
+        <!--
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/store_tab"
             android:layout_width="match_parent"
@@ -59,8 +60,7 @@
             <com.google.android.material.tabs.TabItem
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="가게 2"
-                android:background=""/>
+                android:text="가게 2"/>
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="match_parent"
@@ -73,28 +73,76 @@
                 android:text="가게 4"/>
 
         </com.google.android.material.tabs.TabLayout>
+        -->
 
     </LinearLayout>
 
     <!--Menu판-->
     <LinearLayout
-        android:layout_width="350dp"
-        android:layout_height="450dp"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:background="@drawable/navy_rec"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_below="@id/store_tab">
 
-        <FrameLayout
-            android:id="@+id/store_frame"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/store_tab">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/navy_rec">
 
+            <TextView
+                android:id="@+id/store_intro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="📌 가게 한줄소개"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"/>
 
+            <TextView
+                android:id="@+id/store_opentime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="📌 가게 운영시간"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"/>
 
-        </FrameLayout>
+            <TextView
+                android:id="@+id/store_notice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="📌 가게 공지사항"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"/>
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/navy_rec"
+            android:layout_marginTop="10dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView_menuList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </LinearLayout>
+
+        <!--
         <Button
             android:id="@+id/smBtn"
             android:layout_width="80dp"
@@ -105,6 +153,7 @@
             android:text="메뉴 1"
             android:textColor="@color/white"
             android:textSize="18dp" />
+        -->
 
     </LinearLayout>
 

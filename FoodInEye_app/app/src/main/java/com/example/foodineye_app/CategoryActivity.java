@@ -21,6 +21,7 @@ public class CategoryActivity extends AppCompatActivity {
 
     StoreItem storeList; //전체 가게 목록
     List<Stores> storeInfo;
+    
 
     RecyclerView recyclerView;
     StoreAdapter storeAdapter;
@@ -39,7 +40,6 @@ public class CategoryActivity extends AppCompatActivity {
 
         //storeList 세팅
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-
         Call<StoreItem> call = apiInterface.getData();
 
         call.enqueue(new Callback<StoreItem>() {
