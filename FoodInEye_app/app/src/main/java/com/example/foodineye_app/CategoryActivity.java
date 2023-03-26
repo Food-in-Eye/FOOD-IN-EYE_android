@@ -21,10 +21,10 @@ public class CategoryActivity extends AppCompatActivity {
 
     StoreItem storeList; //전체 가게 목록
     List<Stores> storeInfo;
-    
 
     RecyclerView recyclerView;
     StoreAdapter storeAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,16 +60,6 @@ public class CategoryActivity extends AppCompatActivity {
             }
         });
 
-        //category -> menu
-        /*Button s1Btn = (Button) findViewById(R.id.sBtn);
-        s1Btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent s1Intent = new Intent(getApplicationContext(), MenuActivity.class);
-                startActivity(s1Intent);
-            }
-        });
-
-         */
+        //
     }
 }

@@ -7,11 +7,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -21,36 +27,53 @@ public class MenuActivity extends AppCompatActivity {
 
     RecyclerView menurecyclerView;
 
+    StoreItem storeList; //전체 가게 목록
+    List<Stores> storeInfo = new ArrayList<>(); //가게 한줄소개, 운영시간, 공지사항
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        //가게 한줄소개, 운영시간, 공지사항
         store_intro = (TextView) findViewById(R.id.store_intro);
         store_openTime= (TextView) findViewById(R.id.store_opentime);
         store_notice = (TextView) findViewById(R.id.store_notice);
 
-        //category액티비티에서 받아온 데이터
+        //intent에서 _id값 가져오기
         Intent intent = getIntent();
+        String storeId = intent.getStringExtra("_id");
 
-        //apiinterface에서 받아오는거
-        //storeList 세팅
+        //retrofit2로 데이터 받아오기
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<StoreItem> call = apiInterface.getData();
+
+        Call<List<Stores>> call = apiInterface.getStores();
+        call.enqueue(new Callback<List<Stores>>() {
+            @Override
+            public void onResponse(Call<List<Stores>> call, Response<List<Stores>> response) {
+                if(response.isSuccessful()){
+                    List<Stores> stores = response.body();
+                    for(Stores store: stores){
+                        if(store.get_id() == storeId){
+                            store_intro.setText(store.getDesc());
+                            store_openTime.setText(store.getSchedule());
+                            store_notice.setText(store.getNotice());
+                            break;
+                        }
+                        Log.d("STORE", "ID: " + storeId);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Stores>> call, Throwable t) {
+                Log.e("STORE", "Error: " + t.getMessage());
+            }
+        });
+
 
         //menuRecyclerview
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
         menurecyclerView.setLayoutManager(gridLayoutManager);
 
-
-        Button s1m1Btn = (Button) findViewById(R.id.smBtn);
-        s1m1Btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent s1m1Intent = new Intent(getApplicationContext(), MenuDetailActivity.class);
-                startActivity(s1m1Intent);
-            }
-        });
     }
 }
