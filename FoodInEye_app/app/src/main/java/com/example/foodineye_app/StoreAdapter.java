@@ -1,5 +1,6 @@
 package com.example.foodineye_app;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -53,11 +54,16 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.MyViewHolder
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Context context = v.getContext();
                 Intent intent = new Intent(context, MenuActivity.class);
                 intent.putExtra("_id", storeId);
-                ((CategoryActivity)context).startActivity(intent);
-                //context.startActivity(intent);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                if (context instanceof Activity) {
+                    ((Activity) context).startActivity(intent);
+                } else {
+                    context.startActivity(intent);
+                }
             }
         });
 
