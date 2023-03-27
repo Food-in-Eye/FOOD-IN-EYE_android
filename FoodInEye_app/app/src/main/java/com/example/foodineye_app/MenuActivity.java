@@ -73,33 +73,6 @@ public class MenuActivity extends AppCompatActivity {
             }
         });
 
-        /*
-        Call<List<Stores>> call = apiInterface.getStores();
-        call.enqueue(new Callback<List<Stores>>() {
-            @Override
-            public void onResponse(Call<List<Stores>> call, Response<List<Stores>> response) {
-                if(response.isSuccessful()){
-                    List<Stores> stores = response.body();
-                    for(Stores store: stores){
-                        if(store.get_id() == storeId){
-                            store_intro.setText(store.getDesc());
-                            store_openTime.setText(store.getSchedule());
-                            store_notice.setText(store.getNotice());
-                            break;
-                        }
-                        Log.d("STORE", "ID: " + storeId);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Stores>> call, Throwable t) {
-                Log.e("STORE", "Error: " + t.getMessage());
-            }
-        });
-        */
-
-
         //menuRecyclerview
         //GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
         //menurecyclerView.setLayoutManager(gridLayoutManager);

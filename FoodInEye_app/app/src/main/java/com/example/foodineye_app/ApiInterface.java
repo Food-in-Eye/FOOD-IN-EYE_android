@@ -10,7 +10,4 @@ public interface ApiInterface {
     @GET("api/v1/user/stores")
     Call<StoreItem> getData();
 
-    @GET("api/v1/user/stores")
-    Call<List<Stores>> getStores();
-
 }
