@@ -1,16 +1,24 @@
 package com.example.foodineye_app;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TableLayout;
 import android.widget.TextView;
+
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,14 +36,20 @@ public class MenuActivity extends AppCompatActivity {
     RecyclerView menurecyclerView;
 
     StoreItem storeList; //전체 가게 목록
-    List<Stores> storeInfo = new ArrayList<>(); //가게 한줄소개, 운영시간, 공지사항
+    List<Stores> storeInfo = new ArrayList<>();
     String storeId;
+
+    TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
+
+
+
+        //가게 한줄소개, 운영시간, 공지사항
         store_intro = (TextView) findViewById(R.id.store_intro);
         store_openTime= (TextView) findViewById(R.id.store_opentime);
         store_notice = (TextView) findViewById(R.id.store_notice);
@@ -55,6 +69,16 @@ public class MenuActivity extends AppCompatActivity {
                     storeList=response.body();
                     storeInfo=storeList.response;
                     Log.d("storeInfo: ", "storeInfo" + storeInfo);
+
+                    //tabLayout
+                    tabLayout = findViewById(R.id.store_tab);
+                    Log.d("Info", "size" + storeInfo);
+                    for (int i = 0; i < storeInfo.size(); i++) {
+                        String tabTitle = storeInfo.get(i).getName();
+                        TabLayout.Tab tab = tabLayout.newTab().setText(tabTitle);
+                        tabLayout.addTab(tab);
+                    }
+
                     for(Stores store: storeInfo){
                         if(store.get_id().equals(storeId)){
                             store_intro.setText(store.getDesc());
