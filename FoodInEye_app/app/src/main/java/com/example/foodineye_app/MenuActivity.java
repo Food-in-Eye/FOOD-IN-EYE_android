@@ -79,10 +79,8 @@ public class MenuActivity extends AppCompatActivity {
                             store_intro.setText(store.getDesc());
                             store_openTime.setText(store.getSchedule());
                             store_notice.setText(store.getNotice());
-                            Log.d("STORE", "success");
                             break;
                         }
-                        Log.d("STORE", "ID: " + storeId);
                     }
 
                     //tabLayout
@@ -98,8 +96,6 @@ public class MenuActivity extends AppCompatActivity {
                             tabLayout.getTabAt(i).select();
                         }
                     }
-
-                    Log.d("Tab", "tab ID: " + tabId);
                     //tabLayout 클릭시 동작
                     tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                         @Override
@@ -107,14 +103,11 @@ public class MenuActivity extends AppCompatActivity {
                             //선택
                             int position = tab.getPosition();
                             tabId = (String) tabLayout.getTabAt(position).getTag();
-                            Log.d("Tab", "tab ID: " + tabId);
                             for(Stores store: storeInfo){
                                 if(store.get_id().equals(tabId)){
                                     store_intro.setText(store.getDesc());
                                     store_openTime.setText(store.getSchedule());
                                     store_notice.setText(store.getNotice());
-
-                                    Log.d("Tab", "tab click success" + store.getDesc());
                                     break;
                                 }
                                 //Log.d("STORE", "ID: " + storeId);
