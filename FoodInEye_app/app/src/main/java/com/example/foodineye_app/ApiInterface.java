@@ -1,5 +1,7 @@
 package com.example.foodineye_app;
 
+import android.view.MenuItem;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -9,5 +11,8 @@ public interface ApiInterface {
 
     @GET("api/v1/user/stores")
     Call<StoreItem> getData();
+
+    @GET("api/v1/user/menus/641d954618f0b258e9ca0263?food_opt=True")
+    Call<MenuItem> getMenuData();
 
 }
