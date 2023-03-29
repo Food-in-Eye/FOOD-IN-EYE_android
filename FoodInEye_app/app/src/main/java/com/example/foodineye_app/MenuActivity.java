@@ -34,6 +34,11 @@ public class MenuActivity extends AppCompatActivity {
     TextView store_notice;
 
     RecyclerView menurecyclerView;
+    MenuAdapter menuAdapter;
+    
+    MenuItem menuItem; // 전체 메뉴판 목록
+    Response response;
+    List<Menus> menuInfo = new ArrayList<>();
 
     StoreItem storeList; //전체 가게 목록
     List<Stores> storeInfo = new ArrayList<>();
@@ -48,8 +53,6 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-
-
 
 
         //가게 한줄소개, 운영시간, 공지사항
@@ -133,8 +136,35 @@ public class MenuActivity extends AppCompatActivity {
         });
 
         //menuRecyclerview
-        //GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
-        //menurecyclerView.setLayoutManager(gridLayoutManager);
+        menurecyclerView = findViewById(R.id.recyclerView_menuList);
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
+        menurecyclerView.setLayoutManager(gridLayoutManager);
+
+        //menuList 세팅
+        ApiInterface apiInterface1 = ApiClient.getClient().create(ApiInterface.class);
+        Call<MenuItem> callMenu = apiInterface1.getMenuData();
+
+        callMenu.enqueue(new Callback<MenuItem>() {
+            @Override
+            public void onResponse(Call<MenuItem> call, Response<MenuItem> response) {
+                menuItem=response.body();
+                menuInfo=menuItem.response.getMenus();
+                Log.d("MenuActivity", menuInfo.toString());
+
+                menuAdapter = new MenuAdapter(getApplicationContext(), menuInfo);
+                menurecyclerView.setAdapter(menuAdapter);
+
+            }
+
+            @Override
+            public void onFailure(Call<MenuItem> call, Throwable t) {
+                Log.d("MenuActivity", menuInfo.toString());
+            }
+        });
+
+
+
 
     }
 }

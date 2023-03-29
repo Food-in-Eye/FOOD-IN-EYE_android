@@ -16,7 +16,7 @@ public class Menus {
     private String img_key;
     @SerializedName("desc")
     @Expose
-    private String m_desc;
+    private String desc;
     @SerializedName("allergy")
     @Expose
     private String allergy;
@@ -24,8 +24,14 @@ public class Menus {
     @Expose
     private String origin;
 
-    //getter and setter
+    //
+    @Override
+    public String toString()
+    {
+        return "Menu [img_key = "+img_key+", price = "+price+", origin = "+origin+", name = "+name+", allergy = "+allergy+", desc = "+desc+"]";
+    }
 
+    //getter and setter
     public String getName() {
         return name;
     }
@@ -51,11 +57,11 @@ public class Menus {
     }
 
     public String getM_desc() {
-        return m_desc;
+        return desc;
     }
 
-    public void setM_desc(String m_desc) {
-        this.m_desc = m_desc;
+    public void setM_desc(String desc) {
+        this.desc = desc;
     }
 
     public String getAllergy() {

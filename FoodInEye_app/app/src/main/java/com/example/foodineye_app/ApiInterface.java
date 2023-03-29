@@ -1,9 +1,5 @@
 package com.example.foodineye_app;
 
-import android.view.MenuItem;
-
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.http.GET;
 

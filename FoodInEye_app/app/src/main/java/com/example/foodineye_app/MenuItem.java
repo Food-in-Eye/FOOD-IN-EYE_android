@@ -7,6 +7,8 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 import com.example.foodineye_app.Menus;
 
+import retrofit2.Response;
+
 public class MenuItem {
 
     @SerializedName("request")
@@ -14,24 +16,58 @@ public class MenuItem {
     @SerializedName("status")
     public String status;
     @SerializedName("response")
-    public List<response> response;
+    public Response response;
 
-    public class response{
+    public class Response{
 
         @SerializedName("_id")
         @Expose
-        private String _id;
+        public String _id;
 
         @SerializedName("s_id")
         @Expose
-        private String s_id;
+        public String s_id;
 
         @SerializedName("date")
         @Expose
-        private String date;
+        public String date;
 
         @SerializedName("f_list")
         @Expose
         public List<Menus> menus;
+
+        //getter and setter
+
+        public String get_id() {
+            return _id;
+        }
+
+        public void set_id(String _id) {
+            this._id = _id;
+        }
+
+        public String getS_id() {
+            return s_id;
+        }
+
+        public void setS_id(String s_id) {
+            this.s_id = s_id;
+        }
+
+        public String getDate() {
+            return date;
+        }
+
+        public void setDate(String date) {
+            this.date = date;
+        }
+
+        public List<Menus> getMenus() {
+            return menus;
+        }
+
+        public void setMenus(List<Menus> menus) {
+            this.menus = menus;
+        }
     }
 }
