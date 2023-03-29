@@ -41,6 +41,9 @@ public class MenuActivity extends AppCompatActivity {
 
     TabLayout tabLayout;
 
+    String tab_Id; // 탭에 _ID 할당
+    String tabId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,15 +73,7 @@ public class MenuActivity extends AppCompatActivity {
                     storeInfo=storeList.response;
                     Log.d("storeInfo: ", "storeInfo" + storeInfo);
 
-                    //tabLayout
-                    tabLayout = findViewById(R.id.store_tab);
-                    Log.d("Info", "size" + storeInfo);
-                    for (int i = 0; i < storeInfo.size(); i++) {
-                        String tabTitle = storeInfo.get(i).getName();
-                        TabLayout.Tab tab = tabLayout.newTab().setText(tabTitle);
-                        tabLayout.addTab(tab);
-                    }
-
+                    //categoryActivity -> MenuActivity
                     for(Stores store: storeInfo){
                         if(store.get_id().equals(storeId)){
                             store_intro.setText(store.getDesc());
@@ -89,6 +84,53 @@ public class MenuActivity extends AppCompatActivity {
                         }
                         Log.d("STORE", "ID: " + storeId);
                     }
+
+                    //tabLayout
+                    tabLayout = findViewById(R.id.store_tab);
+                    for (int i = 0; i < storeInfo.size(); i++) {
+                        String tabTitle = storeInfo.get(i).getName();
+                        tab_Id = storeInfo.get(i).get_id();
+                        TabLayout.Tab tab = tabLayout.newTab().setText(tabTitle);
+                        tab.setTag(tab_Id);
+                        tabLayout.addTab(tab);
+                        //초기 tab 설정 category -> Menu
+                        if(tab_Id.equals(storeId)){
+                            tabLayout.getTabAt(i).select();
+                        }
+                    }
+
+                    Log.d("Tab", "tab ID: " + tabId);
+                    //tabLayout 클릭시 동작
+                    tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                        @Override
+                        public void onTabSelected(TabLayout.Tab tab) {
+                            //선택
+                            int position = tab.getPosition();
+                            tabId = (String) tabLayout.getTabAt(position).getTag();
+                            Log.d("Tab", "tab ID: " + tabId);
+                            for(Stores store: storeInfo){
+                                if(store.get_id().equals(tabId)){
+                                    store_intro.setText(store.getDesc());
+                                    store_openTime.setText(store.getSchedule());
+                                    store_notice.setText(store.getNotice());
+
+                                    Log.d("Tab", "tab click success" + store.getDesc());
+                                    break;
+                                }
+                                //Log.d("STORE", "ID: " + storeId);
+                            }
+                        }
+
+                        @Override
+                        public void onTabUnselected(TabLayout.Tab tab) {
+                            //선택 해제
+                        }
+
+                        @Override
+                        public void onTabReselected(TabLayout.Tab tab) {
+                            //다시 선택
+                        }
+                    });
                 }
             }
             @Override
