@@ -124,19 +124,6 @@
 
         </LinearLayout>
 
-        <!--
-        <Button
-            android:id="@+id/smBtn"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginRight="15dp"
-            android:background="@drawable/navy_rec_30"
-            android:text="메뉴 1"
-            android:textColor="@color/white"
-            android:textSize="18dp" />
-        -->
-
     </LinearLayout>
 
 </LinearLayout>
