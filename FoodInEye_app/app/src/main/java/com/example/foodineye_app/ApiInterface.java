@@ -8,7 +8,7 @@ public interface ApiInterface {
     @GET("api/v1/user/stores")
     Call<StoreItem> getData();
 
-    @GET("api/v1/user/menus/641d954618f0b258e9ca0263?food_opt=True")
+    @GET("api/v1/user/menus/642506edcc80984129fe020a?food_opt=True")
     Call<MenuItem> getMenuData();
 
 }

@@ -28,7 +28,7 @@ public class Menus {
     @Override
     public String toString()
     {
-        return "Menu [img_key = "+img_key+", price = "+price+", origin = "+origin+", name = "+name+", allergy = "+allergy+", desc = "+desc+"]";
+        return "Menu [img_key = "+", price = "+price+", origin = "+origin+", name = "+name+", allergy = "+allergy+", desc = "+desc+"]";
     }
 
     //getter and setter
@@ -55,6 +55,7 @@ public class Menus {
     public void setImg_key(String img_key) {
         this.img_key = img_key;
     }
+
 
     public String getM_desc() {
         return desc;

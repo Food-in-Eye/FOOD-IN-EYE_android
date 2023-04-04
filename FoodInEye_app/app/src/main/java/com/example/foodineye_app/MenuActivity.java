@@ -1,5 +1,6 @@
 package com.example.foodineye_app;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -70,7 +71,7 @@ public class MenuActivity extends AppCompatActivity {
         Call<StoreItem> call = apiInterface.getData();
         call.enqueue(new Callback<StoreItem>() {
             @Override
-            public void onResponse(Call<StoreItem> call, Response<StoreItem> response) {
+            public void onResponse(@NonNull Call<StoreItem> call, @NonNull Response<StoreItem> response) {
                 if(response.isSuccessful()){
                     storeList=response.body();
                     storeInfo=storeList.response;
@@ -148,6 +149,7 @@ public class MenuActivity extends AppCompatActivity {
         callMenu.enqueue(new Callback<MenuItem>() {
             @Override
             public void onResponse(Call<MenuItem> call, Response<MenuItem> response) {
+
                 menuItem=response.body();
                 menuInfo=menuItem.response.getMenus();
                 Log.d("MenuActivity", menuInfo.toString());
