@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TableLayout;
@@ -38,7 +39,7 @@ public class MenuActivity extends AppCompatActivity {
     MenuAdapter menuAdapter;
     
     MenuItem menuItem; // 전체 메뉴판 목록
-    Response response;
+    Response menuResponse;
     List<Menus> menuInfo = new ArrayList<>();
 
     StoreItem storeList; //전체 가게 목록
@@ -50,10 +51,18 @@ public class MenuActivity extends AppCompatActivity {
     String tab_Id; // 탭에 _ID 할당
     String tabId;
 
+    String m_Id; //해당 store의 m_ID
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
+        //menuRecyclerview
+        menurecyclerView = findViewById(R.id.recyclerView_menuList);
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
+        menurecyclerView.setLayoutManager(gridLayoutManager);
 
 
         //가게 한줄소개, 운영시간, 공지사항
@@ -83,6 +92,7 @@ public class MenuActivity extends AppCompatActivity {
                             store_intro.setText(store.getDesc());
                             store_openTime.setText(store.getSchedule());
                             store_notice.setText(store.getNotice());
+                            m_Id = store.getM_id();
                             break;
                         }
                     }
@@ -112,6 +122,7 @@ public class MenuActivity extends AppCompatActivity {
                                     store_intro.setText(store.getDesc());
                                     store_openTime.setText(store.getSchedule());
                                     store_notice.setText(store.getNotice());
+                                    m_Id = store.getM_id();
                                     break;
                                 }
                                 //Log.d("STORE", "ID: " + storeId);
@@ -128,6 +139,32 @@ public class MenuActivity extends AppCompatActivity {
                             //다시 선택
                         }
                     });
+
+                    //menuList 세팅
+                    ApiInterface apiInterface1 = ApiClient.getClient().create(ApiInterface.class);
+                    Log.d("StoreMenuId", "StoreM_id: " + m_Id);
+
+                    Call<MenuItem> callMenu = apiInterface1.getMenusData(m_Id);
+                    callMenu.enqueue(new Callback<MenuItem>() {
+                        @Override
+                        public void onResponse(Call<MenuItem> call, Response<MenuItem> response) {
+                            if(response.isSuccessful() && response.body() != null){
+                                menuInfo = response.body().response.getMenus();
+                                menuAdapter = new MenuAdapter(getApplicationContext(), menuInfo);
+                                menurecyclerView.setAdapter(menuAdapter);
+                            }else{
+                                menuInfo = response.body().response.getMenus();
+                                menuAdapter = new MenuAdapter(getApplicationContext(), menuInfo);
+                                menurecyclerView.setAdapter(menuAdapter);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<MenuItem> call, Throwable t) {
+
+                        }
+                    });
+
                 }
             }
             @Override
@@ -136,21 +173,14 @@ public class MenuActivity extends AppCompatActivity {
             }
         });
 
-        //menuRecyclerview
-        menurecyclerView = findViewById(R.id.recyclerView_menuList);
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
-        menurecyclerView.setLayoutManager(gridLayoutManager);
-
-        //menuList 세팅
-        ApiInterface apiInterface1 = ApiClient.getClient().create(ApiInterface.class);
-        Call<MenuItem> callMenu = apiInterface1.getMenuData();
-
+        /*
         callMenu.enqueue(new Callback<MenuItem>() {
             @Override
             public void onResponse(Call<MenuItem> call, Response<MenuItem> response) {
 
                 menuItem=response.body();
+                Log.d("menuItem", "menuItem" + menuItem);
                 menuInfo=menuItem.response.getMenus();
                 Log.d("MenuActivity", menuInfo.toString());
 
@@ -164,7 +194,7 @@ public class MenuActivity extends AppCompatActivity {
                 Log.d("MenuActivity", menuInfo.toString());
             }
         });
-
+        */
 
 
 
