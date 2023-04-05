@@ -1,6 +1,9 @@
 package com.example.foodineye_app;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +48,26 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder> 
                 .load(imageUrl)
                 .circleCrop()
                 .into(holder.menuImg);
+
+        //menu ID 값 받아오기
+        String menuId = menus.getf_id();
+
+        //Click Menu Detail, intent에 메뉴 "_id" 전달, MenuDetailActivity와 연결
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Context context = v.getContext();
+                Intent intent = new Intent(context, MenuDetailActivity.class);
+                intent.putExtra("f_id", menuId);
+                Log.d("f_id", "f_id: " + menuId);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                if (context instanceof Activity) {
+                    ((Activity) context).startActivity(intent);
+                } else {
+                    context.startActivity(intent);
+                }
+            }
+        });
     }
 
     @Override
