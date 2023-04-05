@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder> {
@@ -37,6 +39,12 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder> 
         holder.menuName.setText(menus.getName());
         holder.menuPrice.setText(String.valueOf(menus.getPrice()));
         //holder.menuImg.setImage(menus.getImg_key());
+        String imageKey = menus.getImg_key();
+        String imageUrl = "https://foodineye.s3.ap-northeast-2.amazonaws.com/" + imageKey;
+        Glide.with(holder.itemView.getContext())
+                .load(imageUrl)
+                .circleCrop()
+                .into(holder.menuImg);
     }
 
     @Override
