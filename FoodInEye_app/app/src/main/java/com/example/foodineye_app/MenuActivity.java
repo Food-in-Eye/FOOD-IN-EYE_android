@@ -48,7 +48,7 @@ public class MenuActivity extends AppCompatActivity {
 
     TabLayout tabLayout;
 
-    String tab_Id; // 탭에 _ID 할당
+    String tab_Id, tabM_id; // 탭에 _ID, m_ID 할당
     String tabId;
 
     String m_Id; //해당 store의 m_ID
@@ -96,6 +96,7 @@ public class MenuActivity extends AppCompatActivity {
                             break;
                         }
                     }
+                    showMenu(m_Id);
 
                     //tabLayout
                     tabLayout = findViewById(R.id.store_tab);
@@ -116,16 +117,17 @@ public class MenuActivity extends AppCompatActivity {
                         public void onTabSelected(TabLayout.Tab tab) {
                             //선택
                             int position = tab.getPosition();
-                            tabId = (String) tabLayout.getTabAt(position).getTag();
+                            String tabId = (String) tabLayout.getTabAt(position).getTag();
                             for(Stores store: storeInfo){
                                 if(store.get_id().equals(tabId)){
                                     store_intro.setText(store.getDesc());
                                     store_openTime.setText(store.getSchedule());
                                     store_notice.setText(store.getNotice());
-                                    m_Id = store.getM_id();
+                                    tabM_id = store.getM_id();
+                                    showMenu(tabM_id);
+                                    //menuAdapter.notifyDataSetChanged();
                                     break;
                                 }
-                                //Log.d("STORE", "ID: " + storeId);
                             }
                         }
 
@@ -137,31 +139,6 @@ public class MenuActivity extends AppCompatActivity {
                         @Override
                         public void onTabReselected(TabLayout.Tab tab) {
                             //다시 선택
-                        }
-                    });
-
-                    //menuList 세팅
-                    ApiInterface apiInterface1 = ApiClient.getClient().create(ApiInterface.class);
-                    Log.d("StoreMenuId", "StoreM_id: " + m_Id);
-
-                    Call<MenuItem> callMenu = apiInterface1.getMenusData(m_Id);
-                    callMenu.enqueue(new Callback<MenuItem>() {
-                        @Override
-                        public void onResponse(Call<MenuItem> call, Response<MenuItem> response) {
-                            if(response.isSuccessful() && response.body() != null){
-                                menuInfo = response.body().response.getMenus();
-                                menuAdapter = new MenuAdapter(getApplicationContext(), menuInfo);
-                                menurecyclerView.setAdapter(menuAdapter);
-                            }else{
-                                menuInfo = response.body().response.getMenus();
-                                menuAdapter = new MenuAdapter(getApplicationContext(), menuInfo);
-                                menurecyclerView.setAdapter(menuAdapter);
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<MenuItem> call, Throwable t) {
-
                         }
                     });
 
@@ -198,5 +175,31 @@ public class MenuActivity extends AppCompatActivity {
 
 
 
+    }
+    public void showMenu(String m_id){
+        //menuList 세팅
+        ApiInterface apiInterface1 = ApiClient.getClient().create(ApiInterface.class);
+        Log.d("StoreMenuId", "showM_id: " + m_id);
+
+        Call<MenuItem> callMenu = apiInterface1.getMenusData(m_id);
+        callMenu.enqueue(new Callback<MenuItem>() {
+            @Override
+            public void onResponse(Call<MenuItem> call, Response<MenuItem> response) {
+                if(response.isSuccessful() && response.body() != null){
+                    menuInfo = response.body().response.getMenus();
+                    menuAdapter = new MenuAdapter(getApplicationContext(), menuInfo);
+                    menurecyclerView.setAdapter(menuAdapter);
+                }else{
+                    menuInfo = response.body().response.getMenus();
+                    menuAdapter = new MenuAdapter(getApplicationContext(), menuInfo);
+                    menurecyclerView.setAdapter(menuAdapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MenuItem> call, Throwable t) {
+
+            }
+        });
     }
 }
