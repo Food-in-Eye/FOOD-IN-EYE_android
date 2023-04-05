@@ -10,8 +10,6 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:background="@drawable/menu_detail_image"
-        android:paddingTop="50dp"
-        android:paddingLeft="35dp"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"/>
 
