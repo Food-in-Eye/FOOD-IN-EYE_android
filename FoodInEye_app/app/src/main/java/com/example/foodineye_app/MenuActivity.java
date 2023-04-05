@@ -49,7 +49,6 @@ public class MenuActivity extends AppCompatActivity {
     TabLayout tabLayout;
 
     String tab_Id, tabM_id; // 탭에 _ID, m_ID 할당
-    String tabId;
 
     String m_Id; //해당 store의 m_ID
 
