@@ -25,7 +25,6 @@ public class CategoryActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     StoreAdapter storeAdapter;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +39,7 @@ public class CategoryActivity extends AppCompatActivity {
 
         //storeList 세팅
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
         Call<StoreItem> call = apiInterface.getData();
 
         call.enqueue(new Callback<StoreItem>() {
@@ -60,6 +60,16 @@ public class CategoryActivity extends AppCompatActivity {
             }
         });
 
-        //
+        //category -> menu
+        /*Button s1Btn = (Button) findViewById(R.id.sBtn);
+        s1Btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent s1Intent = new Intent(getApplicationContext(), MenuActivity.class);
+                startActivity(s1Intent);
+            }
+        });
+
+         */
     }
 }

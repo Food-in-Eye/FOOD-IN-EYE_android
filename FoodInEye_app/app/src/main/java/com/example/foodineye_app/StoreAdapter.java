@@ -1,30 +1,24 @@
 package com.example.foodineye_app;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 
 public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.MyViewHolder> {
 
-    private Context mContext;
+    private Context c;
     private List<Stores> storesList;
 
-    public StoreAdapter(Context context, List<Stores> storesList) {
-        mContext = context;
+    public StoreAdapter(Context c, List<Stores> storesList) {
+        this.c = c;
         this.storesList = storesList;
     }
 
@@ -32,7 +26,7 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.MyViewHolder
     @Override
     public StoreAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(mContext).inflate(R.layout.activity_store_recyclerview, parent, false);
+        View view = LayoutInflater.from(c).inflate(R.layout.activity_store_recyclerview, parent, false);
         return new MyViewHolder(view);
     }
 
@@ -46,27 +40,6 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.MyViewHolder
         //Set the background color for each item in the list
         int color = store.isOpen() ? Color.LTGRAY : Color.WHITE;
         holder.itemView.setBackgroundColor(color);
-
-        //store ID 값 받아오기
-        String storeId = store.get_id();
-
-        //Click Store Detail, intent에 가게 "_id" 전달, MenuActivity와 연결
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Context context = v.getContext();
-                Intent intent = new Intent(context, MenuActivity.class);
-                intent.putExtra("_id", storeId);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                if (context instanceof Activity) {
-                    ((Activity) context).startActivity(intent);
-                } else {
-                    context.startActivity(intent);
-                }
-            }
-        });
-
     }
 
     @Override
@@ -78,13 +51,11 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.MyViewHolder
     //ViewHolder 정의
     public class MyViewHolder extends RecyclerView.ViewHolder{
         TextView storeName;
-        Button storeBtn;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             storeName = (TextView)itemView.findViewById(R.id.store_name);
-            storeBtn = (Button)itemView.findViewById(R.id.sBtn);
         }
     }
 }

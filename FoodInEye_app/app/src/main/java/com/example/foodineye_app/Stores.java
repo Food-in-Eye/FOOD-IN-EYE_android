@@ -23,6 +23,9 @@ public class Stores {
     @SerializedName("status")
     @Expose
     private int status;
+    @SerializedName("img_src")
+    @Expose
+    private String img_url;
     @SerializedName("m_id")
     @Expose
     private String m_id;
@@ -82,6 +85,14 @@ public class Stores {
         this.status = status;
     }
 
+    public String getImg_url() {
+        return img_url;
+    }
+
+    public void setImg_url(String img_url) {
+        this.img_url = img_url;
+    }
+
     public String getM_id() {
         return m_id;
     }
@@ -93,6 +104,6 @@ public class Stores {
     @Override
     public String toString()
     {
-        return "Stores [schedule = "+schedule+", name = "+name+", description = "+desc+", _id = "+_id+", notice = "+notice+", status = "+status+", m_id = "+m_id+"]";
+        return "Stores [schedule = "+schedule+", img_url = "+img_url+", name = "+name+", description = "+desc+", _id = "+_id+", notice = "+notice+", status = "+status+", m_id = "+m_id+"]";
     }
 }
