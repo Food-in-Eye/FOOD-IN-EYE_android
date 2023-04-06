@@ -36,7 +36,6 @@ public class Menus {
 
     //getter and setter
 
-
     public String getf_id() {  return f_id;  }
 
     public void setf_id(String _id) {  this.f_id = f_id;  }
