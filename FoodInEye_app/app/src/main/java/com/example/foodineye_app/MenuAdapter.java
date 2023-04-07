@@ -39,27 +39,35 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder> 
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         //Bind the data for each item in the list
         Menus menus = menusList.get(position);
-        holder.menuName.setText(menus.getName());
-        holder.menuPrice.setText(String.valueOf(menus.getPrice()));
-        //holder.menuImg.setImage(menus.getImg_key());
+        //position에 해당하는 data
+        String menuF_id = menus.getf_id();
+        String menu_name = menus.getName();
+        int menu_price = menus.getPrice();
         String imageKey = menus.getImg_key();
+        String menu_desc = menus.getM_desc();
+        String menu_allergy = menus.getAllergy();
+        String menu_origin = menus.getOrigin();
+
+        holder.menuName.setText(menu_name);
+        holder.menuPrice.setText(String.valueOf(menu_price));
+        //holder.menuImg.setImage(menus.getImg_key());
         String imageUrl = "https://foodineye.s3.ap-northeast-2.amazonaws.com/" + imageKey;
         Glide.with(holder.itemView.getContext())
                 .load(imageUrl)
                 .circleCrop()
                 .into(holder.menuImg);
 
-        //menu ID 값 받아오기
-        String menuId = menus.getf_id();
 
-        //Click Menu Detail, intent에 메뉴 "_id" 전달, MenuDetailActivity와 연결
+        Food food = new Food(menuF_id, menu_name, menu_price, imageKey, menu_desc, menu_allergy, menu_origin);//객체 생성
+
+        //Click Menu Detail, intent에 Food 객체 전달, MenuDetailActivity와 연결
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Context context = v.getContext();
                 Intent intent = new Intent(context, MenuDetailActivity.class);
-                intent.putExtra("f_id", menuId);
-                Log.d("f_id", "f_id: " + menuId);
+                intent.putExtra("food", food);
+                Log.d("food", "food: " + food);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 if (context instanceof Activity) {
                     ((Activity) context).startActivity(intent);
