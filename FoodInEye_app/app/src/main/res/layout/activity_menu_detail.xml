@@ -106,6 +106,7 @@
 
     <!--orderBtn-->
     <LinearLayout
+        android:id="@+id/menuD_btn"
         android:layout_width="200dp"
         android:layout_height="45dp"
         android:orientation="horizontal"

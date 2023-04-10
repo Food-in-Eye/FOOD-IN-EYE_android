@@ -29,7 +29,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MenuActivity extends AppCompatActivity {
+public class MenuActivity extends AppCompatActivity{
 
     TextView store_intro;
     TextView store_openTime;
@@ -39,7 +39,8 @@ public class MenuActivity extends AppCompatActivity {
     MenuAdapter menuAdapter;
     
     MenuItem menuItem; // 전체 메뉴판 목록
-    Response menuResponse;
+    //MenuItem.Response menuResponse;
+    List<MenuItem.Response> menuResponse = new ArrayList<>();
     List<Menus> menuInfo = new ArrayList<>();
 
     StoreItem storeList; //전체 가게 목록
@@ -50,7 +51,9 @@ public class MenuActivity extends AppCompatActivity {
 
     String tab_Id, tabM_id; // 탭에 _ID, m_ID 할당
 
-    String m_Id; //해당 store의 m_ID
+    String m_Id, s_Id; //해당 store의 m_ID
+
+    String intent_mID, intent_sID; //MenuDetail로 넘길 때 사용할 s_id, m_id
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,10 +95,11 @@ public class MenuActivity extends AppCompatActivity {
                             store_openTime.setText(store.getSchedule());
                             store_notice.setText(store.getNotice());
                             m_Id = store.getM_id();
+                            s_Id = store.get_id();
                             break;
                         }
                     }
-                    showMenu(m_Id);
+                    showMenu(m_Id, s_Id);
 
                     //tabLayout
                     tabLayout = findViewById(R.id.store_tab);
@@ -123,7 +127,7 @@ public class MenuActivity extends AppCompatActivity {
                                     store_openTime.setText(store.getSchedule());
                                     store_notice.setText(store.getNotice());
                                     tabM_id = store.getM_id();
-                                    showMenu(tabM_id);
+                                    showMenu(tabM_id, tab_Id);
                                     //menuAdapter.notifyDataSetChanged();
                                     break;
                                 }
@@ -175,7 +179,7 @@ public class MenuActivity extends AppCompatActivity {
 
 
     }
-    public void showMenu(String m_id){
+    public void showMenu(String m_id, String s_id){
         //menuList 세팅
         ApiInterface apiInterface1 = ApiClient.getClient().create(ApiInterface.class);
         Log.d("StoreMenuId", "showM_id: " + m_id);
@@ -185,12 +189,13 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<MenuItem> call, Response<MenuItem> response) {
                 if(response.isSuccessful() && response.body() != null){
+                    //menuResponse = response.body().response;
                     menuInfo = response.body().response.getMenus();
-                    menuAdapter = new MenuAdapter(getApplicationContext(), menuInfo);
+                    menuAdapter = new MenuAdapter(getApplicationContext(), menuInfo, m_id, s_id);
                     menurecyclerView.setAdapter(menuAdapter);
                 }else{
-                    menuInfo = response.body().response.getMenus();
-                    menuAdapter = new MenuAdapter(getApplicationContext(), menuInfo);
+                    //menuInfo = response.body().response.getMenus();
+                    menuAdapter = new MenuAdapter(getApplicationContext(), menuInfo, m_id, s_id);
                     menurecyclerView.setAdapter(menuAdapter);
                 }
             }
