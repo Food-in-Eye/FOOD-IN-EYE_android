@@ -5,10 +5,16 @@ import java.io.Serializable;
 //MenuDetailActivity에서 Intent로 전달할 클래스 정의
 public class IntentToDetail implements Serializable {
 
-    String m_id;
     String s_id;
+    String m_id;
 
     Food food = new Food();
+
+    public IntentToDetail(String s_id, String m_id, Food food) {
+        this.s_id = s_id;
+        this.m_id = m_id;
+        this.food = food;
+    }
 
     public String getM_id() {  return m_id;  }
 
@@ -21,4 +27,8 @@ public class IntentToDetail implements Serializable {
     public Food getFood() {   return food;  }
 
     public void setFood(Food food) {    this.food = food;   }
+
+    public String toString(){
+        return "s_id: "+s_id+ " m_id: "+m_id;
+    };
 }

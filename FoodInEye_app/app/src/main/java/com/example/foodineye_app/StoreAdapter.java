@@ -49,6 +49,7 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.MyViewHolder
 
         //store ID 값 받아오기
         String storeId = store.get_id();
+        String menuId = store.getM_id();
 
         //Click Store Detail, intent에 가게 "_id" 전달, MenuActivity와 연결
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -58,6 +59,7 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.MyViewHolder
                 Context context = v.getContext();
                 Intent intent = new Intent(context, MenuActivity.class);
                 intent.putExtra("_id", storeId);
+                intent.putExtra("m_id", menuId);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 if (context instanceof Activity) {
                     ((Activity) context).startActivity(intent);

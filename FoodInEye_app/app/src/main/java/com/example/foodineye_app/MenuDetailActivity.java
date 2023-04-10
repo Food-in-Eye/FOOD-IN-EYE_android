@@ -34,7 +34,7 @@ public class MenuDetailActivity extends AppCompatActivity {
     TextView menu_origin;
     TextView menu_price;
 
-    String menu_Id;
+    String m_Id, s_Id;
     List<Menus> menuInfo = new ArrayList<>();
 
     @Override
@@ -55,6 +55,12 @@ public class MenuDetailActivity extends AppCompatActivity {
         //intent에서 Food 가져오기
         Intent intent = getIntent();
         IntentToDetail intentToDetail = (IntentToDetail) intent.getSerializableExtra("intentToDetail");
+
+        s_Id = intentToDetail.getS_id();
+        m_Id = intentToDetail.getM_id();
+        Log.d("intentToDetail", "intentToDetail_sid" + s_Id);
+        Log.d("intentToDetail", "intentToDetail_mid" + m_Id);
+
 
         menu_name.setText(intentToDetail.food.getM_name());
         menu_desc.setText(intentToDetail.food.getM_desc());
@@ -86,7 +92,9 @@ public class MenuDetailActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
-                        //intent.putExtra("_id", )
+                        intent.putExtra("intent_SId", s_Id);
+                        intent.putExtra("intent_mId", m_Id);
+                        Log.d("Intent_id", "Intent_id: " + s_Id);
                         startActivity(intent);
                     }
                 })

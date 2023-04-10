@@ -25,14 +25,14 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder> 
     private MenuItem.Response response;
     private List<Menus> menusList;
 
-    private String m_id,s_id;
+    private String m_Id,s_Id;
 
 
-    public MenuAdapter(Context mContext, List<Menus> menusList, String m_id, String s_id) {
+    public MenuAdapter(Context mContext, List<Menus> menusList, String m_Id, String s_Id) {
         this.mContext = mContext;
         this.menusList = menusList;
-        this.m_id = m_id;
-        this.s_id = s_id;
+        this.m_Id = m_Id;
+        this.s_Id = s_Id;
     }
 
     @NonNull
@@ -65,10 +65,8 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder> 
         food.setM_desc(menus.getM_desc());
         food.setM_allergy(menus.getAllergy());
         food.setM_origin(menus.getOrigin());
-        IntentToDetail intentToDetail = new IntentToDetail();
-        intentToDetail.setFood(food);
-        intentToDetail.setM_id(m_id);
-        intentToDetail.setM_id(s_id);
+        IntentToDetail intentToDetail = new IntentToDetail(s_Id, m_Id, food);
+        Log.d("MenuAdapter", "intentToDetail"+intentToDetail.toString());
 
 
         //Click Menu Detail, intent에 Food 객체 전달, MenuDetailActivity와 연결
