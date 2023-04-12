@@ -101,6 +101,7 @@ public class MenuDetailActivity extends AppCompatActivity {
         TextView menuName = view.findViewById(R.id.alert_menuName);
         TextView toMenu = view.findViewById(R.id.alert_toMenu);
         TextView toCart = view.findViewById(R.id.alert_toCart);
+        ImageView delete = view.findViewById(R.id.alert_delete);
 
         menuName.setText(m_name);
         toMenu.setText("더 담으러 가기");
@@ -122,6 +123,13 @@ public class MenuDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ShoppingCartActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
             }
         });
 
