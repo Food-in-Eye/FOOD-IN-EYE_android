@@ -3,8 +3,13 @@ package com.example.foodineye_app;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class Menus {
 
+    @SerializedName("f_id")
+    @Expose
+    private  String f_id;
     @SerializedName("name")
     @Expose
     private String name;
@@ -24,7 +29,7 @@ public class Menus {
     @Expose
     private String origin;
 
-    //
+
     @Override
     public String toString()
     {
@@ -32,9 +37,12 @@ public class Menus {
     }
 
     //getter and setter
-    public String getName() {
-        return name;
-    }
+
+    public String getf_id() {  return f_id;  }
+
+    public void setf_id(String _id) {  this.f_id = f_id;  }
+
+    public String getName() {  return name;   }
 
     public void setName(String name) {
         this.name = name;
@@ -55,7 +63,6 @@ public class Menus {
     public void setImg_key(String img_key) {
         this.img_key = img_key;
     }
-
 
     public String getM_desc() {
         return desc;

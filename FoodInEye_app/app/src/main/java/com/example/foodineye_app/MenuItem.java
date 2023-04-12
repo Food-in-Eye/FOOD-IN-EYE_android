@@ -62,9 +62,7 @@ public class MenuItem {
             this.date = date;
         }
 
-        public List<Menus> getMenus() {
-            return menus;
-        }
+        public List<Menus> getMenus() {  return menus; }
 
         public void setMenus(List<Menus> menus) {
             this.menus = menus;
