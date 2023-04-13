@@ -18,7 +18,7 @@
         android:layout_height="80dp"
         android:orientation="vertical"
         android:layout_gravity="center"
-        android:layout_marginLeft="13dp">
+        android:layout_marginLeft="15dp">
 
         <TextView
             android:id="@+id/cart_menuName"
@@ -43,44 +43,38 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="80dp"
-        android:layout_height="28dp"
+        android:layout_width="90dp"
+        android:layout_height="30dp"
         android:orientation="horizontal"
         android:background="@drawable/blue_rec_300"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="20dp">
+        android:layout_marginBottom="23dp">
 
-        <TextView
-            android:id="@+id/cart_minusBTN"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="-"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:textSize="20dp"
+        <ImageView
+            android:id="@+id/cart_minusBtn"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/minus_btn"
             android:layout_gravity="center"
             android:layout_marginLeft="15dp"/>
 
         <TextView
             android:id="@+id/cart_totalCount"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:text="1"
             android:textStyle="bold"
             android:textColor="@color/black"
-            android:textSize="20dp"
+            android:textSize="15dp"
             android:gravity="center"
             android:layout_gravity="center"
-            android:layout_marginLeft="10dp"/>
+            android:layout_marginLeft="15dp"/>
 
-        <TextView
-            android:id="@+id/cart_plusBTN"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="+"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:textSize="20dp"
+        <ImageView
+            android:id="@+id/cart_plusBtn"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:background="@drawable/plus_btn"
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"/>
 
