@@ -30,5 +30,5 @@ public class IntentToDetail implements Serializable {
 
     public String toString(){
         return "s_id: "+s_id+ " m_id: "+m_id;
-    };
+    }
 }
