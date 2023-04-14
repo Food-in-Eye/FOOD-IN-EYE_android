@@ -13,7 +13,7 @@ import java.util.List;
 
 public class ShoppingCartActivity extends AppCompatActivity {
 
-    List<Cart> cartList = new ArrayList<>();
+    List<Cart> cartList;
     RecyclerView recyclerView;
     CartAdapter cartAdapter;
 
@@ -22,9 +22,11 @@ public class ShoppingCartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_cart);
 
-        Intent intent = getIntent();
-        cartList = (List<Cart>) intent.getSerializableExtra("intent_toCart");
-        Log.d("ShoppingCartActivity", "cart: "+cartList.toString());
+        cartList = ((Data) getApplication()).getCartList();
+
+//        Intent intent = getIntent();
+//        cartList = (List<Cart>) intent.getSerializableExtra("intent_toCart");
+//        Log.d("ShoppingCartActivity", "cart: "+cartList.toString());
 
         recyclerView = findViewById(R.id.recyclerView_cartList);
 

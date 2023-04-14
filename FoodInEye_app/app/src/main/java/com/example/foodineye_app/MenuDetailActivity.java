@@ -42,7 +42,6 @@ public class MenuDetailActivity extends AppCompatActivity {
     int m_price;
 
     Cart cart;
-    List<Cart> cartList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,12 +86,17 @@ public class MenuDetailActivity extends AppCompatActivity {
                 .circleCrop()
                 .into(menu_Img);
 
+        final Data data = (Data) getApplicationContext();
         order_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                cart = new Cart(s_Id, m_Id, f_Id, m_name, m_price, m_imageKey);
+                data.setCartList(cart);
+                Log.d("MenuDetailActivity", "cart: "+cart.toString());
                 showDialog();
             }
         });
+
 
     }
     public void showDialog(){
@@ -116,9 +120,6 @@ public class MenuDetailActivity extends AppCompatActivity {
         toMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cart = new Cart(s_Id, m_Id, f_Id, m_name, m_price, m_imageKey);
-                cartList.add(cart);
-                Log.d("MenuDetailActivity", "cartList: "+cartList.toString());
                 Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
                 intent.putExtra("intent_SId", s_Id);
                 intent.putExtra("intent_mId", m_Id);
@@ -130,11 +131,8 @@ public class MenuDetailActivity extends AppCompatActivity {
         toCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cart = new Cart(s_Id, m_Id, f_Id, m_name, m_price, m_imageKey);
-                Log.d("MenuDetailActivity", "cart: "+cart.toString());
-                cartList.add(cart);
                 Intent intent = new Intent(getApplicationContext(), ShoppingCartActivity.class);
-                intent.putExtra("intent_toCart", (Serializable) cartList);
+//                intent.putExtra("intent_toCart", (Serializable) cartList);
                 startActivity(intent);
             }
         });
