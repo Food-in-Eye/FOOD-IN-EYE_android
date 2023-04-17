@@ -16,10 +16,26 @@ public class Data extends Application {
     }
 
     public List<Cart> getCartList() {  return cartList;  }
+//    public void setCartList(Cart cart){  cartList.add(cart);  }
 
-    public void setCartList(Cart cart){
-        cartList.add(cart);
+    //중복확인
+    public boolean containsItem(List<Cart> cartList, Cart cart) {
+        for (Cart c : cartList) {
+            if (c.getF_id().equals(cart.getF_id())) {
+                return true;
+            }
+        }
+        return false;
     }
-
-//    public void setCartList(List<Cart> cartList) {    this.cartList = cartList;  }
+    public void setCartList(Cart cart){
+        if(containsItem(cartList, cart)){
+            for(Cart c : cartList){
+                if (c.getF_id().equals(cart.getF_id())) {
+                    c.increase_count();
+                }
+            }
+        }else{
+            cartList.add(cart);
+        }
+    }
 }

@@ -50,7 +50,7 @@
         android:layout_gravity="bottom"
         android:layout_marginBottom="23dp">
 
-        <ImageView
+        <Button
             android:id="@+id/cart_minusBtn"
             android:layout_width="10dp"
             android:layout_height="match_parent"
@@ -70,7 +70,7 @@
             android:layout_gravity="center"
             android:layout_marginLeft="15dp"/>
 
-        <ImageView
+        <Button
             android:id="@+id/cart_plusBtn"
             android:layout_width="15dp"
             android:layout_height="15dp"

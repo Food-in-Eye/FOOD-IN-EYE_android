@@ -99,6 +99,7 @@ public class MenuDetailActivity extends AppCompatActivity {
 
 
     }
+
     public void showDialog(){
 
         LayoutInflater layoutInflater = LayoutInflater.from(MenuDetailActivity.this);

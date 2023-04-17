@@ -23,6 +23,7 @@ public class ShoppingCartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_shopping_cart);
 
         cartList = ((Data) getApplication()).getCartList();
+        Log.d("ShoppingCart", "cartList" + cartList.toString());
 
 //        Intent intent = getIntent();
 //        cartList = (List<Cart>) intent.getSerializableExtra("intent_toCart");

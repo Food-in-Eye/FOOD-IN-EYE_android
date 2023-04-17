@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,6 +20,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
 
     private Context mContext;
     private List<Cart> cartList;
+
+    private int count;
 
     public CartAdapter(Context mContext, List<Cart> cartList) {
         this.mContext = mContext;
@@ -47,6 +50,26 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         holder.menuName.setText(cart.getM_name());
         holder.menuPrice.setText(String.valueOf(cart.getM_price()));
 
+        holder.totalCount.setText(String.valueOf(cart.getM_count()));
+
+        //수량 조절
+        holder.plusBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cart.increase_count();
+                holder.totalCount.setText(String.valueOf(cart.getM_count()));
+            }
+        });
+        holder.minusBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(cart.getM_count() > 1){
+                    cart.decrease_count();
+                    holder.totalCount.setText(String.valueOf(cart.getM_count()));
+                }
+            }
+        });
+
     }
 
     @Override
@@ -61,6 +84,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         TextView menuName;
         TextView menuPrice;
 
+        TextView totalCount;
+        Button plusBtn;
+        Button minusBtn;
+
 
         public MyViewHolder(@NonNull View itemView){
             super(itemView);
@@ -68,6 +95,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             menuImg = (ImageView) itemView.findViewById(R.id.cart_menuImg);
             menuName = (TextView) itemView.findViewById(R.id.cart_menuName);
             menuPrice = (TextView) itemView.findViewById(R.id.cart_menuPrice);
+
+            totalCount = (TextView) itemView.findViewById(R.id.cart_totalCount);
+            plusBtn = (Button) itemView.findViewById(R.id.cart_plusBtn);
+            minusBtn = (Button) itemView.findViewById(R.id.cart_minusBtn);
         }
     }
 }
