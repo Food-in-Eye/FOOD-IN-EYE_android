@@ -38,7 +38,7 @@ public class MenuDetailActivity extends AppCompatActivity {
     TextView menu_origin;
     TextView menu_price;
 
-    String m_Id, s_Id, f_Id, m_name, m_imageKey;
+    String m_Id, s_Id, s_name, f_Id, m_name, m_imageKey;
     int m_price;
 
     Cart cart;
@@ -63,6 +63,7 @@ public class MenuDetailActivity extends AppCompatActivity {
         IntentToDetail intentToDetail = (IntentToDetail) intent.getSerializableExtra("intentToDetail");
 
         s_Id = intentToDetail.getS_id();
+        s_name = intentToDetail.getS_name();
         m_Id = intentToDetail.getM_id();
         f_Id = intentToDetail.food.getFood_id();
         m_name = intentToDetail.food.getM_name();
@@ -90,7 +91,7 @@ public class MenuDetailActivity extends AppCompatActivity {
         order_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cart = new Cart(s_Id, m_Id, f_Id, m_name, m_price, m_imageKey);
+                cart = new Cart(s_Id, s_name, m_Id, f_Id, m_name, m_price, m_imageKey);
                 data.setCartList(cart);
                 data.setRecentS_id(cart.s_id);
                 data.setRecentM_id(cart.m_id);

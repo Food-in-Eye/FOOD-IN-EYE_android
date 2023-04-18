@@ -88,7 +88,7 @@ public class MenuActivity extends AppCompatActivity{
         }
 
     }
-    public void showMenu(String m_id, String s_id){
+    public void showMenu(String m_id, String s_id, String s_name){
         //menuList 세팅
         ApiInterface apiInterface1 = ApiClient.getClient().create(ApiInterface.class);
         Log.d("MenuActivity", "showMenu_M: " + m_id);
@@ -101,11 +101,11 @@ public class MenuActivity extends AppCompatActivity{
                 if(response.isSuccessful() && response.body() != null){
                     //menuResponse = response.body().response;
                     menuInfo = response.body().response.getMenus();
-                    menuAdapter = new MenuAdapter(getApplicationContext(), menuInfo, m_id, s_id);
+                    menuAdapter = new MenuAdapter(getApplicationContext(), menuInfo, m_id, s_id, s_name);
                     menurecyclerView.setAdapter(menuAdapter);
                 }else{
                     //menuInfo = response.body().response.getMenus();
-                    menuAdapter = new MenuAdapter(getApplicationContext(), menuInfo, m_id, s_id);
+                    menuAdapter = new MenuAdapter(getApplicationContext(), menuInfo, m_id, s_id, s_name);
                     menurecyclerView.setAdapter(menuAdapter);
                 }
             }
@@ -127,18 +127,20 @@ public class MenuActivity extends AppCompatActivity{
                 if(response.isSuccessful()){
                     storeList=response.body();
                     storeInfo=storeList.response;
+                    String store_name = null;
                     Log.d("storeInfo: ", "storeInfo" + storeInfo);
 
                     //categoryActivity -> MenuActivity
                     for(Stores store: storeInfo){
                         if(store.get_id().equals(s_id)){
+                            store_name = store.getName();
                             store_intro.setText(store.getDesc());
                             store_openTime.setText(store.getSchedule());
                             store_notice.setText(store.getNotice());
                             break;
                         }
                     }
-                    showMenu(m_id, s_id);
+                    showMenu(m_id, s_id, store_name);
 
                     //tabLayout
                     tabLayout = findViewById(R.id.store_tab);
@@ -158,16 +160,18 @@ public class MenuActivity extends AppCompatActivity{
                         @Override
                         public void onTabSelected(TabLayout.Tab tab) {
                             //선택
+                            String store_name = null;
                             int position = tab.getPosition();
                             String tabId = (String) tabLayout.getTabAt(position).getTag();
                             for(Stores store: storeInfo){
                                 if(store.get_id().equals(tabId)){
+                                    store_name = store.getName();
                                     store_intro.setText(store.getDesc());
                                     store_openTime.setText(store.getSchedule());
                                     store_notice.setText(store.getNotice());
                                     tabM_id = store.getM_id();
                                     Log.d("MenuActivity","tabId"+tabId);
-                                    showMenu(tabM_id, tab_Id);
+                                    showMenu(tabM_id, tab_Id, store_name);
                                     //menuAdapter.notifyDataSetChanged();
                                     break;
                                 }

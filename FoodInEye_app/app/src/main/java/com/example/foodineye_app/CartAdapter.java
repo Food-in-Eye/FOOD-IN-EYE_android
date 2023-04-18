@@ -54,6 +54,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
                 .load(imageUrl)
                 .circleCrop()
                 .into(holder.menuImg);
+        holder.storeName.setText(cart.getS_name());
         holder.menuName.setText(cart.getM_name());
         holder.menuPrice.setText(String.valueOf(cart.getM_price()));
 
@@ -115,6 +116,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
     //ViewHolder 정의
     public class MyViewHolder extends RecyclerView.ViewHolder{
         ImageView menuImg;
+        TextView storeName;
         TextView menuName;
         TextView menuPrice;
 
@@ -129,6 +131,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             super(itemView);
 
             menuImg = (ImageView) itemView.findViewById(R.id.cart_menuImg);
+            storeName = (TextView) itemView.findViewById(R.id.cart_storeName);
             menuName = (TextView) itemView.findViewById(R.id.cart_menuName);
             menuPrice = (TextView) itemView.findViewById(R.id.cart_menuPrice);
 

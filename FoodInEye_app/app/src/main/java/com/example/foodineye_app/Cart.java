@@ -7,6 +7,7 @@ import java.util.List;
 public class Cart implements Serializable {
 
     String s_id;
+    String s_name;
     String m_id;
     String f_id;
     String m_name;
@@ -14,8 +15,9 @@ public class Cart implements Serializable {
     String m_imageKey;
     int m_count;
 
-    public Cart(String s_id, String m_id, String f_id, String m_name, int m_price, String m_imageKey) {
+    public Cart(String s_id, String s_name, String m_id, String f_id, String m_name, int m_price, String m_imageKey) {
         this.s_id = s_id;
+        this.s_name = s_name;
         this.m_id = m_id;
         this.f_id = f_id;
         this.m_name = m_name;
@@ -29,6 +31,10 @@ public class Cart implements Serializable {
     public String getS_id() {  return s_id;  }
 
     public void setS_id(String s_id) {  this.s_id = s_id;  }
+
+    public String getS_name() {     return s_name;  }
+
+    public void setS_name(String s_name) {    this.s_name = s_name;  }
 
     public String getM_id() {  return m_id;  }
 
