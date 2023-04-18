@@ -53,6 +53,12 @@ public class Cart implements Serializable {
     public int getM_count() {    return m_count;  }
 
     public void setM_count(int m_count) {    this.m_count = m_count;  }
+
     public void increase_count() { this.m_count += 1; }
+
     public void decrease_count() { this.m_count -= 1; }
+
+    public int getM_TotalPrice(){
+        return m_price*m_count;
+    }
 }

@@ -18,14 +18,18 @@ import java.util.List;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> {
 
+    public interface OnItemClickListener{
+        void onItemClick();
+    }
+
     private Context mContext;
     private List<Cart> cartList;
+    private OnItemClickListener mListener;
 
-    private int count;
-
-    public CartAdapter(Context mContext, List<Cart> cartList) {
+    public CartAdapter(Context mContext, List<Cart> cartList, OnItemClickListener listener) {
         this.mContext = mContext;
         this.cartList = cartList;
+        mListener = listener;
     }
 
     @NonNull
@@ -58,6 +62,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             public void onClick(View v) {
                 cart.increase_count();
                 holder.totalCount.setText(String.valueOf(cart.getM_count()));
+                mListener.onItemClick();
             }
         });
         holder.minusBtn.setOnClickListener(new View.OnClickListener() {
@@ -66,9 +71,21 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
                 if(cart.getM_count() > 1){
                     cart.decrease_count();
                     holder.totalCount.setText(String.valueOf(cart.getM_count()));
+                    mListener.onItemClick();
                 }
             }
         });
+
+        TextView toM = (TextView) holder.itemView.findViewById(R.id.cart_toMenu);
+
+        //더 담으러가기
+        if(position == getItemCount() -1){
+            toM.setVisibility(View.VISIBLE);
+//            holder.toMenu.setVisibility(View.VISIBLE);
+        }else{
+            toM.setVisibility(View.GONE);
+//            holder.toMenu.setVisibility(View.GONE);
+        }
 
     }
 
@@ -88,6 +105,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         Button plusBtn;
         Button minusBtn;
 
+        TextView toMenu;
 
         public MyViewHolder(@NonNull View itemView){
             super(itemView);
@@ -99,6 +117,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             totalCount = (TextView) itemView.findViewById(R.id.cart_totalCount);
             plusBtn = (Button) itemView.findViewById(R.id.cart_plusBtn);
             minusBtn = (Button) itemView.findViewById(R.id.cart_minusBtn);
+
+            toMenu = (TextView) itemView.findViewById(R.id.cart_toMenu);
         }
     }
 }

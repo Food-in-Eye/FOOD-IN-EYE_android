@@ -33,18 +33,18 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp" />
 
-        <TextView
-            android:id="@+id/cart_toMenu"
-            android:layout_width="200dp"
-            android:layout_height="45dp"
-            android:text="+ 더 담으러 가기"
-            android:textSize="18dp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:background="@drawable/orange_rec_300"
-            android:layout_marginTop="10dp"/>
+<!--        <TextView-->
+<!--            android:id="@+id/cart_toMenu"-->
+<!--            android:layout_width="200dp"-->
+<!--            android:layout_height="45dp"-->
+<!--            android:text="+ 더 담으러 가기"-->
+<!--            android:textSize="18dp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:gravity="center"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:background="@drawable/orange_rec_300"-->
+<!--            android:layout_marginTop="10dp"/>-->
 
     </LinearLayout>
 
@@ -62,14 +62,32 @@
         android:layout_marginTop="16dp">
 
         <TextView
-            android:id="@+id/cart_totalPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="총 26,000원"
+            android:text="총"
             android:textSize="18dp"
             android:textStyle="bold"
             android:textColor="@color/black"
             android:padding="10dp"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:id="@+id/cart_totalPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="26,000"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="원"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:layout_marginRight="25dp"/>
 

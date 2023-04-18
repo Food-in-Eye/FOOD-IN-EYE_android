@@ -38,4 +38,11 @@ public class Data extends Application {
             cartList.add(cart);
         }
     }
+    public int getTotalPrice(){
+        int total = 0;
+        for(Cart cart : cartList){
+            total += cart.getM_TotalPrice();
+        }
+        return total;
+    }
 }
