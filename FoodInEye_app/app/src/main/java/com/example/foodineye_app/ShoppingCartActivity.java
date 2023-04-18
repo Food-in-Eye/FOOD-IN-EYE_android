@@ -61,5 +61,14 @@ public class ShoppingCartActivity extends AppCompatActivity implements CartAdapt
         cartList.remove(position);
         cartAdapter.notifyItemRemoved(position);
     }
+    @Override
+    public void onToMenuClick(){
+        String s_id = ((Data)getApplication()).getRecentS_id();
+        String m_id = ((Data)getApplication()).getRecentM_id();
+        Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
+        intent.putExtra("intent_recentSId", s_id);
+        intent.putExtra("intent_cartMId", m_id);
+        startActivity(intent);
+    }
 
 }

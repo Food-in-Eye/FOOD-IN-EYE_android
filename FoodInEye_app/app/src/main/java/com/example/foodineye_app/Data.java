@@ -8,6 +8,7 @@ import java.util.List;
 public class Data extends Application {
 
     private List<Cart> cartList;
+    private String recentS_id, recentM_id;
 
     @Override
     public void onCreate(){
@@ -45,4 +46,12 @@ public class Data extends Application {
         }
         return total;
     }
+
+    public String getRecentS_id() {   return recentS_id;  }
+
+    public void setRecentS_id(String recentS_id) {   this.recentS_id = recentS_id;   }
+
+    public String getRecentM_id() {   return recentM_id;   }
+
+    public void setRecentM_id(String recentM_id) {    this.recentM_id = recentM_id;  }
 }

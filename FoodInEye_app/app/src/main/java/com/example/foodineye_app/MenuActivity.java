@@ -51,10 +51,6 @@ public class MenuActivity extends AppCompatActivity{
 
     String tab_Id, tabM_id; // 탭에 _ID, m_ID 할당
 
-    //String m_Id; //해당 store의 m_ID
-
-    String intent_mID, intent_sID; //MenuDetail로 넘길 때 사용할 s_id, m_id
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,13 +73,16 @@ public class MenuActivity extends AppCompatActivity{
         if(intent.hasExtra("_id")){
             String storeId = intent.getStringExtra("_id");
             String menuId = intent.getStringExtra("m_id");
-            Log.d("intent_id", "showS_id: " + storeId);
             showStore(storeId, menuId);
         }else if(intent.hasExtra("intent_SId")){
             String intentS_Id = intent.getStringExtra("intent_SId");
             String intentM_Id = intent.getStringExtra("intent_mId");
-            Log.d("intentS_id", "showIntentS_id: " + intentS_Id);
             showStore(intentS_Id, intentM_Id);
+        }else if(intent.hasExtra("intent_recentSId")){
+            String intent_recentSId = intent.getStringExtra("intent_recentSId");
+            String intent_cartMId = intent.getStringExtra("intent_cartMId");
+            showStore(intent_recentSId, intent_cartMId);
+
         }else{
             Log.e("MenuActivity", "No Intent data found.");
         }

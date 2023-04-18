@@ -92,12 +92,12 @@ public class MenuDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 cart = new Cart(s_Id, m_Id, f_Id, m_name, m_price, m_imageKey);
                 data.setCartList(cart);
+                data.setRecentS_id(cart.s_id);
+                data.setRecentM_id(cart.m_id);
                 Log.d("MenuDetailActivity", "cart: "+cart.toString());
                 showDialog();
             }
         });
-
-
     }
 
     public void showDialog(){
@@ -124,7 +124,6 @@ public class MenuDetailActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
                 intent.putExtra("intent_SId", s_Id);
                 intent.putExtra("intent_mId", m_Id);
-                Log.d("Intent_id", "Intent_id: " + s_Id);
                 startActivity(intent);
             }
         });

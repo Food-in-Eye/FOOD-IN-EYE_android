@@ -1,6 +1,7 @@
 package com.example.foodineye_app;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
     public interface OnItemClickListener{
         void onItemClick();
         void onDeleteClick(int position);
+        void onToMenuClick();
     }
 
     private Context mContext;
@@ -84,6 +86,13 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         }else{
             toM.setVisibility(View.GONE);
         }
+        toM.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("CartAdapter", "toMenuClick!");
+                mListener.onToMenuClick();
+            }
+        });
 
         //메뉴 삭제
         holder.toDelete.setOnClickListener(new View.OnClickListener() {
