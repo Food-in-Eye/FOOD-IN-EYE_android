@@ -56,4 +56,10 @@ public class ShoppingCartActivity extends AppCompatActivity implements CartAdapt
         int total = ((Data)getApplication()).getTotalPrice();
         totalPrice.setText(String.valueOf(total));
     }
+    @Override
+    public void onDeleteClick(int position){
+        cartList.remove(position);
+        cartAdapter.notifyItemRemoved(position);
+    }
+
 }

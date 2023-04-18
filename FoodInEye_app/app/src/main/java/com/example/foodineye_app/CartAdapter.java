@@ -20,6 +20,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
 
     public interface OnItemClickListener{
         void onItemClick();
+        void onDeleteClick(int position);
     }
 
     private Context mContext;
@@ -76,16 +77,23 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             }
         });
 
-        TextView toM = (TextView) holder.itemView.findViewById(R.id.cart_toMenu);
-
         //더 담으러가기
+        TextView toM = (TextView) holder.itemView.findViewById(R.id.cart_toMenu);
         if(position == getItemCount() -1){
             toM.setVisibility(View.VISIBLE);
-//            holder.toMenu.setVisibility(View.VISIBLE);
         }else{
             toM.setVisibility(View.GONE);
-//            holder.toMenu.setVisibility(View.GONE);
         }
+
+        //메뉴 삭제
+        holder.toDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = holder.getAdapterPosition();
+                mListener.onDeleteClick(position);
+                mListener.onItemClick();
+            }
+        });
 
     }
 
@@ -106,6 +114,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         Button minusBtn;
 
         TextView toMenu;
+        ImageView toDelete;
 
         public MyViewHolder(@NonNull View itemView){
             super(itemView);
@@ -119,6 +128,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             minusBtn = (Button) itemView.findViewById(R.id.cart_minusBtn);
 
             toMenu = (TextView) itemView.findViewById(R.id.cart_toMenu);
+            toDelete = (ImageView) itemView.findViewById(R.id.menu_delete);
         }
     }
 }
