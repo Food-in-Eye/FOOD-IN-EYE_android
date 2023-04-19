@@ -19,13 +19,4 @@ public class StoreItem {
         return "request"+request+"status"+status+
                 "StoreItem{"+"body="+response +"}";
     }
-
-    /*
-    public List<String> getId(){
-        List<String> result;
-        for(Stores stores : ){
-            result.
-        }
-    }
-    */
 }

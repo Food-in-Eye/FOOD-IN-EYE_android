@@ -7,14 +7,20 @@ public class IntentToDetail implements Serializable {
 
     String s_id;
     String m_id;
+    String s_name;
 
     Food food = new Food();
 
-    public IntentToDetail(String s_id, String m_id, Food food) {
+    public IntentToDetail(String s_id, String m_id, String s_name, Food food) {
         this.s_id = s_id;
         this.m_id = m_id;
+        this.s_name = s_name;
         this.food = food;
     }
+
+    public String getS_name() {  return s_name;  }
+
+    public void setS_name(String s_name) {   this.s_name = s_name;  }
 
     public String getM_id() {  return m_id;  }
 
@@ -30,5 +36,5 @@ public class IntentToDetail implements Serializable {
 
     public String toString(){
         return "s_id: "+s_id+ " m_id: "+m_id;
-    };
+    }
 }

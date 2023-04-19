@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 
 import org.w3c.dom.Text;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,9 +38,10 @@ public class MenuDetailActivity extends AppCompatActivity {
     TextView menu_origin;
     TextView menu_price;
 
-    String m_Id, s_Id;
-    String m_name;
-    List<Menus> menuInfo = new ArrayList<>();
+    String m_Id, s_Id, s_name, f_Id, m_name, m_imageKey;
+    int m_price;
+
+    Cart cart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +62,15 @@ public class MenuDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         IntentToDetail intentToDetail = (IntentToDetail) intent.getSerializableExtra("intentToDetail");
 
-        m_name = intentToDetail.food.getM_name();
         s_Id = intentToDetail.getS_id();
+        s_name = intentToDetail.getS_name();
         m_Id = intentToDetail.getM_id();
+        f_Id = intentToDetail.food.getFood_id();
+        m_name = intentToDetail.food.getM_name();
+        m_price = intentToDetail.food.getM_price();
+        m_imageKey = intentToDetail.food.getM_img_key();
+
+
         Log.d("intentToDetail", "intentToDetail_sid" + s_Id);
         Log.d("intentToDetail", "intentToDetail_mid" + m_Id);
 
@@ -73,22 +81,26 @@ public class MenuDetailActivity extends AppCompatActivity {
         menu_origin.setText(intentToDetail.food.getM_origin());
         menu_price.setText(String.valueOf(intentToDetail.food.getM_price()));
 
-        String imageKey = intentToDetail.food.getM_img_key();
-        String imageUrl = "https://foodineye.s3.ap-northeast-2.amazonaws.com/" + imageKey;
+        String imageUrl = "https://foodineye.s3.ap-northeast-2.amazonaws.com/" + m_imageKey;
         Glide.with(this)
                 .load(imageUrl)
                 .circleCrop()
                 .into(menu_Img);
 
+        final Data data = (Data) getApplicationContext();
         order_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                cart = new Cart(s_Id, s_name, m_Id, f_Id, m_name, m_price, m_imageKey);
+                data.setCartList(cart);
+                data.setRecentS_id(cart.s_id);
+                data.setRecentM_id(cart.m_id);
+                Log.d("MenuDetailActivity", "cart: "+cart.toString());
                 showDialog();
             }
         });
-
-
     }
+
     public void showDialog(){
 
         LayoutInflater layoutInflater = LayoutInflater.from(MenuDetailActivity.this);
@@ -113,7 +125,6 @@ public class MenuDetailActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
                 intent.putExtra("intent_SId", s_Id);
                 intent.putExtra("intent_mId", m_Id);
-                Log.d("Intent_id", "Intent_id: " + s_Id);
                 startActivity(intent);
             }
         });
@@ -122,6 +133,7 @@ public class MenuDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ShoppingCartActivity.class);
+//                intent.putExtra("intent_toCart", (Serializable) cartList);
                 startActivity(intent);
             }
         });
@@ -134,31 +146,5 @@ public class MenuDetailActivity extends AppCompatActivity {
         });
 
         alertDialog.show();
-
-
-
-
-//        AlertDialog.Builder msgBuilder = new AlertDialog.Builder(MenuDetailActivity.this)
-//                .setTitle("Order")
-//                .setMessage("Order")
-//                .setNegativeButton("더 담으러 가기", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
-//                        intent.putExtra("intent_SId", s_Id);
-//                        intent.putExtra("intent_mId", m_Id);
-//                        Log.d("Intent_id", "Intent_id: " + s_Id);
-//                        startActivity(intent);
-//                    }
-//                })
-//                .setPositiveButton("장바구니 담으러가기", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        Intent intent = new Intent(getApplicationContext(), ShoppingCartActivity.class);
-//                        startActivity(intent);
-//                    }
-//                });
-//        AlertDialog msgDlg = msgBuilder.create();
-//        msgDlg.show();
     }
 }
