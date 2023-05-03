@@ -81,7 +81,7 @@
             android:layout_marginRight="25dp"/>
 
         <Button
-            android:id="@+id/payBtn"
+            android:id="@+id/orderBtn"
             android:layout_width="130dp"
             android:layout_height="45dp"
             android:text="주문하기"
