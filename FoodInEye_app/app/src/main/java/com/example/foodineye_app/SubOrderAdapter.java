@@ -33,8 +33,8 @@ public class SubOrderAdapter extends RecyclerView.Adapter<SubOrderAdapter.SubOrd
     public void onBindViewHolder(@NonNull SubOrderViewHolder holder, int position) {
         SubOrder subOrder = subOrderList.get(position);
         holder.foodName.setText(subOrder.getFoodName());
-        holder.foodCount.setText(subOrder.getFoodCount());
-        holder.foodPrice.setText(subOrder.getFoodPrice());
+        holder.foodCount.setText(String.valueOf(subOrder.getFoodCount()));
+        holder.foodPrice.setText(String.valueOf(subOrder.getFoodPrice()));
     }
 
     @Override
