@@ -45,7 +45,6 @@ public class MenuActivity extends AppCompatActivity{
 
     StoreItem storeList; //전체 가게 목록
     List<Stores> storeInfo = new ArrayList<>();
-    String storeId;
 
     TabLayout tabLayout;
 
@@ -88,11 +87,11 @@ public class MenuActivity extends AppCompatActivity{
         }
 
     }
-    public void showMenu(String m_id, String s_id, String s_name){
+    public void showMenu(String m_id, String tabs_id, String s_name){
         //menuList 세팅
         ApiInterface apiInterface1 = ApiClient.getClient().create(ApiInterface.class);
         Log.d("MenuActivity", "showMenu_M: " + m_id);
-        Log.d("MenuActivity", "showMenu_S: " + s_id);
+        Log.d("MenuActivity", "showMenu_S: " + tabs_id);
 
         Call<MenuItem> callMenu = apiInterface1.getMenusData(m_id);
         callMenu.enqueue(new Callback<MenuItem>() {
@@ -101,11 +100,11 @@ public class MenuActivity extends AppCompatActivity{
                 if(response.isSuccessful() && response.body() != null){
                     //menuResponse = response.body().response;
                     menuInfo = response.body().response.getMenus();
-                    menuAdapter = new MenuAdapter(getApplicationContext(), menuInfo, m_id, s_id, s_name);
+                    menuAdapter = new MenuAdapter(getApplicationContext(), menuInfo, m_id, tabs_id, s_name);
                     menurecyclerView.setAdapter(menuAdapter);
                 }else{
                     //menuInfo = response.body().response.getMenus();
-                    menuAdapter = new MenuAdapter(getApplicationContext(), menuInfo, m_id, s_id, s_name);
+                    menuAdapter = new MenuAdapter(getApplicationContext(), menuInfo, m_id, tabs_id, s_name);
                     menurecyclerView.setAdapter(menuAdapter);
                 }
             }
@@ -170,10 +169,11 @@ public class MenuActivity extends AppCompatActivity{
                                     store_openTime.setText(store.getSchedule());
                                     store_notice.setText(store.getNotice());
                                     tabM_id = store.getM_id();
+                                    Log.d("MenuActivity","tabM_id"+tabM_id);
                                     Log.d("MenuActivity","tabId"+tabId);
-                                    showMenu(tabM_id, tab_Id, store_name);
+//                                    showMenu(tabM_id, tab_Id, store_name);
+                                    showMenu(tabM_id, store.get_id(), store_name);
                                     //menuAdapter.notifyDataSetChanged();
-                                    break;
                                 }
                             }
                         }

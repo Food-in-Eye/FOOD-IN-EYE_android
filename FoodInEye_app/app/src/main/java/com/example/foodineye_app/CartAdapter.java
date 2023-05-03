@@ -124,8 +124,6 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             this.cart = cart;
             this.position = position;
 
-            Log.d("CartAdapter", "cart: " + cart.toString());
-
             String m_imageKey = cart.getM_imageKey();
             String imageUrl = "https://foodineye.s3.ap-northeast-2.amazonaws.com/" + m_imageKey;
             Glide.with(itemView.getContext())
@@ -138,6 +136,7 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
             totalCount.setText(String.valueOf(cart.getM_count()));
             Log.d("CartAdapter", "cart: "+cart.toString());
+            Log.d("CartAdapter", "carList: "+cartList.toString()) ;
 
             //수량 조절
             plusBtn.setOnClickListener(new View.OnClickListener() {

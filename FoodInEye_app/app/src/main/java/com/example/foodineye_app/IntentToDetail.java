@@ -35,6 +35,6 @@ public class IntentToDetail implements Serializable {
     public void setFood(Food food) {    this.food = food;   }
 
     public String toString(){
-        return "s_id: "+s_id+ " m_id: "+m_id;
+        return "s_id: "+s_id+ " m_id: "+m_id+ " s_name: "+s_name;
     }
 }
