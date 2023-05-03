@@ -1,10 +1,20 @@
 package com.example.foodineye_app;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class PostOrder {
+
+    @SerializedName("u_id")
+    @Expose
     String u_id;
+    @SerializedName("total_price")
+    @Expose
     int total_price;
+    @SerializedName("content")
+    @Expose
     List<StoreOrder> content;
 
     public PostOrder(String u_id, int total_price, List<StoreOrder> content) {
@@ -38,9 +48,16 @@ public class PostOrder {
     }
 
     //StoreOrder class
-    public class StoreOrder {
+    public static class StoreOrder {
+
+        @SerializedName("s_id")
+        @Expose
         String s_id;
+        @SerializedName("m_id")
+        @Expose
         String m_id;
+        @SerializedName("f_list")
+        @Expose
         List<FoodCount> f_list;
 
         public StoreOrder(String s_id, String m_id, List<FoodCount> f_list) {
@@ -74,23 +91,17 @@ public class PostOrder {
         }
 
         //FoodCount class
-        public class FoodCount{
+        public static class FoodCount{
+
+            @SerializedName("f_id")
+            @Expose
             String f_id;
+            @SerializedName("count")
+            @Expose
             int count;
 
-            public String getF_id() {
-                return f_id;
-            }
-
-            public void setF_id(String f_id) {
+            public FoodCount(String f_id, int count) {
                 this.f_id = f_id;
-            }
-
-            public int getCount() {
-                return count;
-            }
-
-            public void setCount(int count) {
                 this.count = count;
             }
         }

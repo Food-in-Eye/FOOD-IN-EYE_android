@@ -2,6 +2,7 @@ package com.example.foodineye_app;
 
 import android.view.Menu;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -17,6 +18,10 @@ public interface ApiInterface {
     @GET("api/v2/menus/menu/foods")
     Call<MenuItem> getMenusData(@Query("id") String m_id);
 
+//    @POST("api/v2/orders/order")
+//    Call<PostOrder> createOrder(@Body PostOrder postOrder);
+
     @POST("api/v2/orders/order")
-    Call<PostOrder> createOrder(@Body PostOrder postOrder);
+    Call<ResponseBody> createOrder(@Body PostOrder postOrder);
+
 }

@@ -38,6 +38,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/payBtn"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -67,7 +68,6 @@
             android:layout_marginLeft="5dp"/>
 
         <TextView
-            android:id="@+id/payBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="결제하기"

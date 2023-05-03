@@ -6,13 +6,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class OrderActivity extends AppCompatActivity {
 
@@ -24,6 +31,11 @@ public class OrderActivity extends AppCompatActivity {
 
     RecyclerView orderRecyclerview;
     OrderAdapter orderAdapter;
+
+    List<PostOrder.StoreOrder> content = new ArrayList<>();
+    List<PostOrder.StoreOrder.FoodCount> f_list = new ArrayList<>();
+    PostOrder postOrder;
+    String u_id = "20200869";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,9 +75,15 @@ public class OrderActivity extends AppCompatActivity {
                 int m_count = cart.getM_count();
                 SubOrder subOrder = (SubOrder) new SubOrder(f_id, m_name, m_price, m_count);
                 subOrderList.add(subOrder);
+                //post
+                PostOrder.StoreOrder.FoodCount foodCount = new PostOrder.StoreOrder.FoodCount(f_id, m_count);
+                f_list.add(foodCount);
             }
             Order order = new Order(s_id, s_name, m_id, subOrderList);
             orderList.add(order);
+            //post
+            PostOrder.StoreOrder storeOrder = new PostOrder.StoreOrder(s_id, m_id, f_list);
+            content.add(storeOrder);
         }
 
         Log.d("OrderActivity", "SubOrderList"+subOrderList.toString());
@@ -83,5 +101,52 @@ public class OrderActivity extends AppCompatActivity {
         //총 가격
         totalPrice = (TextView) findViewById(R.id.order_totalPrice);
         totalPrice.setText(String.valueOf(total));
+
+        //postOrder 세팅
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+        //요청 바디에 들어가 PostOrder 객체 생성
+        postOrder = new PostOrder(u_id, total, content);
+
+        //API 요청 보내기
+//        Call<PostOrder> call = apiInterface.createOrder(postOrder);
+//        call.enqueue(new Callback<PostOrder>() {
+//            @Override
+//            public void onResponse(Call<PostOrder> call, Response<PostOrder> response) {
+//                //요청이 성공한 경우 처리할 작업
+//                Log.d("OrderActivity", "post성공!");
+//            }
+//
+//            @Override
+//            public void onFailure(Call<PostOrder> call, Throwable t) {
+//                //요청이 실패할 경우 처리할 작업
+//            }
+//        });
+
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.payBtn);
+        linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("OrderActivity", "결제하기!");
+                Call<ResponseBody> call = apiInterface.createOrder(postOrder);
+                call.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if(response.isSuccessful()){
+                            //요청이 성공한 경우 처리할 작업
+                            String responseBody = response.body().toString();
+                            Log.d("OrderActivity", "responseBody"+responseBody);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        //요청이 실패한 경우 처리할 작업
+                        Log.d("OrderActivity", "요청실패!");
+                    }
+                });
+            }
+        });
+
     }
 }
