@@ -47,7 +47,7 @@ public class CategoryActivity extends AppCompatActivity {
             public void onResponse(Call<StoreItem> call, Response<StoreItem> response) {
                 storeList=response.body();
 
-//                Log.d("CategoryActivity", storeList.toString());
+                Log.d("CategoryActivity", storeList.toString());
                 storeInfo=storeList.response;
 
                 storeAdapter = new StoreAdapter(getApplicationContext(), storeInfo);
@@ -60,6 +60,5 @@ public class CategoryActivity extends AppCompatActivity {
             }
         });
 
-        //
     }
 }
