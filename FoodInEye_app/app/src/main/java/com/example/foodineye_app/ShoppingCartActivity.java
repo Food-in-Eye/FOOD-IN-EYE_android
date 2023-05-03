@@ -32,15 +32,10 @@ public class ShoppingCartActivity extends AppCompatActivity implements CartAdapt
         Log.d("ShoppingCart", "total" + total);
         Log.d("ShoppingCart", "cartList" + cartList.toString());
 
-//        Intent intent = getIntent();
-//        cartList = (List<Cart>) intent.getSerializableExtra("intent_toCart");
-//        Log.d("ShoppingCartActivity", "cart: "+cartList.toString());
-
         recyclerView = findViewById(R.id.recyclerView_cartList);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-
 
         cartAdapter = new CartAdapter(getApplicationContext(), cartList, this);
         recyclerView.setAdapter(cartAdapter);
@@ -70,5 +65,4 @@ public class ShoppingCartActivity extends AppCompatActivity implements CartAdapt
         intent.putExtra("intent_cartMId", m_id);
         startActivity(intent);
     }
-
 }
