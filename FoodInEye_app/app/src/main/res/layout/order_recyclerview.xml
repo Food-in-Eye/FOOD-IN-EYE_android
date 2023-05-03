@@ -68,6 +68,17 @@
 
     </LinearLayout>
 
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="5dp"
+        android:background="@drawable/dotted_line"
+        android:backgroundTint="@color/blue"
+        android:layerType="software"
+        android:layout_gravity="center"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_orderSubList"
         android:layout_width="match_parent"
