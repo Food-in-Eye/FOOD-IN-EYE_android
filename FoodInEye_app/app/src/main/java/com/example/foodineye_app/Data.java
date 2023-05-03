@@ -17,7 +17,6 @@ public class Data extends Application {
     }
 
     public List<Cart> getCartList() {  return cartList;  }
-//    public void setCartList(Cart cart){  cartList.add(cart);  }
 
     //중복확인
     public boolean containsItem(List<Cart> cartList, Cart cart) {

@@ -13,16 +13,6 @@ public class Food implements Serializable {
     String m_allergy;
     String m_origin;
 
-//    public Food(String food_id, String m_name, int m_price, String m_img_key, String m_desc, String m_allergy, String m_origin) {
-//        this.food_id = food_id;
-//        this.m_name = m_name;
-//        this.m_price = m_price;
-//        this.m_img_key = m_img_key;
-//        this.m_desc = m_desc;
-//        this.m_allergy = m_allergy;
-//        this.m_origin = m_origin;
-//    }
-
     public String getFood_id() {
         return food_id;
     }

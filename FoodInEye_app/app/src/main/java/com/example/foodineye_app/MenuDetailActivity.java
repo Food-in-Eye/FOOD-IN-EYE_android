@@ -123,6 +123,7 @@ public class MenuDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
+                Log.d("MenuDetailActivity", "storeID"+s_Id);
                 intent.putExtra("intent_SId", s_Id);
                 intent.putExtra("intent_mId", m_Id);
                 startActivity(intent);
@@ -133,7 +134,6 @@ public class MenuDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ShoppingCartActivity.class);
-//                intent.putExtra("intent_toCart", (Serializable) cartList);
                 startActivity(intent);
             }
         });

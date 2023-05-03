@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,7 +13,7 @@
 
         <TextView
             android:id="@+id/order_foodName"
-            android:layout_width="100dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:text="food_name"
             android:textStyle="bold"
@@ -22,11 +22,11 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="20dp"/>
+            android:layout_marginRight="15dp"/>
 
         <TextView
             android:id="@+id/order_foodCount"
-            android:layout_width="100dp"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:text="food_count"
             android:textStyle="bold"
@@ -35,7 +35,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="20dp"/>
+            android:layout_marginRight="15dp"/>
 
         <TextView
             android:id="@+id/order_foodPrice"

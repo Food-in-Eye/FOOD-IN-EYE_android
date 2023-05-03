@@ -4,15 +4,17 @@ package com.example.foodineye_app;
 public class SubOrder {
     private String foodId;
     private String foodName;
-    private int foodPrice;
+    private int foodtotalPrice;
     private int foodCount;
 
     public SubOrder(String foodId, String foodName, int foodPrice, int foodCount) {
         this.foodId = foodId;
         this.foodName = foodName;
-        this.foodPrice = foodPrice;
+        this.foodtotalPrice = foodPrice;
         this.foodCount = foodCount;
     }
+
+    public String toString(){return "foodId: "+ foodId+ " foodName: "+foodName+" foodPrice: "+foodtotalPrice +"foodCount"+foodCount;}
 
     public String getFoodId() {
         return foodId;
@@ -31,11 +33,11 @@ public class SubOrder {
     }
 
     public int getFoodPrice() {
-        return foodPrice;
+        return foodtotalPrice*foodCount;
     }
 
     public void setFoodPrice(int foodPrice) {
-        this.foodPrice = foodPrice;
+        this.foodtotalPrice = foodPrice;
     }
 
     public int getFoodCount() {
@@ -45,4 +47,5 @@ public class SubOrder {
     public void setFoodCount(int foodCount) {
         this.foodCount = foodCount;
     }
+
 }

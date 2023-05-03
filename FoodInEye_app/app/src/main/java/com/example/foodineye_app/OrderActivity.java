@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -42,6 +43,7 @@ public class OrderActivity extends AppCompatActivity {
             }else{
                 List<Cart> grouplist = new ArrayList<>();
                 grouplist.add(cart);
+                Log.d("OrderActivity", "grouplist"+grouplist.toString());
                 groupByStore.put(s_id, grouplist);
             }
         }
@@ -51,20 +53,23 @@ public class OrderActivity extends AppCompatActivity {
             String s_id = entry.getKey();
             List<Cart> cartGroup = entry.getValue();
             String s_name = cartGroup.get(0).getS_name();
+            String m_id = cartGroup.get(0).getM_id();
+            subOrderList = new ArrayList<>();
             for(Cart cart : cartGroup){
-                String m_id = cart.getM_id();
                 String f_id = cart.getF_id();
                 String m_name = cart.getM_name();
                 int m_price = cart.getM_price();
                 String m_imageKey = cart.getM_imageKey();
                 int m_count = cart.getM_count();
                 SubOrder subOrder = (SubOrder) new SubOrder(f_id, m_name, m_price, m_count);
-                subOrderList = new ArrayList<>();
                 subOrderList.add(subOrder);
-                Order order = new Order(s_id, s_name, m_id, subOrderList);
-                orderList.add(order);
             }
+            Order order = new Order(s_id, s_name, m_id, subOrderList);
+            orderList.add(order);
         }
+
+        Log.d("OrderActivity", "SubOrderList"+subOrderList.toString());
+        Log.d("OrderActivity", "OrderList"+orderList.toString());
 
         //상위 recyclerview 설정
         orderRecyclerview = findViewById(R.id.recyclerView_orderList);
