@@ -148,6 +148,9 @@ public class OrderActivity extends AppCompatActivity {
                         Log.d("OrderActivity", "요청실패!");
                     }
                 });
+
+                //order_detail 이동
+
             }
         });
 
