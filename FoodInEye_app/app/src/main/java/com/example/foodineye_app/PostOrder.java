@@ -23,6 +23,8 @@ public class PostOrder {
         this.content = content;
     }
 
+    public String toString(){return "u_id: "+ u_id+ " total_price: "+total_price+ " content: "+content.toString();}
+
     public String getU_id() {
         return u_id;
     }
@@ -66,6 +68,8 @@ public class PostOrder {
             this.f_list = f_list;
         }
 
+        public String toString(){return "s_id: "+ s_id+ " m_id: "+m_id+ " f_list: "+f_list.toString();}
+
         public String getS_id() {
             return s_id;
         }
@@ -104,6 +108,7 @@ public class PostOrder {
                 this.f_id = f_id;
                 this.count = count;
             }
+            public String toString(){return "f_id: "+ f_id+ " count: "+count;}
         }
     }
 }

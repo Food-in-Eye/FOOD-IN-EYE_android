@@ -33,7 +33,7 @@ public class OrderActivity extends AppCompatActivity {
     OrderAdapter orderAdapter;
 
     List<PostOrder.StoreOrder> content = new ArrayList<>();
-    List<PostOrder.StoreOrder.FoodCount> f_list = new ArrayList<>();
+    List<PostOrder.StoreOrder.FoodCount> f_list;
     PostOrder postOrder;
     String u_id = "20200869";
 
@@ -67,6 +67,7 @@ public class OrderActivity extends AppCompatActivity {
             String s_name = cartGroup.get(0).getS_name();
             String m_id = cartGroup.get(0).getM_id();
             subOrderList = new ArrayList<>();
+            f_list = new ArrayList<>();
             for(Cart cart : cartGroup){
                 String f_id = cart.getF_id();
                 String m_name = cart.getM_name();
@@ -76,7 +77,7 @@ public class OrderActivity extends AppCompatActivity {
                 SubOrder subOrder = (SubOrder) new SubOrder(f_id, m_name, m_price, m_count);
                 subOrderList.add(subOrder);
                 //post
-                PostOrder.StoreOrder.FoodCount foodCount = new PostOrder.StoreOrder.FoodCount(f_id, m_count);
+                PostOrder.StoreOrder.FoodCount foodCount = (PostOrder.StoreOrder.FoodCount) new PostOrder.StoreOrder.FoodCount(f_id, m_count);
                 f_list.add(foodCount);
             }
             Order order = new Order(s_id, s_name, m_id, subOrderList);
@@ -107,6 +108,8 @@ public class OrderActivity extends AppCompatActivity {
 
         //요청 바디에 들어가 PostOrder 객체 생성
         postOrder = new PostOrder(u_id, total, content);
+
+        Log.d("OrderActivity", "postOrder" + postOrder.toString());
 
         //API 요청 보내기
 //        Call<PostOrder> call = apiInterface.createOrder(postOrder);
