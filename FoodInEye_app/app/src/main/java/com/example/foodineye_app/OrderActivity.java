@@ -77,7 +77,7 @@ public class OrderActivity extends AppCompatActivity {
                 SubOrder subOrder = (SubOrder) new SubOrder(f_id, m_name, m_price, m_count);
                 subOrderList.add(subOrder);
                 //post
-                PostOrder.StoreOrder.FoodCount foodCount = (PostOrder.StoreOrder.FoodCount) new PostOrder.StoreOrder.FoodCount(f_id, m_count);
+                PostOrder.StoreOrder.FoodCount foodCount = (PostOrder.StoreOrder.FoodCount) new PostOrder.StoreOrder.FoodCount(f_id, m_count, m_price);
                 f_list.add(foodCount);
             }
             Order order = new Order(s_id, s_name, m_id, subOrderList);

@@ -103,12 +103,16 @@ public class PostOrder {
             @SerializedName("count")
             @Expose
             int count;
+            @SerializedName("price")
+            @Expose
+            int price;
 
-            public FoodCount(String f_id, int count) {
+            public FoodCount(String f_id, int count, int price) {
                 this.f_id = f_id;
                 this.count = count;
+                this.price = price;
             }
-            public String toString(){return "f_id: "+ f_id+ " count: "+count;}
+            public String toString(){return "f_id: "+ f_id+ " count: "+count +" price: "+price;}
         }
     }
 }
