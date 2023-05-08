@@ -32,8 +32,8 @@
 
             <ImageView
                 android:id="@+id/order_received_img"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:background="@drawable/order_received"
                 android:layout_gravity="center"/>
 
@@ -58,8 +58,8 @@
 
             <ImageView
                 android:id="@+id/cooking_img"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:background="@drawable/cooking"
                 android:layout_gravity="center"/>
 
@@ -84,8 +84,8 @@
 
             <ImageView
                 android:id="@+id/finished_cooking_img"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:background="@drawable/order_received"
                 android:layout_gravity="center"/>
 
