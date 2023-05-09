@@ -43,6 +43,9 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
         );
         layoutManager.setInitialPrefetchItemCount(order.getSubOrderList().size());
 
+        //order 클릭시 order_id로 GET 하기
+
+
         //자식 어댑터 설정
         SubOrderAdapter subOrderAdapter = new SubOrderAdapter(order.getSubOrderList());
 
