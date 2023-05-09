@@ -53,7 +53,7 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
 
     @Override
     public int getItemCount() {
-        return return orderList.size();
+        return orderList.size();
     }
 
     //MyViewHodler 정의
