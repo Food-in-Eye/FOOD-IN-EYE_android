@@ -182,13 +182,13 @@
             android:layout_marginRight="15dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView_orderSubList"
+            android:id="@+id/recyclerView_orderDetailList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scrollbars="vertical"
-            android:scrollbarFadeDuration="0"
             android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"/>
+            android:layout_marginRight="15dp"
+            android:scrollbarFadeDuration="0"
+            android:scrollbars="vertical" />
 
     </LinearLayout>
 

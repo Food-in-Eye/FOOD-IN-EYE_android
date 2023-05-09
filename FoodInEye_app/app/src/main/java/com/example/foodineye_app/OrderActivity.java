@@ -132,7 +132,7 @@ public class OrderActivity extends AppCompatActivity {
                             //s_id에 맞는 order_id 넣기
                             for(Order o : orderList){
                                 if(o.getStoreId().equals(order.getStoreId()));
-                                order.setOrderId();
+//                                order.setOrderId();
                             }
                         }
                     }
@@ -150,7 +150,6 @@ public class OrderActivity extends AppCompatActivity {
                 //order_detail 이동
                 Intent intent = new Intent(getApplicationContext(), OrderDetailActivity.class);
                 startActivity(intent);
-
             }//onClick
         });
 
