@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,11 +32,12 @@ public class OrderActivity extends AppCompatActivity {
 
     RecyclerView orderRecyclerview;
     OrderAdapter orderAdapter;
+    Order order;
 
     List<PostOrder.StoreOrder> content = new ArrayList<>();
     List<PostOrder.StoreOrder.FoodCount> f_list;
     PostOrder postOrder;
-    String u_id = "20200869";
+    String u_id = "6458f67e50bde95733e4b57f";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +82,7 @@ public class OrderActivity extends AppCompatActivity {
                 PostOrder.StoreOrder.FoodCount foodCount = (PostOrder.StoreOrder.FoodCount) new PostOrder.StoreOrder.FoodCount(f_id, m_count, m_price);
                 f_list.add(foodCount);
             }
-            Order order = new Order(s_id, s_name, m_id, subOrderList);
+            order = new Order(s_id, s_name, m_id, subOrderList);
             orderList.add(order);
             //post
             PostOrder.StoreOrder storeOrder = new PostOrder.StoreOrder(s_id, m_id, f_list);
@@ -111,21 +113,7 @@ public class OrderActivity extends AppCompatActivity {
 
         Log.d("OrderActivity", "postOrder" + postOrder.toString());
 
-        //API 요청 보내기
-//        Call<PostOrder> call = apiInterface.createOrder(postOrder);
-//        call.enqueue(new Callback<PostOrder>() {
-//            @Override
-//            public void onResponse(Call<PostOrder> call, Response<PostOrder> response) {
-//                //요청이 성공한 경우 처리할 작업
-//                Log.d("OrderActivity", "post성공!");
-//            }
-//
-//            @Override
-//            public void onFailure(Call<PostOrder> call, Throwable t) {
-//                //요청이 실패할 경우 처리할 작업
-//            }
-//        });
-
+        //결제하기 버튼 클릭 + API 요청 보내기
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.payBtn);
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,6 +127,13 @@ public class OrderActivity extends AppCompatActivity {
                             //요청이 성공한 경우 처리할 작업
                             String responseBody = response.body().toString();
                             Log.d("OrderActivity", "responseBody"+responseBody);
+
+                            //return 값 받기
+                            //s_id에 맞는 order_id 넣기
+                            for(Order o : orderList){
+                                if(o.getStoreId().equals(order.getStoreId()));
+                                order.setOrderId();
+                            }
                         }
                     }
 
@@ -148,10 +143,15 @@ public class OrderActivity extends AppCompatActivity {
                         Log.d("OrderActivity", "요청실패!");
                     }
                 });
+                //Data orderList에 주문내용 추가하기
+                final Data data = (Data) getApplicationContext();
+                data.setOrderList(orderList);
 
                 //order_detail 이동
+                Intent intent = new Intent(getApplicationContext(), OrderDetailActivity.class);
+                startActivity(intent);
 
-            }
+            }//onClick
         });
 
     }

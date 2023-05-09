@@ -4,6 +4,7 @@ import java.util.List;
 
 //상위 리사이클러뷰 주문내역을 정의
 public class Order {
+    private String orderId;
     private String storeId;
     private String storeName;
     private String menuId;
@@ -50,4 +51,9 @@ public class Order {
     public void setSubOrderList(List<SubOrder> subOrderList) {
         this.subOrderList = subOrderList;
     }
+
+    //orderId - post했을 때 받아오기
+    public String getOrderId() {   return orderId;  }
+
+    public void setOrderId(String orderId) {    this.orderId = orderId;   }
 }

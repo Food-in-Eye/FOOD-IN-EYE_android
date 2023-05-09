@@ -9,10 +9,17 @@ public class Data extends Application {
 
     private List<Cart> cartList;
     private String recentS_id, recentM_id;
+    private List<Order> orderList;
 
+    //orderList
+    public List<Order> getOrderList(){ return orderList; }
+
+
+    //carList
     @Override
     public void onCreate(){
         cartList = new ArrayList<>();
+        orderList = new ArrayList<>();
         super.onCreate();
     }
 
@@ -53,4 +60,6 @@ public class Data extends Application {
     public String getRecentM_id() {   return recentM_id;   }
 
     public void setRecentM_id(String recentM_id) {    this.recentM_id = recentM_id;  }
+
+    public void setOrderList(List<Order> orderList) {    this.orderList = orderList;   }
 }

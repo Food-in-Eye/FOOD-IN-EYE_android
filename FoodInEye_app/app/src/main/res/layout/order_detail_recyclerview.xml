@@ -86,7 +86,7 @@
                 android:id="@+id/finished_cooking_img"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:background="@drawable/order_received"
+                android:background="@drawable/finished_cooking"
                 android:layout_gravity="center"/>
 
             <TextView
