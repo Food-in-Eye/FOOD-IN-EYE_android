@@ -8,6 +8,7 @@ import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -15,9 +16,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.MyViewHolder> {
+
+    OrderItem orderItem; // 가게별 GET
+    OrderItem.OrderResponse orderResponses;
 
     private Context mContext;
     private List<Order> orderList;
@@ -44,6 +54,37 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
     public void onBindViewHolder(@NonNull MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Order order = orderList.get(position);
         holder.storeName.setText(order.getStoreName());
+
+        //가게별 정보 Get하기
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Call<OrderItem> call = apiInterface.getOrder( order.getOrderId(),"True");
+
+        call.enqueue(new Callback<OrderItem>() {
+            @Override
+            public void onResponse(Call<OrderItem> call, Response<OrderItem> response) {
+                orderItem=response.body();
+//                orderResponses = orderItem.getOrderResponse();
+                int status = orderItem.orderResponse.status;
+                if(status == 2){
+                    holder.finishedCooking.setImageResource(R.drawable.status_finished);
+                    holder.cooking.setImageResource(R.drawable.cooking);
+                    holder.orderReceived.setImageResource(R.drawable.order_received);
+                }else if(status == 1){
+                    holder.cooking.setImageResource(R.drawable.status_cooking);
+                    holder.finishedCooking.setImageResource(R.drawable.finished_cooking);
+                    holder.orderReceived.setImageResource(R.drawable.order_received);
+                }else{
+                    holder.orderReceived.setImageResource(R.drawable.status_order_received);
+                    holder.finishedCooking.setImageResource(R.drawable.finished_cooking);
+                    holder.cooking.setImageResource(R.drawable.cooking);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<OrderItem> call, Throwable t) {
+
+            }
+        });
 
         holder.order.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,9 +113,6 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
                 false
         );
         layoutManager.setInitialPrefetchItemCount(order.getSubOrderList().size());
-
-        //order 클릭시 order_id로 GET 하기
-
 
         //자식 어댑터 설정
         SubOrderAdapter subOrderAdapter = new SubOrderAdapter(order.getSubOrderList());
@@ -114,6 +152,10 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
         LinearLayout orderDetails;
         RecyclerView orderDetail;
 
+        ImageView orderReceived;
+        ImageView cooking;
+        ImageView finishedCooking;
+
         public MyViewHolder(@NonNull View itemView){
             super(itemView);
 
@@ -123,6 +165,11 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
             //가게별 주문 상세내용
             orderDetails = (LinearLayout) itemView.findViewById(R.id.order_details);
             orderDetail = itemView.findViewById(R.id.recyclerView_orderDetailList);
+            //가게별 status
+            orderReceived = (ImageView) itemView.findViewById(R.id.order_received_img);
+            cooking = (ImageView) itemView.findViewById(R.id.cooking_img);
+            finishedCooking = (ImageView) itemView.findViewById(R.id.finished_cooking_img);
+
         }
     }
 
