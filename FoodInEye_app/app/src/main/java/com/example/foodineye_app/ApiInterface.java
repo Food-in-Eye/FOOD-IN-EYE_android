@@ -21,7 +21,9 @@ public interface ApiInterface {
 //    @POST("api/v2/orders/order")
 //    Call<PostOrder> createOrder(@Body PostOrder postOrder);
 
-    @POST("api/v2/orders/order")
-    Call<ResponseBody> createOrder(@Body PostOrder postOrder);
+//    @POST("api/v2/orders/order")
+//    Call<ResponseBody> createOrder(@Body PostOrder postOrder);
 
+    @POST("api/v2/orders/order")
+    Call<PostOrderResponse> createOrder(@Body PostOrder postOrder);
 }

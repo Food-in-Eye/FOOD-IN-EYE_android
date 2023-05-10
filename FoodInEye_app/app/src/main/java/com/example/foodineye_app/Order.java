@@ -18,7 +18,7 @@ public class Order {
         this.subOrderList = subOrderList;
     }
 
-    public String toString(){return "storeId: "+ storeId+ " storeName: "+storeName+" menuId: "+menuId +"subOrderList"+subOrderList;}
+    public String toString(){return "orderId:"+ orderId+ "storeId: "+ storeId+ " storeName: "+storeName+" menuId: "+menuId +"subOrderList"+subOrderList;}
 
     public String getStoreId() {
         return storeId;

@@ -89,9 +89,6 @@ public class OrderActivity extends AppCompatActivity {
             content.add(storeOrder);
         }
 
-        Log.d("OrderActivity", "SubOrderList"+subOrderList.toString());
-        Log.d("OrderActivity", "OrderList"+orderList.toString());
-
         //상위 recyclerview 설정
         orderRecyclerview = findViewById(R.id.recyclerView_orderList);
 
@@ -119,26 +116,35 @@ public class OrderActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d("OrderActivity", "결제하기!");
-                Call<ResponseBody> call = apiInterface.createOrder(postOrder);
-                call.enqueue(new Callback<ResponseBody>() {
+                Call<PostOrderResponse> call = apiInterface.createOrder(postOrder);
+                call.enqueue(new Callback<PostOrderResponse>() {
                     @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    public void onResponse(Call<PostOrderResponse> call, Response<PostOrderResponse> response) {
                         if(response.isSuccessful()){
                             //요청이 성공한 경우 처리할 작업
-                            String responseBody = response.body().toString();
-                            Log.d("OrderActivity", "responseBody"+responseBody);
+
+                            PostOrderResponse responseBody = response.body();
+                            List<PostOrderResponse.Response> responseList;
+                            responseList = responseBody.getResponse();
+
+                            Log.d("OrderActivity", "responseList"+responseList.toString());
 
                             //return 값 받기
                             //s_id에 맞는 order_id 넣기
-                            for(Order o : orderList){
-                                if(o.getStoreId().equals(order.getStoreId()));
-//                                order.setOrderId();
+                            for(Order order : orderList){
+                                for(PostOrderResponse.Response result : responseList){
+                                    if(order.getStoreId().equals(result.getS_id())){
+                                        order.setOrderId(result.getO_id());
+                                    }
+                                }
                             }
+                            Log.d("OrderActivity", "SubOrderList"+subOrderList.toString());
+                            Log.d("OrderActivity", "OrderList"+orderList.toString());
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    public void onFailure(Call<PostOrderResponse> call, Throwable t) {
                         //요청이 실패한 경우 처리할 작업
                         Log.d("OrderActivity", "요청실패!");
                     }
