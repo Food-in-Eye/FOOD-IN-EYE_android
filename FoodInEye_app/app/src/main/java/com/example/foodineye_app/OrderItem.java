@@ -13,7 +13,7 @@ public class OrderItem {
 
     @SerializedName("status")
     @Expose
-    public String statuss;
+    public String status;
 
     @SerializedName("response")
     @Expose
@@ -122,6 +122,7 @@ public class OrderItem {
         public void setF_list(List<FoodList> f_list) {
             this.f_list = f_list;
         }
+
 
         public class FoodList {
 

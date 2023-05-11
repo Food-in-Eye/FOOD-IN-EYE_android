@@ -16,6 +16,9 @@ public class PostOrderResponse {
     @SerializedName("response")
     @Expose
     public List<Response> response;
+    @SerializedName("history_id")
+    @Expose
+    public String history_id;
 
     public String getRequest() {    return request;   }
 
@@ -28,6 +31,10 @@ public class PostOrderResponse {
     public List<Response> getResponse() {    return response;   }
 
     public void setResponse(List<Response> response) {     this.response = response;   }
+
+    public String getHistory_id() {   return history_id;   }
+
+    public void setHistory_id(String history_id) {    this.history_id = history_id;   }
 
     //response
     public class Response{

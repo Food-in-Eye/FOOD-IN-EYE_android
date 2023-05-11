@@ -38,6 +38,7 @@ public class OrderActivity extends AppCompatActivity {
     List<PostOrder.StoreOrder.FoodCount> f_list;
     PostOrder postOrder;
     String u_id = "6458f67e50bde95733e4b57f";
+    String history_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,10 +125,11 @@ public class OrderActivity extends AppCompatActivity {
                             //요청이 성공한 경우 처리할 작업
 
                             PostOrderResponse responseBody = response.body();
+                            history_id = responseBody.getHistory_id();
                             List<PostOrderResponse.Response> responseList;
                             responseList = responseBody.getResponse();
 
-                            Log.d("OrderActivity", "responseList"+responseList.toString());
+                            Log.d("OrderActivity", "history_id"+history_id);
 
                             //return 값 받기
                             //s_id에 맞는 order_id 넣기
@@ -151,6 +153,7 @@ public class OrderActivity extends AppCompatActivity {
                 });
                 //Data orderList에 주문내용 추가하기
                 final Data data = (Data) getApplicationContext();
+                data.setHistory_id(history_id); //웹소켓에 필요한 history_id
                 data.setOrderList(orderList);
 
                 //order_detail 이동

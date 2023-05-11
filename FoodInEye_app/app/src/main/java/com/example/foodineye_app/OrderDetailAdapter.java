@@ -62,8 +62,7 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
         call.enqueue(new Callback<OrderItem>() {
             @Override
             public void onResponse(Call<OrderItem> call, Response<OrderItem> response) {
-                orderItem=response.body();
-//                orderResponses = orderItem.getOrderResponse();
+                orderItem = response.body();
                 int status = orderItem.orderResponse.status;
                 if(status == 2){
                     holder.finishedCooking.setImageResource(R.drawable.status_finished);

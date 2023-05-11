@@ -10,6 +10,7 @@ public class Data extends Application {
     private List<Cart> cartList;
     private String recentS_id, recentM_id;
     private List<Order> orderList;
+    private String history_id; // 한번의 주문내역 지칭(웹소켓 통신시)
 
     //orderList
     public List<Order> getOrderList(){ return orderList; }
@@ -62,4 +63,8 @@ public class Data extends Application {
     public void setRecentM_id(String recentM_id) {    this.recentM_id = recentM_id;  }
 
     public void setOrderList(List<Order> orderList) {    this.orderList = orderList;   }
+
+    public String getHistory_id() {    return history_id;   }
+
+    public void setHistory_id(String history_id) {    this.history_id = history_id;    }
 }
