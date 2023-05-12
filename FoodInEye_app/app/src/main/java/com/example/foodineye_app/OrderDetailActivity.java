@@ -32,11 +32,6 @@ public class OrderDetailActivity extends AppCompatActivity {
         //주문내역 store 받기
         orderList = ((Data) getApplication()).getOrderList();
 
-        //store에 해당하는 주문내용 get하기
-        //OrderDetailAdapter에서 자식recyclerview 세팅할 때
-        //detail get 못하면 상위 recyclerview 설정할 떄 같이 보내주기
-
-
         //WebSocket으로 받은 메시지 확인하기
         Intent intent = getIntent();
         WebSocketData webSocketData = intent.getParcelableExtra("webSocketData");
@@ -46,8 +41,9 @@ public class OrderDetailActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         orderRecyclerview.setLayoutManager(layoutManager);
 
-        orderDetailAdapter = new OrderDetailAdapter(getApplicationContext(), orderList);
+        orderDetailAdapter = new OrderDetailAdapter(getApplicationContext(), orderList, webSocketData);
         orderRecyclerview.setAdapter(orderDetailAdapter);
+        
 
     }
 }

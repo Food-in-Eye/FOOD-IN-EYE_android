@@ -32,15 +32,30 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
     private Context mContext;
     private List<Order> orderList;
     private RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
+    private WebSocketData webSocketData;
 
     //Item 클릭 상태를 저장할 array 객체
     private SparseBooleanArray selectedItems = new SparseBooleanArray();
     //직전에 클릭했던 Item의 postion
     private int prePosition = -1;
 
-    public OrderDetailAdapter(Context mContext, List<Order> orderList) {
+    public OrderDetailAdapter(Context mContext, List<Order> orderList, WebSocketData webSocketData) {
         this.mContext = mContext;
         this.orderList = orderList;
+    }
+
+    public int updateStatus(Order order){
+        int status = 0;
+
+        for(Order o : orderList){
+            if(o.getOrderId() == webSocketData.getO_id()){
+                o.setStatus(String.valueOf(webSocketData.getStatus()));
+                status = order.getStatus();
+            }else{
+
+            }
+        }
+        return status;
     }
 
     @NonNull
@@ -55,35 +70,23 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
         Order order = orderList.get(position);
         holder.storeName.setText(order.getStoreName());
 
-        //가게별 정보 Get하기
-//        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-//        Call<OrderItem> call = apiInterface.getOrder( order.getOrderId(),"True");
-//
-//        call.enqueue(new Callback<OrderItem>() {
-//            @Override
-//            public void onResponse(Call<OrderItem> call, Response<OrderItem> response) {
-//                orderItem = response.body();
-//                int status = orderItem.orderResponse.status;
-//                if(status == 2){
-//                    holder.finishedCooking.setImageResource(R.drawable.status_finished);
-//                    holder.cooking.setImageResource(R.drawable.cooking);
-//                    holder.orderReceived.setImageResource(R.drawable.order_received);
-//                }else if(status == 1){
-//                    holder.cooking.setImageResource(R.drawable.status_cooking);
-//                    holder.finishedCooking.setImageResource(R.drawable.finished_cooking);
-//                    holder.orderReceived.setImageResource(R.drawable.order_received);
-//                }else{
-//                    holder.orderReceived.setImageResource(R.drawable.status_order_received);
-//                    holder.finishedCooking.setImageResource(R.drawable.finished_cooking);
-//                    holder.cooking.setImageResource(R.drawable.cooking);
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<OrderItem> call, Throwable t) {
-//
-//            }
-//        });
+        updateStatus(order);
+
+        int status = updateStatus(order);
+
+        if(status == 2){
+            holder.finishedCooking.setImageResource(R.drawable.status_finished);
+            holder.cooking.setImageResource(R.drawable.cooking);
+            holder.orderReceived.setImageResource(R.drawable.order_received);
+        }else if(status == 1){
+            holder.cooking.setImageResource(R.drawable.status_cooking);
+            holder.finishedCooking.setImageResource(R.drawable.finished_cooking);
+            holder.orderReceived.setImageResource(R.drawable.order_received);
+        }else{
+            holder.orderReceived.setImageResource(R.drawable.status_order_received);
+            holder.finishedCooking.setImageResource(R.drawable.finished_cooking);
+            holder.cooking.setImageResource(R.drawable.cooking);
+        }
 
         holder.order.setOnClickListener(new View.OnClickListener() {
             @Override

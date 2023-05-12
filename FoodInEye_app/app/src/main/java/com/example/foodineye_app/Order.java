@@ -5,6 +5,7 @@ import java.util.List;
 //상위 리사이클러뷰 주문내역을 정의
 public class Order {
     private String orderId;
+    private int status;
     private String storeId;
     private String storeName;
     private String menuId;
@@ -56,4 +57,12 @@ public class Order {
     public String getOrderId() {   return orderId;  }
 
     public void setOrderId(String orderId) {    this.orderId = orderId;   }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }
