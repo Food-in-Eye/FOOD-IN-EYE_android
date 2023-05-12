@@ -4,10 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import java.util.List;
 
+import okhttp3.WebSocket;
+import okhttp3.WebSocketListener;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -17,6 +20,9 @@ public class OrderDetailActivity extends AppCompatActivity {
     List<Order> orderList;
     RecyclerView orderRecyclerview;
     OrderDetailAdapter orderDetailAdapter;
+    
+    //WebSocket
+    WebSocket webSocket;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +32,15 @@ public class OrderDetailActivity extends AppCompatActivity {
         //주문내역 store 받기
         orderList = ((Data) getApplication()).getOrderList();
 
+        //store에 해당하는 주문내용 get하기
+        //OrderDetailAdapter에서 자식recyclerview 세팅할 때
+        //detail get 못하면 상위 recyclerview 설정할 떄 같이 보내주기
+
+
+        //WebSocket으로 받은 메시지 확인하기
+        Intent intent = getIntent();
+        WebSocketData webSocketData = intent.getParcelableExtra("webSocketData");
+
         //상위 recyclerview 설정
         orderRecyclerview = findViewById(R.id.recyclerView_orderDetailList);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -33,11 +48,6 @@ public class OrderDetailActivity extends AppCompatActivity {
 
         orderDetailAdapter = new OrderDetailAdapter(getApplicationContext(), orderList);
         orderRecyclerview.setAdapter(orderDetailAdapter);
-
-        //store에 해당하는 주문내용 get하기
-        //OrderDetailAdapter에서 자식recyclerview 세팅할 때
-        //detail get 못하면 상위 recyclerview 설정할 떄 같이 보내주기
-
 
     }
 }

@@ -6,10 +6,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
+import android.view.textclassifier.TextLinks;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.bumptech.glide.RequestBuilder;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,7 +21,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.ResponseBody;
+import okhttp3.WebSocket;
+import okhttp3.WebSocketListener;
+import okio.ByteString;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -142,6 +151,16 @@ public class OrderActivity extends AppCompatActivity {
                             }
                             Log.d("OrderActivity", "SubOrderList"+subOrderList.toString());
                             Log.d("OrderActivity", "OrderList"+orderList.toString());
+
+
+                            //웹소켓 연결하기
+//                            WebSocketManager.getInstance().setHistoryId(history_id);
+                            Log.d("WebSocket", "history_id: "+history_id);
+                            Log.d("WebSocket", "WebSocket 시도");
+
+                            WebSocketManager.getInstance().connectWebSocket(history_id);
+
+
                         }
                     }
 
@@ -153,12 +172,12 @@ public class OrderActivity extends AppCompatActivity {
                 });
                 //Data orderList에 주문내용 추가하기
                 final Data data = (Data) getApplicationContext();
-                data.setHistory_id(history_id); //웹소켓에 필요한 history_id
                 data.setOrderList(orderList);
 
-                //order_detail 이동
+                //OrderDetial 화면으로 이동
                 Intent intent = new Intent(getApplicationContext(), OrderDetailActivity.class);
                 startActivity(intent);
+
             }//onClick
         });
 

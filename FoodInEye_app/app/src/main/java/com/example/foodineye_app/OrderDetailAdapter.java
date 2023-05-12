@@ -56,34 +56,34 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
         holder.storeName.setText(order.getStoreName());
 
         //가게별 정보 Get하기
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<OrderItem> call = apiInterface.getOrder( order.getOrderId(),"True");
-
-        call.enqueue(new Callback<OrderItem>() {
-            @Override
-            public void onResponse(Call<OrderItem> call, Response<OrderItem> response) {
-                orderItem = response.body();
-                int status = orderItem.orderResponse.status;
-                if(status == 2){
-                    holder.finishedCooking.setImageResource(R.drawable.status_finished);
-                    holder.cooking.setImageResource(R.drawable.cooking);
-                    holder.orderReceived.setImageResource(R.drawable.order_received);
-                }else if(status == 1){
-                    holder.cooking.setImageResource(R.drawable.status_cooking);
-                    holder.finishedCooking.setImageResource(R.drawable.finished_cooking);
-                    holder.orderReceived.setImageResource(R.drawable.order_received);
-                }else{
-                    holder.orderReceived.setImageResource(R.drawable.status_order_received);
-                    holder.finishedCooking.setImageResource(R.drawable.finished_cooking);
-                    holder.cooking.setImageResource(R.drawable.cooking);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<OrderItem> call, Throwable t) {
-
-            }
-        });
+//        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+//        Call<OrderItem> call = apiInterface.getOrder( order.getOrderId(),"True");
+//
+//        call.enqueue(new Callback<OrderItem>() {
+//            @Override
+//            public void onResponse(Call<OrderItem> call, Response<OrderItem> response) {
+//                orderItem = response.body();
+//                int status = orderItem.orderResponse.status;
+//                if(status == 2){
+//                    holder.finishedCooking.setImageResource(R.drawable.status_finished);
+//                    holder.cooking.setImageResource(R.drawable.cooking);
+//                    holder.orderReceived.setImageResource(R.drawable.order_received);
+//                }else if(status == 1){
+//                    holder.cooking.setImageResource(R.drawable.status_cooking);
+//                    holder.finishedCooking.setImageResource(R.drawable.finished_cooking);
+//                    holder.orderReceived.setImageResource(R.drawable.order_received);
+//                }else{
+//                    holder.orderReceived.setImageResource(R.drawable.status_order_received);
+//                    holder.finishedCooking.setImageResource(R.drawable.finished_cooking);
+//                    holder.cooking.setImageResource(R.drawable.cooking);
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<OrderItem> call, Throwable t) {
+//
+//            }
+//        });
 
         holder.order.setOnClickListener(new View.OnClickListener() {
             @Override
