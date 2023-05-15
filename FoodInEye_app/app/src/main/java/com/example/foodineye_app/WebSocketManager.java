@@ -8,6 +8,7 @@ import android.util.Log;
 import androidx.activity.result.contract.ActivityResultContracts;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -47,11 +48,34 @@ public class WebSocketManager {
             @Override
             public void onMessage(WebSocket webSocket, String text) {
                 Gson gson = new Gson();
-                WebSocketData webSocketData = gson.fromJson(text, WebSocketData.class);
-                //update UI
-                Intent intent = new Intent(context, OrderDetailActivity.class);
-                intent.putExtra("webSocketData", (Parcelable) webSocketData);
-                context.startActivity(intent);
+                JsonObject jsonObject = gson.fromJson(text, JsonObject.class);
+
+                if(jsonObject.has("type")){
+                    String messageType = jsonObject.get("type").getAsString();
+                    switch (messageType){
+                        case "connect":
+                            if(jsonObject.has("result")){
+                                Log.d("websocket", "websocket: "+jsonObject.get("result").getAsString());
+                            }break;
+                        case "update_state":
+                            if(jsonObject.has("result")){
+                                String messageResult = jsonObject.get("result").getAsString();
+                                WebSocketModel webSocketModel = new WebSocketModel(messageType, messageResult);
+                                String o_id = jsonObject.get("o_id").getAsString();
+                                String status = jsonObject.get("status").getAsString();
+                                UpdateWebSocketModel updateWebSocketModel = new UpdateWebSocketModel(webSocketModel, o_id, status);
+                                //update UI
+                                Intent intent = new Intent(context, OrderDetailActivity.class);
+                                intent.putExtra("updateWebSocketModel", (Parcelable) updateWebSocketModel);
+                                context.startActivity(intent);
+                            }break;
+                        // 추가적인 메시지 타입에 대한 처리 로직 추가
+                        default:
+                            // 알 수 없는 메시지 타입에 대한 처리 로직
+                            break;
+                    }
+                }
+
             }
 
 

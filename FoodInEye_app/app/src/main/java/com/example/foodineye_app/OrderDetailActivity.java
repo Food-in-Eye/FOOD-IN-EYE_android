@@ -34,16 +34,16 @@ public class OrderDetailActivity extends AppCompatActivity {
 
         //WebSocket으로 받은 메시지 확인하기
         Intent intent = getIntent();
-        WebSocketData webSocketData = intent.getParcelableExtra("webSocketData");
+        UpdateWebSocketModel updateWebSocketModel = intent.getParcelableExtra("updateWebSocketModel");
 
         //상위 recyclerview 설정
         orderRecyclerview = findViewById(R.id.recyclerView_orderDetailList);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         orderRecyclerview.setLayoutManager(layoutManager);
 
-        orderDetailAdapter = new OrderDetailAdapter(getApplicationContext(), orderList, webSocketData);
+        orderDetailAdapter = new OrderDetailAdapter(getApplicationContext(), orderList, updateWebSocketModel);
         orderRecyclerview.setAdapter(orderDetailAdapter);
-        
+
 
     }
 }

@@ -32,14 +32,14 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
     private Context mContext;
     private List<Order> orderList;
     private RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
-    private WebSocketData webSocketData;
+    private UpdateWebSocketModel updateWebSocketModel;
 
     //Item 클릭 상태를 저장할 array 객체
     private SparseBooleanArray selectedItems = new SparseBooleanArray();
     //직전에 클릭했던 Item의 postion
     private int prePosition = -1;
 
-    public OrderDetailAdapter(Context mContext, List<Order> orderList, WebSocketData webSocketData) {
+    public OrderDetailAdapter(Context mContext, List<Order> orderList, UpdateWebSocketModel updateWebSocketModel) {
         this.mContext = mContext;
         this.orderList = orderList;
     }
@@ -48,8 +48,8 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
         int status = 0;
 
         for(Order o : orderList){
-            if(o.getOrderId() == webSocketData.getO_id()){
-                o.setStatus(String.valueOf(webSocketData.getStatus()));
+            if(o.getOrderId() == updateWebSocketModel.getO_id()){
+                o.setStatus(String.valueOf(updateWebSocketModel.getStatus()));
                 status = order.getStatus();
             }else{
 
