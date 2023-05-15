@@ -24,7 +24,7 @@ import okio.ByteString;
 public class WebSocketManager {
     private static WebSocketManager instance;
     private WebSocket webSocket;
-    private static Context context;
+    private Context context;
 
     private WebSocketManager(Context context){
         this.context = context;
@@ -35,7 +35,7 @@ public class WebSocketManager {
         //WebSocket 연결 코드
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
-                .url("ws://10.0.2.2:8000/api/v2/app_socket/ws?id=" + historyId)
+                .url("ws://10.0.2.2:8000/api/v2/websockets/ws?h_id=" + historyId)
                 .build();
 
         webSocket = client.newWebSocket(request, new WebSocketListener() {
@@ -47,26 +47,34 @@ public class WebSocketManager {
 
             @Override
             public void onMessage(WebSocket webSocket, String text) {
+                Log.d("WebSocket", "onMessage: " + text);
                 Gson gson = new Gson();
                 JsonObject jsonObject = gson.fromJson(text, JsonObject.class);
 
                 if(jsonObject.has("type")){
                     String messageType = jsonObject.get("type").getAsString();
+                    Log.d("WebSocketManager", "1번");
+                    Log.d("WebSocketManager", "messageType: "+messageType);
                     switch (messageType){
                         case "connect":
                             if(jsonObject.has("result")){
-                                Log.d("websocket", "websocket: "+jsonObject.get("result").getAsString());
+                                Log.d("WebSocketManager", "websocket: " +jsonObject.get("result").getAsString());
+                                Log.d("WebSocketManager", "2번");
                             }break;
-                        case "update_state":
+                        case "update_status":
                             if(jsonObject.has("result")){
+                                Log.d("WebSocketManager", "3번");
                                 String messageResult = jsonObject.get("result").getAsString();
                                 WebSocketModel webSocketModel = new WebSocketModel(messageType, messageResult);
+                                Log.d("WebSocketManager", "webSocketModel: "+ webSocketModel.toString());
                                 String o_id = jsonObject.get("o_id").getAsString();
-                                String status = jsonObject.get("status").getAsString();
+                                int status = Integer.parseInt(jsonObject.get("status").getAsString());
                                 UpdateWebSocketModel updateWebSocketModel = new UpdateWebSocketModel(webSocketModel, o_id, status);
                                 //update UI
                                 Intent intent = new Intent(context, OrderDetailActivity.class);
-                                intent.putExtra("updateWebSocketModel", (Parcelable) updateWebSocketModel);
+                                intent.putExtra("updateWebSocketModel", (Serializable) updateWebSocketModel);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // FLAG_ACTIVITY_NEW_TASK 플래그 추가
+                                Log.d("WebSocketManager", "updateWebSocketModel: "+ updateWebSocketModel.getStatus());
                                 context.startActivity(intent);
                             }break;
                         // 추가적인 메시지 타입에 대한 처리 로직 추가
@@ -102,7 +110,7 @@ public class WebSocketManager {
         });
     }
 
-    public static synchronized WebSocketManager getInstance(){
+    public static synchronized WebSocketManager getInstance(Context context){
         if(instance == null){
             instance = new WebSocketManager(context);
         }

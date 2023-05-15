@@ -138,7 +138,7 @@ public class OrderActivity extends AppCompatActivity {
                             List<PostOrderResponse.Response> responseList;
                             responseList = responseBody.getResponse();
 
-                            Log.d("OrderActivity", "history_id"+history_id);
+                            Log.d("OrderActivity", "responseBody"+responseBody.toString());
 
                             //return 값 받기
                             //s_id에 맞는 order_id 넣기
@@ -158,7 +158,7 @@ public class OrderActivity extends AppCompatActivity {
                             Log.d("WebSocket", "history_id: "+history_id);
                             Log.d("WebSocket", "WebSocket 시도");
 
-                            WebSocketManager.getInstance().connectWebSocket(history_id);
+                            WebSocketManager.getInstance(getApplicationContext()).connectWebSocket(history_id);
 
 
                         }

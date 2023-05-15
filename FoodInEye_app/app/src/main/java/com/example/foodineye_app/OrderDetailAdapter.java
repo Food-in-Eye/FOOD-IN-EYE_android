@@ -34,25 +34,33 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
     private RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
     private UpdateWebSocketModel updateWebSocketModel;
 
+    public void updateOrderList() {
+        notifyDataSetChanged();
+    }
+
     //Item 클릭 상태를 저장할 array 객체
     private SparseBooleanArray selectedItems = new SparseBooleanArray();
     //직전에 클릭했던 Item의 postion
     private int prePosition = -1;
 
-    public OrderDetailAdapter(Context mContext, List<Order> orderList, UpdateWebSocketModel updateWebSocketModel) {
+    public OrderDetailAdapter(Context mContext, List<Order> orderList) {
         this.mContext = mContext;
         this.orderList = orderList;
     }
+
+    public UpdateWebSocketModel getUpdateWebSocketModel() {   return updateWebSocketModel;   }
+
+    public void setUpdateWebSocketModel(UpdateWebSocketModel updateWebSocketModel) {  this.updateWebSocketModel = updateWebSocketModel;   }
 
     public int updateStatus(Order order){
         int status = 0;
 
         for(Order o : orderList){
             if(o.getOrderId() == updateWebSocketModel.getO_id()){
-                o.setStatus(String.valueOf(updateWebSocketModel.getStatus()));
+                o.setStatus(updateWebSocketModel.getStatus());
                 status = order.getStatus();
             }else{
-
+                status = 0;
             }
         }
         return status;
@@ -70,22 +78,23 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
         Order order = orderList.get(position);
         holder.storeName.setText(order.getStoreName());
 
-        updateStatus(order);
+        if(updateWebSocketModel != null){
+            Log.d("OrderDetailAdapter", "updateWebSocketModel: "+ updateWebSocketModel.getStatus());
+            int status = updateStatus(order);
 
-        int status = updateStatus(order);
-
-        if(status == 2){
-            holder.finishedCooking.setImageResource(R.drawable.status_finished);
-            holder.cooking.setImageResource(R.drawable.cooking);
-            holder.orderReceived.setImageResource(R.drawable.order_received);
-        }else if(status == 1){
-            holder.cooking.setImageResource(R.drawable.status_cooking);
-            holder.finishedCooking.setImageResource(R.drawable.finished_cooking);
-            holder.orderReceived.setImageResource(R.drawable.order_received);
-        }else{
-            holder.orderReceived.setImageResource(R.drawable.status_order_received);
-            holder.finishedCooking.setImageResource(R.drawable.finished_cooking);
-            holder.cooking.setImageResource(R.drawable.cooking);
+            if(status == 2){
+                holder.finishedCooking.setImageResource(R.drawable.status_finished);
+                holder.cooking.setImageResource(R.drawable.cooking);
+                holder.orderReceived.setImageResource(R.drawable.order_received);
+            }else if(status == 1){
+                holder.cooking.setImageResource(R.drawable.status_cooking);
+                holder.finishedCooking.setImageResource(R.drawable.finished_cooking);
+                holder.orderReceived.setImageResource(R.drawable.order_received);
+            }else{
+                holder.orderReceived.setImageResource(R.drawable.status_order_received);
+                holder.finishedCooking.setImageResource(R.drawable.finished_cooking);
+                holder.cooking.setImageResource(R.drawable.cooking);
+            }
         }
 
         holder.order.setOnClickListener(new View.OnClickListener() {

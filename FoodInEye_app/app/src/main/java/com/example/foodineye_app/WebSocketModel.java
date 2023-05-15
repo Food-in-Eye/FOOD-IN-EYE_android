@@ -1,6 +1,8 @@
 package com.example.foodineye_app;
 
-public class WebSocketModel {
+import java.io.Serializable;
+
+public class WebSocketModel implements Serializable {
 
     private String type;
     private String result;
@@ -9,6 +11,8 @@ public class WebSocketModel {
         this.type = type;
         this.result = result;
     }
+
+    public String toString(){return "type: "+ type+ " result: "+result;}
 
     public String getType() {    return type;  }
 

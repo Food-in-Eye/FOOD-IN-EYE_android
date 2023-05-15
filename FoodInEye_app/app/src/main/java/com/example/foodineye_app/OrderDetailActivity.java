@@ -32,18 +32,29 @@ public class OrderDetailActivity extends AppCompatActivity {
         //주문내역 store 받기
         orderList = ((Data) getApplication()).getOrderList();
 
-        //WebSocket으로 받은 메시지 확인하기
-        Intent intent = getIntent();
-        UpdateWebSocketModel updateWebSocketModel = intent.getParcelableExtra("updateWebSocketModel");
-
         //상위 recyclerview 설정
         orderRecyclerview = findViewById(R.id.recyclerView_orderDetailList);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         orderRecyclerview.setLayoutManager(layoutManager);
 
-        orderDetailAdapter = new OrderDetailAdapter(getApplicationContext(), orderList, updateWebSocketModel);
+        orderDetailAdapter = new OrderDetailAdapter(getApplicationContext(), orderList);
         orderRecyclerview.setAdapter(orderDetailAdapter);
 
 
+
+        //WebSocket으로 받은 메시지 확인하기
+        Intent intent = getIntent();
+        UpdateWebSocketModel updateWebSocketModel = (UpdateWebSocketModel) intent.getSerializableExtra("updateWebSocketModel");
+
+        // 웹소켓 메시지를 받았을 때만 RecyclerView 업데이트
+        if (updateWebSocketModel != null) {
+            orderDetailAdapter.setUpdateWebSocketModel(updateWebSocketModel);
+//            // 새로운 주문 목록을 받아온다고 가정
+//            List<Order> newOrderList = getUpdatedOrderList(updateWebSocketModel);
+            orderDetailAdapter.updateOrderList();
+        }
+
+
     }
+
 }

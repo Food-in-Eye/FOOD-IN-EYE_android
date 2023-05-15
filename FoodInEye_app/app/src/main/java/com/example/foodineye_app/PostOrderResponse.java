@@ -16,9 +16,11 @@ public class PostOrderResponse {
     @SerializedName("response")
     @Expose
     public List<Response> response;
-    @SerializedName("history_id")
+    @SerializedName("h_id")
     @Expose
     public String history_id;
+
+    public String toString(){return "request: "+ request+ "status: "+ status+ " history_id: "+history_id + "response: "+response.toString();}
 
     public String getRequest() {    return request;   }
 
@@ -44,6 +46,8 @@ public class PostOrderResponse {
         @SerializedName("o_id")
         @Expose
         public String o_id;
+
+        public String toString(){return "s_id: "+ s_id+ "o_id: "+ o_id;}
 
         public String getS_id() {  return s_id;  }
 

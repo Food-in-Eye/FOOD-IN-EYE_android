@@ -1,12 +1,14 @@
 package com.example.foodineye_app;
 
-public class UpdateWebSocketModel {
+import java.io.Serializable;
+
+public class UpdateWebSocketModel implements Serializable {
 
     private WebSocketModel webSocketModel;
     private String o_id;
-    private String status;
+    private int status;
 
-    public UpdateWebSocketModel(WebSocketModel webSocketModel, String o_id, String status) {
+    public UpdateWebSocketModel(WebSocketModel webSocketModel, String o_id, int status) {
         this.webSocketModel = webSocketModel;
         this.o_id = o_id;
         this.status = status;
@@ -20,11 +22,11 @@ public class UpdateWebSocketModel {
         this.o_id = o_id;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
