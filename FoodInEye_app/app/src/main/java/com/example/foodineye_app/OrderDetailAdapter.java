@@ -16,13 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.MyViewHolder> {
 
@@ -52,18 +46,18 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
 
     public void setUpdateWebSocketModel(UpdateWebSocketModel updateWebSocketModel) {  this.updateWebSocketModel = updateWebSocketModel;   }
 
-    public int updateStatus(Order order){
-        int status = 0;
+    public void updateStatus(){
 
         for(Order o : orderList){
-            if(o.getOrderId() == updateWebSocketModel.getO_id()){
+            Log.d("OrderDetailAdapter", "o.getOrderId(): "+ o.getOrderId());
+            Log.d("OrderDetailAdapter", "updateWebSocketModel.getO_id(): "+ updateWebSocketModel.getO_id());
+            if(o.getOrderId().equals(updateWebSocketModel.getO_id())){
                 o.setStatus(updateWebSocketModel.getStatus());
-                status = order.getStatus();
+                Log.d("OrderDetailAdapter", "status: "+ o.getStatus());
+
             }else{
-                status = 0;
             }
         }
-        return status;
     }
 
     @NonNull
@@ -79,14 +73,14 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
         holder.storeName.setText(order.getStoreName());
 
         if(updateWebSocketModel != null){
+            updateStatus();
             Log.d("OrderDetailAdapter", "updateWebSocketModel: "+ updateWebSocketModel.getStatus());
-            int status = updateStatus(order);
 
-            if(status == 2){
+            if(order.getStatus() == 2){
                 holder.finishedCooking.setImageResource(R.drawable.status_finished);
                 holder.cooking.setImageResource(R.drawable.cooking);
                 holder.orderReceived.setImageResource(R.drawable.order_received);
-            }else if(status == 1){
+            }else if(order.getStatus() == 1){
                 holder.cooking.setImageResource(R.drawable.status_cooking);
                 holder.finishedCooking.setImageResource(R.drawable.finished_cooking);
                 holder.orderReceived.setImageResource(R.drawable.order_received);
@@ -166,6 +160,9 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
         ImageView orderReceived;
         ImageView cooking;
         ImageView finishedCooking;
+
+        Order m_order;
+        int m_position;
 
         public MyViewHolder(@NonNull View itemView){
             super(itemView);
