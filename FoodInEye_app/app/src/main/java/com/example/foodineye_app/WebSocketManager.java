@@ -35,7 +35,7 @@ public class WebSocketManager {
         //WebSocket 연결 코드
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
-                .url("ws://10.0.2.2:8000/api/v2/websockets/ws?h_id=" + historyId)
+                .url("ws://203.252.213.200:4040//api/v2/websockets/ws?h_id=" + historyId)
                 .build();
 
         webSocket = client.newWebSocket(request, new WebSocketListener() {
