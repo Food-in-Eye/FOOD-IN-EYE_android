@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/order_detail_storeName"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:text="StoreName"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:background="@drawable/tape_orange"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="10dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:background="@drawable/orange_srec_30">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/order_received_img"
+                    android:layout_width="63dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/order_received" />
+
+                <TextView
+                    android:id="@+id/order_received_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="주문 접수"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_gravity="center"/>
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="5dp"
+                android:layout_height="40dp"
+                android:layout_weight="0.3"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center"
+                android:background="@drawable/ing"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/cooking_img"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/cooking"
+                    android:layout_gravity="center"/>
+
+                <TextView
+                    android:id="@+id/cooking_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="조리 시작"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_gravity="center"/>
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="5dp"
+                android:layout_height="40dp"
+                android:layout_weight="0.3"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center"
+                android:background="@drawable/ing"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/finished_cooking_img"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/finished_cooking"
+                    android:layout_gravity="center"/>
+
+                <TextView
+                    android:id="@+id/finished_cooking_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="조리 완료"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_gravity="center"/>
+
+            </LinearLayout>
+
+
+            </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/order_detail"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="자세히 보기"
+                android:textStyle="bold"
+                android:textColor="@color/navy"
+                android:textSize="15dp"
+                android:layout_gravity="center"/>
+
+            <Button
+                android:layout_width="20dp"
+                android:layout_height="30dp"
+                android:background="@drawable/down_arrow"
+                android:backgroundTint="@color/navy"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/order_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:padding="10dp"
+        android:background="@drawable/navy_srec"
+        android:layout_margin="5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp">
+
+            <TextView
+                android:id="@+id/order_foodName"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="상품명"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="15dp"/>
+
+            <TextView
+                android:id="@+id/order_foodCount"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:text="수량"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="15dp"/>
+
+            <TextView
+                android:id="@+id/order_foodPrice"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="금액"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="5dp"
+            android:background="@drawable/dotted_line"
+            android:backgroundTint="@color/navy"
+            android:layerType="software"
+            android:layout_gravity="center"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView_orderDetailList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:scrollbarFadeDuration="0"
+            android:scrollbars="vertical" />
+
+    </LinearLayout>
+
+</LinearLayout>
