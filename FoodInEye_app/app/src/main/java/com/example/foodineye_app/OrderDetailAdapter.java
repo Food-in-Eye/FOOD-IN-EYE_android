@@ -3,6 +3,7 @@ package com.example.foodineye_app;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -48,15 +49,27 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
 
     public void updateStatus(){
 
-        for(Order o : orderList){
-            Log.d("OrderDetailAdapter", "o.getOrderId(): "+ o.getOrderId());
-            Log.d("OrderDetailAdapter", "updateWebSocketModel.getO_id(): "+ updateWebSocketModel.getO_id());
-            if(o.getOrderId().equals(updateWebSocketModel.getO_id())){
+        for (Order o : orderList) {
+            Log.d("OrderDetailAdapter", "o.getOrderId(): " + o.getOrderId());
+            Log.d("OrderDetailAdapter", "updateWebSocketModel.getO_id(): " + updateWebSocketModel.getO_id());
+            if (o.getOrderId().equals(updateWebSocketModel.getO_id())) {
                 o.setStatus(updateWebSocketModel.getStatus());
-                Log.d("OrderDetailAdapter", "status: "+ o.getStatus());
-
-            }else{
+                Log.d("OrderDetailAdapter", "status: " + o.getStatus());
             }
+        }
+    }
+    public void checkStatus(){
+        boolean allStatusTwo = true;
+        for(Order o : orderList){
+            if (o.getStatus()!=2) {
+                allStatusTwo = false;
+                break;
+            }
+        }
+        Log.d("OrderDetailAdapter", "checkStatus"+allStatusTwo);
+        if (allStatusTwo) {
+            Log.d("OrderDetailAdapter", "WebSocket Closed want");
+            WebSocketManager.getInstance(mContext.getApplicationContext()).disconnectWebSocket();
         }
     }
 
@@ -74,7 +87,8 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
 
         if(updateWebSocketModel != null){
             updateStatus();
-            Log.d("OrderDetailAdapter", "updateWebSocketModel: "+ updateWebSocketModel.getStatus());
+            Log.d("OrderDetailAdapter", "updateWebSocketModel: "+ updateWebSocketModel.toString());
+            Log.d("OrderDetailAdapter", "updateWebSocketModel status: "+ updateWebSocketModel.getStatus());
 
             if(order.getStatus() == 2){
                 holder.finishedCooking.setImageResource(R.drawable.status_finished);
@@ -89,7 +103,13 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
                 holder.finishedCooking.setImageResource(R.drawable.finished_cooking);
                 holder.cooking.setImageResource(R.drawable.cooking);
             }
+        }else{
+            holder.orderReceived.setImageResource(R.drawable.status_order_received);
+            holder.finishedCooking.setImageResource(R.drawable.finished_cooking);
+            holder.cooking.setImageResource(R.drawable.cooking);
         }
+
+        checkStatus();
 
         holder.order.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,9 +180,6 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
         ImageView orderReceived;
         ImageView cooking;
         ImageView finishedCooking;
-
-        Order m_order;
-        int m_position;
 
         public MyViewHolder(@NonNull View itemView){
             super(itemView);

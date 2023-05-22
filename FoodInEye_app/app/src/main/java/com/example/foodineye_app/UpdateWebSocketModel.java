@@ -14,6 +14,8 @@ public class UpdateWebSocketModel implements Serializable {
         this.status = status;
     }
 
+    public String toString(){return "webSocketModel:"+ webSocketModel+ "o_id: "+ o_id+ " status: "+status;}
+
     public String getO_id() {
         return o_id;
     }

@@ -10,6 +10,9 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +38,8 @@ public class WebSocketManager {
         //WebSocket 연결 코드
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
-                .url("ws://203.252.213.200:4040//api/v2/websockets/ws?h_id=" + historyId)
+                .url("ws://10.0.2.2:8000/api/v2/websockets/ws?h_id=" + historyId)
+//                .url("ws://203.252.213.200:4040//api/v2/websockets/ws?h_id=" + historyId)
                 .build();
 
         webSocket = client.newWebSocket(request, new WebSocketListener() {
@@ -86,12 +90,6 @@ public class WebSocketManager {
 
             }
 
-
-            @Override
-            public void onMessage(WebSocket webSocket, ByteString bytes) {
-
-            }
-
             @Override
             public void onClosing(WebSocket webSocket, int code, String reason) {
                 Log.d("WebSocket", "WebSocket onClosing");
@@ -108,6 +106,23 @@ public class WebSocketManager {
 
             }
         });
+    }
+
+    // WebSocket 연결을 끊는 메서드
+    public void disconnectWebSocket() {
+        if (webSocket != null) {
+            JSONObject jsonMessage = new JSONObject();
+            try {
+                jsonMessage.put("type", "connect");
+                jsonMessage.put("result", "close");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            webSocket.send(jsonMessage.toString()); // JSON 메시지 전송
+            webSocket.close(1000, "Connection closed"); // 연결 종료
+            Log.d("WebSocket", "WebSocket Closed");
+        }
     }
 
     public static synchronized WebSocketManager getInstance(Context context){
