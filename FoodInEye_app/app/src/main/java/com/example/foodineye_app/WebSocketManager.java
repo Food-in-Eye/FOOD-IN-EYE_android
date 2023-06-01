@@ -2,11 +2,9 @@ package com.example.foodineye_app;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Parcelable;
 import android.util.Log;
 
-import androidx.activity.result.contract.ActivityResultContracts;
-
+import com.example.foodineye_app.activity.OrderDetailActivity;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -14,15 +12,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
-import okio.ByteString;
 
 public class WebSocketManager {
     private static WebSocketManager instance;

@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".Data"
+        android:name=".activity.Data"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -18,34 +18,34 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".HomeActivity"
+            android:name=".activity.HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".OrderDetailActivity"
+            android:name=".activity.OrderDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".OrderActivity"
+            android:name=".activity.OrderActivity"
             android:exported="false" />
         <activity
-            android:name=".MypageActivity"
+            android:name=".activity.MypageActivity"
             android:exported="false" />
         <activity
-            android:name=".ShoppingCartActivity"
+            android:name=".activity.ShoppingCartActivity"
             android:exported="false" />
         <activity
-            android:name=".MenuDetailActivity"
+            android:name=".activity.MenuDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".MenuActivity"
+            android:name=".activity.MenuActivity"
             android:exported="false" />
         <activity
-            android:name=".CategoryActivity"
+            android:name=".activity.CategoryActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".activity.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
