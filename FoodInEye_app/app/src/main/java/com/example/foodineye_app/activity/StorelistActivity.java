@@ -18,7 +18,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CategoryActivity extends AppCompatActivity {
+public class StorelistActivity extends AppCompatActivity {
 
     StoreItem storeList; //전체 가게 목록
     List<Stores> storeInfo;
@@ -30,7 +30,7 @@ public class CategoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_category);
+        setContentView(R.layout.activity_storelist);
 
         //storeInfo 객체
         storeInfo = new ArrayList<>();
@@ -48,7 +48,7 @@ public class CategoryActivity extends AppCompatActivity {
             public void onResponse(Call<StoreItem> call, Response<StoreItem> response) {
                 storeList=response.body();
 
-                Log.d("CategoryActivity", storeList.toString());
+                Log.d("StorelistActivity", storeList.toString());
                 storeInfo=storeList.response;
 
                 storeAdapter = new StoreAdapter(getApplicationContext(), storeInfo);
@@ -57,7 +57,7 @@ public class CategoryActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<StoreItem> call, Throwable t) {
-                Log.d("CategoryActivity", t.toString());
+                Log.d("StorelistActivity", t.toString());
             }
         });
 

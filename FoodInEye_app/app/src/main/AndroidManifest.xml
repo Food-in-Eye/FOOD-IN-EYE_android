@@ -18,6 +18,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".activity.StorelistActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.HomeActivity"
             android:exported="false" />
         <activity
@@ -37,9 +40,6 @@
             android:exported="false" />
         <activity
             android:name=".activity.MenuActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activity.CategoryActivity"
             android:exported="false" />
         <activity
             android:name=".activity.LoginActivity"

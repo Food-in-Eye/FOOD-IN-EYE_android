@@ -38,7 +38,7 @@ public class HomeActivity extends AppCompatActivity {
         orderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent loginIntent = new Intent(getApplicationContext(), CategoryActivity.class);
+                Intent loginIntent = new Intent(getApplicationContext(), StorelistActivity.class);
                 startActivity(loginIntent);
             }
         });
