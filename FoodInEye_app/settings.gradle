@@ -16,3 +16,4 @@ rootProject.name = "FoodInEye_app"
 include ':app'
 include ':gazetracker-release'
 include ':libgaze-release'
+include ':view'
