@@ -1,16 +1,19 @@
 package com.example.foodineye_app.activity;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodineye_app.ApiClient;
 import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.GazeTrackerDataStorage;
+import com.example.foodineye_app.PermissionRequester;
 import com.example.foodineye_app.R;
 
 import java.util.ArrayList;
@@ -33,7 +36,13 @@ public class StorelistActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //camera permissionrequester
+        PermissionRequester.request(this);
         setContentView(R.layout.activity_storelist);
+        ActivityCompat.requestPermissions(this, new String[]
+                {Manifest.permission.WRITE_EXTERNAL_STORAGE}, MODE_PRIVATE);
+//        setupUIs();
 
         //start-gaze-tracking
         LinearLayout linearLayout = findViewById(R.id.storelistLinearlayout);

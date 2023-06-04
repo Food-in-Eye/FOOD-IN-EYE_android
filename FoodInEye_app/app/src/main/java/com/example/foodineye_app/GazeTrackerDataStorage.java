@@ -9,7 +9,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -20,10 +19,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -192,12 +187,12 @@ public class GazeTrackerDataStorage {
         int y = pxToDp(gy);
         String cmd = "onGazeEvent('" + x + "','" + y + "')";
 
-        linearLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                linearLayout.evaluateJavascript(cmd, null);
-            }
-        });
+//        linearLayout.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                linearLayout.evaluateJavascript(cmd, null);
+//            }
+//        });
 
 //        webView.evaluateJavascript(cmd, null);
     }
@@ -205,14 +200,17 @@ public class GazeTrackerDataStorage {
     private void onTouchClickEvent(float gx, float gy) {
         int x = pxToDp(gx);
         int y = pxToDp(gy);
+
         String cmd = "onTouchClick('" + x + "','" + y + "')";
 
-        linearLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                linearLayout.evaluateJavascript(cmd, null);
-            }
-        });
+
+
+//        linearLayout.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                linearLayout.evaluateJavascript(cmd, null);
+//            }
+//        });
 
 //        webView.evaluateJavascript(cmd, null);
     }
@@ -224,7 +222,7 @@ public class GazeTrackerDataStorage {
     }
 
     private int pxToDp(float dp) {
-        float density = getResources().getDisplayMetrics().density;
+        float density = context.getResources().getDisplayMetrics().density;
         return Math.round(dp / density);
     }
 
@@ -269,42 +267,42 @@ public class GazeTrackerDataStorage {
     }
 
 
-    private void writeFile(String fileTitle) {
-
-        fileTitle = fileTitle + "_" + curDateTime + ".json";
-
-//        File dir = new File(Environment.getExternalStorageDirectory() + userId + File.pathSeparator + curDate);
-        File dir = new File(this.getFilesDir() + "/" + userId);
-        if(!dir.exists()) {
-            dir.mkdirs();
-            Log.i("mkdirs", dir.getAbsolutePath());
-        }
-//        File file = new File(this.getFilesDir(), fileTitle);
-        File file = new File(dir, fileTitle);
-
-        try {
-            //파일 생성
-            if (!file.exists()) {
-                file.createNewFile();
-                Log.i("File", "create file");
-            }
-
-            BufferedWriter bw = new BufferedWriter(new FileWriter(file,true));
-            bw.write(jsonObject.toString());
-
-            bw.newLine();
-            bw.close();
-            show("save success");
-        } catch (IOException e) {
-            Log.i("저장오류", e.getMessage());
-            show("save fail");
-        }
-    }
+//    private void writeFile(String fileTitle) {
+//
+//        fileTitle = fileTitle + "_" + curDateTime + ".json";
+//
+////        File dir = new File(Environment.getExternalStorageDirectory() + userId + File.pathSeparator + curDate);
+//        File dir = new File(this.getFilesDir() + "/" + userId);
+//        if(!dir.exists()) {
+//            dir.mkdirs();
+//            Log.i("mkdirs", dir.getAbsolutePath());
+//        }
+////        File file = new File(this.getFilesDir(), fileTitle);
+//        File file = new File(dir, fileTitle);
+//
+//        try {
+//            //파일 생성
+//            if (!file.exists()) {
+//                file.createNewFile();
+//                Log.i("File", "create file");
+//            }
+//
+//            BufferedWriter bw = new BufferedWriter(new FileWriter(file,true));
+//            bw.write(jsonObject.toString());
+//
+//            bw.newLine();
+//            bw.close();
+//            show("save success");
+//        } catch (IOException e) {
+//            Log.i("저장오류", e.getMessage());
+//            show("save fail");
+//        }
+//    }
 
     private void saveGazeInfo(String task) {
         setFolderName(); // curDate, curTime 초기화
         gazeInfoToJson(); // 지금까지 기록된 gazeInfo를 jsonObject로 저장 ++ scroll
-        writeFile(task); // jsonObject 내보내기
+//        writeFile(task); // jsonObject 내보내기
         list_gazeInfo = new ArrayList<GazeInfo>(); // list 초기화
 
     }
@@ -339,10 +337,10 @@ public class GazeTrackerDataStorage {
         String modelName = Build.MODEL;
         String userAgent = "";
         if (linearLayout != null) {
-            userAgent = linearLayout.getSettings().getUserAgentString();
+//            userAgent = linearLayout.getSettings().getUserAgentString();
         }
         DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+//        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int screen_height = displayMetrics.heightPixels;
         int screen_width = displayMetrics.widthPixels;
         float screen_xdpi = displayMetrics.xdpi;
@@ -359,60 +357,4 @@ public class GazeTrackerDataStorage {
         Log.i("model", "screen_density_dpi:" + screen_density_dpi);
         Log.i("model", "screen_dpi_ration:" + screen_dpi_ration);
     }
-
-
-//    private void savePageScreenShot() {
-//        Picture picture = webView.capturePicture();
-//        Bitmap b = Bitmap.createBitmap(picture.getWidth(), picture.getHeight(), Bitmap.Config.ARGB_8888);
-//        Canvas c = new Canvas(b);
-//
-//        picture.draw(c);
-//        FileOutputStream fos = null;
-//        try {
-//            fos = new FileOutputStream(this.getFilesDir());
-//            if (fos != null) {
-//                b.compress(Bitmap.CompressFormat.PNG, 100, fos);
-//                fos.close();
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-//    private void takeAndSaveScreenShot(){
-//        Bitmap bitmap = getBitmapFromView(webView, webView.getWidth(), webView.getContentHeight(),webView.getScrollBarSize());
-//        saveImage(bitmap);
-//
-//    }
-
-//    private Bitmap getBitmapFromView(WebView view, int width, int height, int pages){
-//        Bitmap bitmap = Bitmap.createBitmap(width, height * pages, Bitmap.Config.ARGB_8888);
-//        Canvas canvas = new Canvas(bitmap);
-//        view.draw(canvas);
-//
-//        return bitmap;
-//    }
-
-//    private void saveImage(Bitmap bitmap){
-//        String fileTitle = "ScreenAll.png";
-//
-//        File file = new File(this.getFilesDir(), fileTitle);
-//
-//        try {
-//
-//            if (!file.exists()) { file.createNewFile(); }
-//
-//            FileOutputStream fos = new FileOutputStream(file);
-//
-//            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-//            fos.close();
-//
-//            show("save success");
-//
-//        } catch (Exception e){
-//            e.printStackTrace();
-//        }
-//    }
-
-
 }
