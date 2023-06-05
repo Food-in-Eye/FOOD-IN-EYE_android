@@ -3,6 +3,8 @@ package com.example.foodineye_app;
 import android.content.Context;
 import android.view.TextureView;
 
+import com.example.foodineye_app.calibration.CalibrationDataStorage;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +23,6 @@ import camp.visual.gazetracker.constant.InitializationErrorType;
 import camp.visual.gazetracker.constant.StatusErrorType;
 import camp.visual.gazetracker.constant.UserStatusOption;
 import camp.visual.gazetracker.gaze.GazeInfo;
-import com.example.foodineye_app.calibration.CalibrationDataStorage;
 
 public class GazeTrackerManager {
     private List<InitializationCallback> initializationCallbacks = new ArrayList<>();
@@ -38,7 +39,8 @@ public class GazeTrackerManager {
 
     GazeTracker gazeTracker = null;
     // TODO: change licence key
-    String SEESO_LICENSE_KEY = "license_key";
+//    String SEESO_LICENSE_KEY = "license_key";
+    String SEESO_LICENSE_KEY = "dev_c0yqi45fp7eplmurn0ay2vobcd49p00s00j30s1q";
 
     static public GazeTrackerManager makeNewInstance(Context context) {
         if (mInstance != null) {
@@ -52,7 +54,7 @@ public class GazeTrackerManager {
         return mInstance;
     }
 
-    private GazeTrackerManager(Context context) {
+    GazeTrackerManager(Context context) {
         this.mContext = new WeakReference<>(context);
     }
 

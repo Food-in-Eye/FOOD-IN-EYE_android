@@ -9,9 +9,12 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.webkit.WebView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.foodineye_app.activity.StorelistActivity;
 
@@ -23,19 +26,31 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import camp.visual.gazetracker.callback.CalibrationCallback;
+import camp.visual.gazetracker.callback.GazeCallback;
+import camp.visual.gazetracker.callback.StatusCallback;
+import camp.visual.gazetracker.callback.UserStatusCallback;
+import camp.visual.gazetracker.constant.StatusErrorType;
 import camp.visual.gazetracker.constant.UserStatusOption;
 import camp.visual.gazetracker.filter.OneEuroFilterManager;
 import camp.visual.gazetracker.gaze.GazeInfo;
+import camp.visual.gazetracker.state.TrackingState;
 import visual.camp.sample.view.CalibrationViewer;
 import visual.camp.sample.view.PointView;
 
 public class GazeTrackerDataStorage {
     private Context context;
+    public GazeTrackerDataStorage(Context context) {
+        this.context = context;
+    }
+    public void setContext(Context context) {
+        this.context = context;
+    }
     private static final String TAG = StorelistActivity.class.getSimpleName();
 
     private String userId;
     private WebView webView;
-    private LinearLayout linearLayout;
+    private ConstraintLayout constraintLayout;
 
     private PointView viewPoint;
     private CalibrationViewer viewCalibration;
@@ -62,18 +77,47 @@ public class GazeTrackerDataStorage {
     private CountDownTimer timer;
     //-----------------------------------------------------------------------------------------
 
-    public void setGazeTracker(LinearLayout linearLayout){
+    public void setGazeTracker(Context context, ConstraintLayout constraintLayout, PointView viewPoint){
 
-//        initLinearLayout();
-        initSpeeDial();
-        initTrackerView();
+        GazeTrackerManager gazeTrackerManager = new GazeTrackerManager(context);
+        setGazeTracker(gazeTrackerManager);
+
+        setconstraintLayout(constraintLayout);
+//        setViewPoint(viewPoint);
+
+        initSpeedDial();
+//        initTrackerView();
+        setViewPoint(viewPoint);
         initHandler();
         initTouchHandler();
 
-        modelinfo();
+        modelInfo();
 
         gazeTracker = GazeTrackerManager.makeNewInstance(context);
+        gazeTracker.setGazeTrackerCallbacks(
+                gazeCallback, calibrationCallback, statusCallback, userStatusCallback);
+
         runGazeTracker();
+
+        Log.d("GazeTrackerDataStorage", "list_gazeInfo_1: " +list_gazeInfo);
+
+        ViewTreeObserver.OnGlobalLayoutListener layoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                //레이아웃 변경 시 호출되는 로직을 구현 -> 해당 레이아웃에서의 gazelist 모두 저장
+                synchronized (list_gazeInfo){
+                    gazeTracker.stopGazeTracking();
+                    viewPoint.setPosition(0,0);
+                    saveGazeInfo("none");
+                    Log.d("GazeTrackerDataStorage", "list_gazeInfo_2: " +list_gazeInfo);
+                    Log.d("GazeTrackerDataStorage", "jArray: " +jsonObject);
+                    list_gazeInfo = new ArrayList<>(); //list 초기화
+                }
+            }
+        };
+
+        ViewTreeObserver viewTreeObserver = constraintLayout.getViewTreeObserver();
+        viewTreeObserver.addOnGlobalLayoutListener(layoutListener);
 
     }
 
@@ -85,25 +129,36 @@ public class GazeTrackerDataStorage {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            gazeTracker.startGazeTracking();
+            synchronized (list_gazeInfo){
+                gazeTracker.startGazeTracking();
+            }
         }).start();
     }
 
     //-----------------------------------------------------------------------------------------
-    private void initSpeeDial(){
+//    private void initLinearLayout(LinearLayout parentLayout, LinearLayout childLayout){
+//
+//        Log.d("GazeTrackerDataStorage", "initLinearLayout success!");
+//    }
 
+    private void initSpeedDial(){
+
+        Log.d("GazeTrackerDataStorage", "initSpeedDial success!");
         show("start-gaze-tracking");
         releaseGaze();
 
     }
-    private void initTrackerView() {
-//        viewPoint = findViewById(R.id.view_point);
-//        viewCalibration = findViewById(R.id.view_calibration);
-    }
+//    private void initTrackerView() {
+////        viewPoint = findViewById(R.id.view_point);
+////        viewCalibration = findViewById(R.id.view_calibration);
+//    }
 
     private void initHandler() {
+
+        Log.d("GazeTrackerDataStorage", "initHandler success!");
         backgroundThread.start();
         backgroundHandler = new Handler(backgroundThread.getLooper());
+
     }
 
     private void initGazeTracker() {
@@ -118,8 +173,9 @@ public class GazeTrackerDataStorage {
     }
 
     private void initTouchHandler() {
+
+        Log.d("GazeTrackerDataStorage", "initTouchHandler success!");
         GestureDetector.OnGestureListener handler = new GestureDetector.OnGestureListener() {
-            // ... (기존의 콜백 메소드들을 유지합니다) ...
             @Override
             public boolean onDown(MotionEvent motionEvent) {
                 return false;
@@ -153,7 +209,7 @@ public class GazeTrackerDataStorage {
             }
         };
         gestureDetector = new GestureDetector(context, handler);
-        linearLayout.setOnTouchListener((view, event) -> gestureDetector.onTouchEvent(event));
+        constraintLayout.setOnTouchListener((view, event) -> gestureDetector.onTouchEvent(event));
     }
 
 
@@ -161,8 +217,153 @@ public class GazeTrackerDataStorage {
         gazeTracker.deinitGazeTracker();
     }
 
+    //
+    // callbacks - gaze
+    //
+
+    private final GazeCallback gazeCallback = gazeInfo -> {
+        Log.d("GazeTrackerDataStorage", "onStart");
+        if (gazeInfo.trackingState != TrackingState.SUCCESS) {
+            Log.d("GazeTrackerDataStorage", "FAIL");
+            return;
+        }
+        if (gazeTracker.isCalibrating()) {
+            return;
+        }
+
+        float[] filtered_gaze = filterGaze(gazeInfo);
+        float gx = filtered_gaze[0];
+        float gy = filtered_gaze[1];
+        Log.d("GazeTrackerDataStorage", "gazeInfo_gx: "+gx);
+        Log.d("GazeTrackerDataStorage", "gazeInfo_gy: "+gy);
+//        showGazePoint(gx, gy, gazeInfo.screenState);
+
+//        context.runOnUiThread(() -> {
+//            onGazeEvent(gx, gy);
+//            Log.v("gaze", "x=" + gx + ", y=" + gy + "scroll=" + scroll);
+//        });
+
+        //save gazeInfo in arraylist -----
+        Log.d("GazeTrackerDataStorage", "list_gazeInfo"+list_gazeInfo.toString());
+        list_gazeInfo.add(gazeInfo);
+        list_scroll.add(scroll);
+    };
+
+
+    private float[] filterGaze(GazeInfo gazeInfo) {
+        if (oneEuroFilter.filterValues(gazeInfo.timestamp, gazeInfo.x, gazeInfo.y)) {
+            return oneEuroFilter.getFilteredValues();
+        }
+        return new float[]{gazeInfo.x, gazeInfo.y};
+    }
+
+//    private void showGazePoint(final float x, final float y, final ScreenState type) {
+//        context.runOnUiThread(() -> {
+//            viewPoint.setType(type == ScreenState.INSIDE_OF_SCREEN ? PointView.TYPE_DEFAULT : PointView.TYPE_OUT_OF_SCREEN);
+//            // viewPoint.setPosition(x, y);
+//        });
+//    }
+
+    //
+    // callbacks - calibration
+    //
+    private final CalibrationCallback calibrationCallback = new CalibrationCallback() {
+        @Override
+        public void onCalibrationProgress(float progress) {
+//            runOnUiThread(() -> viewCalibration.setPointAnimationPower(progress));
+        }
+
+        @Override
+        public void onCalibrationNextPoint(final float x, final float y) {
+//            runOnUiThread(() -> {
+//                viewCalibration.setVisibility(View.VISIBLE);
+//                viewCalibration.changeDraw(true, null);
+//                viewCalibration.setPointPosition(x, y);
+//                viewCalibration.setPointAnimationPower(0);
+//            });
+
+            // Give time to eyes find calibration coordinates, then collect data samples
+            backgroundHandler.postDelayed(() -> startCollectSamples(), 1000);
+        }
+
+        @Override
+        public void onCalibrationFinished(double[] calibrationData) {
+            // When calibration is finished, calibration data is stored to SharedPreference
+//            runOnUiThread(() -> viewCalibration.setVisibility(View.INVISIBLE));
+//            runOnUiThread(() -> webView.setVisibility(View.VISIBLE));
+//            showNavigationBar();
+        }
+    };
+
+    private boolean startCollectSamples() {
+        boolean isSuccess = gazeTracker.startCollectingCalibrationSamples();
+        return isSuccess;
+    }
+
+    //
+    // callbacks - status
+    //
+    private final StatusCallback statusCallback = new StatusCallback() {
+        @Override
+        public void onStarted() {
+        }
+
+        @Override
+        public void onStopped(StatusErrorType error) {
+        }
+    };
+
+    //
+    // callbacks - userStatus
+    //
+    private final UserStatusCallback userStatusCallback = new UserStatusCallback() {
+        @Override
+        public void onAttention(long timestampBegin, long timestampEnd, float attentionScore) {
+        }
+
+        @Override
+        public void onBlink(long timestamp, boolean isBlinkLeft, boolean isBlinkRight, boolean isBlink, float eyeOpenness) {
+        }
+
+        @Override
+        public void onDrowsiness(long timestamp, boolean isDrowsiness) {
+        }
+    };
+
+    public class OnFunc {
+
+        public void onStart(){
+            gazeTracker.setGazeTrackerCallbacks(
+                    gazeCallback, calibrationCallback, statusCallback, userStatusCallback);
+        }
+
+        public void onStop(){
+            gazeTracker.removeCallbacks(
+                    gazeCallback, calibrationCallback, statusCallback, userStatusCallback);
+        }
+
+        public void onDestroy(){
+            backgroundThread.quitSafely();
+        }
+
+    }
+
+    private void onStart(){
+        Log.d("GazeTrackerDataStorage", "onStart");
+        gazeTracker.setGazeTrackerCallbacks(
+                gazeCallback, calibrationCallback, statusCallback, userStatusCallback);
+    }
+
+
+
+    //-------------------------------------------------------------------
+
+
+
+    //--------------------------------------------------------------------
+
     private void show(String message) {
-//        Context ctx = getApplicationContext();
+
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 
@@ -202,8 +403,6 @@ public class GazeTrackerDataStorage {
         int y = pxToDp(gy);
 
         String cmd = "onTouchClick('" + x + "','" + y + "')";
-
-
 
 //        linearLayout.post(new Runnable() {
 //            @Override
@@ -300,7 +499,7 @@ public class GazeTrackerDataStorage {
 //    }
 
     private void saveGazeInfo(String task) {
-        setFolderName(); // curDate, curTime 초기화
+//        setFolderName(); // curDate, curTime 초기화
         gazeInfoToJson(); // 지금까지 기록된 gazeInfo를 jsonObject로 저장 ++ scroll
 //        writeFile(task); // jsonObject 내보내기
         list_gazeInfo = new ArrayList<GazeInfo>(); // list 초기화
@@ -333,28 +532,41 @@ public class GazeTrackerDataStorage {
         };
     }
 
-    private void modelinfo(){
+    private void modelInfo(){
+
+        Log.d("GazeTrackerDataStorage", "modelInfo success!");
         String modelName = Build.MODEL;
-        String userAgent = "";
-        if (linearLayout != null) {
-//            userAgent = linearLayout.getSettings().getUserAgentString();
-        }
         DisplayMetrics displayMetrics = new DisplayMetrics();
-//        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        windowManager.getDefaultDisplay().getMetrics(displayMetrics);
+
         int screen_height = displayMetrics.heightPixels;
         int screen_width = displayMetrics.widthPixels;
         float screen_xdpi = displayMetrics.xdpi;
         float screen_ydpi = displayMetrics.ydpi;
         float screen_density_dpi = displayMetrics.densityDpi;
         float screen_dpi_ration = displayMetrics.densityDpi / displayMetrics.xdpi;
-        int height = linearLayout.getHeight();
 //        int contentHeight = linearLayout.getContentHeight();
 
         Log.i("model", "modelName:" + modelName);
-        Log.i("model", "userAgent:" + userAgent);
         Log.i("model", "screen_size(h,w):[" + screen_height + "," + screen_width + "]");
         Log.i("model", "screen_dpi(x,y):[" + screen_xdpi + "," + screen_ydpi + "]");
         Log.i("model", "screen_density_dpi:" + screen_density_dpi);
         Log.i("model", "screen_dpi_ration:" + screen_dpi_ration);
     }
+
+    //setter
+
+    public void setGazeTracker(GazeTrackerManager gazeTracker) {
+        this.gazeTracker = gazeTracker;
+    }
+
+    public void setconstraintLayout(ConstraintLayout constraintLayout) {
+        this.constraintLayout = constraintLayout;
+    }
+
+    public void setViewPoint(PointView viewPoint) {
+        this.viewPoint = viewPoint;
+    }
+
 }

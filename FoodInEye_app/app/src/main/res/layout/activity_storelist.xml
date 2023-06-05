@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:id="@+id/storelistLinearlayout">
+    android:id="@+id/storelistLayout">
+
 
 <!--    <LinearLayout-->
 <!--        android:layout_width="wrap_content"-->
@@ -39,11 +42,12 @@
 
     <!--가게 list-->
     <LinearLayout
-        android:layout_width="350dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="center"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+        tools:ignore="MissingConstraints">
 
         <LinearLayout
             android:layout_width="230dp"
@@ -86,6 +90,9 @@
 
     </LinearLayout>
 
+    <visual.camp.sample.view.PointView
+        android:id="@+id/view_point_storelist"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
