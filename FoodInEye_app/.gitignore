@@ -192,6 +192,7 @@ fabric.properties
 .idea/
 gradle/
 app/build.gradle
+app/src/main/java/com.example.foodineye_app/GazeTrackerManager
 
 gazetracker-release/*.aar
 libgaze-release/*.aar
