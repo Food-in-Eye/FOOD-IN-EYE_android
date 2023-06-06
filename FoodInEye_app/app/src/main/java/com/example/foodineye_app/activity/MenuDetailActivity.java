@@ -1,19 +1,26 @@
 package com.example.foodineye_app.activity;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.HandlerThread;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.bumptech.glide.Glide;
+import com.example.foodineye_app.GazeTrackerDataStorage;
 import com.example.foodineye_app.R;
+
+import visual.camp.sample.view.PointView;
 
 public class MenuDetailActivity extends AppCompatActivity {
 
@@ -31,10 +38,31 @@ public class MenuDetailActivity extends AppCompatActivity {
 
     Cart cart;
 
+    //----------------------------------------------------------------------
+    GazeTrackerDataStorage gazeTrackerDataStorage;
+    private final HandlerThread backgroundThread = new HandlerThread("background");
+
+    //----------------------------------------------------------------------
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_detail);
+
+        //-------------------------------------------------------------------------------------
+        //start-gaze-tracking
+        Context ctx = getApplicationContext();
+        ConstraintLayout storeLayout = findViewById(R.id.menuDetailLayout);
+        PointView viewpoint = findViewById(R.id.view_point_menuDetail);
+
+        GazeTrackerDataStorage gazeTrackerDataStorage = new GazeTrackerDataStorage(this);
+        gazeTrackerDataStorage.setContext(this);
+
+        if (gazeTrackerDataStorage != null) {
+            gazeTrackerDataStorage.setGazeTracker(ctx, storeLayout, viewpoint);
+        }
+
+
+        //-------------------------------------------------------------------------------------
 
         order_btn = (LinearLayout) findViewById(R.id.menuD_btn);
 
@@ -135,4 +163,32 @@ public class MenuDetailActivity extends AppCompatActivity {
 
         alertDialog.show();
     }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("MenuDetailActivitysss", "onStop");
+
+        if (gazeTrackerDataStorage != null) {
+            gazeTrackerDataStorage.stopGazeTracker();
+        }
+//        gazeTracker.removeCallbacks(
+//                gazeCallback, calibrationCallback, statusCallback, userStatusCallback);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        backgroundThread.quitSafely();
+    }
+
+    //
+    // Miscellaneous
+    //
+
+    private void show(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
 }

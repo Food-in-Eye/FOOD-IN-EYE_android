@@ -1,18 +1,23 @@
 package com.example.foodineye_app.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.HandlerThread;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodineye_app.ApiClient;
 import com.example.foodineye_app.ApiInterface;
+import com.example.foodineye_app.GazeTrackerDataStorage;
 import com.example.foodineye_app.R;
 import com.example.foodineye_app.WebSocketManager;
 
@@ -24,6 +29,7 @@ import java.util.Map;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import visual.camp.sample.view.PointView;
 
 public class OrderActivity extends AppCompatActivity {
 
@@ -43,10 +49,33 @@ public class OrderActivity extends AppCompatActivity {
     String u_id = "6458f67e50bde95733e4b57f";
     String history_id;
 
+    //-----------------------------------------------------------------------------------------
+    //gazetracker
+    GazeTrackerDataStorage gazeTrackerDataStorage;
+    private final HandlerThread backgroundThread = new HandlerThread("background");
+
+    //-----------------------------------------------------------------------------------------
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
+
+        //-------------------------------------------------------------------------------------
+        //start-gaze-tracking
+        Context ctx = getApplicationContext();
+        ConstraintLayout storeLayout = findViewById(R.id.orderLayout);
+        PointView viewpoint = findViewById(R.id.view_point_order);
+
+        gazeTrackerDataStorage = new GazeTrackerDataStorage(this);
+        gazeTrackerDataStorage.setContext(this);
+
+        if (gazeTrackerDataStorage != null) {
+            gazeTrackerDataStorage.setGazeTracker(ctx, storeLayout, viewpoint);
+        }
+
+
+        //-------------------------------------------------------------------------------------
 
         //장바구니 리스트
         cartList = ((Data) getApplication()).getCartList();
@@ -175,5 +204,31 @@ public class OrderActivity extends AppCompatActivity {
             }//onClick
         });
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("OrderActivity", "onStop");
+
+        if (gazeTrackerDataStorage != null) {
+            gazeTrackerDataStorage.stopGazeTracker();
+        }
+//        gazeTracker.removeCallbacks(
+//                gazeCallback, calibrationCallback, statusCallback, userStatusCallback);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        backgroundThread.quitSafely();
+    }
+
+    //
+    // Miscellaneous
+    //
+
+    private void show(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 }
