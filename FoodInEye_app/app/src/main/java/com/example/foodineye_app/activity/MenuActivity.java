@@ -1,17 +1,20 @@
 package com.example.foodineye_app.activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.foodineye_app.ApiClient;
 import com.example.foodineye_app.ApiInterface;
+import com.example.foodineye_app.GazeTrackerDataStorage;
 import com.example.foodineye_app.R;
 import com.google.android.material.tabs.TabLayout;
 
@@ -21,6 +24,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import visual.camp.sample.view.PointView;
 
 public class MenuActivity extends AppCompatActivity{
 
@@ -47,6 +51,23 @@ public class MenuActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
+        //-------------------------------------------------------------------------------------
+        //start-gaze-tracking
+        Context ctx = getApplicationContext();
+        ConstraintLayout storeLayout = findViewById(R.id.menuLayout);
+        PointView viewpoint = findViewById(R.id.view_point_menu);
+
+        GazeTrackerDataStorage gazeTrackerDataStorage = new GazeTrackerDataStorage(this);
+        gazeTrackerDataStorage.setContext(this);
+
+        if (gazeTrackerDataStorage != null) {
+            gazeTrackerDataStorage.setGazeTracker(ctx, storeLayout, viewpoint);
+        }
+
+
+        //-------------------------------------------------------------------------------------
+
 
         //menuRecyclerview
         menurecyclerView = findViewById(R.id.recyclerView_menuList);

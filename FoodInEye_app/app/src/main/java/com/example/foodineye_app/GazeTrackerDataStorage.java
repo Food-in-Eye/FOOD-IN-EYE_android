@@ -9,7 +9,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.Toast;
@@ -83,10 +82,8 @@ public class GazeTrackerDataStorage {
         setGazeTracker(gazeTrackerManager);
 
         setconstraintLayout(constraintLayout);
-//        setViewPoint(viewPoint);
 
         initSpeedDial();
-//        initTrackerView();
         setViewPoint(viewPoint);
         initHandler();
         initTouchHandler();
@@ -99,27 +96,35 @@ public class GazeTrackerDataStorage {
 
         runGazeTracker();
 
-        Log.d("GazeTrackerDataStorage", "list_gazeInfo_1: " +list_gazeInfo);
-
-        ViewTreeObserver.OnGlobalLayoutListener layoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                //레이아웃 변경 시 호출되는 로직을 구현 -> 해당 레이아웃에서의 gazelist 모두 저장
-                synchronized (list_gazeInfo){
-                    gazeTracker.stopGazeTracking();
-                    viewPoint.setPosition(0,0);
-                    saveGazeInfo("none");
-                    Log.d("GazeTrackerDataStorage", "list_gazeInfo_2: " +list_gazeInfo);
-                    Log.d("GazeTrackerDataStorage", "jArray: " +jsonObject);
-                    list_gazeInfo = new ArrayList<>(); //list 초기화
-                }
-            }
-        };
-
-        ViewTreeObserver viewTreeObserver = constraintLayout.getViewTreeObserver();
-        viewTreeObserver.addOnGlobalLayoutListener(layoutListener);
+//        ViewTreeObserver.OnGlobalLayoutListener layoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+//            @Override
+//            public void onGlobalLayout() {
+//                //레이아웃 변경 시 호출되는 로직을 구현 -> 해당 레이아웃에서의 gazelist 모두 저장
+//                Log.d("GazeTrackerDataStorage", "change layout, stopGazeTracking ");
+//                    gazeTracker.stopGazeTracking();
+//                    viewPoint.setPosition(0,0);
+//                    saveGazeInfo("none");
+//                    Log.d("GazeTrackerDataStorage", "list_gazeInfo_2: " +list_gazeInfo);
+//                    Log.d("GazeTrackerDataStorage", "jArray: " +jsonObject);
+//                    list_gazeInfo = new ArrayList<>(); //list 초기화
+//            }
+//        };
+//
+//        ViewTreeObserver viewTreeObserver = constraintLayout.getViewTreeObserver();
+//        viewTreeObserver.addOnGlobalLayoutListener(layoutListener);
 
     }
+
+    public void stopGazeTracker(){
+        Log.d("GazeTrackerDataStorage", "change layout, stopGazeTracking ");
+        gazeTracker.stopGazeTracking();
+        viewPoint.setPosition(0,0);
+        saveGazeInfo("none");
+        Log.d("GazeTrackerDataStorage", "list_gazeInfo_2: " +list_gazeInfo);
+        Log.d("GazeTrackerDataStorage", "jArray: " +jsonObject);
+        list_gazeInfo = new ArrayList<>(); //list 초기화
+    }
+
 
     private void runGazeTracker() {
         new Thread(() -> {
@@ -330,36 +335,6 @@ public class GazeTrackerDataStorage {
         }
     };
 
-    public class OnFunc {
-
-        public void onStart(){
-            gazeTracker.setGazeTrackerCallbacks(
-                    gazeCallback, calibrationCallback, statusCallback, userStatusCallback);
-        }
-
-        public void onStop(){
-            gazeTracker.removeCallbacks(
-                    gazeCallback, calibrationCallback, statusCallback, userStatusCallback);
-        }
-
-        public void onDestroy(){
-            backgroundThread.quitSafely();
-        }
-
-    }
-
-    private void onStart(){
-        Log.d("GazeTrackerDataStorage", "onStart");
-        gazeTracker.setGazeTrackerCallbacks(
-                gazeCallback, calibrationCallback, statusCallback, userStatusCallback);
-    }
-
-
-
-    //-------------------------------------------------------------------
-
-
-
     //--------------------------------------------------------------------
 
     private void show(String message) {
@@ -432,23 +407,16 @@ public class GazeTrackerDataStorage {
             JSONArray jArray = new JSONArray();
             for (int j = 0; j < list_gazeInfo.size(); j++){
                 JSONObject sObject = new JSONObject();
-                sObject.put("timestamp", list_gazeInfo.get(j).timestamp);
                 sObject.put("x", list_gazeInfo.get(j).x);
-                sObject.put("y", list_gazeInfo.get(j).y);
-                sObject.put("trackingState", list_gazeInfo.get(j).trackingState);
-                sObject.put("eyeMovementState", list_gazeInfo.get(j).eyeMovementState);
-                sObject.put("screenState", list_gazeInfo.get(j).screenState);
-                sObject.put("gazePoint", list_gazeInfo.get(j).gazePoint);
-                sObject.put("movementPoint", list_gazeInfo.get(j).movementPoint);
-
-                sObject.put("scroll", list_scroll.get(j));
+                sObject.put("y", (list_gazeInfo.get(j).y)+scroll);
+                sObject.put("timestamp", list_gazeInfo.get(j).timestamp);
                 jArray.put(sObject);
 
                 if (j >= list_gazeInfo.size()-1){
-                    jsonObject.put("gazeinfo", jArray);
+                    jsonObject.put("gaze", jArray);
                 }
             }
-//            Log.i("json", jsonObject.toString());
+            Log.i("json", jsonObject.toString());
         } catch (JSONException e){
             e.printStackTrace();
             Log.i("json", "jsonobject fail");

@@ -109,7 +109,7 @@ public class StorelistActivity extends AppCompatActivity {
         ConstraintLayout storeLayout = findViewById(R.id.storelistLayout);
         PointView viewpoint = findViewById(R.id.view_point_storelist);
 
-        GazeTrackerDataStorage gazeTrackerDataStorage = new GazeTrackerDataStorage(this);
+        gazeTrackerDataStorage = new GazeTrackerDataStorage(this);
         gazeTrackerDataStorage.setContext(this);
 
         if (gazeTrackerDataStorage != null) {
@@ -177,6 +177,7 @@ public class StorelistActivity extends AppCompatActivity {
             gazeTracker.startGazeTracking();
         }).start();
     }
+
     private void initSpeedDial(){
 
         Log.d("StorelistActivity", "initSpeedDial success!");
@@ -377,18 +378,23 @@ public class StorelistActivity extends AppCompatActivity {
 //                gazeCallback, calibrationCallback, statusCallback, userStatusCallback);
 //    }
 //
-//    @Override
-//    protected void onStop() {
-//        super.onStop();
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("StorelistActivity", "onStop");
+
+        if (gazeTrackerDataStorage != null) {
+            gazeTrackerDataStorage.stopGazeTracker();
+        }
 //        gazeTracker.removeCallbacks(
 //                gazeCallback, calibrationCallback, statusCallback, userStatusCallback);
-//    }
-//
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        backgroundThread.quitSafely();
-//    }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        backgroundThread.quitSafely();
+    }
 
     //
     // Miscellaneous
