@@ -1,11 +1,19 @@
 package com.example.foodineye_app.activity;
 
 import android.app.Application;
+import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Data extends Application {
+
+    // layout 전체
+    private static JSONArray jsonArray = new JSONArray();
+
 
     private List<Cart> cartList;
     private String recentS_id, recentM_id;
@@ -67,4 +75,19 @@ public class Data extends Application {
     public String getHistory_id() {    return history_id;   }
 
     public void setHistory_id(String history_id) {    this.history_id = history_id;    }
+
+    public static JSONArray getJsonArray() {
+        if (jsonArray == null) {
+            jsonArray = new JSONArray();
+        }
+        return jsonArray;
+    }
+
+    public static void addJsonObject(JSONObject jsonObject) {
+        if (jsonArray == null) {
+            jsonArray = new JSONArray();
+        }
+        jsonArray.put(jsonObject);
+        Log.i("json", "jsonArray"+jsonArray.toString());
+    }
 }

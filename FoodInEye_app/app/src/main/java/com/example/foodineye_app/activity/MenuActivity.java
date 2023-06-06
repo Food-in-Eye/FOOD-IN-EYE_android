@@ -72,7 +72,7 @@ public class MenuActivity extends AppCompatActivity{
         storeLayout = findViewById(R.id.menuLayout);
         viewpoint = findViewById(R.id.view_point_menu);
 
-        GazeTrackerDataStorage gazeTrackerDataStorage = new GazeTrackerDataStorage(this);
+        gazeTrackerDataStorage = new GazeTrackerDataStorage(this);
         gazeTrackerDataStorage.setContext(this);
 
         if (gazeTrackerDataStorage != null) {
@@ -188,8 +188,8 @@ public class MenuActivity extends AppCompatActivity{
                         @Override
                         public void onTabSelected(TabLayout.Tab tab) {
                             //GazeTracker
-                            gazeTrackerDataStorage.stopGazeTracker("store_menu", recent_sNum, 0);
                             if (gazeTrackerDataStorage != null) {
+                                gazeTrackerDataStorage.stopGazeTracker("store_menu", recent_sNum, 0);
                                 gazeTrackerDataStorage.setGazeTracker(ctx, storeLayout, viewpoint);
                             }
 

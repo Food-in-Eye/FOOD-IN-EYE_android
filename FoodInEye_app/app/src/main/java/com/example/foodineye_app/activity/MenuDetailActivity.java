@@ -41,6 +41,9 @@ public class MenuDetailActivity extends AppCompatActivity {
     int s_num, f_num;
 
     //----------------------------------------------------------------------
+    Context ctx;
+    ConstraintLayout layout;
+    PointView viewpoint;
     GazeTrackerDataStorage gazeTrackerDataStorage;
     private final HandlerThread backgroundThread = new HandlerThread("background");
 
@@ -52,15 +55,15 @@ public class MenuDetailActivity extends AppCompatActivity {
 
         //-------------------------------------------------------------------------------------
         //start-gaze-tracking
-        Context ctx = getApplicationContext();
-        ConstraintLayout storeLayout = findViewById(R.id.menuDetailLayout);
-        PointView viewpoint = findViewById(R.id.view_point_menuDetail);
+        ctx = getApplicationContext();
+        layout = findViewById(R.id.menuDetailLayout);
+        viewpoint = findViewById(R.id.view_point_menuDetail);
 
-        GazeTrackerDataStorage gazeTrackerDataStorage = new GazeTrackerDataStorage(this);
+        gazeTrackerDataStorage = new GazeTrackerDataStorage(this);
         gazeTrackerDataStorage.setContext(this);
 
         if (gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.setGazeTracker(ctx, storeLayout, viewpoint);
+            gazeTrackerDataStorage.setGazeTracker(ctx, layout, viewpoint);
         }
 
 
@@ -94,6 +97,7 @@ public class MenuDetailActivity extends AppCompatActivity {
 
         Log.d("intentToDetail", "intentToDetail_sid" + s_Id);
         Log.d("intentToDetail", "intentToDetail_mid" + m_Id);
+        Log.d("intentToDetail", "intentToDetail_fnum" + f_num);
 
 
         menu_name.setText(intentToDetail.food.getM_name());
@@ -154,6 +158,9 @@ public class MenuDetailActivity extends AppCompatActivity {
         toCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (gazeTrackerDataStorage != null) {
+                    gazeTrackerDataStorage.stopGazeTracker("menu_detail", s_num, f_num);
+                }
                 Intent intent = new Intent(getApplicationContext(), ShoppingCartActivity.class);
                 startActivity(intent);
             }
@@ -173,10 +180,10 @@ public class MenuDetailActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d("MenuDetailActivitysss", "onStop");
+        Log.d("MenuDetailActivity", "onStop");
 
         if (gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.stopGazeTracker("menu_detail", s_num,f_num);
+            gazeTrackerDataStorage.stopGazeTracker("menu_detail", s_num, f_num);
         }
 //        gazeTracker.removeCallbacks(
 //                gazeCallback, calibrationCallback, statusCallback, userStatusCallback);
