@@ -12,6 +12,7 @@ public class Food implements Serializable {
     String m_desc;
     String m_allergy;
     String m_origin;
+    int f_num;
 
     public String getFood_id() {
         return food_id;
@@ -67,5 +68,13 @@ public class Food implements Serializable {
 
     public void setM_origin(String m_origin) {
         this.m_origin = m_origin;
+    }
+
+    public int getF_num() {
+        return f_num;
+    }
+
+    public void setF_num(int f_num) {
+        this.f_num = f_num;
     }
 }

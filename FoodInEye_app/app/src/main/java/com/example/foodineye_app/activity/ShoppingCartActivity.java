@@ -116,7 +116,7 @@ public class ShoppingCartActivity extends AppCompatActivity implements CartAdapt
         Log.d("StorelistActivity", "onStop");
 
         if (gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.stopGazeTracker();
+            gazeTrackerDataStorage.stopGazeTracker("cart", 0, 0);
         }
 //        gazeTracker.removeCallbacks(
 //                gazeCallback, calibrationCallback, statusCallback, userStatusCallback);

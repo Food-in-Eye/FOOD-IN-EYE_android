@@ -38,6 +38,8 @@ public class MenuDetailActivity extends AppCompatActivity {
 
     Cart cart;
 
+    int s_num, f_num;
+
     //----------------------------------------------------------------------
     GazeTrackerDataStorage gazeTrackerDataStorage;
     private final HandlerThread backgroundThread = new HandlerThread("background");
@@ -85,6 +87,9 @@ public class MenuDetailActivity extends AppCompatActivity {
         m_name = intentToDetail.food.getM_name();
         m_price = intentToDetail.food.getM_price();
         m_imageKey = intentToDetail.food.getM_img_key();
+        s_num = intentToDetail.getS_num();
+        f_num = intentToDetail.food.getF_num();
+
 
 
         Log.d("intentToDetail", "intentToDetail_sid" + s_Id);
@@ -171,7 +176,7 @@ public class MenuDetailActivity extends AppCompatActivity {
         Log.d("MenuDetailActivitysss", "onStop");
 
         if (gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.stopGazeTracker();
+            gazeTrackerDataStorage.stopGazeTracker("menu_detail", s_num,f_num);
         }
 //        gazeTracker.removeCallbacks(
 //                gazeCallback, calibrationCallback, statusCallback, userStatusCallback);

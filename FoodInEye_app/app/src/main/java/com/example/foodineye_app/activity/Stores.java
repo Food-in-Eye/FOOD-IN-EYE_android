@@ -26,6 +26,9 @@ public class Stores {
     @SerializedName("m_id")
     @Expose
     private String m_id;
+    @SerializedName("num")
+    @Expose
+    private int s_num;
 
     // status == 2 -> Close, status == 1 -> Open
     public boolean isOpen(){
@@ -88,6 +91,14 @@ public class Stores {
 
     public void setM_id(String m_id) {
         this.m_id = m_id;
+    }
+
+    public int getS_num() {
+        return s_num;
+    }
+
+    public void setS_num(int s_num) {
+        this.s_num = s_num;
     }
 
     @Override

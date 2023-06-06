@@ -26,14 +26,16 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder> 
 
     private String m_Id,s_Id;
     private String s_name;
+    private int s_num;
 
 
-    public MenuAdapter(Context mContext, List<Menus> menusList, String m_Id, String s_Id, String s_name) {
+    public MenuAdapter(Context mContext, List<Menus> menusList, String m_Id, String s_Id, String s_name, int s_num) {
         this.mContext = mContext;
         this.menusList = menusList;
         this.m_Id = m_Id;
         this.s_Id = s_Id;
         this.s_name = s_name;
+        this.s_num = s_num;
     }
 
     @NonNull
@@ -65,7 +67,8 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder> 
         food.setM_desc(menus.getM_desc());
         food.setM_allergy(menus.getAllergy());
         food.setM_origin(menus.getOrigin());
-        IntentToDetail intentToDetail = new IntentToDetail(s_Id, m_Id, s_name, food);
+        food.setF_num(menus.getNum());
+        IntentToDetail intentToDetail = new IntentToDetail(s_Id, m_Id, s_name, food, s_num);
         Log.d("MenuAdapter", "intentToDetail"+intentToDetail.toString());
 
 

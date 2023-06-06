@@ -108,7 +108,7 @@ public class StorelistActivity extends AppCompatActivity {
         Log.d("StorelistActivity", "onStop");
 
         if (gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.stopGazeTracker();
+            gazeTrackerDataStorage.stopGazeTracker("store_list", 0, 0);
         }
 //        gazeTracker.removeCallbacks(
 //                gazeCallback, calibrationCallback, statusCallback, userStatusCallback);

@@ -96,30 +96,15 @@ public class GazeTrackerDataStorage {
 
         runGazeTracker();
 
-//        ViewTreeObserver.OnGlobalLayoutListener layoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
-//            @Override
-//            public void onGlobalLayout() {
-//                //레이아웃 변경 시 호출되는 로직을 구현 -> 해당 레이아웃에서의 gazelist 모두 저장
-//                Log.d("GazeTrackerDataStorage", "change layout, stopGazeTracking ");
-//                    gazeTracker.stopGazeTracking();
-//                    viewPoint.setPosition(0,0);
-//                    saveGazeInfo("none");
-//                    Log.d("GazeTrackerDataStorage", "list_gazeInfo_2: " +list_gazeInfo);
-//                    Log.d("GazeTrackerDataStorage", "jArray: " +jsonObject);
-//                    list_gazeInfo = new ArrayList<>(); //list 초기화
-//            }
-//        };
-//
-//        ViewTreeObserver viewTreeObserver = constraintLayout.getViewTreeObserver();
-//        viewTreeObserver.addOnGlobalLayoutListener(layoutListener);
-
     }
 
-    public void stopGazeTracker(){
+    public void stopGazeTracker(String layout_name, int store_num, int food_num){
         Log.d("GazeTrackerDataStorage", "change layout, stopGazeTracking ");
         gazeTracker.stopGazeTracking();
         viewPoint.setPosition(0,0);
-        saveGazeInfo("none");
+        gazeInfoToJson(layout_name, store_num, food_num); // 지금까지 기록된 gazeInfo를 jsonObject로 저장 ++ scroll
+        list_gazeInfo = new ArrayList<GazeInfo>(); // list 초기화
+//        saveGazeInfo("none");
         Log.d("GazeTrackerDataStorage", "list_gazeInfo_2: " +list_gazeInfo);
         Log.d("GazeTrackerDataStorage", "jArray: " +jsonObject);
         list_gazeInfo = new ArrayList<>(); //list 초기화
@@ -401,27 +386,46 @@ public class GazeTrackerDataStorage {
     }
 
     /// for save file ----------------------------------------------------------------------
-    private void gazeInfoToJson() {   //Gazeinfo arraylist -> json
-        jsonObject = new JSONObject();
-        try{
-            JSONArray jArray = new JSONArray();
-            for (int j = 0; j < list_gazeInfo.size(); j++){
-                JSONObject sObject = new JSONObject();
-                sObject.put("x", list_gazeInfo.get(j).x);
-                sObject.put("y", (list_gazeInfo.get(j).y)+scroll);
-                sObject.put("timestamp", list_gazeInfo.get(j).timestamp);
-                jArray.put(sObject);
+    private void gazeInfoToJson(String layout_name, int store_num, int food_num) {
 
-                if (j >= list_gazeInfo.size()-1){
-                    jsonObject.put("gaze", jArray);
-                }
+        String layoutName = layout_name;
+        int s_num = store_num;
+        int f_num = food_num;
+
+        try {
+            JSONObject jsonObject = new JSONObject();
+            // "page" 필드 추가
+            jsonObject.put("page", layoutName);
+
+            // "s_num" 필드 추가
+            jsonObject.put("s_num", s_num);
+
+            // "f_num" 필드 추가
+            jsonObject.put("f_num", f_num);
+
+            JSONArray gazeArray = new JSONArray();
+
+            for (int j = 0; j < list_gazeInfo.size(); j++) {
+                JSONObject gazeObject = new JSONObject();
+
+                // Gaze 정보의 x 좌표, y 좌표, timestamp 추가
+                gazeObject.put("x", list_gazeInfo.get(j).x);
+                gazeObject.put("y", (list_gazeInfo.get(j).y)+scroll);
+                gazeObject.put("t", list_gazeInfo.get(j).timestamp);
+
+                gazeArray.put(gazeObject);
             }
+
+            // "gaze" 필드에 Gaze 정보 배열 추가
+            jsonObject.put("gaze", gazeArray);
+
             Log.i("json", jsonObject.toString());
-        } catch (JSONException e){
+        } catch (JSONException e) {
             e.printStackTrace();
             Log.i("json", "jsonobject fail");
         }
     }
+
 
     private void setFolderName(){
         Date currentTime = Calendar.getInstance().getTime();
@@ -466,13 +470,13 @@ public class GazeTrackerDataStorage {
 //        }
 //    }
 
-    private void saveGazeInfo(String task) {
-//        setFolderName(); // curDate, curTime 초기화
-        gazeInfoToJson(); // 지금까지 기록된 gazeInfo를 jsonObject로 저장 ++ scroll
-//        writeFile(task); // jsonObject 내보내기
-        list_gazeInfo = new ArrayList<GazeInfo>(); // list 초기화
-
-    }
+//    private void saveGazeInfo(String task) {
+////        setFolderName(); // curDate, curTime 초기화
+//        gazeInfoToJson(); // 지금까지 기록된 gazeInfo를 jsonObject로 저장 ++ scroll
+////        writeFile(task); // jsonObject 내보내기
+//        list_gazeInfo = new ArrayList<GazeInfo>(); // list 초기화
+//
+//    }
 
     private void task1min() {
         list_gazeInfo = new ArrayList<GazeInfo>(); // list 초기화
@@ -494,7 +498,7 @@ public class GazeTrackerDataStorage {
             @Override
             public void onFinish() {
                 Log.i("task", "timer is over");
-                saveGazeInfo("task"+totalSec);
+//                saveGazeInfo("task"+totalSec);
                 Log.i("task", "saveGazeInfo");
             }
         };
@@ -514,7 +518,6 @@ public class GazeTrackerDataStorage {
         float screen_ydpi = displayMetrics.ydpi;
         float screen_density_dpi = displayMetrics.densityDpi;
         float screen_dpi_ration = displayMetrics.densityDpi / displayMetrics.xdpi;
-//        int contentHeight = linearLayout.getContentHeight();
 
         Log.i("model", "modelName:" + modelName);
         Log.i("model", "screen_size(h,w):[" + screen_height + "," + screen_width + "]");

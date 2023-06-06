@@ -212,7 +212,7 @@ public class OrderActivity extends AppCompatActivity {
         Log.d("OrderActivity", "onStop");
 
         if (gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.stopGazeTracker();
+            gazeTrackerDataStorage.stopGazeTracker("order", 0, 0);
         }
 //        gazeTracker.removeCallbacks(
 //                gazeCallback, calibrationCallback, statusCallback, userStatusCallback);

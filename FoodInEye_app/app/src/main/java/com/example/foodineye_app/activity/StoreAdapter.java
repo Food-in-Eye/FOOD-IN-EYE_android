@@ -49,6 +49,7 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.MyViewHolder
         //store ID 값 받아오기
         String storeId = store.get_id();
         String menuId = store.getM_id();
+        int storeNum = store.getS_num();
 
         //Click Store Detail, intent에 가게 "_id" 전달, MenuActivity와 연결
         holder.itemView.setOnClickListener(new View.OnClickListener() {

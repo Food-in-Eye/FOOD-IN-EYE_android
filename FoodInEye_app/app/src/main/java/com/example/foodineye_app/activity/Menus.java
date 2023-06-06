@@ -3,8 +3,6 @@ package com.example.foodineye_app.activity;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 public class Menus {
 
     @SerializedName("f_id")
@@ -28,6 +26,9 @@ public class Menus {
     @SerializedName("origin")
     @Expose
     private String origin;
+    @SerializedName("num")
+    @Expose
+    private int num;
 
 
     @Override
@@ -86,5 +87,13 @@ public class Menus {
 
     public void setOrigin(String origin) {
         this.origin = origin;
+    }
+
+    public int getNum() {
+        return num;
+    }
+
+    public void setNum(int num) {
+        this.num = num;
     }
 }

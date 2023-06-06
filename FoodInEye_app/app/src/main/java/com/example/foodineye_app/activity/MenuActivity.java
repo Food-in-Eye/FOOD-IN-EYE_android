@@ -3,8 +3,10 @@ package com.example.foodineye_app.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.HandlerThread;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -47,6 +49,18 @@ public class MenuActivity extends AppCompatActivity{
 
     String tab_Id, tabM_id; // 탭에 _ID, m_ID 할당
 
+    //-----------------------------------------------------------------------------------------
+    Context ctx;
+    ConstraintLayout storeLayout;
+    PointView viewpoint;
+    //gazetracker
+    GazeTrackerDataStorage gazeTrackerDataStorage;
+    private final HandlerThread backgroundThread = new HandlerThread("background");
+    int sNum, fNum;
+    int recent_sNum;
+
+    //-----------------------------------------------------------------------------------------
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,9 +68,9 @@ public class MenuActivity extends AppCompatActivity{
 
         //-------------------------------------------------------------------------------------
         //start-gaze-tracking
-        Context ctx = getApplicationContext();
-        ConstraintLayout storeLayout = findViewById(R.id.menuLayout);
-        PointView viewpoint = findViewById(R.id.view_point_menu);
+        ctx = getApplicationContext();
+        storeLayout = findViewById(R.id.menuLayout);
+        viewpoint = findViewById(R.id.view_point_menu);
 
         GazeTrackerDataStorage gazeTrackerDataStorage = new GazeTrackerDataStorage(this);
         gazeTrackerDataStorage.setContext(this);
@@ -101,7 +115,7 @@ public class MenuActivity extends AppCompatActivity{
         }
 
     }
-    public void showMenu(String m_id, String tabs_id, String s_name){
+    public void showMenu(String m_id, String tabs_id, String s_name, int s_num){
         //menuList 세팅
         ApiInterface apiInterface1 = ApiClient.getClient().create(ApiInterface.class);
         Log.d("MenuActivity", "showMenu_M: " + m_id);
@@ -114,11 +128,11 @@ public class MenuActivity extends AppCompatActivity{
                 if(response.isSuccessful() && response.body() != null){
                     //menuResponse = response.body().response;
                     menuInfo = response.body().response.getMenus();
-                    menuAdapter = new MenuAdapter(getApplicationContext(), menuInfo, m_id, tabs_id, s_name);
+                    menuAdapter = new MenuAdapter(getApplicationContext(), menuInfo, m_id, tabs_id, s_name, s_num);
                     menurecyclerView.setAdapter(menuAdapter);
                 }else{
                     //menuInfo = response.body().response.getMenus();
-                    menuAdapter = new MenuAdapter(getApplicationContext(), menuInfo, m_id, tabs_id, s_name);
+                    menuAdapter = new MenuAdapter(getApplicationContext(), menuInfo, m_id, tabs_id, s_name, s_num);
                     menurecyclerView.setAdapter(menuAdapter);
                 }
             }
@@ -150,10 +164,11 @@ public class MenuActivity extends AppCompatActivity{
                             store_intro.setText(store.getDesc());
                             store_openTime.setText(store.getSchedule());
                             store_notice.setText(store.getNotice());
+                            recent_sNum = store.getS_num();
                             break;
                         }
                     }
-                    showMenu(m_id, s_id, store_name);
+                    showMenu(m_id, s_id, store_name, recent_sNum);
 
                     //tabLayout
                     tabLayout = findViewById(R.id.store_tab);
@@ -172,6 +187,12 @@ public class MenuActivity extends AppCompatActivity{
                     tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                         @Override
                         public void onTabSelected(TabLayout.Tab tab) {
+                            //GazeTracker
+                            gazeTrackerDataStorage.stopGazeTracker("store_menu", recent_sNum, 0);
+                            if (gazeTrackerDataStorage != null) {
+                                gazeTrackerDataStorage.setGazeTracker(ctx, storeLayout, viewpoint);
+                            }
+
                             //선택
                             String store_name = null;
                             int position = tab.getPosition();
@@ -186,10 +207,14 @@ public class MenuActivity extends AppCompatActivity{
                                     Log.d("MenuActivity","tabM_id"+tabM_id);
                                     Log.d("MenuActivity","tabId"+tabId);
 //                                    showMenu(tabM_id, tab_Id, store_name);
-                                    showMenu(tabM_id, store.get_id(), store_name);
+                                    showMenu(tabM_id, store.get_id(), store_name, recent_sNum);
                                     //menuAdapter.notifyDataSetChanged();
+                                    sNum = store.getS_num();
+                                    recent_sNum = sNum;
                                 }
                             }
+
+
                         }
 
                         @Override
@@ -211,4 +236,33 @@ public class MenuActivity extends AppCompatActivity{
             }
         });
     }
+
+    //-------------------------------------------------------------------------------------------
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("StorelistActivity", "onStop");
+
+        if (gazeTrackerDataStorage != null) {
+            gazeTrackerDataStorage.stopGazeTracker("store_menu", recent_sNum, 0);
+        }
+//        gazeTracker.removeCallbacks(
+//                gazeCallback, calibrationCallback, statusCallback, userStatusCallback);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        backgroundThread.quitSafely();
+    }
+
+    //
+    // Miscellaneous
+    //
+
+    private void show(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
 }
