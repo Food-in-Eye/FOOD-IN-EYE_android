@@ -12,7 +12,7 @@ import java.util.List;
 public class Data extends Application {
 
     // layout 전체
-    private static JSONArray jsonArray = new JSONArray();
+    private static JSONArray jsonGazeArray = new JSONArray();
 
 
     private List<Cart> cartList;
@@ -77,17 +77,17 @@ public class Data extends Application {
     public void setHistory_id(String history_id) {    this.history_id = history_id;    }
 
     public static JSONArray getJsonArray() {
-        if (jsonArray == null) {
-            jsonArray = new JSONArray();
+        if (jsonGazeArray == null) {
+            jsonGazeArray = new JSONArray();
         }
-        return jsonArray;
+        return jsonGazeArray;
     }
 
     public static void addJsonObject(JSONObject jsonObject) {
-        if (jsonArray == null) {
-            jsonArray = new JSONArray();
+        if (jsonGazeArray == null) {
+            jsonGazeArray = new JSONArray();
         }
-        jsonArray.put(jsonObject);
-        Log.i("json", "jsonArray"+jsonArray.toString());
+        jsonGazeArray.put(jsonObject);
+        Log.i("json", "jsonArray"+jsonGazeArray.toString());
     }
 }

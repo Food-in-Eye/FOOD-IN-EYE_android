@@ -21,6 +21,8 @@ import com.example.foodineye_app.GazeTrackerDataStorage;
 import com.example.foodineye_app.R;
 import com.example.foodineye_app.WebSocketManager;
 
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,6 +55,7 @@ public class OrderActivity extends AppCompatActivity {
     //gazetracker
     GazeTrackerDataStorage gazeTrackerDataStorage;
     private final HandlerThread backgroundThread = new HandlerThread("background");
+    JSONArray jsonGazeArray; //전체 gaze
 
     //-----------------------------------------------------------------------------------------
 
@@ -137,13 +140,15 @@ public class OrderActivity extends AppCompatActivity {
 
         //postOrder 세팅
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-
         //요청 바디에 들어가 PostOrder 객체 생성
         postOrder = new PostOrder(u_id, total, content);
-
         Log.d("OrderActivity", "postOrder" + postOrder.toString());
 
-        //결제하기 버튼 클릭 + API 요청 보내기
+
+        ApiInterface apiInterface1 = ApiClient.getClient().create(ApiInterface.class);
+        jsonGazeArray = Data.getJsonArray();
+
+        //결제하기 버튼 클릭 + API 요청 보내기 + order, websocket, gaze
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.payBtn);
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,11 +182,34 @@ public class OrderActivity extends AppCompatActivity {
 
 
                             //웹소켓 연결하기
-//                            WebSocketManager.getInstance().setHistoryId(history_id);
                             Log.d("WebSocket", "history_id: "+history_id);
                             Log.d("WebSocket", "WebSocket 시도");
 
                             WebSocketManager.getInstance(getApplicationContext()).connectWebSocket(history_id);
+
+                            // gaze 보내기
+                            Call<PostGazeResponse> gazeCall = apiInterface1.createGaze(history_id, "True",jsonGazeArray);
+                            gazeCall.enqueue(new Callback<PostGazeResponse>() {
+                                @Override
+                                public void onResponse(Call<PostGazeResponse> call, Response<PostGazeResponse> response) {
+                                    if (response.isSuccessful() && response.body() != null) {
+                                        // 성공적인 응답을 받은 경우
+                                        //요청이 성공할 경우 처리할 작업
+                                        PostGazeResponse postGazeResponse = response.body();
+                                        Log.d("OrderActivity", "postGazeResponse: " +postGazeResponse.toString());
+                                        // postGazeResponse를 사용하여 원하는 작업 수행
+                                    } else {
+                                        // 응답이 실패하거나 response.body()가 null인 경우
+                                        Log.e("Response", "Response is unsuccessful or body is null");
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<PostGazeResponse> call, Throwable t) {
+                                    Log.d("OrderActivity", "postGazeResponse 전송 실패");
+                                }
+                            });
+
 
 
                         }
