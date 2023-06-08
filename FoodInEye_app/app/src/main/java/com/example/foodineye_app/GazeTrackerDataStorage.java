@@ -18,10 +18,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.example.foodineye_app.activity.Data;
 import com.example.foodineye_app.activity.StorelistActivity;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -67,8 +63,10 @@ public class GazeTrackerDataStorage {
     private String curDateTime;
 
     private ArrayList<GazeInfo> list_gazeInfo = new ArrayList<GazeInfo>(); // list for gazeInfo
+    private PostGaze postGaze; //layout 하나
+    private PostGaze.Gaze gaze;
+    private ArrayList<PostGaze.Gaze> gazeArrayList = new ArrayList<>();
 
-    private JSONArray jsonArray = new JSONArray(); // layout 전체
 
     //scroll change
     private int scroll;
@@ -406,43 +404,57 @@ public class GazeTrackerDataStorage {
         int s_num = store_num;
         int f_num = food_num;
 
-        try {
-            JSONObject gazeObject = new JSONObject();
-            // "page" 필드 추가
-            gazeObject.put("page", layoutName);
 
-            // "s_num" 필드 추가
-            gazeObject.put("s_num", s_num);
-
-            // "f_num" 필드 추가
-            gazeObject.put("f_num", f_num);
-
-            JSONArray gazeArray = new JSONArray();
-
-            for (int j = 0; j < list_gazeInfo.size(); j++) {
-                JSONObject gazeJson = new JSONObject();
-
-                // Gaze 정보의 x 좌표, y 좌표, timestamp 추가
-                gazeJson.put("x", list_gazeInfo.get(j).x);
-                gazeJson.put("y", (list_gazeInfo.get(j).y)+scroll);
-                gazeJson.put("t", list_gazeInfo.get(j).timestamp);
-
-                gazeArray.put(gazeJson);
-            }
-
-            // "gaze" 필드에 Gaze 정보 배열 추가
-            gazeObject.put("gaze", gazeArray);
-            Log.i("json", gazeObject.toString());
-
-            // 한 화면에서의 gazeObject -> 전체 jsonObject에 넣기
-
-            Data.addJsonObject(gazeObject);
-
-//            jsonObject.put("data", jsonArray);
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Log.i("json", "gazeObject fail");
+        for(int j = 0; j<list_gazeInfo.size(); j++){
+            long t = list_gazeInfo.get(j).timestamp;
+            float x = list_gazeInfo.get(j).x;
+            float y = (list_gazeInfo.get(j).y) + scroll;
+            gaze = new PostGaze.Gaze(x, y, t);
+            gazeArrayList.add(gaze);
         }
+
+        postGaze = new PostGaze(layoutName, s_num, f_num, gazeArrayList);
+        Log.d("Gaze", "gaze: "+postGaze);
+        Data.setGazeList(postGaze);
+
+//        try {
+//            JSONObject gazeObject = new JSONObject();
+//            // "page" 필드 추가
+//            gazeObject.put("page", layoutName);
+//
+//            // "s_num" 필드 추가
+//            gazeObject.put("s_num", s_num);
+//
+//            // "f_num" 필드 추가
+//            gazeObject.put("f_num", f_num);
+//
+//            JSONArray gazeArray = new JSONArray();
+//
+//            for (int j = 0; j < list_gazeInfo.size(); j++) {
+//                JSONObject gazeJson = new JSONObject();
+//
+//                // Gaze 정보의 x 좌표, y 좌표, timestamp 추가
+//                gazeJson.put("x", list_gazeInfo.get(j).x);
+//                gazeJson.put("y", (list_gazeInfo.get(j).y)+scroll);
+//                gazeJson.put("t", list_gazeInfo.get(j).timestamp);
+//
+//                gazeArray.put(gazeJson);
+//            }
+//
+//            // "gaze" 필드에 Gaze 정보 배열 추가
+//            gazeObject.put("gaze", gazeArray);
+//            Log.i("json", gazeObject.toString());
+//
+//            // 한 화면에서의 gazeObject -> 전체 jsonObject에 넣기
+//
+//            Data.addJsonObject(gazeObject);
+//
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//            Log.i("json", "gazeObject fail");
+//        }
+
+
     }
 
 

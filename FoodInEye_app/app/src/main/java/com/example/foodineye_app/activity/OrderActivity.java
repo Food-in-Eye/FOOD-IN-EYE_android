@@ -1,5 +1,6 @@
 package com.example.foodineye_app.activity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,17 +13,22 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodineye_app.ApiClient;
 import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.GazeTrackerDataStorage;
+import com.example.foodineye_app.PostGaze;
 import com.example.foodineye_app.R;
-import com.example.foodineye_app.WebSocketManager;
 
 import org.json.JSONArray;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -55,7 +61,8 @@ public class OrderActivity extends AppCompatActivity {
     //gazetracker
     GazeTrackerDataStorage gazeTrackerDataStorage;
     private final HandlerThread backgroundThread = new HandlerThread("background");
-    JSONArray jsonGazeArray; //전체 gaze
+    JSONArray jsonGazeArray = new JSONArray(); //전체 gaze
+    List<PostGaze> postGazes = new ArrayList<>();
 
     //-----------------------------------------------------------------------------------------
 
@@ -77,6 +84,7 @@ public class OrderActivity extends AppCompatActivity {
             gazeTrackerDataStorage.setGazeTracker(ctx, storeLayout, viewpoint);
         }
 
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MODE_PRIVATE);
 
         //-------------------------------------------------------------------------------------
 
@@ -144,15 +152,14 @@ public class OrderActivity extends AppCompatActivity {
         postOrder = new PostOrder(u_id, total, content);
         Log.d("OrderActivity", "postOrder" + postOrder.toString());
 
-
-        ApiInterface apiInterface1 = ApiClient.getClient().create(ApiInterface.class);
-        jsonGazeArray = Data.getJsonArray();
-
         //결제하기 버튼 클릭 + API 요청 보내기 + order, websocket, gaze
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.payBtn);
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (gazeTrackerDataStorage != null) {
+                    gazeTrackerDataStorage.stopGazeTracker("order", 0, 0);
+                }
                 Log.d("OrderActivity", "결제하기!");
                 Call<PostOrderResponse> call = apiInterface.createOrder(postOrder);
                 call.enqueue(new Callback<PostOrderResponse>() {
@@ -185,10 +192,20 @@ public class OrderActivity extends AppCompatActivity {
                             Log.d("WebSocket", "history_id: "+history_id);
                             Log.d("WebSocket", "WebSocket 시도");
 
-                            WebSocketManager.getInstance(getApplicationContext()).connectWebSocket(history_id);
+//                            WebSocketManager.getInstance(getApplicationContext()).connectWebSocket(history_id);
 
                             // gaze 보내기
-                            Call<PostGazeResponse> gazeCall = apiInterface1.createGaze(history_id, "True",jsonGazeArray);
+//                            ApiInterface apiInterface1 = ApiClient.getClient().create(ApiInterface.class);
+//                            jsonGazeArray = ((Data) getApplication()).getJsonArray();
+
+                            postGazes = (List<PostGaze>) ((Data)getApplication()).getGazeList();
+
+
+
+
+                            Call<PostGazeResponse> gazeCall = apiInterface.createGaze(history_id, postGazes);
+                            Log.d("Response", "postGaze: "+postGazes.toString());
+
                             gazeCall.enqueue(new Callback<PostGazeResponse>() {
                                 @Override
                                 public void onResponse(Call<PostGazeResponse> call, Response<PostGazeResponse> response) {
@@ -196,7 +213,7 @@ public class OrderActivity extends AppCompatActivity {
                                         // 성공적인 응답을 받은 경우
                                         //요청이 성공할 경우 처리할 작업
                                         PostGazeResponse postGazeResponse = response.body();
-                                        Log.d("OrderActivity", "postGazeResponse: " +postGazeResponse.toString());
+                                        Log.d("Response", "postGazeResponse: " +postGazeResponse.toString());
                                         // postGazeResponse를 사용하여 원하는 작업 수행
                                     } else {
                                         // 응답이 실패하거나 response.body()가 null인 경우
@@ -239,9 +256,9 @@ public class OrderActivity extends AppCompatActivity {
         super.onStop();
         Log.d("OrderActivity", "onStop");
 
-        if (gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.stopGazeTracker("order", 0, 0);
-        }
+//        if (gazeTrackerDataStorage != null) {
+//            gazeTrackerDataStorage.stopGazeTracker("order", 0, 0);
+//        }
 //        gazeTracker.removeCallbacks(
 //                gazeCallback, calibrationCallback, statusCallback, userStatusCallback);
     }
@@ -259,4 +276,39 @@ public class OrderActivity extends AppCompatActivity {
     private void show(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
+
+    private void writeFile(String fileTitle) {
+
+        fileTitle = fileTitle + "_" + ".json";
+
+//        File dir = new File(Environment.getExternalStorageDirectory() + userId + File.pathSeparator + curDate);
+        File dir = new File(this.getFilesDir() + "/" );
+        if(!dir.exists()) {
+            dir.mkdirs();
+            Log.i("mkdirs", dir.getAbsolutePath());
+        }
+//        File file = new File(this.getFilesDir(), fileTitle);
+        File file = new File(dir, fileTitle);
+        Log.d("dir", "file path: "+dir.getAbsolutePath());
+
+        try {
+            //파일 생성
+            if (!file.exists()) {
+                file.createNewFile();
+                Log.i("File", "create file");
+            }
+
+            BufferedWriter bw = new BufferedWriter(new FileWriter(file,true));
+            bw.write(jsonGazeArray.toString());
+
+            bw.newLine();
+            bw.close();
+            show("save success");
+        } catch (IOException e) {
+            Log.i("저장오류", e.getMessage());
+            show("save fail");
+        }
+    }
+
+
 }

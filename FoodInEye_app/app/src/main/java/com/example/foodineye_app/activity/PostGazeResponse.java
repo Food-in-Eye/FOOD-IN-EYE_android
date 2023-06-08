@@ -11,6 +11,9 @@ public class PostGazeResponse {
     @SerializedName("status")
     @Expose
     public String status;
+    @SerializedName("url")
+    @Expose
+    public String url;
 
-    public String toString(){return "request: "+ request+ "status: "+ status;}
+    public String toString(){return "request: "+ request+ "status: "+ status + "url: "+url;}
 }

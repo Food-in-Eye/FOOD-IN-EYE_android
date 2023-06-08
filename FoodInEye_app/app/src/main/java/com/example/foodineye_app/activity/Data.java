@@ -3,6 +3,8 @@ package com.example.foodineye_app.activity;
 import android.app.Application;
 import android.util.Log;
 
+import com.example.foodineye_app.PostGaze;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -13,7 +15,7 @@ public class Data extends Application {
 
     // layout 전체
     private static JSONArray jsonGazeArray = new JSONArray();
-
+    private static List<PostGaze> GazeList = new ArrayList<>();
 
     private List<Cart> cartList;
     private String recentS_id, recentM_id;
@@ -76,7 +78,7 @@ public class Data extends Application {
 
     public void setHistory_id(String history_id) {    this.history_id = history_id;    }
 
-    public static JSONArray getJsonArray() {
+    public JSONArray getJsonArray() {
         if (jsonGazeArray == null) {
             jsonGazeArray = new JSONArray();
         }
@@ -89,5 +91,13 @@ public class Data extends Application {
         }
         jsonGazeArray.put(jsonObject);
         Log.i("json", "jsonArray"+jsonGazeArray.toString());
+    }
+
+    public List<PostGaze> getGazeList() {
+        return GazeList;
+    }
+
+    public static void setGazeList(PostGaze postGaze) {
+        GazeList.add(postGaze);
     }
 }

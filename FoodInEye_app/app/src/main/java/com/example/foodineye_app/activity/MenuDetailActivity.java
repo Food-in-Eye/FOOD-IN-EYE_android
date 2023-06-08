@@ -182,9 +182,9 @@ public class MenuDetailActivity extends AppCompatActivity {
         super.onStop();
         Log.d("MenuDetailActivity", "onStop");
 
-        if (gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.stopGazeTracker("menu_detail", s_num, f_num);
-        }
+//        if (gazeTrackerDataStorage != null) {
+//            gazeTrackerDataStorage.stopGazeTracker("menu_detail", s_num, f_num);
+//        }
 //        gazeTracker.removeCallbacks(
 //                gazeCallback, calibrationCallback, statusCallback, userStatusCallback);
     }
