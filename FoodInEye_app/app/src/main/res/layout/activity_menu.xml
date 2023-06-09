@@ -1,129 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/menuLayout">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="right"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="20dp">
-
-        <Button
-            android:id="@+id/findBtn"
-            android:layout_width="30dp"
-            android:layout_height="25dp"
-            android:background="@drawable/find_btn"
-            android:layout_marginRight="5dp"/>
-
-        <Button
-            android:id="@+id/basketBtn"
-            android:layout_width="35dp"
-            android:layout_height="25dp"
-            android:background="@drawable/basket_btn"
-            android:layout_marginRight="5dp"/>
-
-        <Button
-            android:id="@+id/myPageBtn"
-            android:layout_width="35dp"
-            android:layout_height="25dp"
-            android:background="@drawable/mypage_btn"
-            android:layout_marginRight="5dp"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp">
-
-        <!--TabLayout-->
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/store_tab"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabMode="scrollable">
-
-        </com.google.android.material.tabs.TabLayout>
-
-    </LinearLayout>
-
-    <!--Menu판-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/navy_rec"
-        android:orientation="vertical"
-        android:layout_below="@id/store_tab">
+        android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/navy_rec">
+            android:orientation="horizontal"
+            android:layout_gravity="right"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp">
 
-            <TextView
-                android:id="@+id/store_intro"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="📌 가게 한줄소개"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"/>
+            <Button
+                android:id="@+id/findBtn"
+                android:layout_width="30dp"
+                android:layout_height="25dp"
+                android:background="@drawable/find_btn"
+                android:layout_marginRight="5dp"/>
 
-            <TextView
-                android:id="@+id/store_opentime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="📌 가게 운영시간"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"/>
+            <Button
+                android:id="@+id/basketBtn"
+                android:layout_width="35dp"
+                android:layout_height="25dp"
+                android:background="@drawable/basket_btn"
+                android:layout_marginRight="5dp"/>
 
-            <TextView
-                android:id="@+id/store_notice"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="📌 가게 공지사항"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"/>
+            <Button
+                android:id="@+id/myPageBtn"
+                android:layout_width="35dp"
+                android:layout_height="25dp"
+                android:background="@drawable/mypage_btn"
+                android:layout_marginRight="5dp"/>
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView_menuList"
+            <!--TabLayout-->
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/store_tab"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="wrap_content"
+                app:tabMode="scrollable">
+
+            </com.google.android.material.tabs.TabLayout>
+
+        </LinearLayout>
+
+        <!--Menu판-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/navy_rec"
+            android:orientation="vertical"
+            android:layout_below="@id/store_tab"
+            tools:ignore="NotSibling">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/navy_rec">
+
+                <TextView
+                    android:id="@+id/store_intro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="📌 가게 한줄소개"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"/>
+
+                <TextView
+                    android:id="@+id/store_opentime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="📌 가게 운영시간"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"/>
+
+                <TextView
+                    android:id="@+id/store_notice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="📌 가게 공지사항"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView_menuList"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+    <visual.camp.sample.view.PointView
+        android:id="@+id/view_point_menu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
