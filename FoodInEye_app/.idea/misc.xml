@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/DS/Desktop/FIE_android/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/layout/activity_menu.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/DS/Desktop/FIE_android/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/layout/activity_store_recyclerview.xml" value="0.23020833333333332" />
+        <entry key="..\:/Users/DS/Desktop/FIE_android/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/layout/menu_recyclerview.xml" value="0.23020833333333332" />
+        <entry key="..\:/Users/DS/Desktop/FIEandroid/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/drawable/alert_dialog_background.xml" value="0.212" />
+        <entry key="..\:/Users/DS/Desktop/FIEandroid/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/drawable/blue_rec_30.xml" value="0.2545" />
+        <entry key="..\:/Users/DS/Desktop/FIEandroid/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/drawable/blue_rec_300.xml" value="0.2475" />
+        <entry key="..\:/Users/DS/Desktop/FIEandroid/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/drawable/circle.xml" value="0.25" />
+        <entry key="..\:/Users/DS/Desktop/FIEandroid/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/drawable/dotted_line.xml" value="0.1" />
+        <entry key="..\:/Users/DS/Desktop/FIEandroid/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/drawable/menu_detail_bg.xml" value="0.358" />
+        <entry key="..\:/Users/DS/Desktop/FIEandroid/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/drawable/navy_rec.xml" value="0.367" />
+        <entry key="..\:/Users/DS/Desktop/FIEandroid/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/drawable/navy_rec_30.xml" value="0.3265" />
+        <entry key="..\:/Users/DS/Desktop/FIEandroid/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/drawable/navy_rec_300.xml" value="0.366" />
+        <entry key="..\:/Users/DS/Desktop/FIEandroid/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/drawable/navy_rec_l300.xml" value="0.2475" />
+        <entry key="..\:/Users/DS/Desktop/FIEandroid/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/drawable/navy_rec_r300.xml" value="0.367" />
+        <entry key="..\:/Users/DS/Desktop/FIEandroid/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/drawable/navy_srec.xml" value="0.186" />
+        <entry key="..\:/Users/DS/Desktop/FIEandroid/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/drawable/orange_rec_30.xml" value="0.3265" />
+        <entry key="..\:/Users/DS/Desktop/FIEandroid/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/drawable/orange_rec_300.xml" value="0.3265" />
+        <entry key="..\:/Users/DS/Desktop/FIEandroid/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/drawable/orange_rectop_300.xml" value="0.3265" />
+        <entry key="..\:/Users/DS/Desktop/FIEandroid/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/drawable/orange_srec_30.xml" value="0.361" />
+        <entry key="..\:/Users/DS/Desktop/FIEandroid/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/drawable/pink_rec_30.xml" value="0.3265" />
+        <entry key="..\:/Users/DS/Desktop/FIEandroid/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/drawable/pink_srec_30.xml" value="0.3265" />
+        <entry key="..\:/Users/DS/Desktop/FIEandroid/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/layout/activity_category.xml" value="0.1875" />
+        <entry key="..\:/Users/DS/Desktop/FIEandroid/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/layout/activity_home.xml" value="0.33" />
+        <entry key="..\:/Users/DS/Desktop/FIEandroid/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/layout/activity_login.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/DS/Desktop/FIEandroid/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/layout/activity_main.xml" value="0.23505434782608695" />
+        <entry key="..\:/Users/DS/Desktop/FIEandroid/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/layout/activity_menu.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/DS/Desktop/FIEandroid/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/layout/activity_menu_detail.xml" value="0.33" />
+        <entry key="..\:/Users/DS/Desktop/FIEandroid/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/layout/activity_mypage.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/DS/Desktop/FIEandroid/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/layout/activity_order.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/DS/Desktop/FIEandroid/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/layout/activity_order_detail.xml" value="0.28125" />
+        <entry key="..\:/Users/DS/Desktop/FIEandroid/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/layout/activity_shopping_cart.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/DS/Desktop/FIEandroid/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/layout/activity_store_recyclerview.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/DS/Desktop/FIEandroid/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/layout/aler_dialog_custom.xml" value="0.2966485507246377" />
+        <entry key="..\:/Users/DS/Desktop/FIEandroid/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/layout/alert_dialog_custom.xml" value="0.4276155717761557" />
+        <entry key="..\:/Users/DS/Desktop/FIEandroid/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/layout/cart_footer.xml" value="0.4229843561973526" />
+        <entry key="..\:/Users/DS/Desktop/FIEandroid/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/layout/cart_recyclerview.xml" value="0.25" />
+        <entry key="..\:/Users/DS/Desktop/FIEandroid/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/layout/menu_recyclerview.xml" value="0.1" />
+        <entry key="..\:/Users/DS/Desktop/FIEandroid/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/layout/order_detail_recyclerview.xml" value="0.33" />
+        <entry key="..\:/Users/DS/Desktop/FIEandroid/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/layout/order_recyclerview.xml" value="0.33" />
+        <entry key="..\:/Users/DS/Desktop/FIEandroid/FOOD-IN-EYE_android/FoodInEye_app/app/src/main/res/layout/order_sub_recyclerview.xml" value="0.25" />
+        <entry key="..\:/Users/DS/Desktop/FoodInEye/FoodInEye_app/app/src/main/res/layout/activity_category.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/DS/Desktop/FoodInEye/FoodInEye_app/app/src/main/res/layout/activity_login.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/DS/Desktop/FoodInEye/FoodInEye_app/app/src/main/res/layout/activity_main.xml" value="0.26902173913043476" />
+        <entry key="..\:/Users/DS/Desktop/FoodInEye/FoodInEye_app/app/src/main/res/layout/activity_menu.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/DS/Desktop/FoodInEye/FoodInEye_app/app/src/main/res/layout/activity_menu_detail.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/DS/Desktop/FoodInEye/FoodInEye_app/app/src/main/res/layout/activity_mypage.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/DS/Desktop/FoodInEye/FoodInEye_app/app/src/main/res/layout/activity_store_recyclerview.xml" value="0.2125" />
+        <entry key="..\:/Users/DS/Desktop/FoodInEye/FoodInEye_app/app/src/main/res/layout/menu_recyclerview.xml" value="0.2125" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="jbr-17" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

@@ -1,154 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/navy"
-    android:id="@+id/menuDetailLayout">
+    android:background="@color/navy">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="350dp"
+        android:orientation="vertical"
+        android:background="@drawable/menu_detail_bg">
+
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="350dp"
-            android:orientation="vertical"
-            android:background="@drawable/menu_detail_bg">
-
-
-            <!--        <LinearLayout-->
-            <!--            android:layout_width="wrap_content"-->
-            <!--            android:layout_height="wrap_content"-->
-            <!--            android:orientation="horizontal"-->
-            <!--            android:layout_gravity="right"-->
-            <!--            android:layout_marginTop="10dp"-->
-            <!--            android:layout_marginRight="20dp">-->
-
-            <!--            <Button-->
-            <!--                android:id="@+id/findBtn"-->
-            <!--                android:layout_width="30dp"-->
-            <!--                android:layout_height="25dp"-->
-            <!--                android:background="@drawable/find_btn"-->
-            <!--                android:layout_marginRight="5dp"/>-->
-
-            <!--            <Button-->
-            <!--                android:id="@+id/basketBtn"-->
-            <!--                android:layout_width="35dp"-->
-            <!--                android:layout_height="25dp"-->
-            <!--                android:background="@drawable/basket_btn"-->
-            <!--                android:layout_marginRight="5dp"/>-->
-
-            <!--            <Button-->
-            <!--                android:id="@+id/myPageBtn"-->
-            <!--                android:layout_width="35dp"-->
-            <!--                android:layout_height="25dp"-->
-            <!--                android:background="@drawable/mypage_btn"-->
-            <!--                android:layout_marginRight="5dp"/>-->
-
-            <!--        </LinearLayout>-->
-
-            <TextView
-                android:id="@+id/menuD_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="메뉴 1"
-                android:textSize="30dp"
-                android:textColor="@color/navy"
-                android:textStyle="bold"
-                android:layout_gravity="center"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="10dp"/>
-
-            <ImageView
-                android:id="@+id/menuD_img"
-                android:layout_width="230dp"
-                android:layout_height="200dp"
-                android:orientation="vertical"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"/>
-
-        </LinearLayout>
-
-        <!--menu intro-->
-
-        <LinearLayout
-            android:layout_width="370dp"
-            android:layout_height="160dp"
-            android:orientation="vertical"
-            android:layout_gravity="center"
-            android:layout_marginTop="15dp">
-
-            <TextView
-                android:id="@+id/menuD_desc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="메뉴 한줄소개"
-                android:textSize="18dp"
-                android:textColor="@color/white"
-                android:layout_gravity="center"
-                android:layout_margin="10dp"/>
-            <TextView
-                android:id="@+id/menuD_allergy"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="메뉴 알러지"
-                android:textSize="18dp"
-                android:textColor="@color/white"
-                android:layout_gravity="center"
-                android:layout_margin="10dp"/>
-            <TextView
-                android:id="@+id/menuD_origin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="메뉴 원산지"
-                android:textSize="18dp"
-                android:textColor="@color/white"
-                android:layout_gravity="center"
-                android:layout_margin="10dp"/>
-
-        </LinearLayout>
-
-        <!--orderBtn-->
-        <LinearLayout
-            android:id="@+id/menuD_btn"
-            android:layout_width="200dp"
-            android:layout_height="45dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_gravity="center"
+            android:layout_gravity="right"
             android:layout_marginTop="10dp"
-            android:background="@drawable/orange_rec_300">
+            android:layout_marginRight="20dp">
 
-            <TextView
-                android:id="@+id/menuD_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="메뉴 가격"
-                android:textSize="18dp"
-                android:textStyle="bold"
-                android:textColor="@color/white"
-                android:layout_gravity="center"
-                android:layout_marginLeft="40dp"/>
+            <Button
+                android:id="@+id/findBtn"
+                android:layout_width="30dp"
+                android:layout_height="25dp"
+                android:background="@drawable/find_btn"
+                android:layout_marginRight="5dp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="원 | 담기"
-                android:textSize="18dp"
-                android:textStyle="bold"
-                android:textColor="@color/white"
-                android:layout_gravity="center"
-                android:layout_marginRight="10dp"/>
+            <Button
+                android:id="@+id/basketBtn"
+                android:layout_width="35dp"
+                android:layout_height="25dp"
+                android:background="@drawable/basket_btn"
+                android:layout_marginRight="5dp"/>
+
+            <Button
+                android:id="@+id/myPageBtn"
+                android:layout_width="35dp"
+                android:layout_height="25dp"
+                android:background="@drawable/mypage_btn"
+                android:layout_marginRight="5dp"/>
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/menuD_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="메뉴 1"
+            android:textSize="30dp"
+            android:textColor="@color/navy"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="10dp"/>
+
+        <ImageView
+            android:id="@+id/menuD_img"
+            android:layout_width="230dp"
+            android:layout_height="200dp"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"/>
 
     </LinearLayout>
 
-    <visual.camp.sample.view.PointView
-        android:id="@+id/view_point_menuDetail"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <!--menu intro-->
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="370dp"
+        android:layout_height="160dp"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp">
+
+        <TextView
+            android:id="@+id/menuD_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="메뉴 한줄소개"
+            android:textSize="18dp"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"/>
+        <TextView
+            android:id="@+id/menuD_allergy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="메뉴 알러지"
+            android:textSize="18dp"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"/>
+        <TextView
+            android:id="@+id/menuD_origin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="메뉴 원산지"
+            android:textSize="18dp"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"/>
+
+    </LinearLayout>
+
+    <!--orderBtn-->
+    <LinearLayout
+        android:id="@+id/menuD_btn"
+        android:layout_width="200dp"
+        android:layout_height="45dp"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/orange_rec_300">
+
+        <TextView
+            android:id="@+id/menuD_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="메뉴 가격"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:layout_marginLeft="40dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="원 | 담기"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:layout_marginRight="10dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

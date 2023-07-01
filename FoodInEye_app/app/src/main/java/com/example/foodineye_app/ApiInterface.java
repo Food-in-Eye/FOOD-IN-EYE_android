@@ -1,19 +1,17 @@
 package com.example.foodineye_app;
 
-import com.example.foodineye_app.activity.MenuItem;
-import com.example.foodineye_app.activity.OrderItem;
-import com.example.foodineye_app.activity.PostGazeResponse;
-import com.example.foodineye_app.activity.PostOrder;
-import com.example.foodineye_app.activity.PostOrderResponse;
-import com.example.foodineye_app.activity.StoreItem;
+import android.view.Menu;
 
-import java.util.List;
+import java.util.Map;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 
 public interface ApiInterface {
 
@@ -34,15 +32,4 @@ public interface ApiInterface {
 //    @GET("api/v2/orders/order")
 //    Call<OrderItem> getOrder(@QueryMap Map<String, String> queryParams);
 
-//    @POST("api/v2/orders/order/gaze")
-//    Call<PostGazeResponse> createGaze(
-//            @Query("h_id") String h_id,
-//            @Body JSONArray jsonGazeArray
-//    );
-
-    @POST("api/v2/orders/order/gaze")
-    Call<PostGazeResponse> createGaze(
-            @Query("h_id") String h_id,
-            @Body List<PostGaze> postGaze
-    );
 }

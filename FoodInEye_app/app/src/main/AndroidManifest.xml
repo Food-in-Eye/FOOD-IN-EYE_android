@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.foodineye_app">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".activity.Data"
+        android:name=".Data"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -19,34 +18,34 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".activity.StorelistActivity"
+            android:name=".HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.HomeActivity"
+            android:name=".OrderDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.OrderDetailActivity"
+            android:name=".OrderActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.OrderActivity"
+            android:name=".MypageActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.MypageActivity"
+            android:name=".ShoppingCartActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.ShoppingCartActivity"
+            android:name=".MenuDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.MenuDetailActivity"
+            android:name=".MenuActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.MenuActivity"
+            android:name=".CategoryActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
