@@ -58,7 +58,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder> 
                 .load(imageUrl)
                 .circleCrop()
                 .into(holder.menuImg);
-        
+
         Food food = new Food();//객체 생성
         food.setFood_id(menus.getf_id());
         food.setM_name(menus.getName());

@@ -3,7 +3,7 @@ package com.example.foodineye_app.activity;
 import android.app.Application;
 import android.util.Log;
 
-import com.example.foodineye_app.PostGaze;
+import com.example.foodineye_app.gaze.PostGaze;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

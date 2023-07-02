@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.foodineye_app.R;
-import com.example.foodineye_app.UpdateWebSocketModel;
+import com.example.foodineye_app.websocket.UpdateWebSocketModel;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class OrderDetailActivity extends AppCompatActivity {
     List<Order> orderList;
     RecyclerView orderRecyclerview;
     OrderDetailAdapter orderDetailAdapter;
-    
+
     //WebSocket
     WebSocket webSocket;
 

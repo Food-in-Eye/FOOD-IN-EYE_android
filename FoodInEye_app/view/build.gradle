@@ -17,8 +17,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-//    compileSdk 33
-//    buildToolsVersion '30.0.3'
     namespace 'visual.camp.sample.view'
 
 }

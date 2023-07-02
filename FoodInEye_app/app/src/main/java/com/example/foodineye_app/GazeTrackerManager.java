@@ -3,7 +3,7 @@ package com.example.foodineye_app;
 import android.content.Context;
 import android.view.TextureView;
 
-import com.example.foodineye_app.calibration.CalibrationDataStorage;
+import com.example.foodineye_app.gaze.CalibrationDataStorage;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ public class GazeTrackerManager {
 
     GazeTracker gazeTracker = null;
     // TODO: change licence key
-    String SEESO_LICENSE_KEY = BuildConfig.SEESO_LICENSE_KEY;
+    String SEESO_LICENSE_KEY = "dev_c0yqi45fp7eplmurn0ay2vobcd49p00s00j30s1q";
 
     static public GazeTrackerManager makeNewInstance(Context context) {
         if (mInstance != null) {

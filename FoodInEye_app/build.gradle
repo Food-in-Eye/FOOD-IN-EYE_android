@@ -10,9 +10,9 @@ task clean(type: Delete) {
 
 ext {
     buildToolsVersion = "30.0.3"
-    minSdkVersion = 23
+    minSdkVersion = 21
     compileSdkVersion = 33
-    targetSdkVersion = 32
+    targetSdkVersion = 31
 
     appcompatVersion = '1.6.1'
     constraintlayoutVersion = '2.1.4'

@@ -36,7 +36,7 @@ public class MenuActivity extends AppCompatActivity{
 
     RecyclerView menurecyclerView;
     MenuAdapter menuAdapter;
-    
+
     MenuItem menuItem; // 전체 메뉴판 목록
     //MenuItem.Response menuResponse;
     List<MenuItem.Response> menuResponse = new ArrayList<>();

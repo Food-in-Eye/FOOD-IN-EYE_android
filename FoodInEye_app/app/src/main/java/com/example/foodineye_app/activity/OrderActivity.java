@@ -20,8 +20,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.foodineye_app.ApiClient;
 import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.GazeTrackerDataStorage;
-import com.example.foodineye_app.PostGaze;
+import com.example.foodineye_app.gaze.PostGaze;
 import com.example.foodineye_app.R;
+import com.example.foodineye_app.gaze.PostGazeResponse;
 
 import org.json.JSONArray;
 
@@ -199,8 +200,6 @@ public class OrderActivity extends AppCompatActivity {
 //                            jsonGazeArray = ((Data) getApplication()).getJsonArray();
 
                             postGazes = (List<PostGaze>) ((Data)getApplication()).getGazeList();
-
-
 
 
                             Call<PostGazeResponse> gazeCall = apiInterface.createGaze(history_id, postGazes);

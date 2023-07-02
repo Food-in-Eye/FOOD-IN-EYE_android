@@ -2,10 +2,12 @@ package com.example.foodineye_app;
 
 import com.example.foodineye_app.activity.MenuItem;
 import com.example.foodineye_app.activity.OrderItem;
-import com.example.foodineye_app.activity.PostGazeResponse;
+import com.example.foodineye_app.gaze.PostGazeResponse;
 import com.example.foodineye_app.activity.PostOrder;
 import com.example.foodineye_app.activity.PostOrderResponse;
 import com.example.foodineye_app.activity.StoreItem;
+import com.example.foodineye_app.gaze.PostGaze;
+import com.example.foodineye_app.gaze.PostGazeResponse;
 
 import java.util.List;
 
