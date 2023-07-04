@@ -43,8 +43,10 @@ public class GazeTrackerManager {
 
     static public GazeTrackerManager makeNewInstance(Context context) {
         if (mInstance != null) {
-            mInstance.deinitGazeTracker();
+//            mInstance.deinitGazeTracker();
+            return mInstance;
         }
+
         mInstance = new GazeTrackerManager(context);
         return mInstance;
     }
@@ -53,7 +55,7 @@ public class GazeTrackerManager {
         return mInstance;
     }
 
-    GazeTrackerManager(Context context) {
+    public GazeTrackerManager(Context context) {
         this.mContext = new WeakReference<>(context);
     }
 
@@ -139,6 +141,10 @@ public class GazeTrackerManager {
             return gazeTracker.startCollectSamples();
         }
         return false;
+    }
+
+    public boolean setCalibrationData(double[] calibrationData){
+        return true;
     }
 
     public boolean isTracking() {

@@ -13,7 +13,7 @@ public class ApiClient {
     private static OkHttpClient httpClient = httpClientBuilder.build();
 
     //    public static String BASE_URL="http://10.0.2.2:8000/";
-    public static String BASE_URL="http://203.252.213.200:2020/";
+    public static String BASE_URL="http://203.252.213.200:4040/";
 //    public static String BASE_URL = "http://192.168.219.200:2020/";
 
     private static Retrofit retrofit;

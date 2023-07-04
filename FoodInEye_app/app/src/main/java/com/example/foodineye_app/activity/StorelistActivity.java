@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.foodineye_app.ApiClient;
 import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.GazeTrackerDataStorage;
+import com.example.foodineye_app.GazeTrackerManager;
 import com.example.foodineye_app.gaze.PermissionRequester;
 import com.example.foodineye_app.R;
 
@@ -40,23 +41,23 @@ public class StorelistActivity extends AppCompatActivity {
     GazeTrackerDataStorage gazeTrackerDataStorage;
     private final HandlerThread backgroundThread = new HandlerThread("background");
 
+    GazeTrackerManager gazeTracker;
+
     //-----------------------------------------------------------------------------------------
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //camera permissionrequester
-        PermissionRequester.request(this);
         setContentView(R.layout.activity_storelist);
-        ActivityCompat.requestPermissions(this, new String[]
-                {Manifest.permission.WRITE_EXTERNAL_STORAGE}, MODE_PRIVATE);
 
         //-------------------------------------------------------------------------------------
         //start-gaze-tracking
         Context ctx = getApplicationContext();
         ConstraintLayout storeLayout = findViewById(R.id.storelistLayout);
         PointView viewpoint = findViewById(R.id.view_point_storelist);
+
+//        final Data data = (Data) getApplicationContext();
+//        gazeTracker = data.getGazeTracker();
 
         gazeTrackerDataStorage = new GazeTrackerDataStorage(this);
         gazeTrackerDataStorage.setContext(this);
@@ -101,6 +102,7 @@ public class StorelistActivity extends AppCompatActivity {
     }
 
     //-------------------------------------------------------------------------------------------
+
 
     @Override
     protected void onStop() {
