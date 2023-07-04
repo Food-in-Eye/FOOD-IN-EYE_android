@@ -1,5 +1,6 @@
 package com.example.foodineye_app;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.os.CountDownTimer;
@@ -32,6 +33,7 @@ import camp.visual.gazetracker.constant.StatusErrorType;
 import camp.visual.gazetracker.constant.UserStatusOption;
 import camp.visual.gazetracker.filter.OneEuroFilterManager;
 import camp.visual.gazetracker.gaze.GazeInfo;
+import camp.visual.gazetracker.state.ScreenState;
 import camp.visual.gazetracker.state.TrackingState;
 import visual.camp.sample.view.CalibrationViewer;
 import visual.camp.sample.view.PointView;
@@ -265,7 +267,7 @@ public class GazeTrackerDataStorage {
         float gy = filtered_gaze[1];
         Log.d("GazeTrackerDataStorage", "gazeInfo_gx: "+gx);
         Log.d("GazeTrackerDataStorage", "gazeInfo_gy: "+gy);
-//        showGazePoint(gx, gy, gazeInfo.screenState);
+        showGazePoint(gx, gy, gazeInfo.screenState);
 
 //        context.runOnUiThread(() -> {
 //            onGazeEvent(gx, gy);
@@ -286,12 +288,12 @@ public class GazeTrackerDataStorage {
         return new float[]{gazeInfo.x, gazeInfo.y};
     }
 
-//    private void showGazePoint(final float x, final float y, final ScreenState type) {
-//        context.runOnUiThread(() -> {
-//            viewPoint.setType(type == ScreenState.INSIDE_OF_SCREEN ? PointView.TYPE_DEFAULT : PointView.TYPE_OUT_OF_SCREEN);
-//            // viewPoint.setPosition(x, y);
-//        });
-//    }
+    private void showGazePoint(final float x, final float y, final ScreenState type) {
+        ((Activity)context).runOnUiThread(() -> {
+            viewPoint.setType(type == ScreenState.INSIDE_OF_SCREEN ? PointView.TYPE_DEFAULT : PointView.TYPE_OUT_OF_SCREEN);
+            viewPoint.setPosition(x, y);
+        });
+    }
 
     //
     // callbacks - calibration

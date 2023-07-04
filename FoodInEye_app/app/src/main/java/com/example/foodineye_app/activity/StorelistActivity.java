@@ -2,9 +2,12 @@ package com.example.foodineye_app.activity;
 
 import android.Manifest;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.HandlerThread;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,13 +54,14 @@ public class StorelistActivity extends AppCompatActivity {
         setContentView(R.layout.activity_storelist);
 
         //-------------------------------------------------------------------------------------
+        //canvas
+        // Canvas 가져오기
+        View canvas = findViewById(R.id.canvas);
+
         //start-gaze-tracking
         Context ctx = getApplicationContext();
         ConstraintLayout storeLayout = findViewById(R.id.storelistLayout);
         PointView viewpoint = findViewById(R.id.view_point_storelist);
-
-//        final Data data = (Data) getApplicationContext();
-//        gazeTracker = data.getGazeTracker();
 
         gazeTrackerDataStorage = new GazeTrackerDataStorage(this);
         gazeTrackerDataStorage.setContext(this);
@@ -103,6 +107,20 @@ public class StorelistActivity extends AppCompatActivity {
 
     //-------------------------------------------------------------------------------------------
 
+//    @Override
+//    protected void onResume(){
+//        super.onResume();
+//
+//        // Canvas 가져오기
+//        View canvas = findViewById(R.id.canvas);
+//
+//        // Canvas를 그리기 위한 Paint 객체 생성
+//        Paint paint = new Paint();
+//        paint.setColor(Color.RED);
+//
+//        // Canvas에 점 그리기
+//        canvas.drawCircle(x, y, 10, paint);
+//    }
 
     @Override
     protected void onStop() {

@@ -61,12 +61,22 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+//        LinearLayout orderBtn = (LinearLayout) findViewById(R.id.home_order);
+//        orderBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                //home -> storelist
+//                Intent loginIntent = new Intent(getApplicationContext(), StorelistActivity.class);
+//                startActivity(loginIntent);
+//            }
+//        });
+
         LinearLayout orderBtn = (LinearLayout) findViewById(R.id.home_order);
         orderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //home -> storelist
-                Intent loginIntent = new Intent(getApplicationContext(), StorelistActivity.class);
+                //home -> calibration
+                Intent loginIntent = new Intent(getApplicationContext(), Calibration.class);
                 startActivity(loginIntent);
             }
         });

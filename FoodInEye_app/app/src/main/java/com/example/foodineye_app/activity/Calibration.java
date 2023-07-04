@@ -3,12 +3,14 @@ package com.example.foodineye_app.activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -36,6 +38,7 @@ public class Calibration extends AppCompatActivity {
     Context context;
     //-----------------------------------------------------------------------------------------
 
+    LinearLayout calibrationBtn;
     LinearLayout calibration;
 
     @Override
@@ -50,7 +53,8 @@ public class Calibration extends AppCompatActivity {
 
         gazeTracker = GazeTrackerManager.makeNewInstance(this);
 
-        calibration = findViewById(R.id.calibration);
+        calibrationBtn = (LinearLayout) findViewById(R.id.calibrationBtn);
+        calibration = (LinearLayout) findViewById(R.id.calibration);
         initTrackerView();
         initHandler();
 
@@ -58,7 +62,7 @@ public class Calibration extends AppCompatActivity {
         gazeTracker.setGazeTrackerCallbacks(calibrationCallback);
         runGazeTracker();
 
-        calibration.setOnClickListener(new View.OnClickListener() {
+        calibrationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 show("start-calibration");
@@ -67,6 +71,16 @@ public class Calibration extends AppCompatActivity {
                 gazeTracker.startCalibration(CalibrationModeType.DEFAULT, AccuracyCriteria.DEFAULT);
                 Log.d("Calibration", "startCalibration: "+ gazeTracker.startCalibration(CalibrationModeType.DEFAULT, AccuracyCriteria.DEFAULT));
 //                gazeTracker.startCalibration(CalibrationModeType.DEFAULT, AccuracyCriteria.DEFAULT, 20.000001, 100.00001, 1050.01, 2000.01);
+            }
+        });
+
+        LinearLayout orderBtn = (LinearLayout) findViewById(R.id.real_home_order);
+        orderBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //home -> storelist
+                Intent loginIntent = new Intent(getApplicationContext(), StorelistActivity.class);
+                startActivity(loginIntent);
             }
         });
 
