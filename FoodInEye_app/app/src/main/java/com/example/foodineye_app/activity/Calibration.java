@@ -49,8 +49,6 @@ public class Calibration extends AppCompatActivity {
         //calibration
 
         gazeTracker = GazeTrackerManager.makeNewInstance(this);
-//        final Data data = (Data) getApplicationContext();
-//        data.setGazeTracker(gazeTracker);
 
         calibration = findViewById(R.id.calibration);
         initTrackerView();
@@ -67,6 +65,7 @@ public class Calibration extends AppCompatActivity {
                 runOnUiThread(()->calibration.setVisibility(View.INVISIBLE));
                 hideNavigationBar();
                 gazeTracker.startCalibration(CalibrationModeType.DEFAULT, AccuracyCriteria.DEFAULT);
+                Log.d("Calibration", "startCalibration: "+ gazeTracker.startCalibration(CalibrationModeType.DEFAULT, AccuracyCriteria.DEFAULT));
 //                gazeTracker.startCalibration(CalibrationModeType.DEFAULT, AccuracyCriteria.DEFAULT, 20.000001, 100.00001, 1050.01, 2000.01);
             }
         });
@@ -145,6 +144,7 @@ public class Calibration extends AppCompatActivity {
             runOnUiThread(() -> calibration.setVisibility(View.VISIBLE));
             showNavigationBar();
             gazeTracker.setCalibrationData(calibrationData);
+            show("calibrationFinished");
         }
     };
 
