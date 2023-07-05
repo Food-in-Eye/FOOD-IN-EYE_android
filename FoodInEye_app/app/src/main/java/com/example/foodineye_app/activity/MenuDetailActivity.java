@@ -7,6 +7,7 @@ import android.os.HandlerThread;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -52,6 +53,109 @@ public class MenuDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_detail);
+
+        //-------------------------------------------------------------------------------------
+        TextView menuD_name = findViewById(R.id.menuD_name); // school_food LinearLayout을 찾습니다.
+
+        // 레이아웃이 최종적으로 그려진 후에 실행되는 코드 블록
+        menuD_name.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                int[] location = new int[2];
+                menuD_name.getLocationOnScreen(location);
+
+                int left = location[0]; // 왼쪽 좌표
+                int top = location[1]; // 위쪽 좌표
+                int right = left + menuD_name.getWidth(); // 오른쪽 좌표
+                int bottom = top + menuD_name.getHeight(); // 아래쪽 좌표
+
+                // 결과 출력
+                Log.d("location", "menuD_name_left: "+left);
+                Log.d("location", "menuD_name_top: "+top);
+                Log.d("location", "menuD_name_right: "+right);
+                Log.d("location", "menuD_name_bottom: "+bottom);
+
+                // 뷰 트리 옵저버 제거
+                menuD_name.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
+        });
+
+        ImageView menuD_img = findViewById(R.id.menuD_img); // school_food LinearLayout을 찾습니다.
+
+        // 레이아웃이 최종적으로 그려진 후에 실행되는 코드 블록
+        menuD_name.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                int[] location = new int[2];
+                menuD_img.getLocationOnScreen(location);
+
+                int left = location[0]; // 왼쪽 좌표
+                int top = location[1]; // 위쪽 좌표
+                int right = left + menuD_img.getWidth(); // 오른쪽 좌표
+                int bottom = top + menuD_img.getHeight(); // 아래쪽 좌표
+
+                // 결과 출력
+                Log.d("location", "menuD_img_left: "+left);
+                Log.d("location", "menuD_img_top: "+top);
+                Log.d("location", "menuD_img_right: "+right);
+                Log.d("location", "menuD_img_bottom: "+bottom);
+
+                // 뷰 트리 옵저버 제거
+                menuD_img.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
+        });
+
+        LinearLayout menu_description = findViewById(R.id.menu_description); // school_food LinearLayout을 찾습니다.
+
+        // 레이아웃이 최종적으로 그려진 후에 실행되는 코드 블록
+        menuD_name.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                int[] location = new int[2];
+                menu_description.getLocationOnScreen(location);
+
+                int left = location[0]; // 왼쪽 좌표
+                int top = location[1]; // 위쪽 좌표
+                int right = left + menu_description.getWidth(); // 오른쪽 좌표
+                int bottom = top + menu_description.getHeight(); // 아래쪽 좌표
+
+                // 결과 출력
+                Log.d("location", "menu_description_left: "+left);
+                Log.d("location", "menu_description_top: "+top);
+                Log.d("location", "menu_description_right: "+right);
+                Log.d("location", "menu_description_bottom: "+bottom);
+
+                // 뷰 트리 옵저버 제거
+                menu_description.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
+        });
+
+        LinearLayout menuD_btn = findViewById(R.id.menuD_btn); // school_food LinearLayout을 찾습니다.
+
+        // 레이아웃이 최종적으로 그려진 후에 실행되는 코드 블록
+        menuD_btn.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                int[] location = new int[2];
+                menuD_btn.getLocationOnScreen(location);
+
+                int left = location[0]; // 왼쪽 좌표
+                int top = location[1]; // 위쪽 좌표
+                int right = left + menuD_btn.getWidth(); // 오른쪽 좌표
+                int bottom = top + menuD_btn.getHeight(); // 아래쪽 좌표
+
+                // 결과 출력
+                Log.d("location", "menuD_btn_left: "+left);
+                Log.d("location", "menuD_btn_top: "+top);
+                Log.d("location", "menuD_btn_right: "+right);
+                Log.d("location", "menuD_btn_bottom: "+bottom);
+
+                // 뷰 트리 옵저버 제거
+                menuD_btn.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
+        });
+
+
 
         //-------------------------------------------------------------------------------------
         //start-gaze-tracking

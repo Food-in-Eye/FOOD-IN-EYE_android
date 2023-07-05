@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,6 +29,8 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder> 
     private String s_name;
     private int s_num;
 
+    private int[] itemOLocation;
+
 
     public MenuAdapter(Context mContext, List<Menus> menusList, String m_Id, String s_Id, String s_name, int s_num) {
         this.mContext = mContext;
@@ -42,6 +45,12 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder> 
     @Override
     public MenuAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.menu_recyclerview, parent, false);
+
+        if(viewType == 0){
+            itemOLocation = new int[2];
+            view.getLocationOnScreen(itemOLocation);
+        }
+
         return new MyViewHolder(view);
     }
 
@@ -88,6 +97,65 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder> 
                 }
             }
         });
+
+        //-----------------------------------------------------------------------------------------
+        // 0번째 아이템인 경우
+        if (position == 0 && itemOLocation != null) {
+            View itemView = holder.itemView;
+
+            // 아이템 뷰의 위치와 크기를 가져오기 위해 ViewTreeObserver를 사용
+            itemView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    itemView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+                    int[] itemLocation = new int[2];
+                    itemView.getLocationOnScreen(itemLocation);
+
+                    int topOffset = itemOLocation[1]; // 아이템 뷰의 위쪽 좌표
+                    int left = itemLocation[0]; // 아이템 뷰의 왼쪽 좌표
+                    int top = itemLocation[1] - topOffset; // 아이템 뷰의 위쪽 좌표 - topOffset
+                    int right = left + itemView.getWidth(); // 아이템 뷰의 오른쪽 좌표
+                    int bottom = top + itemView.getHeight(); // 아이템 뷰의 아래쪽 좌표
+
+                    // 결과 출력
+                    Log.d("location", "Item 0 - Left: " + left);
+                    Log.d("location", "Item 0 - Top: " + top);
+                    Log.d("location", "Item 0 - Right: " + right);
+                    Log.d("location", "Item 0 - Bottom: " + bottom);
+                }
+            });
+        }
+
+        // 1번째 아이템인 경우
+        if (position == 1 && itemOLocation != null) {
+            View itemView = holder.itemView;
+
+            // 아이템 뷰의 위치와 크기를 가져오기 위해 ViewTreeObserver를 사용
+            itemView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    itemView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+                    int[] itemLocation = new int[2];
+                    itemView.getLocationOnScreen(itemLocation);
+
+                    int topOffset = itemOLocation[1]; // 아이템 뷰의 위쪽 좌표
+                    int left = itemLocation[0]; // 아이템 뷰의 왼쪽 좌표
+                    int top = itemLocation[1] - topOffset; // 아이템 뷰의 위쪽 좌표 - topOffset
+                    int right = left + itemView.getWidth(); // 아이템 뷰의 오른쪽 좌표
+                    int bottom = top + itemView.getHeight(); // 아이템 뷰의 아래쪽 좌표
+
+                    // 결과 출력
+                    Log.d("location", "Item 1 - Left: " + left);
+                    Log.d("location", "Item 1 - Top: " + top);
+                    Log.d("location", "Item 1 - Right: " + right);
+                    Log.d("location", "Item 1 - Bottom: " + bottom);
+                }
+            });
+        }
+        //-----------------------------------------------------------------------------------------
+
     }
 
     @Override

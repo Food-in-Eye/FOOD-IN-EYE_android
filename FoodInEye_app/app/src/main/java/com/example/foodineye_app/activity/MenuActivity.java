@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.HandlerThread;
 import android.util.Log;
+import android.view.ViewTreeObserver;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,6 +67,55 @@ public class MenuActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
+        TabLayout tabLayout = findViewById(R.id.store_tab);
+
+        // TabLayout의 위치 정보를 가져오기 위해 ViewTreeObserver를 사용
+        tabLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                tabLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+                int[] tabLocation = new int[2];
+                tabLayout.getLocationOnScreen(tabLocation);
+
+                int left = tabLocation[0]; // TabLayout의 왼쪽 좌표
+                int top = tabLocation[1]; // TabLayout의 위쪽 좌표
+                int right = left + tabLayout.getWidth(); // TabLayout의 오른쪽 좌표
+                int bottom = top + tabLayout.getHeight(); // TabLayout의 아래쪽 좌표
+
+                // 결과 출력
+                Log.d("location", "TabLayout - Left: " + left);
+                Log.d("location", "TabLayout - Top: " + top);
+                Log.d("location", "TabLayout - Right: " + right);
+                Log.d("location", "TabLayout - Bottom: " + bottom);
+            }
+        });
+
+        LinearLayout store_description = findViewById(R.id.store_description);
+
+        // store_description 위치 정보를 가져오기 위해 ViewTreeObserver를 사용
+        tabLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                store_description.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+                int[] tabLocation = new int[2];
+                store_description.getLocationOnScreen(tabLocation);
+
+                int left = tabLocation[0]; // TabLayout의 왼쪽 좌표
+                int top = tabLocation[1]; // TabLayout의 위쪽 좌표
+                int right = left + store_description.getWidth(); // TabLayout의 오른쪽 좌표
+                int bottom = top + store_description.getHeight(); // TabLayout의 아래쪽 좌표
+
+                // 결과 출력
+                Log.d("location", "store_description - Left: " + left);
+                Log.d("location", "store_description - Top: " + top);
+                Log.d("location", "store_description - Right: " + right);
+                Log.d("location", "store_description - Bottom: " + bottom);
+            }
+        });
+
 
         //-------------------------------------------------------------------------------------
         //start-gaze-tracking

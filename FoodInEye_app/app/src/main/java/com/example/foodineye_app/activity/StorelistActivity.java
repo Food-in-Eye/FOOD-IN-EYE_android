@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.os.HandlerThread;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -54,9 +56,6 @@ public class StorelistActivity extends AppCompatActivity {
         setContentView(R.layout.activity_storelist);
 
         //-------------------------------------------------------------------------------------
-        //canvas
-        // Canvas 가져오기
-        View canvas = findViewById(R.id.canvas);
 
         //start-gaze-tracking
         Context ctx = getApplicationContext();
@@ -103,24 +102,38 @@ public class StorelistActivity extends AppCompatActivity {
             }
         });
 
+        //-------------------------------------------------------------------------------------
+
+        LinearLayout schoolFoodLayout = findViewById(R.id.school_food); // school_food LinearLayout을 찾습니다.
+
+        // 레이아웃이 최종적으로 그려진 후에 실행되는 코드 블록
+        schoolFoodLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                int[] location = new int[2];
+                schoolFoodLayout.getLocationOnScreen(location);
+
+                int left = location[0]; // 왼쪽 좌표
+                int top = location[1]; // 위쪽 좌표
+                int right = left + schoolFoodLayout.getWidth(); // 오른쪽 좌표
+                int bottom = top + schoolFoodLayout.getHeight(); // 아래쪽 좌표
+
+                // 결과 출력
+                Log.d("location", "left: "+left);
+                Log.d("location", "top: "+top);
+                Log.d("location", "right: "+right);
+                Log.d("location", "bottom: "+bottom);
+
+                // 뷰 트리 옵저버 제거
+                schoolFoodLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
+        });
+
+        //-------------------------------------------------------------------------------------
+
     }
 
     //-------------------------------------------------------------------------------------------
-
-//    @Override
-//    protected void onResume(){
-//        super.onResume();
-//
-//        // Canvas 가져오기
-//        View canvas = findViewById(R.id.canvas);
-//
-//        // Canvas를 그리기 위한 Paint 객체 생성
-//        Paint paint = new Paint();
-//        paint.setColor(Color.RED);
-//
-//        // Canvas에 점 그리기
-//        canvas.drawCircle(x, y, 10, paint);
-//    }
 
     @Override
     protected void onStop() {
