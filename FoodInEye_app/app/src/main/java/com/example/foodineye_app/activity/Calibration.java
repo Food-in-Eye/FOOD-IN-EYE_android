@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -23,6 +24,7 @@ import camp.visual.gazetracker.callback.CalibrationCallback;
 import camp.visual.gazetracker.constant.AccuracyCriteria;
 import camp.visual.gazetracker.constant.CalibrationModeType;
 import camp.visual.gazetracker.constant.UserStatusOption;
+import camp.visual.gazetracker.util.ViewLayoutChecker;
 import visual.camp.sample.view.CalibrationViewer;
 import visual.camp.sample.view.PointView;
 
@@ -32,14 +34,16 @@ public class Calibration extends AppCompatActivity {
     //gazetracker
     PointView viewPoint;
     GazeTrackerManager gazeTracker;
+
     CalibrationViewer viewCalibration;
     Handler backgroundHandler;
     HandlerThread backgroundThread = new HandlerThread("background");
     Context context;
     //-----------------------------------------------------------------------------------------
-
+    //calibration
     LinearLayout calibrationBtn;
     LinearLayout calibration;
+    ViewLayoutChecker viewLayoutChecker = new ViewLayoutChecker();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,15 +62,21 @@ public class Calibration extends AppCompatActivity {
         initTrackerView();
         initHandler();
 
+        final Data data = (Data) getApplication();
+        data.setViewCalibration(viewCalibration);
+
         // gazeTracker 객체 초기화 후 콜백 등록
         gazeTracker.setGazeTrackerCallbacks(calibrationCallback);
         runGazeTracker();
+
+        setOffsetOfView();
 
         calibrationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 show("start-calibration");
                 runOnUiThread(()->calibration.setVisibility(View.INVISIBLE));
+                // 타이틀바 숨기기
                 hideNavigationBar();
                 gazeTracker.startCalibration(CalibrationModeType.DEFAULT, AccuracyCriteria.DEFAULT);
                 Log.d("Calibration", "startCalibration: "+ gazeTracker.startCalibration(CalibrationModeType.DEFAULT, AccuracyCriteria.DEFAULT));
@@ -181,5 +191,15 @@ public class Calibration extends AppCompatActivity {
 
     private void show(String message) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+    }
+
+    private void setOffsetOfView() {
+        viewLayoutChecker.setOverlayView(viewPoint, new ViewLayoutChecker.ViewLayoutListener() {
+            @Override
+            public void getOffset(int x, int y) {
+                viewPoint.setOffset(x, y);
+                viewCalibration.setOffset(x, y);
+            }
+        });
     }
 }

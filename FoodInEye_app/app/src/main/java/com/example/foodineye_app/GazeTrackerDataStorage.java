@@ -35,6 +35,7 @@ import camp.visual.gazetracker.filter.OneEuroFilterManager;
 import camp.visual.gazetracker.gaze.GazeInfo;
 import camp.visual.gazetracker.state.ScreenState;
 import camp.visual.gazetracker.state.TrackingState;
+import camp.visual.gazetracker.util.ViewLayoutChecker;
 import visual.camp.sample.view.CalibrationViewer;
 import visual.camp.sample.view.PointView;
 
@@ -61,10 +62,9 @@ public class GazeTrackerDataStorage {
     private final HandlerThread backgroundThread = new HandlerThread("background");
     private final OneEuroFilterManager oneEuroFilter = new OneEuroFilterManager(2);
 
-    private boolean isWebViewRedirected;
+    private ViewLayoutChecker viewLayoutChecker = new ViewLayoutChecker();
 
     // for file save --------------------------------------------------------------------------
-    private String curDateTime;
 
     private ArrayList<GazeInfo> list_gazeInfo = new ArrayList<GazeInfo>(); // list for gazeInfo
     private PostGaze postGaze; //layout 하나
@@ -75,9 +75,6 @@ public class GazeTrackerDataStorage {
     //scroll change
     private int scroll;
     private ArrayList list_scroll = new ArrayList();
-
-    // task
-    private CountDownTimer timer;
     //-----------------------------------------------------------------------------------------
 
     public void setGazeTracker(Context context, ConstraintLayout constraintLayout, PointView viewPoint){
@@ -89,6 +86,10 @@ public class GazeTrackerDataStorage {
 
         initSpeedDial();
         setViewPoint(viewPoint);
+        final Data data = (Data) context;
+        viewCalibration = data.getViewCalibration();
+
+        setOffsetOfView();
         initHandler();
         initTouchHandler();
 
@@ -447,17 +448,6 @@ public class GazeTrackerDataStorage {
 
     }
 
-
-    private void setFolderName(){
-        Date currentTime = Calendar.getInstance().getTime();
-        String[] strList = currentTime.toString().split(" ");
-        // strList = [MON, MM, DD, hh:mm:ss, KST, YYYY]
-
-//        curTime = strList[3]; // "hh:mm:ss"
-        curDateTime = strList[1]+strList[2] + "_" + strList[3]; // "YYYYMMDD_hh:mm:ss"
-
-    }
-
     private void modelInfo(){
 
         Log.d("GazeTrackerDataStorage", "modelInfo success!");
@@ -492,6 +482,19 @@ public class GazeTrackerDataStorage {
 
     public void setViewPoint(PointView viewPoint) {
         this.viewPoint = viewPoint;
+    }
+
+    // The gaze or calibration coordinates are delivered only to the absolute coordinates of the entire screen.
+    // The coordinate system of the Android view is a relative coordinate system,
+    // so the offset of the view to show the coordinates must be obtained and corrected to properly show the information on the screen.
+    private void setOffsetOfView() {
+        viewLayoutChecker.setOverlayView(viewPoint, new ViewLayoutChecker.ViewLayoutListener() {
+            @Override
+            public void getOffset(int x, int y) {
+                viewPoint.setOffset(x, y);
+                viewCalibration.setOffset(x, y);
+            }
+        });
     }
 
 }

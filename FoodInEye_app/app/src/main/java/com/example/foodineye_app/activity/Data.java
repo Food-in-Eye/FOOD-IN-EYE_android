@@ -12,6 +12,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import visual.camp.sample.view.CalibrationViewer;
+
 public class Data extends Application {
 
     // layout 전체
@@ -23,9 +25,17 @@ public class Data extends Application {
     private List<Order> orderList;
     private String history_id; // 한번의 주문내역 지칭(웹소켓 통신시)
 
-    //-------------------------------------------------------------------------------------
+    //calibration
+    private CalibrationViewer viewCalibration;
 
     //-------------------------------------------------------------------------------------
+    public CalibrationViewer getViewCalibration() {
+        return viewCalibration;
+    }
+
+    public void setViewCalibration(CalibrationViewer viewCalibration) {
+        this.viewCalibration = viewCalibration;
+    }
 
     //orderList
     public List<Order> getOrderList(){ return orderList; }
