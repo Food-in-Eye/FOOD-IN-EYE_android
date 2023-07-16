@@ -50,7 +50,6 @@ public class StorelistActivity extends AppCompatActivity {
     List<Stores> storeInfo;
     RecyclerView recyclerView;
     StoreAdapter storeAdapter;
-
     ConstraintLayout storeLayout;
 
     //-----------------------------------------------------------------------------------------

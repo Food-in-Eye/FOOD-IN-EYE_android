@@ -33,8 +33,8 @@ public class Stores {
     // status == 2 -> Close, status == 1 -> Open
     public boolean isOpen(){
         if (status == 2){
-            return true;
-        }else return false;
+            return false;
+        }else return true;
     }
 
     public String getName() {

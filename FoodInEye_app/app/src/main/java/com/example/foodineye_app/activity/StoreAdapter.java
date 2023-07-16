@@ -53,8 +53,16 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.MyViewHolder
         holder.storeName.setText(store.getName());
 
         //Set the background color for each item in the list
-        int color = store.isOpen() ? Color.LTGRAY : Color.WHITE;
+        int color = store.isOpen() ? Color.WHITE : Color.LTGRAY;
         holder.itemView.setBackgroundColor(color);
+        // Enable or disable click on the item based on store.isOpen()
+        if (store.isOpen()) {
+            holder.itemView.setClickable(true);
+            holder.itemView.setEnabled(true);
+        } else {
+            holder.itemView.setClickable(false);
+            holder.itemView.setEnabled(false);
+        }
 
         //store ID 값 받아오기
         String storeId = store.get_id();

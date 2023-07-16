@@ -244,6 +244,13 @@ public class MenuActivity extends AppCompatActivity{
                         if(tab_Id.equals(s_id)){
                             tabLayout.getTabAt(i).select();
                         }
+
+                        // 가게가 열리지 않았을 때 탭을 비활성화하고 색상을 변경
+                        if (!storeInfo.get(i).isOpen()) {
+                            tab.view.setClickable(false);
+                            tab.view.setEnabled(false);
+                            tab.view.setBackgroundColor(Color.LTGRAY);
+                        }
                     }
                     //tabLayout 클릭시 동작
                     tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -268,9 +275,7 @@ public class MenuActivity extends AppCompatActivity{
                                     tabM_id = store.getM_id();
                                     Log.d("MenuActivity","tabM_id"+tabM_id);
                                     Log.d("MenuActivity","tabId"+tabId);
-//                                    showMenu(tabM_id, tab_Id, store_name);
                                     showMenu(tabM_id, store.get_id(), store_name, recent_sNum);
-                                    //menuAdapter.notifyDataSetChanged();
                                     sNum = store.getS_num();
                                     recent_sNum = sNum;
                                 }
