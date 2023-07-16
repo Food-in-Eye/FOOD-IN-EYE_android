@@ -2,8 +2,13 @@ package com.example.foodineye_app;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.net.Uri;
 import android.os.Build;
 import android.os.CountDownTimer;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.DisplayMetrics;
@@ -21,9 +26,14 @@ import com.example.foodineye_app.activity.Data;
 import com.example.foodineye_app.activity.StorelistActivity;
 import com.example.foodineye_app.gaze.PostGaze;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
 import camp.visual.gazetracker.callback.CalibrationCallback;
 import camp.visual.gazetracker.callback.GazeCallback;
@@ -85,24 +95,22 @@ public class GazeTrackerDataStorage {
         setconstraintLayout(constraintLayout);
 
         initSpeedDial();
+        //initTrackerView
         setViewPoint(viewPoint);
         final Data data = (Data) context;
         viewCalibration = data.getViewCalibration();
-
         setOffsetOfView();
+
         initHandler();
         initTouchHandler();
 
         modelInfo();
+        //screenshot
+//        takeAndSaveScreenShot();
 
         gazeTracker = GazeTrackerManager.makeNewInstance(context); //gazeTracker 초기화
-
-        //gazeTracker 초기화
         gazeTracker.loadCalibrationData();
         setCalibration();
-//        final Data data = (Data)context;
-//        Log.d("GazeTrackerDataStorage", "GazeTracker" + data.getGazeTracker().toString());
-
 
         gazeTracker.setGazeTrackerCallbacks(
                 gazeCallback, calibrationCallback, statusCallback, userStatusCallback);
@@ -117,7 +125,6 @@ public class GazeTrackerDataStorage {
         viewPoint.setPosition(0,0);
         gazeInfoToJson(layout_name, store_num, food_num); // 지금까지 기록된 gazeInfo를 jsonObject로 저장 ++ scroll
         list_gazeInfo = new ArrayList<GazeInfo>(); // list 초기화
-//        saveGazeInfo("none");
         Log.d("GazeTrackerDataStorage", "list_gazeInfo_2: " +list_gazeInfo);
         list_gazeInfo = new ArrayList<>(); //list 초기화
     }
@@ -138,6 +145,20 @@ public class GazeTrackerDataStorage {
     }
 
     //-----------------------------------------------------------------------------------------
+
+    //setter
+    public void setGazeTracker(GazeTrackerManager gazeTracker) {
+        this.gazeTracker = gazeTracker;
+    }
+
+    public void setconstraintLayout(ConstraintLayout constraintLayout) {
+        this.constraintLayout = constraintLayout;
+    }
+
+    public void setViewPoint(PointView viewPoint) {
+        this.viewPoint = viewPoint;
+    }
+
     private void initSpeedDial(){
 
         Log.d("GazeTrackerDataStorage", "initSpeedDial success!");
@@ -145,10 +166,6 @@ public class GazeTrackerDataStorage {
         releaseGaze();
 
     }
-//    private void initTrackerView() {
-////        viewPoint = findViewById(R.id.view_point);
-////        viewCalibration = findViewById(R.id.view_calibration);
-//    }
 
     public void initCalibrationView(CalibrationViewer calibrationViewer){
         viewCalibration = calibrationViewer;
@@ -268,6 +285,8 @@ public class GazeTrackerDataStorage {
         float gy = filtered_gaze[1];
         Log.d("GazeTrackerDataStorage", "gazeInfo_gx: "+gx);
         Log.d("GazeTrackerDataStorage", "gazeInfo_gy: "+gy);
+
+        //화면에서 gazepoint 보여주기
         showGazePoint(gx, gy, gazeInfo.screenState);
 
 //        context.runOnUiThread(() -> {
@@ -468,20 +487,6 @@ public class GazeTrackerDataStorage {
         Log.i("model", "screen_dpi(x,y):[" + screen_xdpi + "," + screen_ydpi + "]");
         Log.i("model", "screen_density_dpi:" + screen_density_dpi);
         Log.i("model", "screen_dpi_ration:" + screen_dpi_ration);
-    }
-
-    //setter
-
-    public void setGazeTracker(GazeTrackerManager gazeTracker) {
-        this.gazeTracker = gazeTracker;
-    }
-
-    public void setconstraintLayout(ConstraintLayout constraintLayout) {
-        this.constraintLayout = constraintLayout;
-    }
-
-    public void setViewPoint(PointView viewPoint) {
-        this.viewPoint = viewPoint;
     }
 
     // The gaze or calibration coordinates are delivered only to the absolute coordinates of the entire screen.

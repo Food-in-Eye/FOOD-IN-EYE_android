@@ -1,10 +1,19 @@
 package com.example.foodineye_app.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.HandlerThread;
 import android.util.Log;
+import android.util.LruCache;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,6 +31,8 @@ import com.example.foodineye_app.GazeTrackerDataStorage;
 import com.example.foodineye_app.R;
 import com.google.android.material.tabs.TabLayout;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -161,7 +172,7 @@ public class MenuActivity extends AppCompatActivity{
             String intent_cartMId = intent.getStringExtra("intent_cartMId");
             showStore(intent_recentSId, intent_cartMId);
 
-        }else{
+        }else {
             Log.e("MenuActivity", "No Intent data found.");
         }
 
@@ -292,6 +303,7 @@ public class MenuActivity extends AppCompatActivity{
 
     @Override
     protected void onStop() {
+        captureFullScreenshot();
         super.onStop();
         Log.d("StorelistActivity", "onStop");
 
@@ -316,4 +328,142 @@ public class MenuActivity extends AppCompatActivity{
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
+    //sceenshot
+
+    private Bitmap captureScreen() {
+        View rootView = getWindow().getDecorView().getRootView();
+        rootView.setDrawingCacheEnabled(true);
+        return rootView.getDrawingCache();
+    }
+
+    public Bitmap captureRecyclerView(RecyclerView recyclerView) {
+        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+        RecyclerView.Adapter adapter = recyclerView.getAdapter();
+
+        if (layoutManager instanceof GridLayoutManager && adapter != null) {
+            GridLayoutManager gridLayoutManager = (GridLayoutManager) layoutManager;
+            int spanCount = gridLayoutManager.getSpanCount();
+
+            int itemCount = adapter.getItemCount();
+            int columns = spanCount;
+
+            int width = recyclerView.getWidth();
+            int height = 0;
+            Paint paint = new Paint();
+            int iHeight = 0;
+            final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+            final int cacheSize = maxMemory / 8;
+            LruCache<String, Bitmap> bitmapCache = new LruCache<>(cacheSize);
+
+            for (int i = 0; i < itemCount; i++) {
+                int column = i % columns;
+                int row = i / columns;
+
+                RecyclerView.ViewHolder holder = adapter.createViewHolder(recyclerView, adapter.getItemViewType(i));
+                adapter.onBindViewHolder(holder, i);
+                holder.itemView.measure(
+                        View.MeasureSpec.makeMeasureSpec(width / columns, View.MeasureSpec.EXACTLY),
+                        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+                holder.itemView.layout(
+                        column * (width / columns),
+                        row * holder.itemView.getMeasuredHeight(),
+                        (column + 1) * (width / columns),
+                        (row + 1) * holder.itemView.getMeasuredHeight());
+                holder.itemView.setDrawingCacheEnabled(true);
+                holder.itemView.buildDrawingCache();
+                Bitmap drawingCache = holder.itemView.getDrawingCache();
+                if (drawingCache != null) {
+                    bitmapCache.put(String.valueOf(i), drawingCache);
+                }
+
+                // 계산된 높이
+                if (column == 0) {
+                    height += holder.itemView.getMeasuredHeight();
+                }
+            }
+
+            Bitmap bigBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            Canvas bigCanvas = new Canvas(bigBitmap);
+            Drawable backgroundDrawable = recyclerView.getBackground();
+            if (backgroundDrawable != null) {
+                backgroundDrawable.draw(bigCanvas);
+            } else {
+                bigCanvas.drawColor(Color.WHITE);
+            }
+
+            for (int i = 0; i < itemCount; i++) {
+                Bitmap bitmap = bitmapCache.get(String.valueOf(i));
+                bigCanvas.drawBitmap(bitmap, (i % columns) * (width / columns), iHeight, paint);
+
+                // 계산된 높이
+                if ((i + 1) % columns == 0) {
+                    iHeight += bitmap.getHeight();
+                }
+
+                bitmap.recycle();
+            }
+            return bigBitmap;
+        }
+
+        return null;
+    }
+
+// 전체 화면 캡쳐하기
+    private void captureFullScreenshot() {
+        // 전체 화면 캡쳐
+        Bitmap fullScreenshot = captureScreen();
+
+        // RecyclerView의 모든 아이템을 포함하는 비트맵 캡쳐
+        Bitmap recyclerViewScreenshot = captureRecyclerView(menurecyclerView);
+
+        // 캡쳐한 비트맵을 합성
+        int combinedWidth = Math.max(fullScreenshot.getWidth(), recyclerViewScreenshot.getWidth());
+        int combinedHeight = 667 + recyclerViewScreenshot.getHeight();
+        Log.d("screenshot", "recyclerViewScreenshot_height: " + recyclerViewScreenshot.getHeight());
+
+        Bitmap combinedBitmap = Bitmap.createBitmap(combinedWidth, combinedHeight, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(combinedBitmap);
+        canvas.drawBitmap(fullScreenshot, 0, 0, null);
+
+        // recyclerViewScreenshot을 그릴 위치 계산
+        int recyclerViewLeft = 26;
+        int recyclerViewTop = 667;
+
+        // 배경을 하얀색으로 그리기
+        canvas.drawColor(Color.WHITE);
+
+        // 이미지 그리기
+        canvas.drawBitmap(fullScreenshot, 0, 0, null);
+        canvas.drawBitmap(recyclerViewScreenshot, recyclerViewLeft, recyclerViewTop, null);
+
+        // 필요에 따라 비트맵을 저장하거나 처리할 수 있습니다.
+        saveImage(combinedBitmap);
+
+        // 메모리 해제
+        fullScreenshot.recycle();
+        recyclerViewScreenshot.recycle();
+    }
+
+    private void saveImage(Bitmap bitmap){
+        String fileTitle = "ScreenAll.png";
+
+        File file = new File(this.getFilesDir(), fileTitle);
+        Log.d("screenshot", "fileDir"+getFilesDir());
+
+        try {
+
+            if (!file.exists()) { file.createNewFile(); }
+
+            FileOutputStream fos = new FileOutputStream(file);
+
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.close();
+
+            show("save success");
+
+        } catch (Exception e){
+            show("save fail");
+            e.printStackTrace();
+        }
+    }
 }

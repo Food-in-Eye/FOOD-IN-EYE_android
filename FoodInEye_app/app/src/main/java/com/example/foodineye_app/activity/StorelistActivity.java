@@ -1,10 +1,16 @@
 package com.example.foodineye_app.activity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.HandlerThread;
 import android.util.Log;
 import android.view.View;
@@ -25,8 +31,13 @@ import com.example.foodineye_app.GazeTrackerManager;
 import com.example.foodineye_app.gaze.PermissionRequester;
 import com.example.foodineye_app.R;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,9 +51,11 @@ public class StorelistActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     StoreAdapter storeAdapter;
 
+    ConstraintLayout storeLayout;
 
     //-----------------------------------------------------------------------------------------
     //gazetracker
+    Context ctx;
     GazeTrackerDataStorage gazeTrackerDataStorage;
     private final HandlerThread backgroundThread = new HandlerThread("background");
 
@@ -58,8 +71,8 @@ public class StorelistActivity extends AppCompatActivity {
         //-------------------------------------------------------------------------------------
 
         //start-gaze-tracking
-        Context ctx = getApplicationContext();
-        ConstraintLayout storeLayout = findViewById(R.id.storelistLayout);
+        ctx = getApplicationContext();
+        storeLayout = findViewById(R.id.storelistLayout);
         PointView viewpoint = findViewById(R.id.view_point_storelist);
 
         gazeTrackerDataStorage = new GazeTrackerDataStorage(this);
@@ -68,7 +81,6 @@ public class StorelistActivity extends AppCompatActivity {
         if (gazeTrackerDataStorage != null) {
             gazeTrackerDataStorage.setGazeTracker(ctx, storeLayout, viewpoint);
         }
-
 
         //-------------------------------------------------------------------------------------
 
@@ -137,6 +149,7 @@ public class StorelistActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
+        takeAndSaveScreenShot();
         super.onStop();
         Log.d("StorelistActivity", "onStop");
 
@@ -159,6 +172,67 @@ public class StorelistActivity extends AppCompatActivity {
 
     private void show(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    //screenshot
+    private void takeAndSaveScreenShot(){
+//        Bitmap bitmap = getBitmapFromView(storeLayout, storeLayout.getWidth(), storeLayout.getHeight());
+        Bitmap bitmap = getBitmapFromRootView(StorelistActivity.this);
+        saveImage(bitmap);
+
+    }
+
+    private Bitmap getBitmapFromRootView(Activity context){
+        View root = context.getWindow().getDecorView().getRootView();
+        root.setDrawingCacheEnabled(true);
+        root.buildDrawingCache();
+        //루트뷰의 캐시를 가져옴
+        Bitmap screenshot = root.getDrawingCache();
+
+        // get view coordinates
+        int[] location = new int[2];
+        root.getLocationInWindow(location);
+
+        // 이미지를 자를 수 있으나 전체 화면을 캡쳐 하도록 함
+        Bitmap bmp = Bitmap.createBitmap(screenshot, location[0], location[1], root.getWidth(), root.getHeight(), null, false);
+
+        return bmp;
+    }
+
+    private Bitmap getBitmapFromView(ConstraintLayout view, int width, int height){
+        view.measure(View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY));
+        width = view.getMeasuredWidth();
+        height = view.getMeasuredHeight();
+        Log.d("screenshot", "width= "+width);
+        Log.d("screenshot", "heigt= "+height);
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        view.draw(canvas);
+
+        return bitmap;
+    }
+
+    private void saveImage(Bitmap bitmap){
+        String fileTitle = "ScreenAll.png";
+
+        File file = new File(this.getFilesDir(), fileTitle);
+        Log.d("screenshot", "fileDir"+getFilesDir());
+
+        try {
+
+            if (!file.exists()) { file.createNewFile(); }
+
+            FileOutputStream fos = new FileOutputStream(file);
+
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.close();
+
+            show("save success");
+
+        } catch (Exception e){
+            show("save fail");
+            e.printStackTrace();
+        }
     }
 
 }
