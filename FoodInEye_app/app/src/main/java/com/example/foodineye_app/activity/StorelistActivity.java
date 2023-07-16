@@ -175,7 +175,6 @@ public class StorelistActivity extends AppCompatActivity {
 
     //screenshot
     private void takeAndSaveScreenShot(){
-//        Bitmap bitmap = getBitmapFromView(storeLayout, storeLayout.getWidth(), storeLayout.getHeight());
         Bitmap bitmap = getBitmapFromRootView(StorelistActivity.this);
         saveImage(bitmap);
 
@@ -196,19 +195,6 @@ public class StorelistActivity extends AppCompatActivity {
         Bitmap bmp = Bitmap.createBitmap(screenshot, location[0], location[1], root.getWidth(), root.getHeight(), null, false);
 
         return bmp;
-    }
-
-    private Bitmap getBitmapFromView(ConstraintLayout view, int width, int height){
-        view.measure(View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY));
-        width = view.getMeasuredWidth();
-        height = view.getMeasuredHeight();
-        Log.d("screenshot", "width= "+width);
-        Log.d("screenshot", "heigt= "+height);
-        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        view.draw(canvas);
-
-        return bitmap;
     }
 
     private void saveImage(Bitmap bitmap){

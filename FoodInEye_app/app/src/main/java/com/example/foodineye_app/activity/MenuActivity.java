@@ -414,7 +414,6 @@ public class MenuActivity extends AppCompatActivity{
         return null;
     }
 
-// 전체 화면 캡쳐하기
     private void captureFullScreenshot() {
         // 전체 화면 캡쳐
         Bitmap fullScreenshot = captureScreen();

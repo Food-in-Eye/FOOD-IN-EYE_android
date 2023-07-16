@@ -1,7 +1,9 @@
 package com.example.foodineye_app.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.HandlerThread;
 import android.util.Log;
@@ -20,6 +22,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.bumptech.glide.Glide;
 import com.example.foodineye_app.GazeTrackerDataStorage;
 import com.example.foodineye_app.R;
+
+import java.io.File;
+import java.io.FileOutputStream;
 
 import visual.camp.sample.view.PointView;
 
@@ -285,6 +290,7 @@ public class MenuDetailActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         Log.d("MenuDetailActivity", "onStop");
+        takeAndSaveScreenShot();
 
 //        if (gazeTrackerDataStorage != null) {
 //            gazeTrackerDataStorage.stopGazeTracker("menu_detail", s_num, f_num);
@@ -307,4 +313,50 @@ public class MenuDetailActivity extends AppCompatActivity {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
+    //screenshot
+    private void takeAndSaveScreenShot(){
+        Bitmap bitmap = getBitmapFromRootView(MenuDetailActivity.this);
+        saveImage(bitmap);
+
+    }
+
+    private Bitmap getBitmapFromRootView(Activity context){
+        View root = context.getWindow().getDecorView().getRootView();
+        root.setDrawingCacheEnabled(true);
+        root.buildDrawingCache();
+        //루트뷰의 캐시를 가져옴
+        Bitmap screenshot = root.getDrawingCache();
+
+        // get view coordinates
+        int[] location = new int[2];
+        root.getLocationInWindow(location);
+
+        // 이미지를 자를 수 있으나 전체 화면을 캡쳐 하도록 함
+        Bitmap bmp = Bitmap.createBitmap(screenshot, location[0], location[1], root.getWidth(), root.getHeight(), null, false);
+
+        return bmp;
+    }
+
+    private void saveImage(Bitmap bitmap){
+        String fileTitle = "ScreenAll.png";
+
+        File file = new File(this.getFilesDir(), fileTitle);
+        Log.d("screenshot", "fileDir"+getFilesDir());
+
+        try {
+
+            if (!file.exists()) { file.createNewFile(); }
+
+            FileOutputStream fos = new FileOutputStream(file);
+
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.close();
+
+            show("save success");
+
+        } catch (Exception e){
+            show("save fail");
+            e.printStackTrace();
+        }
+    }
 }
