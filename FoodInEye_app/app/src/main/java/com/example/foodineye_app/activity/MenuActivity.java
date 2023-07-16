@@ -308,9 +308,9 @@ public class MenuActivity extends AppCompatActivity{
 
     @Override
     protected void onStop() {
-        captureFullScreenshot();
         super.onStop();
         Log.d("StorelistActivity", "onStop");
+        captureFullScreenshot();
 
         if (gazeTrackerDataStorage != null) {
             gazeTrackerDataStorage.stopGazeTracker("store_menu", recent_sNum, 0);
@@ -407,6 +407,7 @@ public class MenuActivity extends AppCompatActivity{
 
                 bitmap.recycle();
             }
+//            saveImage(bigBitmap);
             return bigBitmap;
         }
 
@@ -423,7 +424,7 @@ public class MenuActivity extends AppCompatActivity{
 
         // 캡쳐한 비트맵을 합성
         int combinedWidth = Math.max(fullScreenshot.getWidth(), recyclerViewScreenshot.getWidth());
-        int combinedHeight = 667 + recyclerViewScreenshot.getHeight();
+        int combinedHeight = 868 + recyclerViewScreenshot.getHeight();
         Log.d("screenshot", "recyclerViewScreenshot_height: " + recyclerViewScreenshot.getHeight());
 
         Bitmap combinedBitmap = Bitmap.createBitmap(combinedWidth, combinedHeight, Bitmap.Config.ARGB_8888);
@@ -432,7 +433,7 @@ public class MenuActivity extends AppCompatActivity{
 
         // recyclerViewScreenshot을 그릴 위치 계산
         int recyclerViewLeft = 26;
-        int recyclerViewTop = 667;
+        int recyclerViewTop = 869;
 
         // 배경을 하얀색으로 그리기
         canvas.drawColor(Color.WHITE);

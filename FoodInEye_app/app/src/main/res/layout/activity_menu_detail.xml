@@ -14,7 +14,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="350dp"
+            android:layout_height="400dp"
             android:orientation="vertical"
             android:background="@drawable/menu_detail_bg">
 
@@ -61,15 +61,15 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:layout_marginRight="5dp"
-                android:layout_marginTop="10dp"/>
+                android:layout_marginTop="25dp"/>
 
             <ImageView
                 android:id="@+id/menuD_img"
-                android:layout_width="230dp"
-                android:layout_height="200dp"
+                android:layout_width="260dp"
+                android:layout_height="260dp"
                 android:orientation="vertical"
                 android:layout_gravity="center"
-                android:layout_marginTop="20dp"/>
+                android:layout_marginTop="30dp"/>
 
         </LinearLayout>
 
@@ -78,38 +78,93 @@
         <LinearLayout
             android:id="@+id/menu_description"
             android:layout_width="370dp"
-            android:layout_height="160dp"
+            android:layout_height="180dp"
             android:orientation="vertical"
             android:layout_gravity="center"
             android:layout_marginTop="15dp">
 
-            <TextView
-                android:id="@+id/menuD_desc"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="메뉴 한줄소개"
-                android:textSize="18dp"
-                android:textColor="@color/white"
-                android:layout_gravity="center"
-                android:layout_margin="10dp"/>
-            <TextView
-                android:id="@+id/menuD_allergy"
+                android:layout_height="60dp"
+                android:orientation="horizontal"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp">
+
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:text="📌"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="10dp"/>
+                <TextView
+                    android:id="@+id/menuD_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="메뉴 한 줄 소개\n메뉴 한 줄 소개"
+                    android:textColor="@color/white"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"/>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="메뉴 알러지"
-                android:textSize="18dp"
-                android:textColor="@color/white"
-                android:layout_gravity="center"
-                android:layout_margin="10dp"/>
-            <TextView
-                android:id="@+id/menuD_origin"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp">
+
+                <TextView
+                    android:layout_width="50dp"
+                    android:layout_height="20dp"
+                    android:text="알러지: "
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"/>
+                <TextView
+                    android:id="@+id/menuD_allergy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="메뉴 알러지\n메뉴 알러지"
+                    android:textColor="@color/white"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"/>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="메뉴 원산지"
-                android:textSize="18dp"
-                android:textColor="@color/white"
-                android:layout_gravity="center"
-                android:layout_margin="10dp"/>
+                android:layout_height="45dp"
+                android:orientation="horizontal"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp">
+
+                <TextView
+                    android:layout_width="50dp"
+                    android:layout_height="20dp"
+                    android:text="원산지: "
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"/>
+                <TextView
+                    android:id="@+id/menuD_origin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="메뉴 원산지"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -117,7 +172,7 @@
         <LinearLayout
             android:id="@+id/menuD_btn"
             android:layout_width="200dp"
-            android:layout_height="45dp"
+            android:layout_height="50dp"
             android:orientation="horizontal"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
