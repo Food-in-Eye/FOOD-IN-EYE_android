@@ -23,6 +23,7 @@ import com.example.foodineye_app.GazeTrackerDataStorage;
 import com.example.foodineye_app.gaze.PostGaze;
 import com.example.foodineye_app.R;
 import com.example.foodineye_app.gaze.PostGazeResponse;
+import com.example.foodineye_app.websocket.WebSocketManager;
 
 import org.json.JSONArray;
 
@@ -193,11 +194,11 @@ public class OrderActivity extends AppCompatActivity {
                             Log.d("WebSocket", "history_id: "+history_id);
                             Log.d("WebSocket", "WebSocket 시도");
 
-//                            WebSocketManager.getInstance(getApplicationContext()).connectWebSocket(history_id);
+                            WebSocketManager.getInstance(getApplicationContext()).connectWebSocket(history_id);
 
                             // gaze 보내기
-//                            ApiInterface apiInterface1 = ApiClient.getClient().create(ApiInterface.class);
-//                            jsonGazeArray = ((Data) getApplication()).getJsonArray();
+                            ApiInterface apiInterface1 = ApiClient.getClient().create(ApiInterface.class);
+                            jsonGazeArray = ((Data) getApplication()).getJsonArray();
 
                             postGazes = (List<PostGaze>) ((Data)getApplication()).getGazeList();
 
@@ -255,16 +256,17 @@ public class OrderActivity extends AppCompatActivity {
         super.onStop();
         Log.d("OrderActivity", "onStop");
 
-//        if (gazeTrackerDataStorage != null) {
-//            gazeTrackerDataStorage.stopGazeTracker("order", 0, 0);
-//        }
-//        gazeTracker.removeCallbacks(
+        if (gazeTrackerDataStorage != null) {
+            gazeTrackerDataStorage.stopGazeTracker("order", 0, 0);
+        }
+//        gazeTrackerDataStorage.removeCallbacks(
 //                gazeCallback, calibrationCallback, statusCallback, userStatusCallback);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        gazeTrackerDataStorage.quitBackgroundThread();
         backgroundThread.quitSafely();
     }
 

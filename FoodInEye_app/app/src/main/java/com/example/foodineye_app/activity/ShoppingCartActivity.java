@@ -125,6 +125,7 @@ public class ShoppingCartActivity extends AppCompatActivity implements CartAdapt
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        gazeTrackerDataStorage.quitBackgroundThread();
         backgroundThread.quitSafely();
     }
 

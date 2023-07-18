@@ -108,7 +108,7 @@ public class GazeTrackerDataStorage {
         //screenshot
 //        takeAndSaveScreenShot();
 
-        gazeTracker = GazeTrackerManager.makeNewInstance(context); //gazeTracker 초기화
+        gazeTracker = GazeTrackerManager.makeNewInstance(context); //gazeTracker 설정
         gazeTracker.loadCalibrationData();
         setCalibration();
 
@@ -127,6 +127,9 @@ public class GazeTrackerDataStorage {
         list_gazeInfo = new ArrayList<GazeInfo>(); // list 초기화
         Log.d("GazeTrackerDataStorage", "list_gazeInfo_2: " +list_gazeInfo);
         list_gazeInfo = new ArrayList<>(); //list 초기화
+
+        gazeTracker.removeCallbacks(
+                gazeCallback, calibrationCallback, statusCallback, userStatusCallback);
     }
 
 
@@ -140,6 +143,7 @@ public class GazeTrackerDataStorage {
             }
             synchronized (list_gazeInfo){
                 gazeTracker.startGazeTracking();
+                show("startgazetracking");
             }
         }).start();
     }
@@ -384,7 +388,7 @@ public class GazeTrackerDataStorage {
 
     private void show(String message) {
 
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+//        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 
     //
@@ -463,7 +467,7 @@ public class GazeTrackerDataStorage {
 
         postGaze = new PostGaze(layoutName, s_num, f_num, gazeArrayList);
         Log.d("Gaze", "gaze: "+postGaze);
-        Data.setGazeList(postGaze);
+        Data.addGazeList(postGaze);
 
     }
 
@@ -500,6 +504,10 @@ public class GazeTrackerDataStorage {
                 viewCalibration.setOffset(x, y);
             }
         });
+    }
+
+    public void quitBackgroundThread(){
+        backgroundThread.quitSafely();
     }
 
 }

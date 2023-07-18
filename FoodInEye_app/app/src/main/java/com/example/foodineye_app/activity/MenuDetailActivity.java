@@ -34,6 +34,7 @@ public class MenuDetailActivity extends AppCompatActivity {
 
     ImageView menu_Img;
     TextView menu_name;
+    String menuName;
     TextView menu_desc;
     TextView menu_allergy;
     TextView menu_origin;
@@ -52,6 +53,7 @@ public class MenuDetailActivity extends AppCompatActivity {
     PointView viewpoint;
     GazeTrackerDataStorage gazeTrackerDataStorage;
     private final HandlerThread backgroundThread = new HandlerThread("background");
+    boolean isCartClicked = false;
 
     //----------------------------------------------------------------------
     @Override
@@ -204,18 +206,20 @@ public class MenuDetailActivity extends AppCompatActivity {
 
 
 
-        Log.d("intentToDetail", "intentToDetail_sid" + s_Id);
-        Log.d("intentToDetail", "intentToDetail_mid" + m_Id);
-        Log.d("intentToDetail", "intentToDetail_fnum" + f_num);
+        Log.d("intentToDetail", "intentToDetail_sid " + s_Id);
+        Log.d("intentToDetail", "intentToDetail_mid " + m_Id);
+        Log.d("intentToDetail", "intentToDetail_snum: " + s_num);
+        Log.d("intentToDetail", "intentToDetail_fnum:  " + f_num);
 
 
         menu_name.setText(intentToDetail.food.getM_name());
+        menuName = intentToDetail.food.getM_name();
         menu_desc.setText(intentToDetail.food.getM_desc());
         menu_allergy.setText(intentToDetail.food.getM_allergy());
         menu_origin.setText(intentToDetail.food.getM_origin());
         menu_price.setText(String.valueOf(intentToDetail.food.getM_price()));
 
-        String imageUrl = "https://foodineye.s3.ap-northeast-2.amazonaws.com/" + m_imageKey;
+        String imageUrl = "https://foodineye2.s3.ap-northeast-2.amazonaws.com/" + m_imageKey;
         Glide.with(this)
                 .load(imageUrl)
                 .circleCrop()
@@ -267,9 +271,11 @@ public class MenuDetailActivity extends AppCompatActivity {
         toCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (gazeTrackerDataStorage != null) {
+                isCartClicked = true;
+                // 이동할 때 GazeTracker 중지
+                if (gazeTrackerDataStorage != null)
                     gazeTrackerDataStorage.stopGazeTracker("menu_detail", s_num, f_num);
-                }
+
                 Intent intent = new Intent(getApplicationContext(), ShoppingCartActivity.class);
                 startActivity(intent);
             }
@@ -288,13 +294,13 @@ public class MenuDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
+//        takeAndSaveScreenShot();
         super.onStop();
         Log.d("MenuDetailActivity", "onStop");
-        takeAndSaveScreenShot();
 
-//        if (gazeTrackerDataStorage != null) {
-//            gazeTrackerDataStorage.stopGazeTracker("menu_detail", s_num, f_num);
-//        }
+        if (!isCartClicked && gazeTrackerDataStorage != null) {
+            gazeTrackerDataStorage.stopGazeTracker("menu_detail", s_num, f_num);
+        }
 //        gazeTracker.removeCallbacks(
 //                gazeCallback, calibrationCallback, statusCallback, userStatusCallback);
     }
@@ -302,6 +308,7 @@ public class MenuDetailActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        gazeTrackerDataStorage.quitBackgroundThread();
         backgroundThread.quitSafely();
     }
 
@@ -337,26 +344,27 @@ public class MenuDetailActivity extends AppCompatActivity {
         return bmp;
     }
 
-    private void saveImage(Bitmap bitmap){
-        String fileTitle = "ScreenAll.png";
+    private void saveImage(Bitmap bitmap) {
+        String fileTitle = "menu_detail_" + menuName + ".png";
 
         File file = new File(this.getFilesDir(), fileTitle);
-        Log.d("screenshot", "fileDir"+getFilesDir());
+        Log.d("screenshot", "fileDir" + getFilesDir());
+
 
         try {
-
-            if (!file.exists()) { file.createNewFile(); }
+            if (!file.exists()) {
+                file.createNewFile();
+            }
 
             FileOutputStream fos = new FileOutputStream(file);
-
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
             fos.close();
 
             show("save success");
-
-        } catch (Exception e){
+        } catch (Exception e) {
             show("save fail");
             e.printStackTrace();
         }
     }
+
 }

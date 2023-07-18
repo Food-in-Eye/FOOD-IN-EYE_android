@@ -111,7 +111,7 @@ public class Data extends Application {
         return GazeList;
     }
 
-    public static void setGazeList(PostGaze postGaze) {
+    public static void addGazeList(PostGaze postGaze) {
         GazeList.add(postGaze);
     }
 }

@@ -25,7 +25,7 @@ public class CalibrationViewer extends ViewGroup {
   private Boolean toDraw = true;
   private CalibrationPoint calibrationPoint;
   private int backgroundColor = Color.rgb(0x64,0x5E, 0x5E);
-//  private int backgroundColor = Color.argb(0x88,0x64,0x5E, 0x5E);
+  //  private int backgroundColor = Color.argb(0x88,0x64,0x5E, 0x5E);
   private int redColor = Color.rgb(0xEF,0x53, 0x50);
   private int purpleColor = Color.rgb(0xAB,0x47, 0xBC);
   private int orangeColor = Color.rgb(0xFF,0xA7, 0x26);
@@ -116,10 +116,10 @@ public class CalibrationViewer extends ViewGroup {
     float px =  x - offsetX;
     float py =  y - offsetY;
     calibrationPoint.layout(
-        (int)px - 20,
-        (int)py - 20,
-        (int)px + 20,
-        (int)py + 20);
+            (int)px - 20,
+            (int)py - 20,
+            (int)px + 20,
+            (int)py + 20);
     invalidate();
   }
 
@@ -206,12 +206,12 @@ public class CalibrationViewer extends ViewGroup {
 
     private void setAnimation() {
       rotateAnimation = new RotateAnimation(
-          last_end_degree,
-          next_end_degree,
-          Animation.RELATIVE_TO_SELF,
-          0.5f,
-          Animation.RELATIVE_TO_SELF,
-          0.5f);
+              last_end_degree,
+              next_end_degree,
+              Animation.RELATIVE_TO_SELF,
+              0.5f,
+              Animation.RELATIVE_TO_SELF,
+              0.5f);
       rotateAnimation.setAnimationListener(listener);
       rotateAnimation.setRepeatCount(1);
       rotateAnimation.setDuration(10);

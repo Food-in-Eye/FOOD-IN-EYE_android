@@ -63,7 +63,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder> 
         holder.menuName.setText(menus.getName());
         holder.menuPrice.setText(String.valueOf(menus.getPrice()));
         //holder.menuImg.setImage(menus.getImg_key());
-        String imageUrl = "https://foodineye.s3.ap-northeast-2.amazonaws.com/" + menus.getImg_key();
+        String imageUrl = "https://foodineye2.s3.ap-northeast-2.amazonaws.com/" + menus.getImg_key();
         Glide.with(holder.itemView.getContext())
                 .load(imageUrl)
                 .circleCrop()
@@ -79,6 +79,8 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder> 
         food.setM_origin(menus.getOrigin());
         food.setF_num(menus.getNum());
         IntentToDetail intentToDetail = new IntentToDetail(s_Id, m_Id, s_name, food, s_num);
+        Log.d("intentToDetail", "intentToDetail_snum: " + s_num);
+        Log.d("intentToDetail", "intentToDetail_fnum:  " + menus.getNum());
         Log.d("MenuAdapter", "intentToDetail"+intentToDetail.toString());
 
 

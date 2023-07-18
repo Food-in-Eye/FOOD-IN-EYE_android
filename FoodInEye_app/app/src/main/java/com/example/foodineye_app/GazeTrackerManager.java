@@ -44,7 +44,7 @@ public class GazeTrackerManager {
 
     static public GazeTrackerManager makeNewInstance(Context context) {
         if (mInstance != null) {
-//            mInstance.deinitGazeTracker();
+            mInstance.deinitGazeTracker();
             return mInstance;
         }
 

@@ -148,20 +148,20 @@ public class StorelistActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        takeAndSaveScreenShot();
+//        takeAndSaveScreenShot();
         super.onStop();
         Log.d("StorelistActivity", "onStop");
 
         if (gazeTrackerDataStorage != null) {
             gazeTrackerDataStorage.stopGazeTracker("store_list", 0, 0);
         }
-//        gazeTracker.removeCallbacks(
-//                gazeCallback, calibrationCallback, statusCallback, userStatusCallback);
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        gazeTrackerDataStorage.quitBackgroundThread();
         backgroundThread.quitSafely();
     }
 
