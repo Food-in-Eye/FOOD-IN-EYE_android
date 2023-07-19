@@ -456,6 +456,7 @@ public class GazeTrackerDataStorage {
         int s_num = store_num;
         int f_num = food_num;
 
+        Log.d("Gaze", "!!!!!!!!: "+System.identityHashCode(list_gazeInfo));
 
         for(int j = 0; j<list_gazeInfo.size(); j++){
             long t = list_gazeInfo.get(j).timestamp;

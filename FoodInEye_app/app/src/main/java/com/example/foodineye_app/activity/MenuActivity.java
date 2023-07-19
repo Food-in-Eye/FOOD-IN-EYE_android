@@ -66,7 +66,7 @@ public class MenuActivity extends AppCompatActivity{
     int previousTabIndex = -1;
     //-----------------------------------------------------------------------------------------
     Context ctx;
-    ConstraintLayout storeLayout;
+    ConstraintLayout menuLayout;
     PointView viewpoint;
     //gazetracker
     GazeTrackerDataStorage gazeTrackerDataStorage;
@@ -134,15 +134,10 @@ public class MenuActivity extends AppCompatActivity{
         //-------------------------------------------------------------------------------------
         //start-gaze-tracking
         ctx = getApplicationContext();
-        storeLayout = findViewById(R.id.menuLayout);
+        menuLayout = findViewById(R.id.menuLayout);
         viewpoint = findViewById(R.id.view_point_menu);
 
-        gazeTrackerDataStorage = new GazeTrackerDataStorage(this);
-        gazeTrackerDataStorage.setContext(this);
-
-        if (gazeTrackerDataStorage != null) {
-            setGazeTrackerIfNotRunning();
-        }
+        setGazeTrackerDataStorage();
 
 
         //-------------------------------------------------------------------------------------
@@ -256,6 +251,67 @@ public class MenuActivity extends AppCompatActivity{
                         }
                     }
                     //tabLayout 클릭시 동작
+//                    //tabLayout 클릭시 동작
+//                    tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+//                        @Override
+//                        public void onTabSelected(TabLayout.Tab tab) {
+//                            // 중복 호출을 방지하기 위해 선택된 탭에서만 동작하도록 수정
+//                            int selectedTabIndex = tab.getPosition();
+//                            if (selectedTabIndex != previousTabIndex) {
+//                                // 이전 탭에서 GazeTracker 중지
+//                                stopGazeTracker();
+//
+//                                // 선택된 탭에서 GazeTracker 시작
+//                                setGazeTrackerIfNotRunning(selectedTabIndex);
+//                                Log.d("gazetrackerrunning", "onTabselected: " + isGazeTrackerRunning);
+//
+//                                // 최근 선택된 탭의 인덱스 업데이트
+//                                previousTabIndex = selectedTabIndex;
+//
+//                                // 나머지 코드 생략...
+//                                //선택
+//                                String store_name = null;
+//                                int position = tab.getPosition();
+//                                String tabId = (String) tabLayout.getTabAt(position).getTag();
+//                                for (Stores store : storeInfo) {
+//                                    if (store.get_id().equals(tabId)) {
+//                                        store_name = store.getName();
+//                                        store_intro.setText(store.getDesc());
+//                                        store_openTime.setText(store.getSchedule());
+//                                        store_notice.setText(store.getNotice());
+//                                        tabM_id = store.getM_id();
+//                                        Log.d("MenuActivity", "tabM_id" + tabM_id);
+//                                        Log.d("MenuActivity", "tabId" + tabId);
+//                                        Log.d("intentToDetail", "intentToDetail_snum: " + store.getS_num());
+//                                        showMenu(tabM_id, store.get_id(), store_name, store.getS_num());
+//                                        sNum = store.getS_num();
+//                                        recent_sNum = sNum;
+//
+//                                        // 선택된 탭에서 GazeTracker 시작
+//                                        if (gazeTrackerDataStorage != null) {
+//                                            gazeTrackerDataStorage.setGazeTracker(ctx, menuLayout, viewpoint);
+//                                        }
+//                                        break;
+//                                    }
+//                                }
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onTabUnselected(TabLayout.Tab tab) {
+//                            // 선택 해제
+//                        }
+//
+//                        @Override
+//                        public void onTabReselected(TabLayout.Tab tab) {
+//                            // 다시 선택
+//                            // 동일한 탭에서 GazeTracker 재시작
+//                            int selectedTabIndex = tab.getPosition();
+//                            setGazeTrackerIfNotRunning(selectedTabIndex);
+//                        }
+//                    });
+
+                    //-------------------------------------------
                     //tabLayout 클릭시 동작
                     tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                         @Override
@@ -267,7 +323,7 @@ public class MenuActivity extends AppCompatActivity{
                                 stopGazeTracker();
 
                                 // 선택된 탭에서 GazeTracker 시작
-                                setGazeTrackerIfNotRunning(selectedTabIndex);
+                                setGazeTrackerDataStorage();
                                 Log.d("gazetrackerrunning", "onTabselected: " + isGazeTrackerRunning);
 
                                 // 최근 선택된 탭의 인덱스 업데이트
@@ -293,9 +349,7 @@ public class MenuActivity extends AppCompatActivity{
                                         recent_sNum = sNum;
 
                                         // 선택된 탭에서 GazeTracker 시작
-                                        if (gazeTrackerDataStorage != null) {
-                                            gazeTrackerDataStorage.setGazeTracker(ctx, storeLayout, viewpoint);
-                                        }
+                                        setGazeTrackerDataStorage();
                                         break;
                                     }
                                 }
@@ -312,10 +366,9 @@ public class MenuActivity extends AppCompatActivity{
                             // 다시 선택
                             // 동일한 탭에서 GazeTracker 재시작
                             int selectedTabIndex = tab.getPosition();
-                            setGazeTrackerIfNotRunning(selectedTabIndex);
+                            setGazeTrackerDataStorage();
                         }
                     });
-
 
                 }
             }
@@ -353,28 +406,44 @@ public class MenuActivity extends AppCompatActivity{
         if (!isGazeTrackerRunning) {
             // GazeTracker가 실행 중이 아닐 경우에만 시작
             if (gazeTrackerDataStorage != null) {
-                gazeTrackerDataStorage.setGazeTracker(ctx, storeLayout, viewpoint);
+                gazeTrackerDataStorage.setGazeTracker(ctx, menuLayout, viewpoint);
                 isGazeTrackerRunning = true;
             }
         }
     }
 
-    private void stopGazeTracker() {
-        if (isGazeTrackerRunning) {
-            // GazeTracker가 실행 중인 경우에만 중지
-            if (gazeTrackerDataStorage != null) {
-                gazeTrackerDataStorage.stopGazeTracker("store_menu", recent_sNum, 0);
-                isGazeTrackerRunning = false;
-            }
+//    private void stopGazeTracker() {
+//        if (isGazeTrackerRunning) {
+//            // GazeTracker가 실행 중인 경우에만 중지
+//            if (gazeTrackerDataStorage != null) {
+//                gazeTrackerDataStorage.stopGazeTracker("store_menu", recent_sNum, 0);
+//                isGazeTrackerRunning = false;
+//            }
+//        }
+//    }
+//    private void setGazeTrackerIfNotRunning() {
+//        if (!isGazeTrackerRunning) {
+//            // GazeTracker가 실행 중이 아닐 경우에만 시작
+//            if (gazeTrackerDataStorage != null) {
+//                gazeTrackerDataStorage.setGazeTracker(ctx, menuLayout, viewpoint);
+//                isGazeTrackerRunning = true;
+//            }
+//        }
+//    }
+
+    private void setGazeTrackerDataStorage(){
+        gazeTrackerDataStorage = new GazeTrackerDataStorage(this);
+        gazeTrackerDataStorage.setContext(this);
+
+        if (gazeTrackerDataStorage != null) {
+            gazeTrackerDataStorage.setGazeTracker(ctx, menuLayout, viewpoint);
         }
     }
-    private void setGazeTrackerIfNotRunning() {
-        if (!isGazeTrackerRunning) {
-            // GazeTracker가 실행 중이 아닐 경우에만 시작
-            if (gazeTrackerDataStorage != null) {
-                gazeTrackerDataStorage.setGazeTracker(ctx, storeLayout, viewpoint);
-                isGazeTrackerRunning = true;
-            }
+
+    private void stopGazeTracker(){
+        if (gazeTrackerDataStorage != null) {
+            gazeTrackerDataStorage.stopGazeTracker("store_menu", recent_sNum, 0);
+//        gazeTrackerDataStorage.stopGazeTracker("menu_Layout", 0, 0);
         }
     }
 
@@ -385,7 +454,7 @@ public class MenuActivity extends AppCompatActivity{
         super.onBackPressed();
 
         // 뒤로가기 버튼을 누르면 GazeTracker 재시작
-        setGazeTrackerIfNotRunning();
+        setGazeTrackerDataStorage();
     }
 
     //
