@@ -60,11 +60,14 @@ public class OrderActivity extends AppCompatActivity {
     String history_id;
 
     //-----------------------------------------------------------------------------------------
-    //gazetracker
+    //gazeTracker
     GazeTrackerDataStorage gazeTrackerDataStorage;
     private final HandlerThread backgroundThread = new HandlerThread("background");
     JSONArray jsonGazeArray = new JSONArray(); //전체 gaze
     List<PostGaze> postGazes = new ArrayList<>();
+    Context ctx;
+    ConstraintLayout orderLayout;
+    PointView viewpoint;
 
     //-----------------------------------------------------------------------------------------
 
@@ -75,19 +78,13 @@ public class OrderActivity extends AppCompatActivity {
 
         //-------------------------------------------------------------------------------------
         //start-gaze-tracking
-        Context ctx = getApplicationContext();
-        ConstraintLayout storeLayout = findViewById(R.id.orderLayout);
-        PointView viewpoint = findViewById(R.id.view_point_order);
+        ctx = getApplicationContext();
+        orderLayout = findViewById(R.id.orderLayout);
+        viewpoint = findViewById(R.id.view_point_order);
 
-        gazeTrackerDataStorage = new GazeTrackerDataStorage(this);
-        gazeTrackerDataStorage.setContext(this);
-
-        if (gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.setGazeTracker(ctx, storeLayout, viewpoint);
-        }
+        setGazeTrackerDataStorage();
 
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MODE_PRIVATE);
-
         //-------------------------------------------------------------------------------------
 
         //장바구니 리스트
@@ -254,13 +251,7 @@ public class OrderActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d("OrderActivity", "onStop");
-
-        if (gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.stopGazeTracker("order", 0, 0);
-        }
-//        gazeTrackerDataStorage.removeCallbacks(
-//                gazeCallback, calibrationCallback, statusCallback, userStatusCallback);
+        stopGazeTracker();
     }
 
     @Override
@@ -270,6 +261,30 @@ public class OrderActivity extends AppCompatActivity {
         backgroundThread.quitSafely();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        // 뒤로가기 버튼을 누르면 GazeTracker 재시작
+        setGazeTrackerDataStorage();
+    }
+
+    //gazeTracker
+    private void setGazeTrackerDataStorage(){
+        gazeTrackerDataStorage = new GazeTrackerDataStorage(this);
+        gazeTrackerDataStorage.setContext(this);
+
+        if (gazeTrackerDataStorage != null) {
+            gazeTrackerDataStorage.setGazeTracker(ctx, orderLayout, viewpoint);
+        }
+    }
+
+    private void stopGazeTracker(){
+        if (gazeTrackerDataStorage != null) {
+            gazeTrackerDataStorage.stopGazeTracker("order", 0, 0);
+        }
+    }
+
     //
     // Miscellaneous
     //
@@ -277,39 +292,4 @@ public class OrderActivity extends AppCompatActivity {
     private void show(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
-
-    private void writeFile(String fileTitle) {
-
-        fileTitle = fileTitle + "_" + ".json";
-
-//        File dir = new File(Environment.getExternalStorageDirectory() + userId + File.pathSeparator + curDate);
-        File dir = new File(this.getFilesDir() + "/" );
-        if(!dir.exists()) {
-            dir.mkdirs();
-            Log.i("mkdirs", dir.getAbsolutePath());
-        }
-//        File file = new File(this.getFilesDir(), fileTitle);
-        File file = new File(dir, fileTitle);
-        Log.d("dir", "file path: "+dir.getAbsolutePath());
-
-        try {
-            //파일 생성
-            if (!file.exists()) {
-                file.createNewFile();
-                Log.i("File", "create file");
-            }
-
-            BufferedWriter bw = new BufferedWriter(new FileWriter(file,true));
-            bw.write(jsonGazeArray.toString());
-
-            bw.newLine();
-            bw.close();
-            show("save success");
-        } catch (IOException e) {
-            Log.i("저장오류", e.getMessage());
-            show("save fail");
-        }
-    }
-
-
 }

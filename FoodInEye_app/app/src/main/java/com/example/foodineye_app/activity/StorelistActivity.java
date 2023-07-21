@@ -53,12 +53,11 @@ public class StorelistActivity extends AppCompatActivity {
     ConstraintLayout storeLayout;
 
     //-----------------------------------------------------------------------------------------
-    //gazetracker
+    //gazeTracker
     Context ctx;
     GazeTrackerDataStorage gazeTrackerDataStorage;
     private final HandlerThread backgroundThread = new HandlerThread("background");
-
-    GazeTrackerManager gazeTracker;
+    PointView viewpoint;
 
     //-----------------------------------------------------------------------------------------
 
@@ -67,22 +66,12 @@ public class StorelistActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_storelist);
 
-        //-------------------------------------------------------------------------------------
-
         //start-gaze-tracking
         ctx = getApplicationContext();
         storeLayout = findViewById(R.id.storelistLayout);
-        PointView viewpoint = findViewById(R.id.view_point_storelist);
+        viewpoint = findViewById(R.id.view_point_storelist);
 
-        gazeTrackerDataStorage = new GazeTrackerDataStorage(this);
-        gazeTrackerDataStorage.setContext(this);
-
-        if (gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.setGazeTracker(ctx, storeLayout, viewpoint);
-        }
-
-        //-------------------------------------------------------------------------------------
-
+        setGazeTrackerDataStorage();
 
         //storeInfo 객체
         storeInfo = new ArrayList<>();
@@ -114,8 +103,8 @@ public class StorelistActivity extends AppCompatActivity {
         });
 
         //-------------------------------------------------------------------------------------
-
-        LinearLayout schoolFoodLayout = findViewById(R.id.school_food); // school_food LinearLayout을 찾습니다.
+        //screenshot
+        LinearLayout schoolFoodLayout = findViewById(R.id.school_food);
 
         // 레이아웃이 최종적으로 그려진 후에 실행되는 코드 블록
         schoolFoodLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -150,12 +139,7 @@ public class StorelistActivity extends AppCompatActivity {
     protected void onStop() {
 //        takeAndSaveScreenShot();
         super.onStop();
-        Log.d("StorelistActivity", "onStop");
-
-        if (gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.stopGazeTracker("store_list", 0, 0);
-        }
-
+        stopGazeTracker();
     }
 
     @Override
@@ -163,6 +147,29 @@ public class StorelistActivity extends AppCompatActivity {
         super.onDestroy();
         gazeTrackerDataStorage.quitBackgroundThread();
         backgroundThread.quitSafely();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        // 뒤로가기 버튼을 누르면 GazeTracker 재시작
+        setGazeTrackerDataStorage();
+    }
+
+    //gazeTracker
+    private void setGazeTrackerDataStorage(){
+        gazeTrackerDataStorage = new GazeTrackerDataStorage(this);
+        gazeTrackerDataStorage.setContext(this);
+
+        if (gazeTrackerDataStorage != null) {
+            gazeTrackerDataStorage.setGazeTracker(ctx, storeLayout, viewpoint);
+        }
+    }
+
+    private void stopGazeTracker(){
+        if (gazeTrackerDataStorage != null) {
+            gazeTrackerDataStorage.stopGazeTracker("store_list", 0, 0);
+        }
     }
 
     //
@@ -177,7 +184,6 @@ public class StorelistActivity extends AppCompatActivity {
     private void takeAndSaveScreenShot(){
         Bitmap bitmap = getBitmapFromRootView(StorelistActivity.this);
         saveImage(bitmap);
-
     }
 
     private Bitmap getBitmapFromRootView(Activity context){
@@ -206,9 +212,7 @@ public class StorelistActivity extends AppCompatActivity {
         try {
 
             if (!file.exists()) { file.createNewFile(); }
-
             FileOutputStream fos = new FileOutputStream(file);
-
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
             fos.close();
 

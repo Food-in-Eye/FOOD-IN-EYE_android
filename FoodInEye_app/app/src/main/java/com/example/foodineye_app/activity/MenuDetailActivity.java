@@ -31,7 +31,6 @@ import visual.camp.sample.view.PointView;
 public class MenuDetailActivity extends AppCompatActivity {
 
     LinearLayout order_btn;
-
     ImageView menu_Img;
     TextView menu_name;
     String menuName;
@@ -49,7 +48,7 @@ public class MenuDetailActivity extends AppCompatActivity {
 
     //----------------------------------------------------------------------
     Context ctx;
-    ConstraintLayout layout;
+    ConstraintLayout menuDetailLayout;
     PointView viewpoint;
     GazeTrackerDataStorage gazeTrackerDataStorage;
     private final HandlerThread backgroundThread = new HandlerThread("background");
@@ -62,7 +61,8 @@ public class MenuDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu_detail);
 
         //-------------------------------------------------------------------------------------
-        TextView menuD_name = findViewById(R.id.menuD_name); // school_food LinearLayout을 찾습니다.
+        //screenshot
+        TextView menuD_name = findViewById(R.id.menuD_name);
 
         // 레이아웃이 최종적으로 그려진 후에 실행되는 코드 블록
         menuD_name.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -87,7 +87,7 @@ public class MenuDetailActivity extends AppCompatActivity {
             }
         });
 
-        ImageView menuD_img = findViewById(R.id.menuD_img); // school_food LinearLayout을 찾습니다.
+        ImageView menuD_img = findViewById(R.id.menuD_img);
 
         // 레이아웃이 최종적으로 그려진 후에 실행되는 코드 블록
         menuD_name.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -112,7 +112,7 @@ public class MenuDetailActivity extends AppCompatActivity {
             }
         });
 
-        LinearLayout menu_description = findViewById(R.id.menu_description); // school_food LinearLayout을 찾습니다.
+        LinearLayout menu_description = findViewById(R.id.menu_description);
 
         // 레이아웃이 최종적으로 그려진 후에 실행되는 코드 블록
         menuD_name.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -163,21 +163,13 @@ public class MenuDetailActivity extends AppCompatActivity {
         });
 
 
-
         //-------------------------------------------------------------------------------------
         //start-gaze-tracking
         ctx = getApplicationContext();
-        layout = findViewById(R.id.menuDetailLayout);
+        menuDetailLayout = findViewById(R.id.menuDetailLayout);
         viewpoint = findViewById(R.id.view_point_menuDetail);
 
-        gazeTrackerDataStorage = new GazeTrackerDataStorage(this);
-        gazeTrackerDataStorage.setContext(this);
-
-        if (gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.setGazeTracker(ctx, layout, viewpoint);
-        }
-
-
+        setGazeTrackerDataStorage();
         //-------------------------------------------------------------------------------------
 
         order_btn = (LinearLayout) findViewById(R.id.menuD_btn);
@@ -203,8 +195,6 @@ public class MenuDetailActivity extends AppCompatActivity {
         m_imageKey = intentToDetail.food.getM_img_key();
         s_num = intentToDetail.getS_num();
         f_num = intentToDetail.food.getF_num();
-
-
 
         Log.d("intentToDetail", "intentToDetail_sid " + s_Id);
         Log.d("intentToDetail", "intentToDetail_mid " + m_Id);
@@ -237,6 +227,31 @@ public class MenuDetailActivity extends AppCompatActivity {
                 showDialog();
             }
         });
+    }
+
+
+    @Override
+    protected void onStop() {
+//        takeAndSaveScreenShot();
+        super.onStop();
+        Log.d("MenuDetailActivity", "onStop");
+        stopGazeTracker();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        gazeTrackerDataStorage.quitBackgroundThread();
+        backgroundThread.quitSafely();
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        // 뒤로가기 버튼을 누르면 GazeTracker 재시작
+        setGazeTrackerDataStorage();
     }
 
     public void showDialog(){
@@ -272,9 +287,6 @@ public class MenuDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 isCartClicked = true;
-                // 이동할 때 GazeTracker 중지
-                if (gazeTrackerDataStorage != null)
-                    gazeTrackerDataStorage.stopGazeTracker("menu_detail", s_num, f_num);
 
                 Intent intent = new Intent(getApplicationContext(), ShoppingCartActivity.class);
                 startActivity(intent);
@@ -291,25 +303,20 @@ public class MenuDetailActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
+    //gazeTracker
+    private void setGazeTrackerDataStorage(){
+        gazeTrackerDataStorage = new GazeTrackerDataStorage(this);
+        gazeTrackerDataStorage.setContext(this);
 
-    @Override
-    protected void onStop() {
-//        takeAndSaveScreenShot();
-        super.onStop();
-        Log.d("MenuDetailActivity", "onStop");
-
-        if (!isCartClicked && gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.stopGazeTracker("menu_detail", s_num, f_num);
+        if (gazeTrackerDataStorage != null) {
+            gazeTrackerDataStorage.setGazeTracker(ctx, menuDetailLayout, viewpoint);
         }
-//        gazeTracker.removeCallbacks(
-//                gazeCallback, calibrationCallback, statusCallback, userStatusCallback);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        gazeTrackerDataStorage.quitBackgroundThread();
-        backgroundThread.quitSafely();
+    private void stopGazeTracker(){
+        if (gazeTrackerDataStorage != null) {
+            gazeTrackerDataStorage.stopGazeTracker("menu_detail", s_num, f_num);
+        }
     }
 
     //
@@ -324,7 +331,6 @@ public class MenuDetailActivity extends AppCompatActivity {
     private void takeAndSaveScreenShot(){
         Bitmap bitmap = getBitmapFromRootView(MenuDetailActivity.this);
         saveImage(bitmap);
-
     }
 
     private Bitmap getBitmapFromRootView(Activity context){
