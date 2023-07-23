@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 public class CalibrationViewer extends ViewGroup {
 
@@ -63,6 +65,7 @@ public class CalibrationViewer extends ViewGroup {
     textPaint.setColor(0xFFFFFFFF);
     textPaint.setTextAlign(Paint.Align.CENTER);
 
+    backgroundColor = Color.rgb(153, 153, 153);
     setBackgroundColor(backgroundColor);
     pointColors = new int[] {
             redColor, purpleColor, orangeColor, blueColor, greenColor, brownColor, yellowColor
@@ -71,6 +74,17 @@ public class CalibrationViewer extends ViewGroup {
     calibPoint.setAntiAlias(true);
     calibPoint.setColor(pointColors[index]);
     calibrationPoint = new CalibrationPoint(context);
+    // CalibrationPoint의 크기를 100x100 픽셀로 설정
+    int size = (int) (300 * getResources().getDisplayMetrics().density);
+    LayoutParams params = new LayoutParams(size, size);
+    calibrationPoint.setLayoutParams(params);
+//    addView(calibrationPoint);
+
+    //drawable 리소스에서 이미지 가져오기
+    Drawable drawable = ContextCompat.getDrawable(context, R.drawable.logo_green);
+    if(drawable != null){
+      calibrationPoint.setImageDrawable(drawable);
+    }
     addView(calibrationPoint);
   }
 
@@ -101,7 +115,7 @@ public class CalibrationViewer extends ViewGroup {
   protected void onDraw(Canvas canvas) {
     super.onDraw(canvas);
     if (toDraw) {
-      canvas.drawCircle(x, y, 10, calibPoint);
+      canvas.drawCircle(x, y, 50, calibPoint);
     }
     if (msg != null) {
       drawText(canvas);
@@ -114,13 +128,23 @@ public class CalibrationViewer extends ViewGroup {
 
   public void setPointPosition(float x, float y) {
     float px =  x - offsetX;
-    float py =  y - offsetY;
+    float py =  y - offsetY + getStatusBarHeight(); // 타이틀바의 높이를 추가로 더해준다.
     calibrationPoint.layout(
             (int)px - 20,
             (int)py - 20,
             (int)px + 20,
             (int)py + 20);
     invalidate();
+  }
+
+  //타이틀바의 높이를 반환
+  private int getStatusBarHeight(){
+    int result = 0;
+    int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+    if(resourceId > 0){
+      result = getResources().getDimensionPixelSize(resourceId);
+    }
+    return result;
   }
 
   public void changeColor() {
@@ -159,8 +183,8 @@ public class CalibrationViewer extends ViewGroup {
 //  }
 
   private class CalibrationPoint extends View {
-    private static final float default_radius = 20;
-    private static final float default_rotate = 50;
+    private static final float default_radius = 40;
+    private static final float default_rotate = 80;
 
     private float animation_power;
     private Paint point_paint;
@@ -168,6 +192,7 @@ public class CalibrationViewer extends ViewGroup {
     private RectF oval;
     private RotateAnimation rotateAnimation = null;
     private float last_end_degree, next_end_degree;
+    private Drawable imageDrawable;
 
     public CalibrationPoint(Context context) {
       super(context);
@@ -217,6 +242,11 @@ public class CalibrationViewer extends ViewGroup {
       rotateAnimation.setDuration(10);
       this.startAnimation(rotateAnimation);
     }
+    // Custom method to set the drawable image
+    public void setImageDrawable(Drawable drawable) {
+      imageDrawable = drawable;
+      invalidate(); // Force a redraw to update the view with the new image
+    }
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -225,12 +255,20 @@ public class CalibrationViewer extends ViewGroup {
         float oval_long = default_radius * (1 + animation_power * 0.3f);
         float oval_short = default_radius * (1 - animation_power * 0.3f);
 
+
         oval.left = center_x - oval_long / 2;
         oval.top = center_y - oval_short / 2;
         oval.right = center_x + oval_long / 2;
         oval.bottom = center_y + oval_short / 2;
 
-        canvas.drawOval(oval, point_paint);
+//        canvas.drawOval(oval, point_paint);
+
+        // 기존의 빨간색 점을 그리는 대신 drawable 이미지를 그립니다.
+        if (imageDrawable != null) {
+          imageDrawable.setBounds((int) oval.left, (int) oval.top, (int) oval.right, (int) oval.bottom);
+          imageDrawable.draw(canvas);
+        }
+
       }
     }
 
