@@ -81,7 +81,7 @@ public class CalibrationViewer extends ViewGroup {
 //    addView(calibrationPoint);
 
     //drawable 리소스에서 이미지 가져오기
-    Drawable drawable = ContextCompat.getDrawable(context, R.drawable.logo_green);
+    Drawable drawable = ContextCompat.getDrawable(context, R.drawable.logo_blue);
     if(drawable != null){
       calibrationPoint.setImageDrawable(drawable);
     }
