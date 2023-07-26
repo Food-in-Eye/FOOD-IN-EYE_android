@@ -1,10 +1,21 @@
 package com.example.foodineye_app.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.HandlerThread;
 import android.util.Log;
+import android.util.LruCache;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +31,8 @@ import com.example.foodineye_app.GazeTrackerDataStorage;
 import com.example.foodineye_app.R;
 import com.google.android.material.tabs.TabLayout;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,9 +50,6 @@ public class MenuActivity extends AppCompatActivity{
     RecyclerView menurecyclerView;
     MenuAdapter menuAdapter;
 
-    MenuItem menuItem; // 전체 메뉴판 목록
-    //MenuItem.Response menuResponse;
-    List<MenuItem.Response> menuResponse = new ArrayList<>();
     List<Menus> menuInfo = new ArrayList<>();
 
     StoreItem storeList; //전체 가게 목록
@@ -49,15 +59,17 @@ public class MenuActivity extends AppCompatActivity{
 
     String tab_Id, tabM_id; // 탭에 _ID, m_ID 할당
 
+    int previousTabIndex = -1;
     //-----------------------------------------------------------------------------------------
     Context ctx;
-    ConstraintLayout storeLayout;
+    ConstraintLayout menuLayout;
     PointView viewpoint;
     //gazetracker
     GazeTrackerDataStorage gazeTrackerDataStorage;
     private final HandlerThread backgroundThread = new HandlerThread("background");
     int sNum, fNum;
     int recent_sNum;
+    boolean isGazeTrackerRunning = false; // GazeTracker가 실행 중인지 여부를 저장하는 변수
 
     //-----------------------------------------------------------------------------------------
 
@@ -66,22 +78,62 @@ public class MenuActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
+        TabLayout tabLayout = findViewById(R.id.store_tab);
+
+        // TabLayout의 위치 정보를 가져오기 위해 ViewTreeObserver를 사용
+        tabLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                tabLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+                int[] tabLocation = new int[2];
+                tabLayout.getLocationOnScreen(tabLocation);
+
+                int left = tabLocation[0]; // TabLayout의 왼쪽 좌표
+                int top = tabLocation[1]; // TabLayout의 위쪽 좌표
+                int right = left + tabLayout.getWidth(); // TabLayout의 오른쪽 좌표
+                int bottom = top + tabLayout.getHeight(); // TabLayout의 아래쪽 좌표
+
+                // 결과 출력
+                Log.d("location", "TabLayout - Left: " + left);
+                Log.d("location", "TabLayout - Top: " + top);
+                Log.d("location", "TabLayout - Right: " + right);
+                Log.d("location", "TabLayout - Bottom: " + bottom);
+            }
+        });
+
+        LinearLayout store_description = findViewById(R.id.store_description);
+
+        // store_description 위치 정보를 가져오기 위해 ViewTreeObserver를 사용
+        tabLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                store_description.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+                int[] tabLocation = new int[2];
+                store_description.getLocationOnScreen(tabLocation);
+
+                int left = tabLocation[0]; // TabLayout의 왼쪽 좌표
+                int top = tabLocation[1]; // TabLayout의 위쪽 좌표
+                int right = left + store_description.getWidth(); // TabLayout의 오른쪽 좌표
+                int bottom = top + store_description.getHeight(); // TabLayout의 아래쪽 좌표
+
+                // 결과 출력
+                Log.d("location", "store_description - Left: " + left);
+                Log.d("location", "store_description - Top: " + top);
+                Log.d("location", "store_description - Right: " + right);
+                Log.d("location", "store_description - Bottom: " + bottom);
+            }
+        });
+
+
         //-------------------------------------------------------------------------------------
         //start-gaze-tracking
         ctx = getApplicationContext();
-        storeLayout = findViewById(R.id.menuLayout);
+        menuLayout = findViewById(R.id.menuLayout);
         viewpoint = findViewById(R.id.view_point_menu);
 
-        gazeTrackerDataStorage = new GazeTrackerDataStorage(this);
-        gazeTrackerDataStorage.setContext(this);
-
-        if (gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.setGazeTracker(ctx, storeLayout, viewpoint);
-        }
-
-
-        //-------------------------------------------------------------------------------------
-
+        setGazeTrackerDataStorage();
 
         //menuRecyclerview
         menurecyclerView = findViewById(R.id.recyclerView_menuList);
@@ -110,7 +162,7 @@ public class MenuActivity extends AppCompatActivity{
             String intent_cartMId = intent.getStringExtra("intent_cartMId");
             showStore(intent_recentSId, intent_cartMId);
 
-        }else{
+        }else {
             Log.e("MenuActivity", "No Intent data found.");
         }
 
@@ -182,49 +234,70 @@ public class MenuActivity extends AppCompatActivity{
                         if(tab_Id.equals(s_id)){
                             tabLayout.getTabAt(i).select();
                         }
+
+                        // 가게가 열리지 않았을 때 탭을 비활성화하고 색상을 변경
+                        if (!storeInfo.get(i).isOpen()) {
+                            tab.view.setClickable(false);
+                            tab.view.setEnabled(false);
+                            tab.view.setBackgroundColor(Color.LTGRAY);
+                        }
                     }
+
                     //tabLayout 클릭시 동작
                     tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                         @Override
                         public void onTabSelected(TabLayout.Tab tab) {
-                            //GazeTracker
-                            if (gazeTrackerDataStorage != null) {
-                                gazeTrackerDataStorage.stopGazeTracker("store_menu", recent_sNum, 0);
-                                gazeTrackerDataStorage.setGazeTracker(ctx, storeLayout, viewpoint);
-                            }
+                            // 중복 호출을 방지하기 위해 선택된 탭에서만 동작하도록 수정
+                            int selectedTabIndex = tab.getPosition();
+                            if (selectedTabIndex != previousTabIndex) {
+                                // 이전 탭에서 GazeTracker 중지
+                                stopGazeTracker();
 
-                            //선택
-                            String store_name = null;
-                            int position = tab.getPosition();
-                            String tabId = (String) tabLayout.getTabAt(position).getTag();
-                            for(Stores store: storeInfo){
-                                if(store.get_id().equals(tabId)){
-                                    store_name = store.getName();
-                                    store_intro.setText(store.getDesc());
-                                    store_openTime.setText(store.getSchedule());
-                                    store_notice.setText(store.getNotice());
-                                    tabM_id = store.getM_id();
-                                    Log.d("MenuActivity","tabM_id"+tabM_id);
-                                    Log.d("MenuActivity","tabId"+tabId);
-//                                    showMenu(tabM_id, tab_Id, store_name);
-                                    showMenu(tabM_id, store.get_id(), store_name, recent_sNum);
-                                    //menuAdapter.notifyDataSetChanged();
-                                    sNum = store.getS_num();
-                                    recent_sNum = sNum;
+                                // 선택된 탭에서 GazeTracker 시작
+                                setGazeTrackerDataStorage();
+                                Log.d("gazetrackerrunning", "onTabselected: " + isGazeTrackerRunning);
+
+                                // 최근 선택된 탭의 인덱스 업데이트
+                                previousTabIndex = selectedTabIndex;
+
+                                // 나머지 코드 생략...
+                                //선택
+                                String store_name = null;
+                                int position = tab.getPosition();
+                                String tabId = (String) tabLayout.getTabAt(position).getTag();
+                                for (Stores store : storeInfo) {
+                                    if (store.get_id().equals(tabId)) {
+                                        store_name = store.getName();
+                                        store_intro.setText(store.getDesc());
+                                        store_openTime.setText(store.getSchedule());
+                                        store_notice.setText(store.getNotice());
+                                        tabM_id = store.getM_id();
+                                        Log.d("MenuActivity", "tabM_id" + tabM_id);
+                                        Log.d("MenuActivity", "tabId" + tabId);
+                                        Log.d("intentToDetail", "intentToDetail_snum: " + store.getS_num());
+                                        showMenu(tabM_id, store.get_id(), store_name, store.getS_num());
+                                        sNum = store.getS_num();
+                                        recent_sNum = sNum;
+
+                                        // 선택된 탭에서 GazeTracker 시작
+                                        setGazeTrackerDataStorage();
+                                        break;
+                                    }
                                 }
                             }
-
-
                         }
 
                         @Override
                         public void onTabUnselected(TabLayout.Tab tab) {
-                            //선택 해제
+                            // 선택 해제
                         }
 
                         @Override
                         public void onTabReselected(TabLayout.Tab tab) {
-                            //다시 선택
+                            // 다시 선택
+                            // 동일한 탭에서 GazeTracker 재시작
+                            int selectedTabIndex = tab.getPosition();
+                            setGazeTrackerDataStorage();
                         }
                     });
 
@@ -239,22 +312,43 @@ public class MenuActivity extends AppCompatActivity{
 
     //-------------------------------------------------------------------------------------------
 
+
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d("StorelistActivity", "onStop");
+//        captureFullScreenshot();
 
-        if (gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.stopGazeTracker("store_menu", recent_sNum, 0);
-        }
-//        gazeTracker.removeCallbacks(
-//                gazeCallback, calibrationCallback, statusCallback, userStatusCallback);
+        gazeTrackerDataStorage.stopGazeTracker("store_menu", recent_sNum, 0);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        gazeTrackerDataStorage.quitBackgroundThread();
         backgroundThread.quitSafely();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        // 뒤로가기 버튼을 누르면 GazeTracker 재시작
+        setGazeTrackerDataStorage();
+    }
+
+    private void setGazeTrackerDataStorage(){
+        gazeTrackerDataStorage = new GazeTrackerDataStorage(this);
+        gazeTrackerDataStorage.setContext(this);
+
+        if (gazeTrackerDataStorage != null) {
+            gazeTrackerDataStorage.setGazeTracker(ctx, menuLayout, viewpoint);
+        }
+    }
+
+    private void stopGazeTracker(){
+        if (gazeTrackerDataStorage != null) {
+            gazeTrackerDataStorage.stopGazeTracker("store_menu", recent_sNum, 0);
+        }
     }
 
     //
@@ -265,4 +359,140 @@ public class MenuActivity extends AppCompatActivity{
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
+    //screenshot
+    private Bitmap captureScreen() {
+        View rootView = getWindow().getDecorView().getRootView();
+        rootView.setDrawingCacheEnabled(true);
+        return rootView.getDrawingCache();
+    }
+
+    public Bitmap captureRecyclerView(RecyclerView recyclerView) {
+        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+        RecyclerView.Adapter adapter = recyclerView.getAdapter();
+
+        if (layoutManager instanceof GridLayoutManager && adapter != null) {
+            GridLayoutManager gridLayoutManager = (GridLayoutManager) layoutManager;
+            int spanCount = gridLayoutManager.getSpanCount();
+
+            int itemCount = adapter.getItemCount();
+            int columns = spanCount;
+
+            int width = recyclerView.getWidth();
+            int height = 0;
+            Paint paint = new Paint();
+            int iHeight = 0;
+            final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+            final int cacheSize = maxMemory / 8;
+            LruCache<String, Bitmap> bitmapCache = new LruCache<>(cacheSize);
+
+            for (int i = 0; i < itemCount; i++) {
+                int column = i % columns;
+                int row = i / columns;
+
+                RecyclerView.ViewHolder holder = adapter.createViewHolder(recyclerView, adapter.getItemViewType(i));
+                adapter.onBindViewHolder(holder, i);
+                holder.itemView.measure(
+                        View.MeasureSpec.makeMeasureSpec(width / columns, View.MeasureSpec.EXACTLY),
+                        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+                holder.itemView.layout(
+                        column * (width / columns),
+                        row * holder.itemView.getMeasuredHeight(),
+                        (column + 1) * (width / columns),
+                        (row + 1) * holder.itemView.getMeasuredHeight());
+                holder.itemView.setDrawingCacheEnabled(true);
+                holder.itemView.buildDrawingCache();
+                Bitmap drawingCache = holder.itemView.getDrawingCache();
+                if (drawingCache != null) {
+                    bitmapCache.put(String.valueOf(i), drawingCache);
+                }
+
+                // 계산된 높이
+                if (column == 0) {
+                    height += holder.itemView.getMeasuredHeight();
+                }
+            }
+
+            Bitmap bigBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            Canvas bigCanvas = new Canvas(bigBitmap);
+            Drawable backgroundDrawable = recyclerView.getBackground();
+            if (backgroundDrawable != null) {
+                backgroundDrawable.draw(bigCanvas);
+            } else {
+                bigCanvas.drawColor(Color.WHITE);
+            }
+
+            for (int i = 0; i < itemCount; i++) {
+                Bitmap bitmap = bitmapCache.get(String.valueOf(i));
+                bigCanvas.drawBitmap(bitmap, (i % columns) * (width / columns), iHeight, paint);
+
+                // 계산된 높이
+                if ((i + 1) % columns == 0) {
+                    iHeight += bitmap.getHeight();
+                }
+
+                bitmap.recycle();
+            }
+            return bigBitmap;
+        }
+
+        return null;
+    }
+
+    private void captureFullScreenshot() {
+        // 전체 화면 캡쳐
+        Bitmap fullScreenshot = captureScreen();
+
+        // RecyclerView의 모든 아이템을 포함하는 비트맵 캡쳐
+        Bitmap recyclerViewScreenshot = captureRecyclerView(menurecyclerView);
+
+        // 캡쳐한 비트맵을 합성
+        int combinedWidth = Math.max(fullScreenshot.getWidth(), recyclerViewScreenshot.getWidth());
+        int combinedHeight = 868 + recyclerViewScreenshot.getHeight();
+        Log.d("screenshot", "recyclerViewScreenshot_height: " + recyclerViewScreenshot.getHeight());
+
+        Bitmap combinedBitmap = Bitmap.createBitmap(combinedWidth, combinedHeight, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(combinedBitmap);
+        canvas.drawBitmap(fullScreenshot, 0, 0, null);
+
+        // recyclerViewScreenshot을 그릴 위치 계산
+        int recyclerViewLeft = 26;
+        int recyclerViewTop = 869;
+
+        // 배경을 하얀색으로 그리기
+        canvas.drawColor(Color.WHITE);
+
+        // 이미지 그리기
+        canvas.drawBitmap(fullScreenshot, 0, 0, null);
+        canvas.drawBitmap(recyclerViewScreenshot, recyclerViewLeft, recyclerViewTop, null);
+
+        // 필요에 따라 비트맵을 저장하거나 처리할 수 있습니다.
+        saveImage(combinedBitmap);
+
+        // 메모리 해제
+        fullScreenshot.recycle();
+        recyclerViewScreenshot.recycle();
+    }
+
+    private void saveImage(Bitmap bitmap){
+        String fileTitle = "ScreenAll.png";
+
+        File file = new File(this.getFilesDir(), fileTitle);
+        Log.d("screenshot", "fileDir"+getFilesDir());
+
+        try {
+
+            if (!file.exists()) { file.createNewFile(); }
+
+            FileOutputStream fos = new FileOutputStream(file);
+
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.close();
+
+            show("save success");
+
+        } catch (Exception e){
+            show("save fail");
+            e.printStackTrace();
+        }
+    }
 }

@@ -1,12 +1,15 @@
 package com.example.foodineye_app.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.HandlerThread;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,14 +23,17 @@ import com.bumptech.glide.Glide;
 import com.example.foodineye_app.GazeTrackerDataStorage;
 import com.example.foodineye_app.R;
 
+import java.io.File;
+import java.io.FileOutputStream;
+
 import visual.camp.sample.view.PointView;
 
 public class MenuDetailActivity extends AppCompatActivity {
 
     LinearLayout order_btn;
-
     ImageView menu_Img;
     TextView menu_name;
+    String menuName;
     TextView menu_desc;
     TextView menu_allergy;
     TextView menu_origin;
@@ -42,10 +48,11 @@ public class MenuDetailActivity extends AppCompatActivity {
 
     //----------------------------------------------------------------------
     Context ctx;
-    ConstraintLayout layout;
+    ConstraintLayout menuDetailLayout;
     PointView viewpoint;
     GazeTrackerDataStorage gazeTrackerDataStorage;
     private final HandlerThread backgroundThread = new HandlerThread("background");
+    boolean isCartClicked = false;
 
     //----------------------------------------------------------------------
     @Override
@@ -54,19 +61,115 @@ public class MenuDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu_detail);
 
         //-------------------------------------------------------------------------------------
+        //screenshot
+        TextView menuD_name = findViewById(R.id.menuD_name);
+
+        // 레이아웃이 최종적으로 그려진 후에 실행되는 코드 블록
+        menuD_name.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                int[] location = new int[2];
+                menuD_name.getLocationOnScreen(location);
+
+                int left = location[0]; // 왼쪽 좌표
+                int top = location[1]; // 위쪽 좌표
+                int right = left + menuD_name.getWidth(); // 오른쪽 좌표
+                int bottom = top + menuD_name.getHeight(); // 아래쪽 좌표
+
+                // 결과 출력
+                Log.d("location", "menuD_name_left: "+left);
+                Log.d("location", "menuD_name_top: "+top);
+                Log.d("location", "menuD_name_right: "+right);
+                Log.d("location", "menuD_name_bottom: "+bottom);
+
+                // 뷰 트리 옵저버 제거
+                menuD_name.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
+        });
+
+        ImageView menuD_img = findViewById(R.id.menuD_img);
+
+        // 레이아웃이 최종적으로 그려진 후에 실행되는 코드 블록
+        menuD_name.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                int[] location = new int[2];
+                menuD_img.getLocationOnScreen(location);
+
+                int left = location[0]; // 왼쪽 좌표
+                int top = location[1]; // 위쪽 좌표
+                int right = left + menuD_img.getWidth(); // 오른쪽 좌표
+                int bottom = top + menuD_img.getHeight(); // 아래쪽 좌표
+
+                // 결과 출력
+                Log.d("location", "menuD_img_left: "+left);
+                Log.d("location", "menuD_img_top: "+top);
+                Log.d("location", "menuD_img_right: "+right);
+                Log.d("location", "menuD_img_bottom: "+bottom);
+
+                // 뷰 트리 옵저버 제거
+                menuD_img.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
+        });
+
+        LinearLayout menu_description = findViewById(R.id.menu_description);
+
+        // 레이아웃이 최종적으로 그려진 후에 실행되는 코드 블록
+        menuD_name.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                int[] location = new int[2];
+                menu_description.getLocationOnScreen(location);
+
+                int left = location[0]; // 왼쪽 좌표
+                int top = location[1]; // 위쪽 좌표
+                int right = left + menu_description.getWidth(); // 오른쪽 좌표
+                int bottom = top + menu_description.getHeight(); // 아래쪽 좌표
+
+                // 결과 출력
+                Log.d("location", "menu_description_left: "+left);
+                Log.d("location", "menu_description_top: "+top);
+                Log.d("location", "menu_description_right: "+right);
+                Log.d("location", "menu_description_bottom: "+bottom);
+
+                // 뷰 트리 옵저버 제거
+                menu_description.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
+        });
+
+        LinearLayout menuD_btn = findViewById(R.id.menuD_btn); // school_food LinearLayout을 찾습니다.
+
+        // 레이아웃이 최종적으로 그려진 후에 실행되는 코드 블록
+        menuD_btn.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                int[] location = new int[2];
+                menuD_btn.getLocationOnScreen(location);
+
+                int left = location[0]; // 왼쪽 좌표
+                int top = location[1]; // 위쪽 좌표
+                int right = left + menuD_btn.getWidth(); // 오른쪽 좌표
+                int bottom = top + menuD_btn.getHeight(); // 아래쪽 좌표
+
+                // 결과 출력
+                Log.d("location", "menuD_btn_left: "+left);
+                Log.d("location", "menuD_btn_top: "+top);
+                Log.d("location", "menuD_btn_right: "+right);
+                Log.d("location", "menuD_btn_bottom: "+bottom);
+
+                // 뷰 트리 옵저버 제거
+                menuD_btn.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
+        });
+
+
+        //-------------------------------------------------------------------------------------
         //start-gaze-tracking
         ctx = getApplicationContext();
-        layout = findViewById(R.id.menuDetailLayout);
+        menuDetailLayout = findViewById(R.id.menuDetailLayout);
         viewpoint = findViewById(R.id.view_point_menuDetail);
 
-        gazeTrackerDataStorage = new GazeTrackerDataStorage(this);
-        gazeTrackerDataStorage.setContext(this);
-
-        if (gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.setGazeTracker(ctx, layout, viewpoint);
-        }
-
-
+        setGazeTrackerDataStorage();
         //-------------------------------------------------------------------------------------
 
         order_btn = (LinearLayout) findViewById(R.id.menuD_btn);
@@ -93,20 +196,20 @@ public class MenuDetailActivity extends AppCompatActivity {
         s_num = intentToDetail.getS_num();
         f_num = intentToDetail.food.getF_num();
 
-
-
-        Log.d("intentToDetail", "intentToDetail_sid" + s_Id);
-        Log.d("intentToDetail", "intentToDetail_mid" + m_Id);
-        Log.d("intentToDetail", "intentToDetail_fnum" + f_num);
+        Log.d("intentToDetail", "intentToDetail_sid " + s_Id);
+        Log.d("intentToDetail", "intentToDetail_mid " + m_Id);
+        Log.d("intentToDetail", "intentToDetail_snum: " + s_num);
+        Log.d("intentToDetail", "intentToDetail_fnum:  " + f_num);
 
 
         menu_name.setText(intentToDetail.food.getM_name());
+        menuName = intentToDetail.food.getM_name();
         menu_desc.setText(intentToDetail.food.getM_desc());
         menu_allergy.setText(intentToDetail.food.getM_allergy());
         menu_origin.setText(intentToDetail.food.getM_origin());
         menu_price.setText(String.valueOf(intentToDetail.food.getM_price()));
 
-        String imageUrl = "https://foodineye.s3.ap-northeast-2.amazonaws.com/" + m_imageKey;
+        String imageUrl = "https://foodineye2.s3.ap-northeast-2.amazonaws.com/" + m_imageKey;
         Glide.with(this)
                 .load(imageUrl)
                 .circleCrop()
@@ -124,6 +227,31 @@ public class MenuDetailActivity extends AppCompatActivity {
                 showDialog();
             }
         });
+    }
+
+
+    @Override
+    protected void onStop() {
+//        takeAndSaveScreenShot();
+        super.onStop();
+        Log.d("MenuDetailActivity", "onStop");
+        stopGazeTracker();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        gazeTrackerDataStorage.quitBackgroundThread();
+        backgroundThread.quitSafely();
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        // 뒤로가기 버튼을 누르면 GazeTracker 재시작
+        setGazeTrackerDataStorage();
     }
 
     public void showDialog(){
@@ -158,9 +286,8 @@ public class MenuDetailActivity extends AppCompatActivity {
         toCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (gazeTrackerDataStorage != null) {
-                    gazeTrackerDataStorage.stopGazeTracker("menu_detail", s_num, f_num);
-                }
+                isCartClicked = true;
+
                 Intent intent = new Intent(getApplicationContext(), ShoppingCartActivity.class);
                 startActivity(intent);
             }
@@ -176,23 +303,20 @@ public class MenuDetailActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
+    //gazeTracker
+    private void setGazeTrackerDataStorage(){
+        gazeTrackerDataStorage = new GazeTrackerDataStorage(this);
+        gazeTrackerDataStorage.setContext(this);
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d("MenuDetailActivity", "onStop");
-
-//        if (gazeTrackerDataStorage != null) {
-//            gazeTrackerDataStorage.stopGazeTracker("menu_detail", s_num, f_num);
-//        }
-//        gazeTracker.removeCallbacks(
-//                gazeCallback, calibrationCallback, statusCallback, userStatusCallback);
+        if (gazeTrackerDataStorage != null) {
+            gazeTrackerDataStorage.setGazeTracker(ctx, menuDetailLayout, viewpoint);
+        }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        backgroundThread.quitSafely();
+    private void stopGazeTracker(){
+        if (gazeTrackerDataStorage != null) {
+            gazeTrackerDataStorage.stopGazeTracker("menu_detail", s_num, f_num);
+        }
     }
 
     //
@@ -201,6 +325,52 @@ public class MenuDetailActivity extends AppCompatActivity {
 
     private void show(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    //screenshot
+    private void takeAndSaveScreenShot(){
+        Bitmap bitmap = getBitmapFromRootView(MenuDetailActivity.this);
+        saveImage(bitmap);
+    }
+
+    private Bitmap getBitmapFromRootView(Activity context){
+        View root = context.getWindow().getDecorView().getRootView();
+        root.setDrawingCacheEnabled(true);
+        root.buildDrawingCache();
+        //루트뷰의 캐시를 가져옴
+        Bitmap screenshot = root.getDrawingCache();
+
+        // get view coordinates
+        int[] location = new int[2];
+        root.getLocationInWindow(location);
+
+        // 이미지를 자를 수 있으나 전체 화면을 캡쳐 하도록 함
+        Bitmap bmp = Bitmap.createBitmap(screenshot, location[0], location[1], root.getWidth(), root.getHeight(), null, false);
+
+        return bmp;
+    }
+
+    private void saveImage(Bitmap bitmap) {
+        String fileTitle = "menu_detail_" + menuName + ".png";
+
+        File file = new File(this.getFilesDir(), fileTitle);
+        Log.d("screenshot", "fileDir" + getFilesDir());
+
+
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+
+            FileOutputStream fos = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.close();
+
+            show("save success");
+        } catch (Exception e) {
+            show("save fail");
+            e.printStackTrace();
+        }
     }
 
 }

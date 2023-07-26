@@ -123,7 +123,7 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             this.position = position;
 
             String m_imageKey = cart.getM_imageKey();
-            String imageUrl = "https://foodineye.s3.ap-northeast-2.amazonaws.com/" + m_imageKey;
+            String imageUrl = "https://foodineye2.s3.ap-northeast-2.amazonaws.com/" + m_imageKey;
             Glide.with(itemView.getContext())
                     .load(imageUrl)
                     .circleCrop()

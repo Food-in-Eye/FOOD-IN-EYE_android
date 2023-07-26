@@ -1,14 +1,21 @@
 package com.example.foodineye_app;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.net.Uri;
 import android.os.Build;
 import android.os.CountDownTimer;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.Toast;
@@ -19,9 +26,14 @@ import com.example.foodineye_app.activity.Data;
 import com.example.foodineye_app.activity.StorelistActivity;
 import com.example.foodineye_app.gaze.PostGaze;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
 import camp.visual.gazetracker.callback.CalibrationCallback;
 import camp.visual.gazetracker.callback.GazeCallback;
@@ -31,7 +43,9 @@ import camp.visual.gazetracker.constant.StatusErrorType;
 import camp.visual.gazetracker.constant.UserStatusOption;
 import camp.visual.gazetracker.filter.OneEuroFilterManager;
 import camp.visual.gazetracker.gaze.GazeInfo;
+import camp.visual.gazetracker.state.ScreenState;
 import camp.visual.gazetracker.state.TrackingState;
+import camp.visual.gazetracker.util.ViewLayoutChecker;
 import visual.camp.sample.view.CalibrationViewer;
 import visual.camp.sample.view.PointView;
 
@@ -58,10 +72,9 @@ public class GazeTrackerDataStorage {
     private final HandlerThread backgroundThread = new HandlerThread("background");
     private final OneEuroFilterManager oneEuroFilter = new OneEuroFilterManager(2);
 
-    private boolean isWebViewRedirected;
+    private ViewLayoutChecker viewLayoutChecker = new ViewLayoutChecker();
 
     // for file save --------------------------------------------------------------------------
-    private String curDateTime;
 
     private ArrayList<GazeInfo> list_gazeInfo = new ArrayList<GazeInfo>(); // list for gazeInfo
     private PostGaze postGaze; //layout 하나
@@ -72,9 +85,6 @@ public class GazeTrackerDataStorage {
     //scroll change
     private int scroll;
     private ArrayList list_scroll = new ArrayList();
-
-    // task
-    private CountDownTimer timer;
     //-----------------------------------------------------------------------------------------
 
     public void setGazeTracker(Context context, ConstraintLayout constraintLayout, PointView viewPoint){
@@ -85,13 +95,23 @@ public class GazeTrackerDataStorage {
         setconstraintLayout(constraintLayout);
 
         initSpeedDial();
+        //initTrackerView
         setViewPoint(viewPoint);
+        final Data data = (Data) context;
+        viewCalibration = data.getViewCalibration();
+        setOffsetOfView();
+
         initHandler();
         initTouchHandler();
 
         modelInfo();
+        //screenshot
+//        takeAndSaveScreenShot();
 
-        gazeTracker = GazeTrackerManager.makeNewInstance(context);
+        gazeTracker = GazeTrackerManager.makeNewInstance(context); //gazeTracker 설정
+        gazeTracker.loadCalibrationData();
+        setCalibration();
+
         gazeTracker.setGazeTrackerCallbacks(
                 gazeCallback, calibrationCallback, statusCallback, userStatusCallback);
 
@@ -105,9 +125,11 @@ public class GazeTrackerDataStorage {
         viewPoint.setPosition(0,0);
         gazeInfoToJson(layout_name, store_num, food_num); // 지금까지 기록된 gazeInfo를 jsonObject로 저장 ++ scroll
         list_gazeInfo = new ArrayList<GazeInfo>(); // list 초기화
-//        saveGazeInfo("none");
         Log.d("GazeTrackerDataStorage", "list_gazeInfo_2: " +list_gazeInfo);
         list_gazeInfo = new ArrayList<>(); //list 초기화
+
+        gazeTracker.removeCallbacks(
+                gazeCallback, calibrationCallback, statusCallback, userStatusCallback);
     }
 
 
@@ -121,15 +143,25 @@ public class GazeTrackerDataStorage {
             }
             synchronized (list_gazeInfo){
                 gazeTracker.startGazeTracking();
+                show("startgazetracking");
             }
         }).start();
     }
 
     //-----------------------------------------------------------------------------------------
-//    private void initLinearLayout(LinearLayout parentLayout, LinearLayout childLayout){
-//
-//        Log.d("GazeTrackerDataStorage", "initLinearLayout success!");
-//    }
+
+    //setter
+    public void setGazeTracker(GazeTrackerManager gazeTracker) {
+        this.gazeTracker = gazeTracker;
+    }
+
+    public void setconstraintLayout(ConstraintLayout constraintLayout) {
+        this.constraintLayout = constraintLayout;
+    }
+
+    public void setViewPoint(PointView viewPoint) {
+        this.viewPoint = viewPoint;
+    }
 
     private void initSpeedDial(){
 
@@ -138,10 +170,10 @@ public class GazeTrackerDataStorage {
         releaseGaze();
 
     }
-//    private void initTrackerView() {
-////        viewPoint = findViewById(R.id.view_point);
-////        viewCalibration = findViewById(R.id.view_calibration);
-//    }
+
+    public void initCalibrationView(CalibrationViewer calibrationViewer){
+        viewCalibration = calibrationViewer;
+    }
 
     private HandlerThread handlerThread;
     private Handler handler;
@@ -220,6 +252,24 @@ public class GazeTrackerDataStorage {
         gazeTracker.deinitGazeTracker();
     }
 
+    private void setCalibration() {
+        GazeTrackerManager.LoadCalibrationResult result = gazeTracker.loadCalibrationData();
+        switch (result) {
+            case SUCCESS:
+                show("setCalibrationData success");
+                break;
+            case FAIL_DOING_CALIBRATION:
+                show("calibrating");
+                break;
+            case FAIL_NO_CALIBRATION_DATA:
+                show("Calibration data is null");
+                break;
+            case FAIL_HAS_NO_TRACKER:
+                show("No tracker has initialized");
+                break;
+        }
+    }
+
     //
     // callbacks - gaze
     //
@@ -239,7 +289,9 @@ public class GazeTrackerDataStorage {
         float gy = filtered_gaze[1];
         Log.d("GazeTrackerDataStorage", "gazeInfo_gx: "+gx);
         Log.d("GazeTrackerDataStorage", "gazeInfo_gy: "+gy);
-//        showGazePoint(gx, gy, gazeInfo.screenState);
+
+        //화면에서 gazepoint 보여주기
+        showGazePoint(gx, gy, gazeInfo.screenState);
 
 //        context.runOnUiThread(() -> {
 //            onGazeEvent(gx, gy);
@@ -260,12 +312,12 @@ public class GazeTrackerDataStorage {
         return new float[]{gazeInfo.x, gazeInfo.y};
     }
 
-//    private void showGazePoint(final float x, final float y, final ScreenState type) {
-//        context.runOnUiThread(() -> {
-//            viewPoint.setType(type == ScreenState.INSIDE_OF_SCREEN ? PointView.TYPE_DEFAULT : PointView.TYPE_OUT_OF_SCREEN);
-//            // viewPoint.setPosition(x, y);
-//        });
-//    }
+    private void showGazePoint(final float x, final float y, final ScreenState type) {
+        ((Activity)context).runOnUiThread(() -> {
+            viewPoint.setType(type == ScreenState.INSIDE_OF_SCREEN ? PointView.TYPE_DEFAULT : PointView.TYPE_OUT_OF_SCREEN);
+            viewPoint.setPosition(x, y);
+        });
+    }
 
     //
     // callbacks - calibration
@@ -294,7 +346,6 @@ public class GazeTrackerDataStorage {
             // When calibration is finished, calibration data is stored to SharedPreference
 //            runOnUiThread(() -> viewCalibration.setVisibility(View.INVISIBLE));
 //            runOnUiThread(() -> webView.setVisibility(View.VISIBLE));
-//            showNavigationBar();
         }
     };
 
@@ -337,7 +388,7 @@ public class GazeTrackerDataStorage {
 
     private void show(String message) {
 
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+//        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 
     //
@@ -405,6 +456,7 @@ public class GazeTrackerDataStorage {
         int s_num = store_num;
         int f_num = food_num;
 
+        Log.d("Gaze", "!!!!!!!!: "+System.identityHashCode(list_gazeInfo));
 
         for(int j = 0; j<list_gazeInfo.size(); j++){
             long t = list_gazeInfo.get(j).timestamp;
@@ -416,124 +468,8 @@ public class GazeTrackerDataStorage {
 
         postGaze = new PostGaze(layoutName, s_num, f_num, gazeArrayList);
         Log.d("Gaze", "gaze: "+postGaze);
-        Data.setGazeList(postGaze);
+        Data.addGazeList(postGaze);
 
-//        try {
-//            JSONObject gazeObject = new JSONObject();
-//            // "page" 필드 추가
-//            gazeObject.put("page", layoutName);
-//
-//            // "s_num" 필드 추가
-//            gazeObject.put("s_num", s_num);
-//
-//            // "f_num" 필드 추가
-//            gazeObject.put("f_num", f_num);
-//
-//            JSONArray gazeArray = new JSONArray();
-//
-//            for (int j = 0; j < list_gazeInfo.size(); j++) {
-//                JSONObject gazeJson = new JSONObject();
-//
-//                // Gaze 정보의 x 좌표, y 좌표, timestamp 추가
-//                gazeJson.put("x", list_gazeInfo.get(j).x);
-//                gazeJson.put("y", (list_gazeInfo.get(j).y)+scroll);
-//                gazeJson.put("t", list_gazeInfo.get(j).timestamp);
-//
-//                gazeArray.put(gazeJson);
-//            }
-//
-//            // "gaze" 필드에 Gaze 정보 배열 추가
-//            gazeObject.put("gaze", gazeArray);
-//            Log.i("json", gazeObject.toString());
-//
-//            // 한 화면에서의 gazeObject -> 전체 jsonObject에 넣기
-//
-//            Data.addJsonObject(gazeObject);
-//
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//            Log.i("json", "gazeObject fail");
-//        }
-
-
-    }
-
-
-    private void setFolderName(){
-        Date currentTime = Calendar.getInstance().getTime();
-        String[] strList = currentTime.toString().split(" ");
-        // strList = [MON, MM, DD, hh:mm:ss, KST, YYYY]
-
-//        curTime = strList[3]; // "hh:mm:ss"
-        curDateTime = strList[1]+strList[2] + "_" + strList[3]; // "YYYYMMDD_hh:mm:ss"
-
-    }
-
-
-//    private void writeFile(String fileTitle) {
-//
-//        fileTitle = fileTitle + "_" + curDateTime + ".json";
-//
-////        File dir = new File(Environment.getExternalStorageDirectory() + userId + File.pathSeparator + curDate);
-//        File dir = new File(this.getFilesDir() + "/" + userId);
-//        if(!dir.exists()) {
-//            dir.mkdirs();
-//            Log.i("mkdirs", dir.getAbsolutePath());
-//        }
-////        File file = new File(this.getFilesDir(), fileTitle);
-//        File file = new File(dir, fileTitle);
-//
-//        try {
-//            //파일 생성
-//            if (!file.exists()) {
-//                file.createNewFile();
-//                Log.i("File", "create file");
-//            }
-//
-//            BufferedWriter bw = new BufferedWriter(new FileWriter(file,true));
-//            bw.write(jsonObject.toString());
-//
-//            bw.newLine();
-//            bw.close();
-//            show("save success");
-//        } catch (IOException e) {
-//            Log.i("저장오류", e.getMessage());
-//            show("save fail");
-//        }
-//    }
-
-//    private void saveGazeInfo(String task) {
-////        setFolderName(); // curDate, curTime 초기화
-//        gazeInfoToJson(); // 지금까지 기록된 gazeInfo를 jsonObject로 저장 ++ scroll
-////        writeFile(task); // jsonObject 내보내기
-//        list_gazeInfo = new ArrayList<GazeInfo>(); // list 초기화
-//
-//    }
-
-    private void task1min() {
-        list_gazeInfo = new ArrayList<GazeInfo>(); // list 초기화
-        list_scroll = new ArrayList();
-        setTimerSec(30); //60sec
-        show("Start");
-        timer.start();
-
-    }
-
-    private void setTimerSec(int totalSec) {
-        int totalMillis = totalSec*1000;
-        timer = new CountDownTimer(totalMillis,1000){
-            @Override
-            public void onTick(long l) {
-                Log.i("task", "timer is running");
-            }
-
-            @Override
-            public void onFinish() {
-                Log.i("task", "timer is over");
-//                saveGazeInfo("task"+totalSec);
-                Log.i("task", "saveGazeInfo");
-            }
-        };
     }
 
     private void modelInfo(){
@@ -558,18 +494,21 @@ public class GazeTrackerDataStorage {
         Log.i("model", "screen_dpi_ration:" + screen_dpi_ration);
     }
 
-    //setter
-
-    public void setGazeTracker(GazeTrackerManager gazeTracker) {
-        this.gazeTracker = gazeTracker;
+    // The gaze or calibration coordinates are delivered only to the absolute coordinates of the entire screen.
+    // The coordinate system of the Android view is a relative coordinate system,
+    // so the offset of the view to show the coordinates must be obtained and corrected to properly show the information on the screen.
+    private void setOffsetOfView() {
+        viewLayoutChecker.setOverlayView(viewPoint, new ViewLayoutChecker.ViewLayoutListener() {
+            @Override
+            public void getOffset(int x, int y) {
+                viewPoint.setOffset(x, y);
+                viewCalibration.setOffset(x, y);
+            }
+        });
     }
 
-    public void setconstraintLayout(ConstraintLayout constraintLayout) {
-        this.constraintLayout = constraintLayout;
-    }
-
-    public void setViewPoint(PointView viewPoint) {
-        this.viewPoint = viewPoint;
+    public void quitBackgroundThread(){
+        backgroundThread.quitSafely();
     }
 
 }

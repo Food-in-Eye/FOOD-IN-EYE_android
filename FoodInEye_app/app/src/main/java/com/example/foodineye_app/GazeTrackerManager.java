@@ -39,12 +39,16 @@ public class GazeTrackerManager {
 
     GazeTracker gazeTracker = null;
     // TODO: change licence key
+//    String SEESO_LICENSE_KEY = "change license key";
+
     String SEESO_LICENSE_KEY = "dev_c0yqi45fp7eplmurn0ay2vobcd49p00s00j30s1q";
 
     static public GazeTrackerManager makeNewInstance(Context context) {
         if (mInstance != null) {
             mInstance.deinitGazeTracker();
+            return mInstance;
         }
+
         mInstance = new GazeTrackerManager(context);
         return mInstance;
     }
@@ -53,7 +57,7 @@ public class GazeTrackerManager {
         return mInstance;
     }
 
-    GazeTrackerManager(Context context) {
+    public GazeTrackerManager(Context context) {
         this.mContext = new WeakReference<>(context);
     }
 
@@ -139,6 +143,10 @@ public class GazeTrackerManager {
             return gazeTracker.startCollectSamples();
         }
         return false;
+    }
+
+    public boolean setCalibrationData(double[] calibrationData){
+        return true;
     }
 
     public boolean isTracking() {

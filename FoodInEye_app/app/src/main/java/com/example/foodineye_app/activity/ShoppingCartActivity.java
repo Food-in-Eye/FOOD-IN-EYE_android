@@ -36,9 +36,11 @@ public class ShoppingCartActivity extends AppCompatActivity implements CartAdapt
     GazeTrackerDataStorage gazeTrackerDataStorage;
     private final HandlerThread backgroundThread = new HandlerThread("background");
 
+    Context ctx;
+    ConstraintLayout storeLayout;
+    PointView viewpoint;
+
     //-----------------------------------------------------------------------------------------
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,28 +48,18 @@ public class ShoppingCartActivity extends AppCompatActivity implements CartAdapt
 
         //-------------------------------------------------------------------------------------
         //start-gaze-tracking
-        Context ctx = getApplicationContext();
-        ConstraintLayout storeLayout = findViewById(R.id.cartLayout);
-        PointView viewpoint = findViewById(R.id.view_point_cart);
+        ctx = getApplicationContext();
+        storeLayout = findViewById(R.id.cartLayout);
+        viewpoint = findViewById(R.id.view_point_cart);
 
-        gazeTrackerDataStorage = new GazeTrackerDataStorage(this);
-        gazeTrackerDataStorage.setContext(this);
-
-        if (gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.setGazeTracker(ctx, storeLayout, viewpoint);
-        }
-
+        setGazeTrackerDataStorage();
 
         //-------------------------------------------------------------------------------------
 
         cartList = ((Data) getApplication()).getCartList();
         total = ((Data)getApplication()).getTotalPrice();
 
-        Log.d("ShoppingCart", "total" + total);
-        Log.d("ShoppingCart", "cartList" + cartList.toString());
-
         recyclerView = findViewById(R.id.recyclerView_cartList);
-
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
@@ -113,20 +105,40 @@ public class ShoppingCartActivity extends AppCompatActivity implements CartAdapt
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d("StorelistActivity", "onStop");
-
-        if (gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.stopGazeTracker("cart", 0, 0);
-        }
-//        gazeTracker.removeCallbacks(
-//                gazeCallback, calibrationCallback, statusCallback, userStatusCallback);
+        stopGazeTracker();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        gazeTrackerDataStorage.quitBackgroundThread();
         backgroundThread.quitSafely();
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        // 뒤로가기 버튼을 누르면 GazeTracker 재시작
+        setGazeTrackerDataStorage();
+    }
+
+    //gazeTracker
+    private void setGazeTrackerDataStorage(){
+        gazeTrackerDataStorage = new GazeTrackerDataStorage(this);
+        gazeTrackerDataStorage.setContext(this);
+
+        if (gazeTrackerDataStorage != null) {
+            gazeTrackerDataStorage.setGazeTracker(ctx, storeLayout, viewpoint);
+        }
+    }
+
+    private void stopGazeTracker() {
+        if (gazeTrackerDataStorage != null) {
+            gazeTrackerDataStorage.stopGazeTracker("cart", 0, 0);
+        }
+    }
+
 
     //
     // Miscellaneous
@@ -135,5 +147,4 @@ public class ShoppingCartActivity extends AppCompatActivity implements CartAdapt
     private void show(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
-
 }

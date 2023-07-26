@@ -3,6 +3,7 @@ package com.example.foodineye_app.activity;
 import android.app.Application;
 import android.util.Log;
 
+import com.example.foodineye_app.GazeTrackerManager;
 import com.example.foodineye_app.gaze.PostGaze;
 
 import org.json.JSONArray;
@@ -10,6 +11,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import visual.camp.sample.view.CalibrationViewer;
 
 public class Data extends Application {
 
@@ -22,9 +25,20 @@ public class Data extends Application {
     private List<Order> orderList;
     private String history_id; // 한번의 주문내역 지칭(웹소켓 통신시)
 
+    //calibration
+    private CalibrationViewer viewCalibration;
+
+    //-------------------------------------------------------------------------------------
+    public CalibrationViewer getViewCalibration() {
+        return viewCalibration;
+    }
+
+    public void setViewCalibration(CalibrationViewer viewCalibration) {
+        this.viewCalibration = viewCalibration;
+    }
+
     //orderList
     public List<Order> getOrderList(){ return orderList; }
-
 
     //carList
     @Override
@@ -97,7 +111,7 @@ public class Data extends Application {
         return GazeList;
     }
 
-    public static void setGazeList(PostGaze postGaze) {
+    public static void addGazeList(PostGaze postGaze) {
         GazeList.add(postGaze);
     }
 }
