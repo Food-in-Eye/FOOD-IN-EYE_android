@@ -41,6 +41,7 @@
             android:layout_marginRight="10dp"/>
 
         <Button
+            android:id="@+id/order_history"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:text="주문 내역 보러가기"
