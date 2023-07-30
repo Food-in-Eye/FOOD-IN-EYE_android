@@ -23,9 +23,20 @@
             android:background="@drawable/tape_orange"
             android:backgroundTint="@color/meronna"/>
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:id="@+id/sBtn"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/category_go_btn"
+            android:backgroundTint="@color/navy"
+            android:layout_gravity="center"
+            android:gravity="right"
+            android:layout_marginRight="30dp"/>
 
     </LinearLayout>
 
@@ -65,23 +76,33 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="총 "
+            android:text="총  "
             android:textStyle="bold"
             android:textColor="@color/black"
             android:textSize="15dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="35dp"
             android:layout_marginBottom="10dp"/>
 
         <TextView
             android:id="@+id/history_total"
-            android:layout_width="80dp"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:text="금액"
+            android:text="35,000"
             android:textStyle="bold"
             android:textColor="@color/black"
             android:textSize="15dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="원"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            android:layout_marginTop="35dp"
             android:layout_marginBottom="10dp"
             android:layout_marginRight="10dp"/>
 
