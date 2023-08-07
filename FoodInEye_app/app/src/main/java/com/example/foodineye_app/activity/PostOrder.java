@@ -55,6 +55,9 @@ public class PostOrder {
         @SerializedName("s_id")
         @Expose
         String s_id;
+        @SerializedName("s_name")
+        @Expose
+        String s_name;
         @SerializedName("m_id")
         @Expose
         String m_id;
@@ -62,8 +65,9 @@ public class PostOrder {
         @Expose
         List<FoodCount> f_list;
 
-        public StoreOrder(String s_id, String m_id, List<FoodCount> f_list) {
+        public StoreOrder(String s_id, String s_name, String m_id, List<FoodCount> f_list) {
             this.s_id = s_id;
+            this.s_name = s_name;
             this.m_id = m_id;
             this.f_list = f_list;
         }
@@ -100,6 +104,9 @@ public class PostOrder {
             @SerializedName("f_id")
             @Expose
             String f_id;
+            @SerializedName("f_name")
+            @Expose
+            String f_name; // =m_name
             @SerializedName("count")
             @Expose
             int count;
@@ -107,11 +114,13 @@ public class PostOrder {
             @Expose
             int price;
 
-            public FoodCount(String f_id, int count, int price) {
+            public FoodCount(String f_id, String f_name, int count, int price) {
                 this.f_id = f_id;
+                this.f_name = f_name;
                 this.count = count;
                 this.price = price;
             }
+
             public String toString(){return "f_id: "+ f_id+ " count: "+count +" price: "+price;}
         }
     }

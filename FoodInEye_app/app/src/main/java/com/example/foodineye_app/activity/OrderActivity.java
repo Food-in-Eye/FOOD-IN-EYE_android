@@ -115,20 +115,20 @@ public class OrderActivity extends AppCompatActivity {
             f_list = new ArrayList<>();
             for(Cart cart : cartGroup){
                 String f_id = cart.getF_id();
-                String m_name = cart.getM_name();
+                String f_name = cart.getM_name();
                 int m_price = cart.getM_price();
                 String m_imageKey = cart.getM_imageKey();
                 int m_count = cart.getM_count();
-                SubOrder subOrder = (SubOrder) new SubOrder(f_id, m_name, m_price, m_count);
+                SubOrder subOrder = (SubOrder) new SubOrder(f_id, f_name, m_price, m_count);
                 subOrderList.add(subOrder);
                 //post
-                PostOrder.StoreOrder.FoodCount foodCount = (PostOrder.StoreOrder.FoodCount) new PostOrder.StoreOrder.FoodCount(f_id, m_count, m_price);
+                PostOrder.StoreOrder.FoodCount foodCount = (PostOrder.StoreOrder.FoodCount) new PostOrder.StoreOrder.FoodCount(f_id, f_name, m_count, m_price);
                 f_list.add(foodCount);
             }
             order = new Order(s_id, s_name, m_id, subOrderList);
             orderList.add(order);
             //post
-            PostOrder.StoreOrder storeOrder = new PostOrder.StoreOrder(s_id, m_id, f_list);
+            PostOrder.StoreOrder storeOrder = new PostOrder.StoreOrder(s_id, s_name, m_id, f_list);
             content.add(storeOrder);
         }
 

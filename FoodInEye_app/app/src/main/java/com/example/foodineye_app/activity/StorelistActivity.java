@@ -137,7 +137,7 @@ public class StorelistActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-//        takeAndSaveScreenShot();
+        takeAndSaveScreenShot();
         super.onStop();
         stopGazeTracker();
     }
