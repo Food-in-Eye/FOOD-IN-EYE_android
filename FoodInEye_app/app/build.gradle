@@ -30,12 +30,15 @@ android {
         includeInApk true
         includeInBundle true
     }
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
 }
 
 dependencies {
 
     //LakuePagingButton
-//    implementation 'com.github.lakue119:LakuePagingButton:1.1.2'
+    implementation 'com.github.lakue119:LakuePagingButton:1.1.2'
 
     //okHttp
     implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.11'
@@ -62,6 +65,7 @@ dependencies {
     implementation project(path: ':view')
     implementation project(path: ':gazetracker-release')
     implementation project(path: ':libgaze-release')
+    implementation project(path: ':pagingbutton')
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'

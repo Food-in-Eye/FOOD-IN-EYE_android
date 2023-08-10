@@ -95,7 +95,6 @@ public class GazeTrackerDataStorage {
         setconstraintLayout(constraintLayout);
 
         initSpeedDial();
-        //initTrackerView
         setViewPoint(viewPoint);
         final Data data = (Data) context;
         viewCalibration = data.getViewCalibration();
@@ -105,8 +104,6 @@ public class GazeTrackerDataStorage {
         initTouchHandler();
 
         modelInfo();
-        //screenshot
-//        takeAndSaveScreenShot();
 
         gazeTracker = GazeTrackerManager.makeNewInstance(context); //gazeTracker 설정
         gazeTracker.loadCalibrationData();
@@ -137,13 +134,13 @@ public class GazeTrackerDataStorage {
         new Thread(() -> {
             initGazeTracker();
             try {
-                Thread.sleep(3000);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             synchronized (list_gazeInfo){
                 gazeTracker.startGazeTracking();
-                show("startgazetracking");
+                show("start gaze tracking");
             }
         }).start();
     }
