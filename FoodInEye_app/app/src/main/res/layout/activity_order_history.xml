@@ -45,19 +45,10 @@
 <!--         LakuePagingButton -->
         <com.lakue.pagingbutton.LakuePagingButton
             android:id="@+id/lakuePagingButton"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:gravity="center"/>
-
-        <LinearLayout
-            android:id="@+id/paginationLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
-            <!-- 페이지 번호를 표시할 TextView들을 이곳에 추가 -->
-        </LinearLayout>
 
     </LinearLayout>
 

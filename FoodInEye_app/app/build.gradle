@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
 
-    buildToolsVersion buildToolsVersion
+    buildToolsVersion '30.0.3'
     compileSdk 33
 
     defaultConfig {
@@ -30,19 +30,17 @@ android {
         includeInApk true
         includeInBundle true
     }
-    repositories {
-        maven { url 'https://jitpack.io' }
-    }
 }
 
 dependencies {
 
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+
     //LakuePagingButton
-    implementation 'com.github.lakue119:LakuePagingButton:1.1.2'
+//    implementation 'com.github.lakue119:LakuePagingButton:1.0.0'
 
     //okHttp
     implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.11'
-    //implementation 'com.squareup.okhttp3:logging-interceptor:3.11.0'
 
     //retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
@@ -57,8 +55,6 @@ dependencies {
     //gilde
     implementation 'com.github.bumptech.glide:glide:4.15.1'
 
-
-    implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.android.volley:volley:1.2.1'

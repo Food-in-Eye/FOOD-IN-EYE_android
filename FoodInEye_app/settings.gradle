@@ -8,10 +8,12 @@ pluginManagement {
     }
 }
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
+    repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
     repositories {
         google()
         mavenCentral()
+        maven{url "https://maven.google.com"}
+        maven{url 'https://jipack.io'}
     }
 }
 rootProject.name = "FoodInEye_app"
