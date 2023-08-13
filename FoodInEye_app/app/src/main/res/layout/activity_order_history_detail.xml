@@ -55,7 +55,6 @@
                 android:layout_gravity="center">
 
                 <TextView
-                    android:id="@+id/detail_history_foodName"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:text="상품명"
@@ -67,7 +66,6 @@
                     android:layout_marginLeft="10dp"/>
 
                 <TextView
-                    android:id="@+id/detail_history_storeName"
                     android:layout_width="60dp"
                     android:layout_height="wrap_content"
                     android:text="가게명"
@@ -79,7 +77,6 @@
                     android:layout_marginLeft="5dp"/>
 
                 <TextView
-                    android:id="@+id/detail_history_foodCount"
                     android:layout_width="30dp"
                     android:layout_height="wrap_content"
                     android:text="수량"
@@ -91,7 +88,6 @@
                     android:layout_marginLeft="5dp"/>
 
                 <TextView
-                    android:id="@+id/detail_history_foodPrice"
                     android:layout_width="30dp"
                     android:layout_height="wrap_content"
                     android:text="가격"

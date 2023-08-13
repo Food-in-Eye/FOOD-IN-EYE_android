@@ -1,6 +1,8 @@
 package com.example.foodineye_app.activity;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +48,14 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.MyViewHo
         holder.storeName.setText(sNames.toString());
 
         //HistoryDetail - h_id
+        Intent intent = new Intent(context, OrderHistoryDetailActivity.class);
+        intent.putExtra("h_id", history.getH_id());
+        intent.putExtra("total", history.getTotal_price());
+        if (context instanceof Activity) {
+            ((Activity) context).startActivity(intent);
+        } else {
+            context.startActivity(intent);
+        }
     }
 
     @Override
