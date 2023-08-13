@@ -17,11 +17,15 @@ public class History {
 
     @SerializedName("max_batch")
     @Expose
-    public int batch;
+    public int max_batch;
 
     @SerializedName("response")
     @Expose
     public HistoryResponse historyResponse;
+
+    public String toString() {
+        return "request: " + request + ", status: " + status + ", max_batch: " + max_batch;
+    }
 
     public static class HistoryResponse {
 
@@ -77,4 +81,6 @@ public class History {
             this.s_names = s_names;
         }
     }
+
+
 }

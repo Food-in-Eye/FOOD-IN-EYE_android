@@ -49,7 +49,7 @@ public interface ApiInterface {
             @Body List<PostGaze> postGaze
     );
 
-    @GET("api/v2/orders/hisotrys")
+    @GET("api/v2/orders/historys")
     Call<History> getHistory(
             @Query("u_id") String u_id,
             @Query("batch") int batch

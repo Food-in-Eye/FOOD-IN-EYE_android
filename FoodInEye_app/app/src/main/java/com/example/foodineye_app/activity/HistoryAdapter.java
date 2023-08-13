@@ -44,6 +44,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.MyViewHo
         // Remove the trailing comma and space
         sNames.setLength(sNames.length() - 2);
         holder.storeName.setText(sNames.toString());
+
+        //HistoryDetail - h_id
     }
 
     @Override

@@ -80,17 +80,21 @@ public class OrderHistoryActivity extends AppCompatActivity {
             }
         });
 
-        
+
     }
 
     public void getHistory(int batch){
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-
         Call<History> callMenu = apiInterface.getHistory(u_id, batch);
+
         callMenu.enqueue(new Callback<History>() {
             @Override
             public void onResponse(Call<History> call, Response<History> response) {
+                History history = response.body();
+                Log.d("OrderHistoryActivity", history.toString());
+
                 if (response.isSuccessful() && response.body() != null && response.body().historyResponse != null) {
+
                     History.HistoryResponse historyResponse = response.body().historyResponse;
 
                     historyAdapter = new HistoryAdapter(getApplicationContext(), historyResponse);
