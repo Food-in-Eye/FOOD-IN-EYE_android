@@ -21,13 +21,13 @@ public class History {
 
     @SerializedName("response")
     @Expose
-    public HistoryResponse historyResponse;
+    public List<HistoryResponse> historyResponse;
 
     public String toString() {
         return "request: " + request + ", status: " + status + ", max_batch: " + max_batch;
     }
 
-    public static class HistoryResponse {
+    public class HistoryResponse {
 
         @SerializedName("h_id")
         @Expose

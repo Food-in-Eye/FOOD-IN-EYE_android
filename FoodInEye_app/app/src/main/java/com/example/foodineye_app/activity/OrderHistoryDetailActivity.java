@@ -13,6 +13,9 @@ import com.example.foodineye_app.ApiClient;
 import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -23,7 +26,7 @@ public class OrderHistoryDetailActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     HistoryDetailAdapter historyDetailAdapter;
-    TextView date;
+    TextView dateTime;
     TextView total;
 
     @Override
@@ -36,11 +39,14 @@ public class OrderHistoryDetailActivity extends AppCompatActivity {
         String h_id = intent.getStringExtra("h_id");
         String total_price = intent.getStringExtra("total");
 
+        Log.d("OrderHistoryDetailActivity", "h_id: "+h_id);
+
+
         recyclerView = (RecyclerView) findViewById(R.id.history_detail_recyclerView);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        date = (TextView) findViewById(R.id.detail_history_date);
+        dateTime = (TextView) findViewById(R.id.detail_history_date);
         total = (TextView) findViewById(R.id.detail_history_total);
         total.setText(total_price);
 
@@ -53,28 +59,40 @@ public class OrderHistoryDetailActivity extends AppCompatActivity {
             public void onResponse(Call<HistoryDetail> call, Response<HistoryDetail> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     HistoryDetail historyDetail = response.body();
-                    Log.d("HistoryDetailActivity", historyDetail.toString());
+                    Log.d("OrderHistoryDetailActivity", historyDetail.toString());
 
                     HistoryDetail.HistoryDetailResponse historyDetailResponse = historyDetail.historyDetailResponse;
 
-                    date.setText(historyDetailResponse.getDate());
-
-                    List<HistoryDetail.HistoryDetailResponse.OrderItem> orderItemList = historyDetail.historyDetailResponse.orders;
-                    historyDetailAdapter = new HistoryDetailAdapter(getApplicationContext(), orderItemList);
+                    List<HistoryDetail.HistoryDetailResponse.OrderItem> orderItemList = historyDetailResponse.orders;
+                    HistoryDetailAdapter historyDetailAdapter = new HistoryDetailAdapter(getApplicationContext(), orderItemList);
                     recyclerView.setAdapter(historyDetailAdapter);
-                    Log.d("HistoryDetailActivity", orderItemList.toString());
+
+
+                    String inputDateTime = historyDetailResponse.getDate();
+                    SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
+                    SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy년 MM월 dd일 HH:mm:ss");
+
+                    try {
+                        Date date = inputFormat.parse(inputDateTime);
+                        String formattedDate = outputFormat.format(date);
+
+                        dateTime.setText(formattedDate);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
 
                 } else {
-                    // Handle error here
-                    Log.e("OrderHistoryActivity", "Response unsuccessful or body is null");
+                    // Handle error here, show a toast or log an error message
+                    Log.e("OrderHistoryDetailActivity", "Response unsuccessful or body is null");
                 }
             }
 
             @Override
             public void onFailure(Call<HistoryDetail> call, Throwable t) {
-                // Handle failure here
+                Log.d("OrderHistoryDetailActivity", "onFailure: " + t.toString());
             }
         });
+
 
 
 

@@ -29,7 +29,7 @@
             android:layout_weight="1" />
 
         <Button
-            android:id="@+id/sBtn"
+            android:id="@+id/history_to_detail"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:background="@drawable/category_go_btn"

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,14 +14,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodineye_app.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.MyViewHolder> {
 
     private Context context;
-    private History.HistoryResponse historyList;
+    private List<History.HistoryResponse> historyList;
 
-    public HistoryAdapter(Context context, History.HistoryResponse historyList) {
+    public HistoryAdapter(Context context, List<History.HistoryResponse> historyList) {
         this.context = context;
         this.historyList = historyList;
     }
@@ -34,9 +38,22 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        History.HistoryResponse history = historyList;
+        History.HistoryResponse history = historyList.get(position);
 
-        holder.date.setText(history.getDate());
+        String inputDateTime = history.getDate();
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
+        SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy년 MM월 dd일 HH:mm:ss");
+
+        try {
+            Date date = inputFormat.parse(inputDateTime);
+            String formattedDate = outputFormat.format(date);
+
+            holder.date.setText(formattedDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
         holder.totalPrice.setText(String.valueOf(history.getTotal_price()));
 
         StringBuilder sNames = new StringBuilder();
@@ -47,23 +64,26 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.MyViewHo
         sNames.setLength(sNames.length() - 2);
         holder.storeName.setText(sNames.toString());
 
-        //HistoryDetail - h_id
-        Intent intent = new Intent(context, OrderHistoryDetailActivity.class);
-        intent.putExtra("h_id", history.getH_id());
-        intent.putExtra("total", history.getTotal_price());
-        if (context instanceof Activity) {
-            ((Activity) context).startActivity(intent);
-        } else {
-            context.startActivity(intent);
-        }
+        holder.toDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //HistoryDetail - h_id
+                Intent intent = new Intent(context, OrderHistoryDetailActivity.class);
+                intent.putExtra("h_id", history.getH_id());
+                intent.putExtra("total", String.valueOf(history.getTotal_price()));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
+        });
+
     }
 
     @Override
     public int getItemCount() {
-        if (historyList == null || historyList.s_names == null) {
+        if (historyList == null) {
             return 0;
         }
-        return historyList.s_names.size();
+        return historyList.size();
     }
 
 
@@ -72,6 +92,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.MyViewHo
         TextView date;
         TextView storeName;
         TextView totalPrice;
+        Button toDetail;
 
         public MyViewHolder(@NonNull View itemView){
             super(itemView);
@@ -79,6 +100,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.MyViewHo
             date = (TextView) itemView.findViewById(R.id.history_date);
             storeName = (TextView) itemView.findViewById(R.id.history_store);
             totalPrice = (TextView) itemView.findViewById(R.id.history_total);
+            toDetail = (Button) itemView.findViewById(R.id.history_to_detail);
         }
 
     }

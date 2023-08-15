@@ -16,11 +16,11 @@
         android:textSize="10dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
-        android:layout_marginLeft="10dp"/>
+        android:layout_marginLeft="5dp"/>
 
     <TextView
         android:id="@+id/detail_history_foodName"
-        android:layout_width="60dp"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:text="음식명"
         android:textStyle="bold"
@@ -28,7 +28,7 @@
         android:textSize="10dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
-        android:layout_marginLeft="5dp"/>
+        android:layout_marginLeft="3dp"/>
 
     <TextView
         android:id="@+id/detail_history_foodCount"
@@ -40,7 +40,7 @@
         android:textSize="10dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
-        android:layout_marginLeft="5dp"/>
+        android:layout_marginLeft="3dp"/>
 
     <TextView
         android:id="@+id/detail_history_foodPrice"
@@ -52,6 +52,15 @@
         android:textSize="10dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
-        android:layout_marginLeft="5dp"/>
+        android:layout_marginLeft="3dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="원"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textSize="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"/>
 
 </LinearLayout>

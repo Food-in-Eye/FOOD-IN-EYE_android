@@ -58,7 +58,7 @@ public interface ApiInterface {
 
     @GET("api/v2/orders/history")
     Call<HistoryDetail> getHistoryDetail(
-            @Query("history") String history_id
+            @Query("id") String history_id
     );
 
 }

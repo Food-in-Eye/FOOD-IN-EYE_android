@@ -33,7 +33,7 @@ public class OrderHistoryActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     HistoryAdapter historyAdapter;
 
-    String u_id = "6458f67e50bde95733e4b57f";
+    String u_id = "test";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,16 +90,14 @@ public class OrderHistoryActivity extends AppCompatActivity {
         callMenu.enqueue(new Callback<History>() {
             @Override
             public void onResponse(Call<History> call, Response<History> response) {
-                History history = response.body();
-                Log.d("OrderHistoryActivity", history.toString());
+                if (response.isSuccessful() && response.body() != null) {
+                    History history = response.body();
+                    Log.d("OrderHistoryActivity", "Response : " + history);
 
-                if (response.isSuccessful() && response.body() != null && response.body().historyResponse != null) {
+                    List<History.HistoryResponse> historyResponseList = response.body().historyResponse;
 
-                    History.HistoryResponse historyResponse = response.body().historyResponse;
-
-                    historyAdapter = new HistoryAdapter(getApplicationContext(), historyResponse);
+                    historyAdapter = new HistoryAdapter(getApplicationContext(), historyResponseList);
                     recyclerView.setAdapter(historyAdapter);
-                    Log.d("OrderHistoryActivity", historyResponse.toString());
                 } else {
                     // Handle error here, show a toast or log an error message
                     Log.e("OrderHistoryActivity", "Response unsuccessful or body is null");
@@ -108,9 +106,11 @@ public class OrderHistoryActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<History> call, Throwable t) {
-                Log.d("OrderHistoryActivity", t.toString());
+                Log.d("OrderHistoryActivity", "onFailure: "+t.toString());
             }
         });
+
+
 
     }
 
