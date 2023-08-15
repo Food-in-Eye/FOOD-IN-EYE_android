@@ -20,17 +20,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.foodineye_app.ApiClient;
 import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.GazeTrackerDataStorage;
-import com.example.foodineye_app.gaze.PostGaze;
 import com.example.foodineye_app.R;
+import com.example.foodineye_app.gaze.PostGaze;
 import com.example.foodineye_app.gaze.PostGazeResponse;
 import com.example.foodineye_app.websocket.WebSocketManager;
 
 import org.json.JSONArray;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -249,6 +245,12 @@ public class OrderActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        setGazeTrackerDataStorage();
+    }
+    
+    @Override
     protected void onStop() {
         super.onStop();
         stopGazeTracker();
@@ -265,8 +267,7 @@ public class OrderActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-        // 뒤로가기 버튼을 누르면 GazeTracker 재시작
-        setGazeTrackerDataStorage();
+        finish();
     }
 
     //gazeTracker

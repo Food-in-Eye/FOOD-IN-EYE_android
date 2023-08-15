@@ -176,7 +176,7 @@ public class MenuActivity extends AppCompatActivity{
             @Override
             public void onResponse(Call<MenuItem> call, Response<MenuItem> response) {
                 MenuItem menuItem = response.body();
-                Log.d("MenuActivity", "!!!!!!!!!!!!!!!!!!!MenuActivity: "+menuItem.toString());
+//                Log.d("MenuActivity", "!!!!!!!!!!!!!!!!!!!MenuActivity: "+menuItem.toString());
 
                 if (response.isSuccessful() && response.body() != null && response.body().response != null) {
                     menuInfo = response.body().response.getMenus();
@@ -312,6 +312,11 @@ public class MenuActivity extends AppCompatActivity{
 
     //-------------------------------------------------------------------------------------------
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        setGazeTrackerDataStorage();
+    }
 
     @Override
     protected void onStop() {
@@ -331,9 +336,7 @@ public class MenuActivity extends AppCompatActivity{
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
-        // 뒤로가기 버튼을 누르면 GazeTracker 재시작
-        setGazeTrackerDataStorage();
+        finish();
     }
 
     private void setGazeTrackerDataStorage(){

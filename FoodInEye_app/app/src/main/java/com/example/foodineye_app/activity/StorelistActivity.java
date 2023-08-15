@@ -125,8 +125,9 @@ public class StorelistActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-//        setGazeTrackerDataStorage();
+        setGazeTrackerDataStorage();
     }
+
     @Override
     protected void onStop() {
         takeAndSaveScreenShot();
@@ -144,8 +145,7 @@ public class StorelistActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        // 뒤로가기 버튼을 누르면 GazeTracker 재시작
-        setGazeTrackerDataStorage();
+        finish();
     }
 
     //gazeTracker
