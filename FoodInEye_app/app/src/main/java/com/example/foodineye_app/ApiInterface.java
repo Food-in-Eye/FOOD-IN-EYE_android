@@ -4,7 +4,6 @@ import com.example.foodineye_app.activity.History;
 import com.example.foodineye_app.activity.HistoryDetail;
 import com.example.foodineye_app.activity.MenuItem;
 import com.example.foodineye_app.activity.OrderItem;
-import com.example.foodineye_app.gaze.PostGazeResponse;
 import com.example.foodineye_app.activity.PostOrder;
 import com.example.foodineye_app.activity.PostOrderResponse;
 import com.example.foodineye_app.activity.StoreItem;
@@ -34,15 +33,6 @@ public interface ApiInterface {
     Call<OrderItem> getOrder(
             @Query("id") String o_id,
             @Query("detail") String isDetail);
-
-//    @GET("api/v2/orders/order")
-//    Call<OrderItem> getOrder(@QueryMap Map<String, String> queryParams);
-
-//    @POST("api/v2/orders/order/gaze")
-//    Call<PostGazeResponse> createGaze(
-//            @Query("h_id") String h_id,
-//            @Body JSONArray jsonGazeArray
-//    );
 
     @POST("api/v2/orders/order/gaze")
     Call<PostGazeResponse> createGaze(

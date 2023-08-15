@@ -1,16 +1,9 @@
 package com.example.foodineye_app.activity;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.HandlerThread;
 import android.util.Log;
 import android.view.View;
@@ -20,24 +13,18 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodineye_app.ApiClient;
 import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.GazeTrackerDataStorage;
-import com.example.foodineye_app.GazeTrackerManager;
-import com.example.foodineye_app.gaze.PermissionRequester;
 import com.example.foodineye_app.R;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -135,6 +122,11 @@ public class StorelistActivity extends AppCompatActivity {
 
     //-------------------------------------------------------------------------------------------
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+//        setGazeTrackerDataStorage();
+    }
     @Override
     protected void onStop() {
         takeAndSaveScreenShot();

@@ -1,6 +1,5 @@
 package com.example.foodineye_app.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,7 +12,6 @@ import android.os.HandlerThread;
 import android.util.Log;
 import android.util.LruCache;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -177,23 +175,25 @@ public class MenuActivity extends AppCompatActivity{
         callMenu.enqueue(new Callback<MenuItem>() {
             @Override
             public void onResponse(Call<MenuItem> call, Response<MenuItem> response) {
-                if(response.isSuccessful() && response.body() != null){
-                    //menuResponse = response.body().response;
+                MenuItem menuItem = response.body();
+                Log.d("MenuActivity", "!!!!!!!!!!!!!!!!!!!MenuActivity: "+menuItem.toString());
+
+                if (response.isSuccessful() && response.body() != null && response.body().response != null) {
                     menuInfo = response.body().response.getMenus();
-                    menuAdapter = new MenuAdapter(getApplicationContext(), menuInfo, m_id, tabs_id, s_name, s_num);
-                    menurecyclerView.setAdapter(menuAdapter);
-                }else{
-                    //menuInfo = response.body().response.getMenus();
-                    menuAdapter = new MenuAdapter(getApplicationContext(), menuInfo, m_id, tabs_id, s_name, s_num);
-                    menurecyclerView.setAdapter(menuAdapter);
+                } else {
+                    menuInfo = new ArrayList<>(); // 빈 목록을 생성하여 초기화
                 }
+
+                menuAdapter = new MenuAdapter(getApplicationContext(), menuInfo, m_id, tabs_id, s_name, s_num);
+                menurecyclerView.setAdapter(menuAdapter);
             }
 
             @Override
             public void onFailure(Call<MenuItem> call, Throwable t) {
-
+                // 실패 시 처리
             }
         });
+
     }
     public void showStore(String s_id, String m_id){
         //retrofit2로 데이터 받아오기

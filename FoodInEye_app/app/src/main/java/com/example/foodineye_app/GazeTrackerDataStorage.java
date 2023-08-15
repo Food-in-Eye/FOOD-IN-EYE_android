@@ -76,7 +76,6 @@ public class GazeTrackerDataStorage {
 
         GazeTrackerManager gazeTrackerManager = new GazeTrackerManager(context);
         setGazeTracker(gazeTrackerManager);
-
         setconstraintLayout(constraintLayout);
 
         initSpeedDial();
@@ -105,7 +104,7 @@ public class GazeTrackerDataStorage {
         Log.d("GazeTrackerDataStorage", "change layout, stopGazeTracking ");
         gazeTracker.stopGazeTracking();
         viewPoint.setPosition(0,0);
-        gazeInfoToJson(layout_name, store_num, food_num); // 지금까지 기록된 gazeInfo를 jsonObject로 저장 ++ scroll
+        gazeInfoToJson(layout_name, store_num, food_num); // 지금까지 기록된 gazeInfo를 jsonObject로 저장 + scroll
         list_gazeInfo = new ArrayList<GazeInfo>(); // list 초기화
         Log.d("GazeTrackerDataStorage", "list_gazeInfo_2: " +list_gazeInfo);
         list_gazeInfo = new ArrayList<>(); //list 초기화
