@@ -1,6 +1,5 @@
 package com.example.foodineye_app.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -58,7 +57,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.MyViewHo
 
         StringBuilder sNames = new StringBuilder();
         for (String sName : history.getS_names()) {
-            sNames.append(sName).append(", ");
+            sNames.append(sName).append(" \n");
         }
         // Remove the trailing comma and space
         sNames.setLength(sNames.length() - 2);
