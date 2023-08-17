@@ -249,7 +249,7 @@ public class OrderActivity extends AppCompatActivity {
         super.onStart();
         setGazeTrackerDataStorage();
     }
-    
+
     @Override
     protected void onStop() {
         super.onStop();

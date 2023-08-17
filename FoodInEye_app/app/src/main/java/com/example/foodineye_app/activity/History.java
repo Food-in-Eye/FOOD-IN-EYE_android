@@ -27,6 +27,10 @@ public class History {
         return "request: " + request + ", status: " + status + ", max_batch: " + max_batch;
     }
 
+    public int getMax_batch() {
+        return max_batch;
+    }
+
     public class HistoryResponse {
 
         @SerializedName("h_id")

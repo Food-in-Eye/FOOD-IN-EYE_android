@@ -40,7 +40,13 @@ public interface ApiInterface {
             @Body List<PostGaze> postGaze
     );
 
-    @GET("api/v2/orders/historys")
+//    @GET("api/v2/orders/historys")
+//    Call<History> getHistory(
+//            @Query("u_id") String u_id,
+//            @Query("batch") int batch
+//    );
+
+    @GET("api/v2/orders/test/historys")
     Call<History> getHistory(
             @Query("u_id") String u_id,
             @Query("batch") int batch

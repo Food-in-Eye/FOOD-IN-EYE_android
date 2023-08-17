@@ -6,29 +6,36 @@
     android:layout_marginTop="10dp"
     android:layout_marginBottom="5dp">
 
-    <TextView
-        android:id="@+id/detail_history_storeName"
-        android:layout_width="100dp"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="가게명"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:textSize="10dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="5dp"/>
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/detail_history_foodName"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:text="음식명"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:textSize="10dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="3dp"/>
+        <TextView
+            android:id="@+id/detail_history_foodName"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:text="음식명"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="18dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="3dp"/>
+
+        <TextView
+            android:id="@+id/detail_history_storeName"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:text="가게명"
+            android:textStyle="bold"
+            android:textColor="@color/colorGray"
+            android:textSize="13dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"/>
+
+    </LinearLayout>
+
 
     <TextView
         android:id="@+id/detail_history_foodCount"
@@ -37,29 +44,29 @@
         android:text="수량"
         android:textStyle="bold"
         android:textColor="@color/black"
-        android:textSize="10dp"
+        android:textSize="18dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
-        android:layout_marginLeft="3dp"/>
+        android:layout_marginLeft="15dp"/>
 
     <TextView
         android:id="@+id/detail_history_foodPrice"
-        android:layout_width="30dp"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:text="가격"
         android:textStyle="bold"
         android:textColor="@color/black"
-        android:textSize="10dp"
+        android:textSize="18dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
-        android:layout_marginLeft="3dp"/>
+        android:layout_marginLeft="15dp"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="원"
         android:textStyle="bold"
         android:textColor="@color/black"
-        android:textSize="10dp"
+        android:textSize="18dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"/>
 
