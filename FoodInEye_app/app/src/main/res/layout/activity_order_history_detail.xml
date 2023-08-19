@@ -48,7 +48,8 @@
                 android:textSize="15dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="5dp"
-                android:layout_marginLeft="80dp"/>
+                android:layout_marginLeft="80dp"
+                android:fontFamily="@font/elicedigital_bold"/>
 
 
             <LinearLayout
@@ -69,17 +70,19 @@
                         android:text="상품명"
                         android:textStyle="bold"
                         android:textColor="@color/black"
-                        android:textSize="18dp"
-                        android:layout_marginLeft="3dp"/>
+                        android:textSize="16dp"
+                        android:layout_marginLeft="3dp"
+                        android:fontFamily="@font/elicedigital_bold"/>
 
                     <TextView
                         android:layout_width="130dp"
                         android:layout_height="wrap_content"
-                        android:text="가게명"
+                        android:text=" 가게명"
                         android:textStyle="bold"
                         android:textColor="@color/colorGray"
-                        android:textSize="13dp"
-                        android:layout_marginTop="5dp"/>
+                        android:textSize="12dp"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/elicedigital_bold"/>
 
 
                 </LinearLayout>
@@ -90,10 +93,11 @@
                     android:text="수량"
                     android:textStyle="bold"
                     android:textColor="@color/black"
-                    android:textSize="18dp"
+                    android:textSize="16dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="15dp"/>
+                    android:layout_marginLeft="10dp"
+                    android:fontFamily="@font/elicedigital_bold"/>
 
                 <TextView
                     android:layout_width="30dp"
@@ -101,15 +105,16 @@
                     android:text="가격"
                     android:textStyle="bold"
                     android:textColor="@color/black"
-                    android:textSize="18dp"
+                    android:textSize="16dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="15dp"/>
+                    android:layout_marginLeft="15dp"
+                    android:fontFamily="@font/elicedigital_bold"/>
 
             </LinearLayout>
 
             <View
-                android:layout_width="270dp"
+                android:layout_width="300dp"
                 android:layout_height="3dp"
                 android:layout_marginTop="5dp"
                 android:layout_gravity="center"
@@ -124,7 +129,7 @@
                 android:layout_marginTop="10dp"/>
 
             <View
-                android:layout_width="270dp"
+                android:layout_width="300dp"
                 android:layout_height="3dp"
                 android:layout_marginTop="5dp"
                 android:layout_gravity="center"
@@ -144,7 +149,8 @@
                     android:text="총 가격"
                     android:textStyle="bold"
                     android:textColor="@color/black"
-                    android:textSize="18dp"/>
+                    android:textSize="18dp"
+                    android:fontFamily="@font/elicedigital_bold"/>
 
                 <TextView
                     android:id="@+id/detail_history_total"
@@ -154,7 +160,8 @@
                     android:textStyle="bold"
                     android:textColor="@color/black"
                     android:textSize="18dp"
-                    android:layout_marginLeft="90dp"/>
+                    android:layout_marginLeft="90dp"
+                    android:fontFamily="@font/elicedigital_bold"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -162,7 +169,8 @@
                     android:text="원"
                     android:textStyle="bold"
                     android:textColor="@color/black"
-                    android:textSize="18dp"/>
+                    android:textSize="18dp"
+                    android:fontFamily="@font/elicedigital_bold"/>
 
 
             </LinearLayout>
