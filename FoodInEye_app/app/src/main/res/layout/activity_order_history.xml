@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.OrderHistoryActivity"
+    android:orientation="vertical">
+
+    <!-- 커스텀 툴바 추가 -->
+    <include layout="@layout/toolbar_layout"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="주문 내역"
+            android:textSize="18dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"/>
+
+        <View
+            android:layout_width="150dp"
+            android:layout_height="10dp"
+            android:background="@drawable/underline"
+            android:layout_gravity="center" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/meronna"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/history_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
+
+<!--         LakuePagingButton -->
+        <com.lakue.pagingbutton.LakuePagingButton
+            android:id="@+id/lakuePagingButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -4,6 +4,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <!-- 커스텀 툴바 추가 -->
+    <include layout="@layout/toolbar_layout"/>
+
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
@@ -41,6 +44,7 @@
             android:layout_marginRight="10dp"/>
 
         <Button
+            android:id="@+id/order_history"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:text="주문 내역 보러가기"

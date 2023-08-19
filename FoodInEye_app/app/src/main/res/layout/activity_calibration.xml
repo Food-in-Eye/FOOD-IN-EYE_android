@@ -7,6 +7,9 @@
     android:layout_height="match_parent"
     tools:context=".activity.Calibration">
 
+    <!-- 커스텀 툴바 추가 -->
+    <include layout="@layout/toolbar_layout"/>
+
     <LinearLayout
         android:id="@+id/calibration"
         android:layout_width="match_parent"

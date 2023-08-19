@@ -5,6 +5,9 @@
     android:orientation="vertical"
     android:background="@color/navy">
 
+    <!-- 커스텀 툴바 추가 -->
+    <include layout="@layout/toolbar_layout"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

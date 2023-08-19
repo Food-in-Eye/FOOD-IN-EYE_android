@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="160dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp">
+
+        <TextView
+            android:id="@+id/history_date"
+            android:layout_width="220dp"
+            android:layout_height="40dp"
+            android:text="2023년 02월 13일 00:00"
+            android:textSize="13dp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:background="@drawable/tape_orange"
+            android:backgroundTint="@color/meronna"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/history_to_detail"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/category_go_btn"
+            android:backgroundTint="@color/navy"
+            android:layout_gravity="center"
+            android:gravity="right"
+            android:layout_marginRight="30dp"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@drawable/line_style"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp">
+
+        <ImageView
+            android:id="@+id/history_storeImg"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/menu_detail_image"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"/>
+
+        <TextView
+            android:id="@+id/history_store"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="가게 이름1 \n가게 이름2"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            android:layout_margin="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="총  "
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:id="@+id/history_total"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:text="35,000"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="원"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

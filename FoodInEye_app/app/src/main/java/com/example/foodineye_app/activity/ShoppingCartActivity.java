@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.HandlerThread;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -101,6 +100,11 @@ public class ShoppingCartActivity extends AppCompatActivity implements CartAdapt
         startActivity(intent);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        setGazeTrackerDataStorage();
+    }
 
     @Override
     protected void onStop() {
@@ -119,8 +123,7 @@ public class ShoppingCartActivity extends AppCompatActivity implements CartAdapt
     public void onBackPressed() {
         super.onBackPressed();
 
-        // 뒤로가기 버튼을 누르면 GazeTracker 재시작
-        setGazeTrackerDataStorage();
+        finish();
     }
 
     //gazeTracker

@@ -20,17 +20,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.foodineye_app.ApiClient;
 import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.GazeTrackerDataStorage;
-import com.example.foodineye_app.gaze.PostGaze;
 import com.example.foodineye_app.R;
+import com.example.foodineye_app.gaze.PostGaze;
 import com.example.foodineye_app.gaze.PostGazeResponse;
 import com.example.foodineye_app.websocket.WebSocketManager;
 
 import org.json.JSONArray;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -115,20 +111,20 @@ public class OrderActivity extends AppCompatActivity {
             f_list = new ArrayList<>();
             for(Cart cart : cartGroup){
                 String f_id = cart.getF_id();
-                String m_name = cart.getM_name();
+                String f_name = cart.getM_name();
                 int m_price = cart.getM_price();
                 String m_imageKey = cart.getM_imageKey();
                 int m_count = cart.getM_count();
-                SubOrder subOrder = (SubOrder) new SubOrder(f_id, m_name, m_price, m_count);
+                SubOrder subOrder = (SubOrder) new SubOrder(f_id, f_name, m_price, m_count);
                 subOrderList.add(subOrder);
                 //post
-                PostOrder.StoreOrder.FoodCount foodCount = (PostOrder.StoreOrder.FoodCount) new PostOrder.StoreOrder.FoodCount(f_id, m_count, m_price);
+                PostOrder.StoreOrder.FoodCount foodCount = (PostOrder.StoreOrder.FoodCount) new PostOrder.StoreOrder.FoodCount(f_id, f_name, m_count, m_price);
                 f_list.add(foodCount);
             }
             order = new Order(s_id, s_name, m_id, subOrderList);
             orderList.add(order);
             //post
-            PostOrder.StoreOrder storeOrder = new PostOrder.StoreOrder(s_id, m_id, f_list);
+            PostOrder.StoreOrder storeOrder = new PostOrder.StoreOrder(s_id, s_name, m_id, f_list);
             content.add(storeOrder);
         }
 
@@ -249,6 +245,12 @@ public class OrderActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        setGazeTrackerDataStorage();
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         stopGazeTracker();
@@ -265,8 +267,7 @@ public class OrderActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-        // 뒤로가기 버튼을 누르면 GazeTracker 재시작
-        setGazeTrackerDataStorage();
+        finish();
     }
 
     //gazeTracker

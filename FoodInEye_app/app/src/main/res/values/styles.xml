@@ -16,6 +16,7 @@
         <!-- Dialog가 센터에 나오도록 처리 -->
         <item name="android:windowIsFloating">true</item>
 
+
     </style>
 
 

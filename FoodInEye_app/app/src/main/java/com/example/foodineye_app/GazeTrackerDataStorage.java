@@ -2,23 +2,15 @@ package com.example.foodineye_app;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.net.Uri;
 import android.os.Build;
-import android.os.CountDownTimer;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.WindowManager;
 import android.webkit.WebView;
-import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -26,14 +18,7 @@ import com.example.foodineye_app.activity.Data;
 import com.example.foodineye_app.activity.StorelistActivity;
 import com.example.foodineye_app.gaze.PostGaze;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Random;
 
 import camp.visual.gazetracker.callback.CalibrationCallback;
 import camp.visual.gazetracker.callback.GazeCallback;
@@ -91,11 +76,9 @@ public class GazeTrackerDataStorage {
 
         GazeTrackerManager gazeTrackerManager = new GazeTrackerManager(context);
         setGazeTracker(gazeTrackerManager);
-
         setconstraintLayout(constraintLayout);
 
         initSpeedDial();
-        //initTrackerView
         setViewPoint(viewPoint);
         final Data data = (Data) context;
         viewCalibration = data.getViewCalibration();
@@ -105,8 +88,6 @@ public class GazeTrackerDataStorage {
         initTouchHandler();
 
         modelInfo();
-        //screenshot
-//        takeAndSaveScreenShot();
 
         gazeTracker = GazeTrackerManager.makeNewInstance(context); //gazeTracker 설정
         gazeTracker.loadCalibrationData();
@@ -123,7 +104,7 @@ public class GazeTrackerDataStorage {
         Log.d("GazeTrackerDataStorage", "change layout, stopGazeTracking ");
         gazeTracker.stopGazeTracking();
         viewPoint.setPosition(0,0);
-        gazeInfoToJson(layout_name, store_num, food_num); // 지금까지 기록된 gazeInfo를 jsonObject로 저장 ++ scroll
+        gazeInfoToJson(layout_name, store_num, food_num); // 지금까지 기록된 gazeInfo를 jsonObject로 저장 + scroll
         list_gazeInfo = new ArrayList<GazeInfo>(); // list 초기화
         Log.d("GazeTrackerDataStorage", "list_gazeInfo_2: " +list_gazeInfo);
         list_gazeInfo = new ArrayList<>(); //list 초기화
@@ -143,7 +124,7 @@ public class GazeTrackerDataStorage {
             }
             synchronized (list_gazeInfo){
                 gazeTracker.startGazeTracking();
-                show("startgazetracking");
+                show("start gaze tracking");
             }
         }).start();
     }

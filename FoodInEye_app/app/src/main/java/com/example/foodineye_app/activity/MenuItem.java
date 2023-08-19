@@ -13,6 +13,10 @@ public class MenuItem {
     @SerializedName("response")
     public Response response;
 
+    public String toString(){
+        return "request: "+request + ", status: "+status + ", response: "+response;
+    }
+
     public class Response{
 
         @SerializedName("_id")
@@ -30,6 +34,10 @@ public class MenuItem {
         @SerializedName("f_list")
         @Expose
         public List<Menus> menus;
+
+        public String toString(){
+            return "_id: "+_id + ", s_id: "+s_id + ", date: "+date + ", menus: "+menus;
+        }
 
         //getter and setter
 

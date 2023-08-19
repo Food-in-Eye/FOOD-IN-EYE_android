@@ -229,6 +229,11 @@ public class MenuDetailActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        setGazeTrackerDataStorage();
+    }
 
     @Override
     protected void onStop() {
@@ -250,8 +255,7 @@ public class MenuDetailActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-        // 뒤로가기 버튼을 누르면 GazeTracker 재시작
-        setGazeTrackerDataStorage();
+        finish();
     }
 
     public void showDialog(){

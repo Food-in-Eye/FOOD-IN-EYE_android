@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -8,6 +8,9 @@
     android:orientation="vertical"
     android:id="@+id/homeLayout">
 
+    <!-- 커스텀 툴바 추가 -->
+    <include layout="@layout/toolbar_layout"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,13 +18,21 @@
         android:orientation="vertical"
         tools:ignore="MissingConstraints">
 
+<!--        <LinearLayout-->
+<!--            android:layout_width="230dp"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:background="@drawable/orange_rectop_300"-->
+<!--            android:backgroundTint="@color/navy"-->
+<!--            android:orientation="vertical"-->
+<!--            tools:ignore="MissingConstraints">-->
+
         <LinearLayout
             android:layout_width="230dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:background="@drawable/orange_rectop_300"
-            android:backgroundTint="@color/navy"
             android:orientation="vertical"
             tools:ignore="MissingConstraints">
 
@@ -29,10 +40,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Food in EYE"
-                android:textColor="@color/white"
+                android:text="Food In Eye"
+                android:textColor="@color/black"
                 android:textSize="28dp"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:fontFamily="@font/jalnan"/>
 
         </LinearLayout>
 
@@ -124,10 +136,4 @@
 
     </LinearLayout>
 
-    <!--시선 좌표-->
-    <visual.camp.sample.view.PointView
-        android:id="@+id/view_point_home"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
