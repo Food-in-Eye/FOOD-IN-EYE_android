@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- 커스텀 툴바 추가 -->
+    <include layout="@layout/toolbar_layout" />
+
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:background="@drawable/login_light" />
+
+    <LinearLayout
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:layout_width="160dp"
+            android:layout_height="50dp"
+            android:hint="아이디"
+            android:paddingLeft="20dp" />
+
+        <Button
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:hint="중복체크" />
+
+
+    </LinearLayout>
+
+    <EditText
+        android:layout_width="280dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:hint="패스워드"
+        android:paddingLeft="20dp" />
+
+    <TextView
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:text="유효성검사 글씨"
+        android:textColor="@color/gray"
+        android:textStyle="bold" />
+
+    <EditText
+        android:layout_width="280dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:hint="패스워드 확인"
+        android:paddingLeft="20dp" />
+
+    <EditText
+        android:layout_width="280dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:hint="닉네임"
+        android:paddingLeft="20dp" />
+
+    <LinearLayout
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <EditText
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:hint="나이"
+            android:paddingLeft="20dp" />
+
+        <EditText
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:hint="성별"
+            android:paddingLeft="20dp" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/loginBtn"
+        android:layout_width="140dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/sign_up"
+        android:text="회원가입"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/sign_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:text="로그인하기"
+        android:textColor="@color/gray"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="80dp"
+        android:layout_height="3dp"
+        android:layout_gravity="center"
+        android:background="@drawable/dotted_line" />
+
+</LinearLayout>

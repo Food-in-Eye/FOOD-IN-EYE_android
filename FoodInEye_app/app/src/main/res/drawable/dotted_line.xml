@@ -2,7 +2,5 @@
     <solid android:color="@android:color/transparent" />
     <stroke
         android:width="2dp"
-        android:color="#80ffffff"
-        android:dashGap="2dp"
-        android:dashWidth="4dp" />
+        android:color="@color/gray"/>
 </shape>
