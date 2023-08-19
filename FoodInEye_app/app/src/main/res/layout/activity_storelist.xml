@@ -26,7 +26,7 @@
             android:orientation="vertical"
             android:background="@drawable/orange_rectop_300"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="20dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -35,7 +35,7 @@
                 android:textSize="28dp"
                 android:textColor="@color/black"
                 android:textStyle="bold"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center_horizontal"/>
 
         </LinearLayout>
 
