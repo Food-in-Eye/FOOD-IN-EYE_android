@@ -39,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
         editPw = (EditText) findViewById(R.id.login_pw);
         password = editPw.getText().toString();
 
+        //로그인하기
         Button loginBtn = (Button) findViewById(R.id.loginBtn);
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
