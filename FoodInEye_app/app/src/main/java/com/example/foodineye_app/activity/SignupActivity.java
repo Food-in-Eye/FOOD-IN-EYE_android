@@ -27,6 +27,9 @@ import retrofit2.Response;
 
 public class SignupActivity extends AppCompatActivity {
 
+    //닉네임
+    EditText editNickname;
+
     //아이디
     Button idCheckBtn;
     TextView loginTxt;
@@ -44,10 +47,20 @@ public class SignupActivity extends AppCompatActivity {
     //성별 체크
     ToggleButton maleBtn, femaleBtn;
 
+    //나이
+    EditText editAge;
+
+    //PostBuyer
+    String nickname, id, password;
+    int gender, age;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+
+        //닉네임 작성
+        editNickname = (EditText) findViewById(R.id.signup_nickname);
 
         //아이디 중복 여부 확인하기
         editId = (EditText) findViewById(R.id.signup_id);
@@ -122,7 +135,9 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
-        
+        //나이 작성
+        editAge = (EditText) findViewById(R.id.signup_age);
+
 
 
 

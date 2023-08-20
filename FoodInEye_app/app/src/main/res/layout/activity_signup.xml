@@ -38,6 +38,7 @@
 
 
                 <EditText
+                    android:id="@+id/signup_nickname"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:hint="닉네임을 입력하세요."
@@ -261,6 +262,7 @@
 
 
                 <EditText
+                    android:id="@+id/signup_age"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:hint="나이를 입력하세요."
