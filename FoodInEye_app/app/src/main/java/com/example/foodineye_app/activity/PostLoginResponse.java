@@ -28,20 +28,33 @@ public class PostLoginResponse {
 
     public class Token{
 
-        @SerializedName("AT")
+        @SerializedName("user_id")
+        @Expose
+        public String user_id; //고유한 id
+
+        @SerializedName("A_Token")
         @Expose
         public String AT; //access token
 
-        @SerializedName("AT")
+        @SerializedName("R_Token")
         @Expose
         public String RT; //refresh token
 
         @Override
         public String toString() {
             return "Token{" +
-                    "AT='" + AT + '\'' +
+                    "user_id='" + user_id + '\'' +
+                    ", AT='" + AT + '\'' +
                     ", RT='" + RT + '\'' +
                     '}';
+        }
+
+        public String getUser_id() {
+            return user_id;
+        }
+
+        public void setUser_id(String user_id) {
+            this.user_id = user_id;
         }
 
         public String getAT() {

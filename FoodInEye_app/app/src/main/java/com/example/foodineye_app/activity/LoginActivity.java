@@ -25,6 +25,7 @@ public class LoginActivity extends AppCompatActivity {
     String id, password;
 
     String at, rt; //tokens
+    String user_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,11 +74,13 @@ public class LoginActivity extends AppCompatActivity {
 
                     PostLoginResponse.Token token = response.body().tokens;
 
+                    ((Data)getApplication()).setUser_id(token.getUser_id());
                     //access token
                     at = token.getAT();
-
                     //refresh token
                     rt = token.getRT();
+
+
 
                 }else{
                     Log.i("LoginActivity", "로그인 응답 오류");
