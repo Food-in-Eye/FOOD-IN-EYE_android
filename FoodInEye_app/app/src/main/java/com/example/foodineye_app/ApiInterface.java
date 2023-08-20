@@ -8,6 +8,7 @@ import com.example.foodineye_app.activity.PostBuyer;
 import com.example.foodineye_app.activity.PostBuyerResponse;
 import com.example.foodineye_app.activity.PostId;
 import com.example.foodineye_app.activity.PostIdResponse;
+import com.example.foodineye_app.activity.PostLoginResponse;
 import com.example.foodineye_app.activity.PostOrder;
 import com.example.foodineye_app.activity.PostOrderResponse;
 import com.example.foodineye_app.activity.StoreItem;
@@ -19,7 +20,9 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 public interface ApiInterface {
@@ -69,6 +72,18 @@ public interface ApiInterface {
     @POST("api/v2/users/signup/buyer")
     Call<PostBuyerResponse> signUp(
             @Body PostBuyer postBuyer
+    );
+
+//    @POST("api/v2/users/users/login/buyer")
+//    Call<PostLoginResponse> login(
+//            @Body PostLogin postLogin
+//    );
+
+    @Multipart
+    @POST("api/v2/users/users/login/buyer")
+    Call<PostLoginResponse> login(
+            @Part("username") String username,
+            @Part("password") String password
     );
 
 }
