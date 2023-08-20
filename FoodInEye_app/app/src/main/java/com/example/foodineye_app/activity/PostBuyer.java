@@ -15,7 +15,7 @@ public class PostBuyer {
 
     @SerializedName("name")
     @Expose
-    String str;
+    String name;
 
     @SerializedName("gender")
     @Expose
@@ -24,4 +24,23 @@ public class PostBuyer {
     @SerializedName("age")
     @Expose
     int age;
+
+    public PostBuyer(String id, String pw, String name, int gender, int age) {
+        this.id = id;
+        this.pw = pw;
+        this.name = name;
+        this.gender = gender;
+        this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "PostBuyer{" +
+                "id='" + id + '\'' +
+                ", pw='" + pw + '\'' +
+                ", name='" + name + '\'' +
+                ", gender=" + gender +
+                ", age=" + age +
+                '}';
+    }
 }

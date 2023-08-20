@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,7 +33,6 @@ public class SignupActivity extends AppCompatActivity {
 
     //아이디
     Button idCheckBtn;
-    TextView loginTxt;
     EditText editId;
     TextView availId, unavailId;
 
@@ -54,6 +54,10 @@ public class SignupActivity extends AppCompatActivity {
     String nickname, id, password;
     int gender, age;
 
+    //회원가입하기, 로그인하기
+    Button signupBtn;
+    TextView loginTxt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +65,31 @@ public class SignupActivity extends AppCompatActivity {
 
         //닉네임 작성
         editNickname = (EditText) findViewById(R.id.signup_nickname);
+        editNickname.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //배경색 원래대로 변경하기
+                GradientDrawable background = (GradientDrawable) editNickname.getBackground();
+                background.setStroke(2, ContextCompat.getColor(getApplicationContext(), R.color.light_gray)); // 원래 배경 색상으로 변경
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //배경색 원래대로 변경하기
+                GradientDrawable background = (GradientDrawable) editNickname.getBackground();
+                background.setStroke(2, ContextCompat.getColor(getApplicationContext(), R.color.light_gray)); // 원래 배경 색상으로 변경
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String afterNickname = s.toString();
+                nickname = afterNickname;
+
+                //edittext 배경 stroke 색상 변경하기
+                GradientDrawable background = (GradientDrawable) editNickname.getBackground();
+                background.setStroke(3, ContextCompat.getColor(getApplicationContext(), R.color.green));
+            }
+        });
 
         //아이디 중복 여부 확인하기
         editId = (EditText) findViewById(R.id.signup_id);
@@ -122,6 +151,7 @@ public class SignupActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(maleBtn.isChecked()){
                     femaleBtn.setChecked(false);
+                    gender = 1;
                 }
             }
         });
@@ -131,20 +161,66 @@ public class SignupActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(femaleBtn.isChecked()){
                     maleBtn.setChecked(false);
+                    gender = 2;
                 }
             }
         });
 
         //나이 작성
         editAge = (EditText) findViewById(R.id.signup_age);
+        editAge.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //배경색 원래대로 변경하기
+                GradientDrawable background = (GradientDrawable) editAge.getBackground();
+                background.setStroke(2, ContextCompat.getColor(getApplicationContext(), R.color.light_gray)); // 원래 배경 색상으로 변경
+            }
 
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //배경색 원래대로 변경하기
+                GradientDrawable background = (GradientDrawable) editAge.getBackground();
+                background.setStroke(2, ContextCompat.getColor(getApplicationContext(), R.color.light_gray)); // 원래 배경 색상으로 변경
+            }
 
+            @Override
+            public void afterTextChanged(Editable s) {
+                String editage = s.toString();
 
+                if(!editage.isEmpty()){
+                    try{
+                        age = Integer.parseInt(editage);
+                    }catch (NumberFormatException e){
+                        // 정수로 변환할 수 없는 경우에 대한 예외 처리
+                    }
 
+                    //edittext 배경 stroke 색상 변경하기
+                    GradientDrawable background = (GradientDrawable) editAge.getBackground();
+                    background.setStroke(3, ContextCompat.getColor(getApplicationContext(), R.color.green));
+                }else{
+                    //edittext 배경 stroke 색상 변경하기
+                    GradientDrawable background = (GradientDrawable) editAge.getBackground();
+                    background.setStroke(3, ContextCompat.getColor(getApplicationContext(), R.color.light_gray));
+                }
+
+            }
+        });
+
+        //회원가입하기 버튼 클릭
+        signupBtn = (Button) findViewById(R.id.signupBtn);
+        signupBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signUp();
+
+                Intent loginIntent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(loginIntent);
+            }
+        });
 
 
         //로그인하기 버튼 클릭
-        loginTxt = (TextView) findViewById(R.id.login);
+        loginTxt = (TextView) findViewById(R.id.loginBtn);
         loginTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -155,10 +231,10 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     //아이디 중복 여부 함수
-    public void idCheck(String id){
+    public void idCheck(String editID){
 
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        PostId postId = new PostId(id);
+        PostId postId = new PostId(editID);
 
         Call<PostIdResponse> call = apiInterface.idCheck(postId);
         call.enqueue(new Callback<PostIdResponse>() {
@@ -176,41 +252,52 @@ public class SignupActivity extends AppCompatActivity {
                         GradientDrawable background = (GradientDrawable) editId.getBackground();
                         background.setStroke(3, ContextCompat.getColor(getApplicationContext(), R.color.green));
 
+                        id = editID;
+
                     }else if (postIdResponse.getResponse().equals("unavailable")){
                         unavailId.setVisibility(View.VISIBLE);
 
                         //배경색 원래대로 변경하기
                         GradientDrawable background = (GradientDrawable) editId.getBackground();
-                        background.setStroke(2, ContextCompat.getColor(getApplicationContext(), R.color.light_gray)); // 원래 배경 색상으로 변경
+                        background.setStroke(2, ContextCompat.getColor(getApplicationContext(), R.color.red)); // 원래 배경 색상으로 변경
                     }else{
-                        Log.i("SignupActivity", "서버 응답 오류");
+                        Log.i("SignupActivity", "아이디 중복 체크 서버 응답 오류");
+
+                        //배경색 원래대로 변경하기
+                        GradientDrawable background = (GradientDrawable) editId.getBackground();
+                        background.setStroke(2, ContextCompat.getColor(getApplicationContext(), R.color.light_gray)); // 원래 배경 색상으로 변경
                     }
                 }else{
                     // 응답이 실패하거나 response.body()가 null인 경우
-                    Log.i("SignupActivity", "서버 응답 오류");
+                    Log.i("SignupActivity", "아이디 중복 체크 서버 응답 오류");
+                    //배경색 원래대로 변경하기
+                    GradientDrawable background = (GradientDrawable) editId.getBackground();
+                    background.setStroke(2, ContextCompat.getColor(getApplicationContext(), R.color.light_gray)); // 원래 배경 색상으로 변경
                 }
             }
             @Override
             public void onFailure(Call<PostIdResponse> call, Throwable t) {
-                Log.i("SignupActivity", "서버 응답 오류: " + t.toString());
+                Log.i("SignupActivity", "아이디 중복 체크 서버 응답 오류: " + t.toString());
             }
         });
 
     }
 
     //패스워드 유효성 검사
-    public void pwCheckValidation(String password){
+    public void pwCheckValidation(String editpassword){
 
         // 8자리 이상, 숫자, 특수문자, 영문자 대문자 포함 검사
         availPw.setVisibility(View.VISIBLE);
         String regex = "^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[A-Z]).{8,}$";
-        if (Pattern.compile(regex).matcher(password).matches()) {
+        if (Pattern.compile(regex).matcher(editpassword).matches()) {
 
             availPw.setVisibility(View.INVISIBLE);
 
             //edittext 배경 stroke 색상 변경하기
             GradientDrawable background = (GradientDrawable) editPw.getBackground();
             background.setStroke(3, ContextCompat.getColor(this, R.color.green));
+
+            password = editpassword;
 
         } else {
             availPw.setVisibility(View.VISIBLE);
@@ -236,5 +323,39 @@ public class SignupActivity extends AppCompatActivity {
             GradientDrawable background = (GradientDrawable) editRePw.getBackground();
             background.setStroke(2, ContextCompat.getColor(this, R.color.light_gray)); // 원래 배경 색상으로 변경
         }
+    }
+
+    //회원가입하기
+    public void signUp(){
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        PostBuyer postBuyer = new PostBuyer(id, password, nickname, gender, age);
+        Log.i("SignupActivity", "postBuyer"+postBuyer.toString());
+
+        Call<PostBuyerResponse> call = apiInterface.signUp(postBuyer);
+        call.enqueue(new Callback<PostBuyerResponse>() {
+            @Override
+            public void onResponse(Call<PostBuyerResponse> call, Response<PostBuyerResponse> response) {
+                if(response.isSuccessful() && response.body() != null){
+
+                    PostBuyerResponse postBuyerResponse = response.body();
+                    ((Data)getApplication()).setUser_id(postBuyerResponse.getUser_id());
+
+                    show("회원가입되었습니다!");
+
+                }else{
+                    Log.i("SignupActivity", "회원가입 중복 체크 서버 응답 오류");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PostBuyerResponse> call, Throwable t) {
+                Log.i("SignupActivity", "회원가입 서버 응답 오류: " + t.toString());
+            }
+        });
+
+    }
+
+    private void show(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 }

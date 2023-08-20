@@ -4,6 +4,8 @@ import com.example.foodineye_app.activity.History;
 import com.example.foodineye_app.activity.HistoryDetail;
 import com.example.foodineye_app.activity.MenuItem;
 import com.example.foodineye_app.activity.OrderItem;
+import com.example.foodineye_app.activity.PostBuyer;
+import com.example.foodineye_app.activity.PostBuyerResponse;
 import com.example.foodineye_app.activity.PostId;
 import com.example.foodineye_app.activity.PostIdResponse;
 import com.example.foodineye_app.activity.PostOrder;
@@ -62,6 +64,11 @@ public interface ApiInterface {
     @POST("api/v2/users/idcheck")
     Call<PostIdResponse> idCheck(
             @Body PostId postGaze
+    );
+
+    @POST("api/v2/users/signup/buyer")
+    Call<PostBuyerResponse> signUp(
+            @Body PostBuyer postBuyer
     );
 
 }
