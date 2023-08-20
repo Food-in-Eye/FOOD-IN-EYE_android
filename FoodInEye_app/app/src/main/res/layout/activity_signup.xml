@@ -71,6 +71,7 @@
                     android:layout_marginTop="5dp">
 
                     <EditText
+                        android:id="@+id/signup_id"
                         android:layout_width="200dp"
                         android:layout_height="45dp"
                         android:hint="아이디를 입력하세요."
@@ -80,12 +81,38 @@
                         android:background="@drawable/edittext_shape"/>
 
                     <Button
+                        android:id="@+id/signup_idcheck"
                         android:layout_width="120dp"
                         android:layout_height="50dp"
                         android:hint="중복체크"/>
 
-
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/availableId"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:text="사용가능한 아이디입니다."
+                    android:textSize="13dp"
+                    android:textColor="@color/green"
+                    android:textStyle="bold"
+                    android:layout_marginTop="2dp"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/unavailableId"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:text="아이디 중복입니다. 다시 입력해주세요."
+                    android:textSize="13dp"
+                    android:textColor="@color/red"
+                    android:textStyle="bold"
+                    android:layout_marginTop="2dp"
+                    android:visibility="gone"/>
 
             </LinearLayout>
 

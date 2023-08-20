@@ -30,7 +30,7 @@ public class LoginActivity extends AppCompatActivity {
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent singupIntent = new Intent(getApplicationContext(), SingupActivity.class);
+                Intent singupIntent = new Intent(getApplicationContext(), SignupActivity.class);
                 startActivity(singupIntent);
             }
         });
