@@ -221,18 +221,24 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp">
 
-                    <Button
+                    <ToggleButton
+                        android:id="@+id/signup_male_togglebtn"
                         android:layout_width="155dp"
-                        android:layout_height="wrap_content"
-                        android:text="남성"
+                        android:layout_height="40dp"
+                        android:textOn="남성"
+                        android:textOff="남성"
                         android:textSize="13dp"
-                        android:layout_marginRight="10dp"/>
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/singup_gender_checkbtn"/>
 
-                    <Button
+                    <ToggleButton
+                        android:id="@+id/signup_female_togglebtn"
                         android:layout_width="155dp"
-                        android:layout_height="wrap_content"
-                        android:text="여성"
-                        android:textSize="13dp"/>
+                        android:layout_height="40dp"
+                        android:textOn="여성"
+                        android:textOff="여성"
+                        android:textSize="13dp"
+                        android:background="@drawable/singup_gender_checkbtn"/>
 
                 </LinearLayout>
 

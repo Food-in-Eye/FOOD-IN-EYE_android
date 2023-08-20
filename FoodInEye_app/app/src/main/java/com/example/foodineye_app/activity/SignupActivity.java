@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -39,6 +40,9 @@ public class SignupActivity extends AppCompatActivity {
     //비밀번호 확인
     EditText editRePw;
     TextView unavilRePw;
+
+    //성별 체크
+    ToggleButton maleBtn, femaleBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +99,31 @@ public class SignupActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
             }
         });
+
+        //성별 체크
+        maleBtn = (ToggleButton) findViewById(R.id.signup_male_togglebtn);
+        femaleBtn = (ToggleButton) findViewById(R.id.signup_female_togglebtn);
+
+        maleBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(maleBtn.isChecked()){
+                    femaleBtn.setChecked(false);
+                }
+            }
+        });
+
+        femaleBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(femaleBtn.isChecked()){
+                    maleBtn.setChecked(false);
+                }
+            }
+        });
+
+        
+
 
 
 
