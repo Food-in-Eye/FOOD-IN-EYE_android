@@ -69,7 +69,7 @@ public interface ApiInterface {
             @Body PostId postGaze
     );
 
-    @POST("api/v2/users/signup/buyer")
+    @POST("api/v2/users/buyer/signup")
     Call<PostBuyerResponse> signUp(
             @Body PostBuyer postBuyer
     );
@@ -80,7 +80,7 @@ public interface ApiInterface {
 //    );
 
     @Multipart
-    @POST("api/v2/users/users/login/buyer")
+    @POST("api/v2/users/buyer/login")
     Call<PostLoginResponse> login(
             @Part("username") String username,
             @Part("password") String password

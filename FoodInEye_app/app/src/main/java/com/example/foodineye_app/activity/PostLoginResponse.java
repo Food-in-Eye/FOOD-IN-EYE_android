@@ -17,13 +17,22 @@ public class PostLoginResponse {
     @Expose
     public Token tokens;
 
+    @SerializedName("message")
+    @Expose
+    public String errormessage;
+
     @Override
     public String toString() {
         return "PostLoginResponse{" +
                 "request='" + request + '\'' +
                 ", status='" + status + '\'' +
-                ", tokens=" + tokens.toString() +
+                ", tokens=" + tokens +
+                ", errormessage='" + errormessage + '\'' +
                 '}';
+    }
+
+    public String getStatus() {
+        return status;
     }
 
     public class Token{
@@ -31,6 +40,10 @@ public class PostLoginResponse {
         @SerializedName("user_id")
         @Expose
         public String user_id; //고유한 id
+
+        @SerializedName("token_type")
+        @Expose
+        public String token_type; //고유한 id
 
         @SerializedName("A_Token")
         @Expose
@@ -44,6 +57,7 @@ public class PostLoginResponse {
         public String toString() {
             return "Token{" +
                     "user_id='" + user_id + '\'' +
+                    ", token_type='" + token_type + '\'' +
                     ", AT='" + AT + '\'' +
                     ", RT='" + RT + '\'' +
                     '}';
