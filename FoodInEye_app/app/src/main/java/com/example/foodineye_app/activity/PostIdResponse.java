@@ -13,7 +13,7 @@ public class PostIdResponse {
     @Expose
     public String status;
 
-    @SerializedName("response")
+    @SerializedName("detail")
     @Expose
     public String response;
 

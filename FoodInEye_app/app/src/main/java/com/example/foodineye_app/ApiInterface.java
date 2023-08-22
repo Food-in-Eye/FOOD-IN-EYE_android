@@ -4,13 +4,13 @@ import com.example.foodineye_app.activity.History;
 import com.example.foodineye_app.activity.HistoryDetail;
 import com.example.foodineye_app.activity.MenuItem;
 import com.example.foodineye_app.activity.OrderItem;
-import com.example.foodineye_app.activity.PostBuyer;
-import com.example.foodineye_app.activity.PostBuyerResponse;
 import com.example.foodineye_app.activity.PostId;
 import com.example.foodineye_app.activity.PostIdResponse;
 import com.example.foodineye_app.activity.PostLoginResponse;
 import com.example.foodineye_app.activity.PostOrder;
 import com.example.foodineye_app.activity.PostOrderResponse;
+import com.example.foodineye_app.activity.PostSignup;
+import com.example.foodineye_app.activity.PostSignupResponse;
 import com.example.foodineye_app.activity.StoreItem;
 import com.example.foodineye_app.gaze.PostGaze;
 import com.example.foodineye_app.gaze.PostGazeResponse;
@@ -70,8 +70,8 @@ public interface ApiInterface {
     );
 
     @POST("api/v2/users/buyer/signup")
-    Call<PostBuyerResponse> signUp(
-            @Body PostBuyer postBuyer
+    Call<PostSignupResponse> signUp(
+            @Body PostSignup postSignup
     );
 
 //    @POST("api/v2/users/users/login/buyer")

@@ -328,19 +328,20 @@ public class SignupActivity extends AppCompatActivity {
     //회원가입하기
     public void signUp(){
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        PostBuyer postBuyer = new PostBuyer(id, password, nickname, gender, age);
-        Log.i("SignupActivity", "postBuyer"+postBuyer.toString());
+        PostSignup postSignup = new PostSignup(id, password, nickname, gender, age);
+        Log.i("SignupActivity", "postBuyer"+postSignup.toString());
 
-        Call<PostBuyerResponse> call = apiInterface.signUp(postBuyer);
-        call.enqueue(new Callback<PostBuyerResponse>() {
+        Call<PostSignupResponse> call = apiInterface.signUp(postSignup);
+        call.enqueue(new Callback<PostSignupResponse>() {
             @Override
-            public void onResponse(Call<PostBuyerResponse> call, Response<PostBuyerResponse> response) {
+            public void onResponse(Call<PostSignupResponse> call, Response<PostSignupResponse> response) {
                 if(response.isSuccessful() && response.body() != null){
-
-                    PostBuyerResponse postBuyerResponse = response.body();
-                    ((Data)getApplication()).setUser_id(postBuyerResponse.getUser_id());
-
-                    show("회원가입되었습니다!");
+                    if(response.body().getDetail().equals("Duplicate ID")){
+                        show("입력된 id가 중복되었습니다.");
+                    }else{
+                        PostSignupResponse postSignupResponse = response.body();
+                        show("회원가입되었습니다!");
+                    }
 
                 }else{
                     Log.i("SignupActivity", "회원가입 중복 체크 서버 응답 오류");
@@ -348,10 +349,11 @@ public class SignupActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<PostBuyerResponse> call, Throwable t) {
+            public void onFailure(Call<PostSignupResponse> call, Throwable t) {
                 Log.i("SignupActivity", "회원가입 서버 응답 오류: " + t.toString());
             }
         });
+
 
     }
 
