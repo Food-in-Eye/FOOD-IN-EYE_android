@@ -245,7 +245,7 @@ public class SignupActivity extends AppCompatActivity {
                     PostIdResponse postIdResponse = response.body();
 
                     //id 중복아닐경우 -> available, 중복일경우 -> unavailable
-                    if (postIdResponse.getResponse().equals("available")) {
+                    if (postIdResponse.getState().equals("available")) {
                         availId.setVisibility(View.VISIBLE);
 
                         //edittext 배경 stroke 색상 변경하기
@@ -254,7 +254,7 @@ public class SignupActivity extends AppCompatActivity {
 
                         id = editID;
 
-                    }else if (postIdResponse.getResponse().equals("unavailable")){
+                    }else if (postIdResponse.getState().equals("unavailable")){
                         unavailId.setVisibility(View.VISIBLE);
 
                         //배경색 원래대로 변경하기
@@ -336,10 +336,10 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<PostSignupResponse> call, Response<PostSignupResponse> response) {
                 if(response.isSuccessful() && response.body() != null){
-                    if(response.body().getDetail().equals("Duplicate ID")){
+                    PostSignupResponse postSignupResponse = response.body();
+                    if(postSignupResponse.getDetail() != null && postSignupResponse.getDetail().equals("Duplicate ID")){
                         show("입력된 id가 중복되었습니다.");
                     }else{
-                        PostSignupResponse postSignupResponse = response.body();
                         show("회원가입되었습니다!");
                     }
 

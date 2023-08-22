@@ -9,18 +9,19 @@ public class PostIdResponse {
     @Expose
     public String request;
 
-    @SerializedName("status")
+    @SerializedName("state")
     @Expose
-    public String status;
+    public String state;
 
-    @SerializedName("detail")
-    @Expose
-    public String response;
+    public String getState() {
+        return state;
+    }
 
     @Override
-    public String toString() { return "PostIdResponse{" + "request='" + request + '\'' + ", status='" + status + '\'' + ", response=" + response + '}'; }
-
-    public String getResponse() {
-        return response;
+    public String toString() {
+        return "PostIdResponse{" +
+                "request='" + request + '\'' +
+                ", state='" + state + '\'' +
+                '}';
     }
 }

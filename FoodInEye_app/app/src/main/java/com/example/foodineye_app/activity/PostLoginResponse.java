@@ -9,82 +9,55 @@ public class PostLoginResponse {
     @Expose
     public String request;
 
-    @SerializedName("status")
+    @SerializedName("user_id")
     @Expose
-    public String status;
+    public String user_id; //회원 고유의 ID
 
-    @SerializedName("response")
+    @SerializedName("token_type")
     @Expose
-    public Token tokens;
+    public String token_type; //bearer
 
-    @SerializedName("message")
+    @SerializedName("A_Token")
     @Expose
-    public String errormessage;
+    public String A_Token;
+
+    @SerializedName("R_Token")
+    @Expose
+    public String R_Token;
+
+    @SerializedName("detail")
+    @Expose
+    public String detail; //error_message
+
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public String getToken_type() {
+        return token_type;
+    }
+
+    public String getA_Token() {
+        return A_Token;
+    }
+
+    public String getR_Token() {
+        return R_Token;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
 
     @Override
     public String toString() {
         return "PostLoginResponse{" +
                 "request='" + request + '\'' +
-                ", status='" + status + '\'' +
-                ", tokens=" + tokens +
-                ", errormessage='" + errormessage + '\'' +
+                ", user_id='" + user_id + '\'' +
+                ", token_type='" + token_type + '\'' +
+                ", A_Token='" + A_Token + '\'' +
+                ", R_Token='" + R_Token + '\'' +
+                ", detail='" + detail + '\'' +
                 '}';
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public class Token{
-
-        @SerializedName("user_id")
-        @Expose
-        public String user_id; //고유한 id
-
-        @SerializedName("token_type")
-        @Expose
-        public String token_type; //고유한 id
-
-        @SerializedName("A_Token")
-        @Expose
-        public String AT; //access token
-
-        @SerializedName("R_Token")
-        @Expose
-        public String RT; //refresh token
-
-        @Override
-        public String toString() {
-            return "Token{" +
-                    "user_id='" + user_id + '\'' +
-                    ", token_type='" + token_type + '\'' +
-                    ", AT='" + AT + '\'' +
-                    ", RT='" + RT + '\'' +
-                    '}';
-        }
-
-        public String getUser_id() {
-            return user_id;
-        }
-
-        public void setUser_id(String user_id) {
-            this.user_id = user_id;
-        }
-
-        public String getAT() {
-            return AT;
-        }
-
-        public void setAT(String AT) {
-            this.AT = AT;
-        }
-
-        public String getRT() {
-            return RT;
-        }
-
-        public void setRT(String RT) {
-            this.RT = RT;
-        }
     }
 }
