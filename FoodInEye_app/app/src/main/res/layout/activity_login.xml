@@ -77,7 +77,8 @@
             android:textSize="13dp"
             android:paddingLeft="20dp"
             android:background="@drawable/edittext_shape"
-            android:layout_marginTop="5dp"/>
+            android:layout_marginTop="5dp"
+            android:inputType="textPassword"/>
 
         <TextView
             android:id="@+id/login_availablePw"
