@@ -341,6 +341,9 @@ public class SignupActivity extends AppCompatActivity {
                         show("입력된 id가 중복되었습니다.");
                     }else{
                         show("회원가입되었습니다!");
+
+                        Intent signToLoginIntent = new Intent(getApplicationContext(), SignToLoginActivity.class);
+                        startActivity(signToLoginIntent);
                     }
 
                 }else{

@@ -74,11 +74,6 @@ public interface ApiInterface {
             @Body PostSignup postSignup
     );
 
-//    @POST("api/v2/users/users/login/buyer")
-//    Call<PostLoginResponse> login(
-//            @Body PostLogin postLogin
-//    );
-
     @Multipart
     @POST("api/v2/users/buyer/login")
     Call<PostLoginResponse> login(

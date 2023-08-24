@@ -25,4 +25,14 @@
         android:fontWeight="700"
         android:font="@font/elicedigital_bold"/>
 
+    <font android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/chab"/>
+
+    <font android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/ddag"/>
+
+
+
 </font-family>
