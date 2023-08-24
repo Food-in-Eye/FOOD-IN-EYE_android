@@ -1,6 +1,7 @@
 package com.example.foodineye_app.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.Editable;
@@ -35,10 +36,14 @@ public class LoginActivity extends AppCompatActivity {
     String at, rt; //tokens
     String user_id;
 
+    private SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        sharedPreferences = getSharedPreferences("test_token", MODE_PRIVATE);
 
         //아이디 입력
         editId = (EditText) findViewById(R.id.login_id);
@@ -133,8 +138,18 @@ public class LoginActivity extends AppCompatActivity {
                         at = postLoginResponse.getA_Token();
                         rt = postLoginResponse.getR_Token();
 
-                        Intent loginIntent = new Intent(getApplicationContext(), HomeActivity.class);
+                        // Access Token과 Refresh Token 저장
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("access_token", at);
+                        editor.putString("refresh_token", rt);
+                        editor.apply();
+
+//                        Intent loginIntent = new Intent(getApplicationContext(), HomeActivity.class);
+//                        startActivity(loginIntent);
+
+                        Intent loginIntent = new Intent(getApplicationContext(), ActivitytTestActivity.class);
                         startActivity(loginIntent);
+
                     } else {
                         Log.i("LoginActivity", "로그인 응답 오류: response.body()가 null입니다.");
                     }

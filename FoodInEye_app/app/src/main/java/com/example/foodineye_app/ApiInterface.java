@@ -11,6 +11,7 @@ import com.example.foodineye_app.activity.PostOrder;
 import com.example.foodineye_app.activity.PostOrderResponse;
 import com.example.foodineye_app.activity.PostSignup;
 import com.example.foodineye_app.activity.PostSignupResponse;
+import com.example.foodineye_app.activity.PostTestResponse;
 import com.example.foodineye_app.activity.StoreItem;
 import com.example.foodineye_app.gaze.PostGaze;
 import com.example.foodineye_app.gaze.PostGazeResponse;
@@ -22,6 +23,7 @@ import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -86,6 +88,10 @@ public interface ApiInterface {
     Call<PostLoginResponse> login(
             @Field("username") String username,
             @Field("password") String password
+    );
+    @GET("api/v2/users/test/a_token")
+    Call<PostTestResponse> test(
+            @Header("Authorization") String authorizationHeader
     );
 
 }
