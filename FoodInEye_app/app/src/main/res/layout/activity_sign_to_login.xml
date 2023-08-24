@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- 커스텀 툴바 추가 -->
+    <include layout="@layout/toolbar_layout"/>
+
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="140dp"
+        android:background="@drawable/signin_light"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="한 눈에 학식 👀"
+        android:textSize="30dp"
+        android:fontFamily="@font/chab"
+        android:textColor="@color/carrot"
+        android:layout_gravity="center"
+        android:layout_marginTop="120dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="회원가입 되었습니다!"
+        android:textSize="18dp"
+        android:textColor="@color/black"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"/>
+
+    <Button
+        android:id="@+id/sign_to_login"
+        android:layout_width="140dp"
+        android:layout_height="60dp"
+        android:text="로그인"
+        android:textStyle="bold"
+        android:background="@drawable/sign_up"
+        android:layout_gravity="center"
+        android:layout_marginTop="180dp"/>
+
+
+</LinearLayout>

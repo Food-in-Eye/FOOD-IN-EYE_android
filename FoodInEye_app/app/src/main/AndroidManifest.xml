@@ -20,6 +20,18 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".activity.ActivitytTestActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.SignToLoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.SignupActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.SingupActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.OrderHistoryDetailActivity"
             android:exported="false" />
         <activity
