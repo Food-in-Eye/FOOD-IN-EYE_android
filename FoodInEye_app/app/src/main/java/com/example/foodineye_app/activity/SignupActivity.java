@@ -247,6 +247,7 @@ public class SignupActivity extends AppCompatActivity {
                     //id 중복아닐경우 -> available, 중복일경우 -> unavailable
                     if (postIdResponse.getState().equals("available")) {
                         availId.setVisibility(View.VISIBLE);
+                        unavailId.setVisibility(View.INVISIBLE);
 
                         //edittext 배경 stroke 색상 변경하기
                         GradientDrawable background = (GradientDrawable) editId.getBackground();
@@ -256,6 +257,7 @@ public class SignupActivity extends AppCompatActivity {
 
                     }else if (postIdResponse.getState().equals("unavailable")){
                         unavailId.setVisibility(View.VISIBLE);
+                        availId.setVisibility(View.INVISIBLE);
 
                         //배경색 원래대로 변경하기
                         GradientDrawable background = (GradientDrawable) editId.getBackground();

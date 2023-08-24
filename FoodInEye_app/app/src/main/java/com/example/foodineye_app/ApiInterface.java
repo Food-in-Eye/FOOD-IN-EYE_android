@@ -19,10 +19,10 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
-import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 public interface ApiInterface {
@@ -74,11 +74,18 @@ public interface ApiInterface {
             @Body PostSignup postSignup
     );
 
-    @Multipart
+//    @Multipart
+//    @POST("api/v2/users/buyer/login")
+//    Call<PostLoginResponse> login(
+//            @Part("username") String username,
+//            @Part("password") String password
+//    );
+
+    @FormUrlEncoded
     @POST("api/v2/users/buyer/login")
     Call<PostLoginResponse> login(
-            @Part("username") String username,
-            @Part("password") String password
+            @Field("username") String username,
+            @Field("password") String password
     );
 
 }

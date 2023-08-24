@@ -20,7 +20,7 @@ public class SignToLoginActivity extends AppCompatActivity {
         signToLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent signToLoginIntent = new Intent(getApplicationContext(), SignToLoginActivity.class);
+                Intent signToLoginIntent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(signToLoginIntent);
             }
         });
