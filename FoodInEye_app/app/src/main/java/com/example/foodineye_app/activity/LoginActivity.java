@@ -144,11 +144,11 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString("refresh_token", rt);
                         editor.apply();
 
-//                        Intent loginIntent = new Intent(getApplicationContext(), HomeActivity.class);
-//                        startActivity(loginIntent);
-
-                        Intent loginIntent = new Intent(getApplicationContext(), ActivitytTestActivity.class);
+                        Intent loginIntent = new Intent(getApplicationContext(), HomeActivity.class);
                         startActivity(loginIntent);
+
+//                        Intent loginIntent = new Intent(getApplicationContext(), ActivitytTestActivity.class);
+//                        startActivity(loginIntent);
 
                     } else {
                         Log.i("LoginActivity", "로그인 응답 오류: response.body()가 null입니다.");

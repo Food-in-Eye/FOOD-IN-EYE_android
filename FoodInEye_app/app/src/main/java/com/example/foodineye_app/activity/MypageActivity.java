@@ -1,11 +1,11 @@
 package com.example.foodineye_app.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.foodineye_app.R;
 
@@ -15,6 +15,16 @@ public class MypageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mypage);
+
+        Button setinfoBtn = (Button) findViewById(R.id.setmyinfo);
+        setinfoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent setInfoIntent = new Intent(getApplicationContext(), MyinfoSettingActivity.class);
+                startActivity(setInfoIntent);
+            }
+        });
+
 
         Button historyBtn = (Button) findViewById(R.id.order_history);
         historyBtn.setOnClickListener(new View.OnClickListener() {
