@@ -24,7 +24,7 @@ public class MyinfoSettingActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.setmyinfo_toolbar);
         setToolBar(toolbar);
 
-        
+
 
 
     }

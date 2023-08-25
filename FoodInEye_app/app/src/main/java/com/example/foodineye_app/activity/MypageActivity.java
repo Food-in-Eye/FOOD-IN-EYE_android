@@ -20,7 +20,7 @@ public class MypageActivity extends AppCompatActivity {
         setinfoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent setInfoIntent = new Intent(getApplicationContext(), MyinfoSettingActivity.class);
+                Intent setInfoIntent = new Intent(getApplicationContext(), PwCheckActivity.class);
                 startActivity(setInfoIntent);
             }
         });
