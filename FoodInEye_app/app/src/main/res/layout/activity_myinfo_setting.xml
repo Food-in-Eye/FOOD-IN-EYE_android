@@ -125,19 +125,6 @@
                     android:layout_marginTop="5dp"
                     android:inputType="textPassword"/>
 
-                <TextView
-                    android:id="@+id/availablePw"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:text="8자리 이상, 숫자와 특수문자가 포함되어야 하며, \n영문자와 대문자가 적어도 하나씩 포함되어야 합니다."
-                    android:textSize="13dp"
-                    android:textColor="@color/gray"
-                    android:textStyle="bold"
-                    android:layout_marginTop="2dp"
-                    android:visibility="gone"/>
-
             </LinearLayout>
 
             <LinearLayout
@@ -168,7 +155,7 @@
                     android:inputType="textPassword"/>
 
                 <TextView
-                    android:id="@+id/availablePw"
+                    android:id="@+id/setmyinfo_availablePw"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -176,6 +163,19 @@
                     android:text="8자리 이상, 숫자와 특수문자가 포함되어야 하며, \n영문자와 대문자가 적어도 하나씩 포함되어야 합니다."
                     android:textSize="13dp"
                     android:textColor="@color/gray"
+                    android:textStyle="bold"
+                    android:layout_marginTop="2dp"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/setmyinfo_samePw"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:text="이전 비밀번호와 동일합니다."
+                    android:textSize="13dp"
+                    android:textColor="@color/red"
                     android:textStyle="bold"
                     android:layout_marginTop="2dp"
                     android:visibility="gone"/>
@@ -210,7 +210,7 @@
                     android:inputType="textPassword"/>
 
                 <TextView
-                    android:id="@+id/unavailable_pw"
+                    android:id="@+id/setmyinfo_unavailable_pw"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -285,7 +285,7 @@
 
 
                 <EditText
-                    android:id="@+id/signup_age"
+                    android:id="@+id/setmyinfo_age"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:hint="나이를 입력하세요."
@@ -298,7 +298,7 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/signupBtn"
+                android:id="@+id/setmyinfo_Btn"
                 android:layout_width="140dp"
                 android:layout_height="60dp"
                 android:layout_gravity="center"

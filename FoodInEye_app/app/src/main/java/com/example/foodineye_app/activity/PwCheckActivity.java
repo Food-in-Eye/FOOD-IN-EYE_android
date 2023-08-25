@@ -1,5 +1,6 @@
 package com.example.foodineye_app.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +21,8 @@ public class PwCheckActivity extends AppCompatActivity {
     Button editBtn;
     TextView noti;
     String u_id;
+    String nickname, id;
+    int gender, age;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +68,17 @@ public class PwCheckActivity extends AppCompatActivity {
 
     public void pwCheck(String u_id){
         //비밀번호 확인 & response값으로 받은 아이디, 닉네임, 성별, 나이는 인텐트 값으로 넘겨주기
+
+
+
+        //인텐트 넘겨주기
+        Intent intent = new Intent(getApplicationContext(), MyinfoSettingActivity.class);
+        intent.putExtra("u_id", u_id);
+        intent.putExtra("nickname", nickname);
+        intent.putExtra("id", id);
+        intent.putExtra("gender", gender);
+        intent.putExtra("age", age);
+
 
     }
 
