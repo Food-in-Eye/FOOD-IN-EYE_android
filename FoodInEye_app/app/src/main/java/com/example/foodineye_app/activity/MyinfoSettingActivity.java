@@ -19,9 +19,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
+import com.example.foodineye_app.ApiClient;
+import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.R;
+import com.example.foodineye_app.post.PutMyInfoSet;
 
 import java.util.regex.Pattern;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MyinfoSettingActivity extends AppCompatActivity {
 
@@ -31,7 +38,7 @@ public class MyinfoSettingActivity extends AppCompatActivity {
     ToggleButton maleBtn, femaleBtn;
 
     String u_id;
-    String nickname, password;
+    String id, nickname, oldpw, newpw;
     int gender, age;
 
     TextView availPw, samePw;
@@ -55,42 +62,34 @@ public class MyinfoSettingActivity extends AppCompatActivity {
         editAge = (EditText) findViewById(R.id.setmyinfo_age);
 
     //인텐트로 받은 기본 정보값
-
         Intent intent = getIntent();
 
+        id = intent.getExtras().getString("id");
         u_id = intent.getExtras().getString("u_id");
         editNickname.setHint(intent.getExtras().getString("nickname"));
-        editId.setHint(intent.getExtras().getString("id"));
+        editId.setHint(id);
         editAge.setHint(intent.getExtras().getInt("age"));
+
 
     //닉네임 작성
         editNickname.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //배경색 원래대로 변경하기
-                GradientDrawable background = (GradientDrawable) editNickname.getBackground();
-                background.setStroke(2, ContextCompat.getColor(getApplicationContext(), R.color.light_gray)); // 원래 배경 색상으로 변경
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //배경색 원래대로 변경하기
-                GradientDrawable background = (GradientDrawable) editNickname.getBackground();
-                background.setStroke(2, ContextCompat.getColor(getApplicationContext(), R.color.light_gray)); // 원래 배경 색상으로 변경
             }
 
             @Override
             public void afterTextChanged(Editable s) {
                 String afterNickname = s.toString();
                 nickname = afterNickname;
-
-                //edittext 배경 stroke 색상 변경하기
-                GradientDrawable background = (GradientDrawable) editNickname.getBackground();
-                background.setStroke(3, ContextCompat.getColor(getApplicationContext(), R.color.green));
             }
         });
 
     //이전 패스워드 == 새 패스워드 & 유효성 검사
+        oldpw = editOldPw.getText().toString();
         availPw = (TextView) findViewById(R.id.setmyinfo_availablePw); //8자리 이상, 숫자와 특수문자가~
         samePw = (TextView) findViewById(R.id.setmyinfo_samePw); //이전 비밀번호와 동일
 
@@ -113,7 +112,6 @@ public class MyinfoSettingActivity extends AppCompatActivity {
         editOldPw.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
@@ -124,7 +122,6 @@ public class MyinfoSettingActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         });
 
@@ -166,16 +163,10 @@ public class MyinfoSettingActivity extends AppCompatActivity {
         editAge.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //배경색 원래대로 변경하기
-                GradientDrawable background = (GradientDrawable) editAge.getBackground();
-                background.setStroke(2, ContextCompat.getColor(getApplicationContext(), R.color.light_gray)); // 원래 배경 색상으로 변경
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //배경색 원래대로 변경하기
-                GradientDrawable background = (GradientDrawable) editAge.getBackground();
-                background.setStroke(2, ContextCompat.getColor(getApplicationContext(), R.color.light_gray)); // 원래 배경 색상으로 변경
             }
 
             @Override
@@ -189,13 +180,7 @@ public class MyinfoSettingActivity extends AppCompatActivity {
                         // 정수로 변환할 수 없는 경우에 대한 예외 처리
                     }
 
-                    //edittext 배경 stroke 색상 변경하기
-                    GradientDrawable background = (GradientDrawable) editAge.getBackground();
-                    background.setStroke(3, ContextCompat.getColor(getApplicationContext(), R.color.green));
                 }else{
-                    //edittext 배경 stroke 색상 변경하기
-                    GradientDrawable background = (GradientDrawable) editAge.getBackground();
-                    background.setStroke(3, ContextCompat.getColor(getApplicationContext(), R.color.light_gray));
                 }
 
             }
@@ -206,7 +191,6 @@ public class MyinfoSettingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setMyInfo();
-
             }
         });
 
@@ -277,15 +261,10 @@ public class MyinfoSettingActivity extends AppCompatActivity {
         if(rePassword.equals(editOldPw.getText().toString())){
             samePw.setVisibility(View.VISIBLE);
 
-            // 비밀번호가 일치하지 않을 때 배경색 원래대로 변경하기
-            GradientDrawable background = (GradientDrawable) editRePw.getBackground();
-            background.setStroke(2, ContextCompat.getColor(this, R.color.light_gray)); // 원래 배경 색상으로 변경
         }else{
             samePw.setVisibility(View.INVISIBLE);
+            newpw = rePassword;
 
-            //edittext 배경 stroke 색상 변경하기
-            GradientDrawable background = (GradientDrawable) editNewPw.getBackground();
-            background.setStroke(3, ContextCompat.getColor(this, R.color.green));
         }
     }
 
@@ -294,24 +273,52 @@ public class MyinfoSettingActivity extends AppCompatActivity {
         if(rePassword.equals(editNewPw.getText().toString())){
             unavailPw.setVisibility(View.INVISIBLE);
 
-            //edittext 배경 stroke 색상 변경하기
-            GradientDrawable background = (GradientDrawable) editRePw.getBackground();
-            background.setStroke(3, ContextCompat.getColor(this, R.color.green));
+
         }else{
             unavailPw.setVisibility(View.VISIBLE);
 
-            // 비밀번호가 일치하지 않을 때 배경색 원래대로 변경하기
-            GradientDrawable background = (GradientDrawable) editRePw.getBackground();
-            background.setStroke(2, ContextCompat.getColor(this, R.color.light_gray)); // 원래 배경 색상으로 변경
         }
     }
 
     //새로운 정보 POST
     public void setMyInfo(){
+        PutMyInfoSet putMyInfoSet = new PutMyInfoSet(id, oldpw, newpw, nickname, gender, age);
 
-        //POST 보낸 후 성공하면
-        Intent intent = new Intent(getApplicationContext(), MypageActivity.class);
-        startActivity(intent);
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Call<PutMyInfoSet> call = apiInterface.setInfo(u_id, putMyInfoSet);
+
+        call.enqueue(new Callback<PutMyInfoSet>() {
+            @Override
+            public void onResponse(Call<PutMyInfoSet> call, Response<PutMyInfoSet> response) {
+                if(response.isSuccessful()){
+                    show("내 정보가 변경되었습니다.");
+                    //PUT 보낸 후 성공하면
+                    Intent intent = new Intent(getApplicationContext(), MypageActivity.class);
+                    startActivity(intent);
+
+                }else{
+                    String errorBody = null;
+                    try{
+                        errorBody = response.errorBody().toString();
+                    }catch (Exception e){
+                        throw new RuntimeException(e);
+                    }
+
+                    if(errorBody.contains("Nonexistent u_ID")){
+                        show("user_id가 존재하지 않습니다.");
+                    }else if(errorBody.contains("Incorrect PW")){
+                        show("이전 비밀번호가 일치하지 않습니다.");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PutMyInfoSet> call, Throwable t) {
+
+            }
+        });
+
+
     }
 
     private void show(String message) {

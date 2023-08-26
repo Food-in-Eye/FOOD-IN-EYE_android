@@ -15,6 +15,10 @@ import com.example.foodineye_app.activity.PostTestResponse;
 import com.example.foodineye_app.activity.StoreItem;
 import com.example.foodineye_app.gaze.PostGaze;
 import com.example.foodineye_app.gaze.PostGazeResponse;
+import com.example.foodineye_app.post.PostPw;
+import com.example.foodineye_app.post.PostPwCheckResponse;
+import com.example.foodineye_app.post.PostRTokenResponse;
+import com.example.foodineye_app.post.PutMyInfoSet;
 
 import java.util.List;
 
@@ -25,6 +29,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 public interface ApiInterface {
@@ -76,22 +81,37 @@ public interface ApiInterface {
             @Body PostSignup postSignup
     );
 
-//    @Multipart
-//    @POST("api/v2/users/buyer/login")
-//    Call<PostLoginResponse> login(
-//            @Part("username") String username,
-//            @Part("password") String password
-//    );
-
     @FormUrlEncoded
     @POST("api/v2/users/buyer/login")
     Call<PostLoginResponse> login(
             @Field("username") String username,
             @Field("password") String password
     );
+
+    @POST("api/v2/users/info")
+    Call<PostPwCheckResponse> pwCheck(
+            @Query("u_id") String u_id,
+            @Body PostPw postPw
+    );
+
+    @PUT("api/v2/users/buyer/change")
+    Call setInfo(
+            @Query("u_id") String u_id,
+            @Body PutMyInfoSet putMyInfoSet
+    );
+
+
     @GET("api/v2/users/test/a_token")
     Call<PostTestResponse> test(
             @Header("Authorization") String authorizationHeader
     );
+
+    @GET("api/v2/users/issue/refresh")
+    Call<PostRTokenResponse> getNewRToken(
+            @Query("u_id") String u_id,
+            @Header("Authorization") String authorizationHeader
+    );
+
+
 
 }

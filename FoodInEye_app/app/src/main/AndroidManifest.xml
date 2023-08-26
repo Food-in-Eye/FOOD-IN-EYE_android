@@ -19,6 +19,7 @@
         android:theme="@style/Theme.FoodInEye_app"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <service android:name=".TokenRefreshservice" />
         <activity
             android:name=".activity.PwCheckActivity"
             android:exported="false" />
@@ -33,9 +34,6 @@
             android:exported="false" />
         <activity
             android:name=".activity.SignupActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activity.SingupActivity"
             android:exported="false" />
         <activity
             android:name=".activity.OrderHistoryDetailActivity"

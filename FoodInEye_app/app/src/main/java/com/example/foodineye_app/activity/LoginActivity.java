@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat;
 import com.example.foodineye_app.ApiClient;
 import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.R;
+import com.example.foodineye_app.TokenRefreshservice;
 
 import java.io.IOException;
 
@@ -144,6 +145,10 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString("refresh_token", rt);
                         editor.apply();
 
+                        //로그인 후 R_Token Handler 실행
+                        startService(new Intent(getApplicationContext(), TokenRefreshservice.class));
+
+                        //HomeActivity로 이동
                         Intent loginIntent = new Intent(getApplicationContext(), HomeActivity.class);
                         startActivity(loginIntent);
 

@@ -1,0 +1,101 @@
+package com.example.foodineye_app;
+
+import android.app.Service;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Looper;
+
+import androidx.annotation.Nullable;
+
+import com.example.foodineye_app.activity.Data;
+import com.example.foodineye_app.post.PostRTokenResponse;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class TokenRefreshservice extends Service {
+    private Handler handler = new Handler(Looper.getMainLooper());
+    private Runnable refreshTokenTask;
+    SharedPreferences sharedPreferences;
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        startRefreshTokenScheduler();
+        return START_STICKY;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopRefreshTokenScheduler();
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+
+    private void startRefreshTokenScheduler() {
+        refreshTokenTask = new Runnable() {
+            @Override
+            public void run() {
+                // 50분마다 Refresh Token 갱신
+                getRefreshToken();
+
+                // 다음 갱신 예약
+                handler.postDelayed(this, 50 * 60 * 1000); // 50분
+            }
+        };
+
+        // 최초 실행
+        handler.post(refreshTokenTask);
+    }
+
+    private void stopRefreshTokenScheduler() {
+        handler.removeCallbacks(refreshTokenTask);
+    }
+
+    //Refresh Token 50분마다 재발급
+    public void getRefreshToken(){
+        String refreshToken = sharedPreferences.getString("refresh_token", null);
+        String refreshTokenHedaer = "Bearer " + refreshToken;
+
+        Data data = (Data) getApplication();
+        String u_id = data.getUser_id();
+
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Call<PostRTokenResponse> call = apiInterface.getNewRToken(u_id, refreshTokenHedaer);
+
+        call.enqueue(new Callback<PostRTokenResponse>() {
+            @Override
+            public void onResponse(Call<PostRTokenResponse> call, Response<PostRTokenResponse> response) {
+                if(response.isSuccessful()){
+                    //데이터 요청 성공 처리
+                    //new refresh_token 저장
+                    PostRTokenResponse postRTokenResponse = response.body();
+                    String newRToken = postRTokenResponse.getR_Token();
+
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("refresh_token", newRToken);
+                    editor.apply();
+
+                }else{
+                    //데이터 요청 실패 처리
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PostRTokenResponse> call, Throwable t) {
+
+            }
+        });
+
+
+
+    }
+}
