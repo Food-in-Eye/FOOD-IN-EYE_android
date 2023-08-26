@@ -3,6 +3,8 @@ package com.example.foodineye_app.activity;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -49,13 +51,27 @@ public class PwCheckActivity extends AppCompatActivity {
         setToolBar(toolbar);
 
         editPw = (EditText) findViewById(R.id.pwcheck_pw);
-        pw = editPw.getText().toString();
+        editPw.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                pw = s.toString();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+        noti = (TextView) findViewById(R.id.pwcheck_noti);
 
         editBtn = (Button) findViewById(R.id.pwcheck_btn);
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pwCheck(u_id);
+                pwCheck();
             }
         });
 
@@ -80,8 +96,12 @@ public class PwCheckActivity extends AppCompatActivity {
 
     }
 
-    public void pwCheck(String u_id){
+    public void pwCheck(){
         //비밀번호 확인 & response값으로 받은 아이디, 닉네임, 성별, 나이는 인텐트 값으로 넘겨주기
+
+        Log.i("PwCheckActivity", "비밀번호 검증 오류: " + u_id);
+        Log.i("PwCheckActivity", "비밀번호 검증 오류: " + pw);
+
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         PostPw postPw = new PostPw(pw);
         Call<PostPwCheckResponse> call = apiInterface.pwCheck(u_id, postPw);
@@ -104,6 +124,7 @@ public class PwCheckActivity extends AppCompatActivity {
                     intent.putExtra("id", id);
                     intent.putExtra("gender", gender);
                     intent.putExtra("age", age);
+                    startActivity(intent);
 
                 }else{
                     //데이터 실패 시
@@ -114,7 +135,7 @@ public class PwCheckActivity extends AppCompatActivity {
                         throw new RuntimeException(e);
                     }
 
-                    if(errorBody.contains("Incorrect Pw")){
+                    if(errorBody.contains("Incorrect PW")){
                         noti.setVisibility(View.VISIBLE);
 
                         // 배경색 원래대로 변경하기
@@ -123,6 +144,7 @@ public class PwCheckActivity extends AppCompatActivity {
 
                     }else{
                         // 다른 오류 처리 로직을 추가
+                        Log.i("PwCheckActivity", "비밀번호 검증 오류: " + errorBody);
                     }
                 }
             }

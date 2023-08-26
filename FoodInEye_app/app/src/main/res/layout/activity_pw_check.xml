@@ -85,7 +85,7 @@
                 android:layout_marginTop="5dp" />
 
             <TextView
-                android:id="@+id/unavailable_pw"
+                android:id="@+id/pwcheck_noti"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

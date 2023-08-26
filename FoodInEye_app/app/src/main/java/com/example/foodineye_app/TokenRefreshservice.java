@@ -6,11 +6,14 @@ import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
 import com.example.foodineye_app.activity.Data;
 import com.example.foodineye_app.post.PostRTokenResponse;
+
+import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -47,7 +50,9 @@ public class TokenRefreshservice extends Service {
                 getRefreshToken();
 
                 // 다음 갱신 예약
-                handler.postDelayed(this, 50 * 60 * 1000); // 50분
+//                handler.postDelayed(this, 50 * 60 * 1000); // 50분
+
+                handler.postDelayed(this, 50 * 1000);
             }
         };
 
@@ -61,11 +66,15 @@ public class TokenRefreshservice extends Service {
 
     //Refresh Token 50분마다 재발급
     public void getRefreshToken(){
+        sharedPreferences = getSharedPreferences("test_token1", MODE_PRIVATE);
         String refreshToken = sharedPreferences.getString("refresh_token", null);
         String refreshTokenHedaer = "Bearer " + refreshToken;
 
-        Data data = (Data) getApplication();
-        String u_id = data.getUser_id();
+        Log.d("TokenRefresh", "refresh: "+refreshTokenHedaer);
+
+        String u_id = ((Data) getApplication()).getUser_id();
+
+        Log.d("TokenRefresh", "u_id: "+u_id);
 
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<PostRTokenResponse> call = apiInterface.getNewRToken(u_id, refreshTokenHedaer);
@@ -85,13 +94,29 @@ public class TokenRefreshservice extends Service {
 
                 }else{
                     //데이터 요청 실패 처리
+                    //데이터 실패 시
+                    String errorBody = null; // 실패한 응답의 본문을 얻음
+                    try {
+                        errorBody = response.errorBody().string();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
 
+                    if(errorBody.contains("Signature verification failed.")){
+                        Log.d("TokenRefresh", "error: "+errorBody);
+                    }else if(errorBody.contains("Signature has expired.")){
+                        Log.d("TokenRefresh", "error: "+errorBody);
+                    }else if(errorBody.contains("Ownership verification failed.")){
+                        Log.d("TokenRefresh", "error: "+errorBody);
+                    }else{
+                        Log.d("TokenRefresh", "error: "+errorBody);
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<PostRTokenResponse> call, Throwable t) {
-
+                Log.d("TokenRefresh", "error: "+t.toString());
             }
         });
 

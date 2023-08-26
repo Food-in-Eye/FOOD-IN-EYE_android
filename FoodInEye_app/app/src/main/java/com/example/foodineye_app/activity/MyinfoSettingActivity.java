@@ -5,6 +5,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -66,9 +67,12 @@ public class MyinfoSettingActivity extends AppCompatActivity {
 
         id = intent.getExtras().getString("id");
         u_id = intent.getExtras().getString("u_id");
-        editNickname.setHint(intent.getExtras().getString("nickname"));
+        nickname = intent.getExtras().getString("nickname");
+        age = intent.getExtras().getInt("age");
+
+        editNickname.setHint(nickname);
         editId.setHint(id);
-        editAge.setHint(intent.getExtras().getInt("age"));
+        editAge.setHint(String.valueOf(age));
 
 
     //닉네임 작성
@@ -89,7 +93,21 @@ public class MyinfoSettingActivity extends AppCompatActivity {
         });
 
     //이전 패스워드 == 새 패스워드 & 유효성 검사
-        oldpw = editOldPw.getText().toString();
+        editOldPw.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                oldpw = s.toString();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
         availPw = (TextView) findViewById(R.id.setmyinfo_availablePw); //8자리 이상, 숫자와 특수문자가~
         samePw = (TextView) findViewById(R.id.setmyinfo_samePw); //이전 비밀번호와 동일
 
@@ -187,6 +205,7 @@ public class MyinfoSettingActivity extends AppCompatActivity {
         });
 
     //내 정보 수정 버튼 클릭
+        setInfoBtn = (Button) findViewById(R.id.setmyinfo_Btn);
         setInfoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -271,12 +290,9 @@ public class MyinfoSettingActivity extends AppCompatActivity {
     //새 비밀번호 == 새 비밀번호 확인 검사
     public void pwReCheck(String rePassword){
         if(rePassword.equals(editNewPw.getText().toString())){
-            unavailPw.setVisibility(View.INVISIBLE);
-
-
-        }else{
             unavailPw.setVisibility(View.VISIBLE);
-
+        }else{
+            unavailPw.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -285,38 +301,44 @@ public class MyinfoSettingActivity extends AppCompatActivity {
         PutMyInfoSet putMyInfoSet = new PutMyInfoSet(id, oldpw, newpw, nickname, gender, age);
 
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<PutMyInfoSet> call = apiInterface.setInfo(u_id, putMyInfoSet);
+        Call<Void> call = apiInterface.setInfo(u_id, putMyInfoSet);
 
-        call.enqueue(new Callback<PutMyInfoSet>() {
+        Log.d("InfoSet", "put: " + putMyInfoSet.toString());
+
+        call.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<PutMyInfoSet> call, Response<PutMyInfoSet> response) {
-                if(response.isSuccessful()){
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
                     show("내 정보가 변경되었습니다.");
-                    //PUT 보낸 후 성공하면
+                    // PUT 보낸 후 성공하면
                     Intent intent = new Intent(getApplicationContext(), MypageActivity.class);
                     startActivity(intent);
-
-                }else{
-                    String errorBody = null;
-                    try{
-                        errorBody = response.errorBody().toString();
-                    }catch (Exception e){
-                        throw new RuntimeException(e);
-                    }
-
-                    if(errorBody.contains("Nonexistent u_ID")){
-                        show("user_id가 존재하지 않습니다.");
-                    }else if(errorBody.contains("Incorrect PW")){
-                        show("이전 비밀번호가 일치하지 않습니다.");
+                } else {
+                    // HTTP 상태 코드에 따라 다른 메시지 표시
+                    switch (response.code()) {
+                        case 404:
+                            Log.d("InfoSet", "error: " + response.errorBody().toString());
+                            show("사용자 ID가 존재하지 않습니다.");
+                            break;
+                        case 400:
+                            Log.d("InfoSet", "error: " + response.errorBody().toString());
+                            show("이전 비밀번호가 일치하지 않습니다.");
+                            break;
+                        default:
+                            Log.d("InfoSet", "error: " + response.errorBody().toString());
+                            show("내 정보 변경에 실패하였습니다.");
+                            break;
                     }
                 }
             }
 
+
             @Override
-            public void onFailure(Call<PutMyInfoSet> call, Throwable t) {
+            public void onFailure(Call<Void> call, Throwable t) {
 
             }
         });
+
 
 
     }

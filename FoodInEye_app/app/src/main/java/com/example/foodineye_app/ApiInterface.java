@@ -95,7 +95,7 @@ public interface ApiInterface {
     );
 
     @PUT("api/v2/users/buyer/change")
-    Call setInfo(
+    Call<Void> setInfo(
             @Query("u_id") String u_id,
             @Body PutMyInfoSet putMyInfoSet
     );

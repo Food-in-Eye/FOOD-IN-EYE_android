@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        sharedPreferences = getSharedPreferences("test_token", MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences("test_token1", MODE_PRIVATE);
 
         //아이디 입력
         editId = (EditText) findViewById(R.id.login_id);

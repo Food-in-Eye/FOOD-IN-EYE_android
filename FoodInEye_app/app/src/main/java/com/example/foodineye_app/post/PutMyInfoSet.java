@@ -37,4 +37,16 @@ public class PutMyInfoSet {
         this.gender = gender;
         this.age = age;
     }
+
+    @Override
+    public String toString() {
+        return "PutMyInfoSet{" +
+                "id='" + id + '\'' +
+                ", old_pw='" + old_pw + '\'' +
+                ", new_pw='" + new_pw + '\'' +
+                ", name='" + name + '\'' +
+                ", gender=" + gender +
+                ", age=" + age +
+                '}';
+    }
 }

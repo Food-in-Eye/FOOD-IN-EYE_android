@@ -32,8 +32,9 @@ public class ActivitytTestActivity extends AppCompatActivity {
         TextView textView = (TextView) findViewById(R.id.test_text);
         TextView textView1 = (TextView) findViewById(R.id.test_text1);
         TextView textView2 = (TextView) findViewById(R.id.test_text2);
+        TextView textView3 = (TextView) findViewById(R.id.test_text3);
 
-        sharedPreferences = getSharedPreferences("test_token", MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences("test_token1", MODE_PRIVATE);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,6 +42,9 @@ public class ActivitytTestActivity extends AppCompatActivity {
 
                 String accessToken = sharedPreferences.getString("access_token", null);
                 textView.setText(accessToken);
+
+                String refreshToken = sharedPreferences.getString("refresh_token", null);
+                textView3.setText(refreshToken);
 
                 if (accessToken != null) {
 

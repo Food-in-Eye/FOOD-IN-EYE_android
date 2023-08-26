@@ -9,7 +9,7 @@ public class PostLoginResponse {
     @Expose
     public String request;
 
-    @SerializedName("user_id")
+    @SerializedName("u_id")
     @Expose
     public String user_id; //회원 고유의 ID
 
