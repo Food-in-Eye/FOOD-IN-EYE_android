@@ -310,22 +310,29 @@ public class MyinfoSettingActivity extends AppCompatActivity {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     show("내 정보가 변경되었습니다.");
-                    // PUT 보낸 후 성공하면
+                    // PUT 보낸 후 성공 하면
                     Intent intent = new Intent(getApplicationContext(), MypageActivity.class);
                     startActivity(intent);
                 } else {
                     // HTTP 상태 코드에 따라 다른 메시지 표시
                     switch (response.code()) {
                         case 404:
-                            Log.d("InfoSet", "error: " + response.errorBody().toString());
-                            show("사용자 ID가 존재하지 않습니다.");
+                            Log.d("InfoSet", "error(404): " + response.errorBody().toString());
                             break;
                         case 400:
-                            Log.d("InfoSet", "error: " + response.errorBody().toString());
-                            show("이전 비밀번호가 일치하지 않습니다.");
+                            Log.d("InfoSet", "error(400): " + response.errorBody().toString());
                             break;
+                        case 401:
+                            String errorBody = response.errorBody().toString();
+                            if(errorBody.contains("Nonexistent u_ID")){
+                                show("user_id가 존재하지 않습니다.");
+                            }else if(errorBody.contains("Nonexistent ID")){
+                                show("id가 일치하지 않습니다.");
+                            }else if(errorBody.contains("Incorrect PW")){
+                                show("이전 비밀번호가 일치하지 않습니다.");
+                            }
+
                         default:
-                            Log.d("InfoSet", "error: " + response.errorBody().toString());
                             show("내 정보 변경에 실패하였습니다.");
                             break;
                     }
@@ -335,7 +342,7 @@ public class MyinfoSettingActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-
+                Log.d("InfoSet", "error: " + t.toString());
             }
         });
 
