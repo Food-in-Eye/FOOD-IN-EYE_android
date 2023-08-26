@@ -66,9 +66,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 id = s.toString();
-                //edittext 배경 stroke 색상 변경하기
-                GradientDrawable background = (GradientDrawable) editId.getBackground();
-                background.setStroke(3, ContextCompat.getColor(getApplicationContext(), R.color.green));
+
             }
         });
         Log.i("LoginActivity", "!!!!!!!!로그인 : " + id);
@@ -94,9 +92,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 password = s.toString();
-                //edittext 배경 stroke 색상 변경하기
-                GradientDrawable background = (GradientDrawable) editId.getBackground();
-                background.setStroke(3, ContextCompat.getColor(getApplicationContext(), R.color.green));
+
             }
         });
 
