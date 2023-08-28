@@ -321,7 +321,7 @@ public class MenuActivity extends AppCompatActivity{
     @Override
     protected void onStop() {
         super.onStop();
-//        captureFullScreenshot();
+        captureFullScreenshot();
 
         gazeTrackerDataStorage.stopGazeTracker("store_menu", recent_sNum, 0);
     }
@@ -459,7 +459,7 @@ public class MenuActivity extends AppCompatActivity{
 
         // recyclerViewScreenshot을 그릴 위치 계산
         int recyclerViewLeft = 26;
-        int recyclerViewTop = 869;
+        int recyclerViewTop = 817;
 
         // 배경을 하얀색으로 그리기
         canvas.drawColor(Color.WHITE);

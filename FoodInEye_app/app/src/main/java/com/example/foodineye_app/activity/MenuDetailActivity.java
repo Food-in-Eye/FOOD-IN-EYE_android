@@ -237,7 +237,7 @@ public class MenuDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-//        takeAndSaveScreenShot();
+        takeAndSaveScreenShot();
         super.onStop();
         Log.d("MenuDetailActivity", "onStop");
         stopGazeTracker();
