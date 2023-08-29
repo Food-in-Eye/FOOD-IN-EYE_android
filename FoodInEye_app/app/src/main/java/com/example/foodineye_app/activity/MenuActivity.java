@@ -12,15 +12,18 @@ import android.os.Bundle;
 import android.os.HandlerThread;
 import android.util.Log;
 import android.util.LruCache;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,6 +45,8 @@ import retrofit2.Response;
 import visual.camp.sample.view.PointView;
 
 public class MenuActivity extends AppCompatActivity{
+
+    Toolbar toolbar;
 
     TextView store_intro;
     TextView store_openTime;
@@ -77,6 +82,9 @@ public class MenuActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
+        toolbar = findViewById(R.id.menu_toolbar);
+        setToolBar(toolbar);
 
         TabLayout tabLayout = findViewById(R.id.store_tab);
 
@@ -535,22 +543,6 @@ public class MenuActivity extends AppCompatActivity{
 
                 // 다음 색상 인덱스로 이동 (0, 1, 2, 0, 1, 2, ...)
                 colorIndex = (colorIndex + 1) % colors.length;
-
-//
-//                if (!tab.isSelected()) {
-//                    // 3가지 색상 중 하나를 선택하고 배경색으로 설정
-//                    int[] colors = {Color.parseColor("#4DFF9345"), Color.parseColor("#4D337DB1"), Color.parseColor("#4DD9D9D9")};
-//                    tab.view.setBackgroundResource(R.drawable.tab_background_selector);
-//                    GradientDrawable shapeDrawable = new GradientDrawable();
-//                    shapeDrawable.setColor(colors[colorIndex]);
-//                    shapeDrawable.setCornerRadii(new float[]{30, 30, 30, 30, 0, 0, 0, 0});
-//                    tab.view.setBackground(shapeDrawable);
-//
-//                    // 다음 색상 인덱스로 이동 (0, 1, 2, 0, 1, 2, ...)
-//                    colorIndex = (colorIndex + 1) % colors.length;
-//                }else if(tab.isSelected()){
-//                    tab.view.setBackgroundResource(R.drawable.tab_background_selector);
-//                }
             }
         }
 
@@ -587,7 +579,7 @@ public class MenuActivity extends AppCompatActivity{
         layoutParams.width = (int) (130 * getResources().getDisplayMetrics().density);
 
         // 선택된 탭의 높이를 조정 (예: 100dp)
-        layoutParams.height = (int) (60 * getResources().getDisplayMetrics().density);
+        layoutParams.height = (int) (70 * getResources().getDisplayMetrics().density);
 
         tab.view.setLayoutParams(layoutParams);
 
@@ -595,7 +587,7 @@ public class MenuActivity extends AppCompatActivity{
 
     public void sizesmallTab(TabLayout.Tab tab){
 
-// 선택된 탭의 너비를 조정 (예: 200dp)
+        // 선택된 탭의 너비를 조정 (예: 200dp)
         ViewGroup.LayoutParams layoutParams = tab.view.getLayoutParams();
         layoutParams.width = (int) (100 * getResources().getDisplayMetrics().density);
 
@@ -605,4 +597,43 @@ public class MenuActivity extends AppCompatActivity{
         tab.view.setLayoutParams(layoutParams);
 
     }
+
+    //---------------------------------------------------------------------------------------------------
+    //툴바
+    public void setToolBar(Toolbar toolbar){
+        // 툴바를 액션바로 설정
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setTitle(""); // 툴바의 타이틀을 직접 설정
+        ImageView backBtn = (ImageView) findViewById(R.id.menu_back);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 뒤로 가기 버튼 동작을 처리
+                onBackPressed();
+            }
+        });
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_back, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(android.view.MenuItem item) {
+        // 메뉴 항목을 클릭했을 때의 동작을 처리합니다.
+        switch (item.getItemId()) {
+            case R.id.action_back:
+                show("뒤로가기 버튼");
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    //---------------------------------------------------------------------------------------------------
+
 }
