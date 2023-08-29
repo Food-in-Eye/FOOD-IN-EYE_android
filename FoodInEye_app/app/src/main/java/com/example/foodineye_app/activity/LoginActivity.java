@@ -16,7 +16,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.example.foodineye_app.ApiClient;
+import com.example.foodineye_app.ApiClientEx;
 import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.R;
 import com.example.foodineye_app.TokenRefreshservice;
@@ -103,8 +103,8 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 //HomeActivity로 이동
-                Intent loginIntent = new Intent(getApplicationContext(), HomeActivity.class);
-                startActivity(loginIntent);
+//                Intent loginIntent = new Intent(getApplicationContext(), HomeActivity.class);
+//                startActivity(loginIntent);
                 login();
             }
         });
@@ -122,7 +122,8 @@ public class LoginActivity extends AppCompatActivity {
 
     //로그인하기
     private void login(){
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+        ApiInterface apiInterface = ApiClientEx.getExClient().create(ApiInterface.class);
 
         Call<PostLoginResponse> call = apiInterface.login(id, password);
         Log.i("LoginActivity", "!!!!!!!!로그인 : " + id);
@@ -135,6 +136,7 @@ public class LoginActivity extends AppCompatActivity {
                     PostLoginResponse postLoginResponse = response.body();
                     if (postLoginResponse != null) {
                         Log.i("LoginActivity", "로그인 서버 성공: " + postLoginResponse.toString());
+
                         ((Data) getApplication()).setUser_id(postLoginResponse.getUser_id()); // 회원 고유의 ID
                         at = postLoginResponse.getA_Token();
                         rt = postLoginResponse.getR_Token();

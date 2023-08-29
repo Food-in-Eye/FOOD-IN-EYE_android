@@ -18,6 +18,7 @@ import java.io.IOException;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class TokenRefreshservice extends Service {
     private Handler handler = new Handler(Looper.getMainLooper());
@@ -76,7 +77,9 @@ public class TokenRefreshservice extends Service {
 
         Log.d("TokenRefresh", "u_id: "+u_id);
 
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Retrofit exRetrofit = ApiClient.getExClient();
+        ApiInterface apiInterface = exRetrofit.create(ApiInterface.class);
+//        ApiInterface apiInterface = ApiClient.getExClient().create(ApiInterface.class);
         Call<PostRTokenResponse> call = apiInterface.getNewRToken(u_id, refreshTokenHedaer);
 
         call.enqueue(new Callback<PostRTokenResponse>() {
@@ -116,7 +119,7 @@ public class TokenRefreshservice extends Service {
 
             @Override
             public void onFailure(Call<PostRTokenResponse> call, Throwable t) {
-                Log.d("TokenRefresh", "error: "+t.toString());
+                Log.d("TokenRefresh", "Fail_error: "+t.toString());
             }
         });
 

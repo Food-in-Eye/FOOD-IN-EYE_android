@@ -68,15 +68,20 @@ public class StorelistActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         //storeList 세팅
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        ApiClient apiClient = new ApiClient(getApplicationContext());
+        ApiInterface apiInterface = apiClient.getClient().create(ApiInterface.class);
+
         Call<StoreItem> call = apiInterface.getData();
 
         call.enqueue(new Callback<StoreItem>() {
             @Override
             public void onResponse(Call<StoreItem> call, Response<StoreItem> response) {
+                if(response.isSuccessful()){
+                    StoreItem storeItem =
+                }
                 storeList = response.body();
 
-                Log.d("StorelistActivity", storeList.toString());
+//                Log.d("StorelistActivity", storeList.toString());
                 storeInfo = storeList.response;
 
                 storeAdapter = new StoreAdapter(getApplicationContext(), storeInfo);
