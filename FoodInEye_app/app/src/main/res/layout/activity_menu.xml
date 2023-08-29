@@ -17,9 +17,6 @@
             android:orientation="vertical">
 
             <!-- 커스텀 툴바 추가 -->
-<!--            <include layout="@layout/toolbar_layout"/>-->
-
-            <!-- 커스텀 툴바 추가 -->
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/menu_toolbar"
                 android:layout_width="match_parent"
