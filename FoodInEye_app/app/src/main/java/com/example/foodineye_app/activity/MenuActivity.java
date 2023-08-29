@@ -7,11 +7,13 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.HandlerThread;
 import android.util.Log;
 import android.util.LruCache;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -230,8 +232,8 @@ public class MenuActivity extends AppCompatActivity{
                         TabLayout.Tab tab = tabLayout.newTab().setText(tabTitle);
                         tab.setTag(tab_Id);
                         tabLayout.addTab(tab);
-                        //초기 tab 설정 category -> Menu
-                        if(tab_Id.equals(s_id)){
+                        // 초기 tab 설정 category -> Menu
+                        if (tab_Id.equals(s_id)) {
                             tabLayout.getTabAt(i).select();
                         }
 
@@ -241,12 +243,20 @@ public class MenuActivity extends AppCompatActivity{
                             tab.view.setEnabled(false);
                             tab.view.setBackgroundColor(Color.LTGRAY);
                         }
+
+                        // 탭의 너비를 130dp로 설정
+                        sizesmallTab(tab);
                     }
+
+                    customTab(tabLayout);
 
                     //tabLayout 클릭시 동작
                     tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                         @Override
                         public void onTabSelected(TabLayout.Tab tab) {
+                            tab.view.setBackgroundResource(R.drawable.tab_background_selector);
+                            // 탭의 너비를 200dp로 설정
+                            sizeLargeTab(tab);
                             // 중복 호출을 방지하기 위해 선택된 탭에서만 동작하도록 수정
                             int selectedTabIndex = tab.getPosition();
                             if (selectedTabIndex != previousTabIndex) {
@@ -290,14 +300,19 @@ public class MenuActivity extends AppCompatActivity{
                         @Override
                         public void onTabUnselected(TabLayout.Tab tab) {
                             // 선택 해제
+                            isnotSelectTab();
+                            sizesmallTab(tab);
                         }
 
                         @Override
                         public void onTabReselected(TabLayout.Tab tab) {
+                            tab.view.setBackgroundResource(R.drawable.tab_background_selector);
+                            sizeLargeTab(tab);
                             // 다시 선택
                             // 동일한 탭에서 GazeTracker 재시작
                             int selectedTabIndex = tab.getPosition();
                             setGazeTrackerDataStorage();
+
                         }
                     });
 
@@ -497,5 +512,97 @@ public class MenuActivity extends AppCompatActivity{
             show("save fail");
             e.printStackTrace();
         }
+    }
+
+    //tab custom
+    public void customTab(TabLayout tabLayout){
+
+        // 3가지 색상을 순환할 인덱스 변수
+        int colorIndex = 0;
+
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+            TabLayout.Tab tab = tabLayout.getTabAt(i);
+
+            if (tab != null) {
+                // 선택되지 않은 탭에 색상을 순환하여 설정
+                // 3가지 색상 중 하나를 선택하고 배경색으로 설정
+                int[] colors = {Color.parseColor("#4DFF9345"), Color.parseColor("#4D337DB1"), Color.parseColor("#4DD9D9D9")};
+                tab.view.setBackgroundResource(R.drawable.tab_background_selector);
+                GradientDrawable shapeDrawable = new GradientDrawable();
+                shapeDrawable.setColor(colors[colorIndex]);
+                shapeDrawable.setCornerRadii(new float[]{30, 30, 30, 30, 0, 0, 0, 0});
+                tab.view.setBackground(shapeDrawable);
+
+                // 다음 색상 인덱스로 이동 (0, 1, 2, 0, 1, 2, ...)
+                colorIndex = (colorIndex + 1) % colors.length;
+
+//
+//                if (!tab.isSelected()) {
+//                    // 3가지 색상 중 하나를 선택하고 배경색으로 설정
+//                    int[] colors = {Color.parseColor("#4DFF9345"), Color.parseColor("#4D337DB1"), Color.parseColor("#4DD9D9D9")};
+//                    tab.view.setBackgroundResource(R.drawable.tab_background_selector);
+//                    GradientDrawable shapeDrawable = new GradientDrawable();
+//                    shapeDrawable.setColor(colors[colorIndex]);
+//                    shapeDrawable.setCornerRadii(new float[]{30, 30, 30, 30, 0, 0, 0, 0});
+//                    tab.view.setBackground(shapeDrawable);
+//
+//                    // 다음 색상 인덱스로 이동 (0, 1, 2, 0, 1, 2, ...)
+//                    colorIndex = (colorIndex + 1) % colors.length;
+//                }else if(tab.isSelected()){
+//                    tab.view.setBackgroundResource(R.drawable.tab_background_selector);
+//                }
+            }
+        }
+
+
+
+    }
+
+    public void isnotSelectTab(){
+        int colorIndex = 0;
+
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+            TabLayout.Tab tab = tabLayout.getTabAt(i);
+
+            if (tab != null) {
+                // 선택되지 않은 탭에 색상을 순환하여 설정
+                // 3가지 색상 중 하나를 선택하고 배경색으로 설정
+                int[] colors = {Color.parseColor("#4DFF9345"), Color.parseColor("#4D337DB1"), Color.parseColor("#4DD9D9D9")};
+                tab.view.setBackgroundResource(R.drawable.tab_background_selector);
+                GradientDrawable shapeDrawable = new GradientDrawable();
+                shapeDrawable.setColor(colors[colorIndex]);
+                shapeDrawable.setCornerRadii(new float[]{30, 30, 30, 30, 0, 0, 0, 0});
+                tab.view.setBackground(shapeDrawable);
+
+                // 다음 색상 인덱스로 이동 (0, 1, 2, 0, 1, 2, ...)
+                colorIndex = (colorIndex + 1) % colors.length;
+            }
+        }
+    }
+
+    public void sizeLargeTab(TabLayout.Tab tab){
+
+        // 선택된 탭의 너비를 조정 (예: 200dp)
+        ViewGroup.LayoutParams layoutParams = tab.view.getLayoutParams();
+        layoutParams.width = (int) (130 * getResources().getDisplayMetrics().density);
+
+        // 선택된 탭의 높이를 조정 (예: 100dp)
+        layoutParams.height = (int) (60 * getResources().getDisplayMetrics().density);
+
+        tab.view.setLayoutParams(layoutParams);
+
+    }
+
+    public void sizesmallTab(TabLayout.Tab tab){
+
+// 선택된 탭의 너비를 조정 (예: 200dp)
+        ViewGroup.LayoutParams layoutParams = tab.view.getLayoutParams();
+        layoutParams.width = (int) (100 * getResources().getDisplayMetrics().density);
+
+        // 선택된 탭의 높이를 조정 (예: 50dp)
+        layoutParams.height = (int) (50 * getResources().getDisplayMetrics().density);
+
+        tab.view.setLayoutParams(layoutParams);
+
     }
 }
