@@ -255,7 +255,6 @@ public class MenuActivity extends AppCompatActivity{
                         // 탭의 너비를 130dp로 설정
                         sizesmallTab(tab);
                     }
-
                     customTab(tabLayout);
 
                     //tabLayout 클릭시 동작
@@ -528,6 +527,9 @@ public class MenuActivity extends AppCompatActivity{
         // 3가지 색상을 순환할 인덱스 변수
         int colorIndex = 0;
 
+        int tabWidth = (int) (100 * getResources().getDisplayMetrics().density); // 고정된 너비 (예: 100dp)
+        int tabHeight = (int) (50 * getResources().getDisplayMetrics().density); // 고정된 길이 (예: 60dp)
+
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
             TabLayout.Tab tab = tabLayout.getTabAt(i);
 
@@ -539,16 +541,21 @@ public class MenuActivity extends AppCompatActivity{
                 GradientDrawable shapeDrawable = new GradientDrawable();
                 shapeDrawable.setColor(colors[colorIndex]);
                 shapeDrawable.setCornerRadii(new float[]{30, 30, 30, 30, 0, 0, 0, 0});
+
+                // 고정된 너비와 길이 설정
+                ViewGroup.LayoutParams layoutParams = tab.view.getLayoutParams();
+                layoutParams.width = tabWidth;
+                layoutParams.height = tabHeight;
+                tab.view.setLayoutParams(layoutParams);
+
                 tab.view.setBackground(shapeDrawable);
 
                 // 다음 색상 인덱스로 이동 (0, 1, 2, 0, 1, 2, ...)
                 colorIndex = (colorIndex + 1) % colors.length;
             }
         }
-
-
-
     }
+
 
     public void isnotSelectTab(){
         int colorIndex = 0;
@@ -559,7 +566,7 @@ public class MenuActivity extends AppCompatActivity{
             if (tab != null) {
                 // 선택되지 않은 탭에 색상을 순환하여 설정
                 // 3가지 색상 중 하나를 선택하고 배경색으로 설정
-                int[] colors = {Color.parseColor("#4DFF9345"), Color.parseColor("#4D337DB1"), Color.parseColor("#4DD9D9D9")};
+                int[] colors = {Color.parseColor("#33FF9345"), Color.parseColor("#33337DB1"), Color.parseColor("#33D9D9D9")};
                 tab.view.setBackgroundResource(R.drawable.tab_background_selector);
                 GradientDrawable shapeDrawable = new GradientDrawable();
                 shapeDrawable.setColor(colors[colorIndex]);
@@ -579,7 +586,7 @@ public class MenuActivity extends AppCompatActivity{
         layoutParams.width = (int) (130 * getResources().getDisplayMetrics().density);
 
         // 선택된 탭의 높이를 조정 (예: 100dp)
-        layoutParams.height = (int) (70 * getResources().getDisplayMetrics().density);
+//        layoutParams.height = (int) (60 * getResources().getDisplayMetrics().density);
 
         tab.view.setLayoutParams(layoutParams);
 
@@ -592,7 +599,7 @@ public class MenuActivity extends AppCompatActivity{
         layoutParams.width = (int) (100 * getResources().getDisplayMetrics().density);
 
         // 선택된 탭의 높이를 조정 (예: 50dp)
-        layoutParams.height = (int) (50 * getResources().getDisplayMetrics().density);
+//        layoutParams.height = (int) (50 * getResources().getDisplayMetrics().density);
 
         tab.view.setLayoutParams(layoutParams);
 

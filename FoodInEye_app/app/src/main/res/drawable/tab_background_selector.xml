@@ -22,7 +22,7 @@
             <!-- Add multiple items for random colors -->
             <item android:id="@+id/color1">
                 <shape android:shape="rectangle">
-                    <solid android:color="#4DFF9345" />
+                    <solid android:color="#33FF9345" />
                     <corners
                         android:radius="0dp"
                         android:topLeftRadius="30dp"
@@ -32,7 +32,7 @@
             </item>
             <item android:id="@+id/color2">
                 <shape android:shape="rectangle">
-                    <solid android:color="#4D337DB1" />
+                    <solid android:color="#33337DB1" />
                     <corners
                         android:radius="0dp"
                         android:topLeftRadius="30dp"
@@ -41,7 +41,7 @@
                 </shape>
             </item><item android:id="@+id/color3">
             <shape android:shape="rectangle">
-                <solid android:color="#4DD9D9D9" />
+                <solid android:color="#33D9D9D9" />
                 <corners
                     android:radius="0dp"
                     android:topLeftRadius="30dp"
