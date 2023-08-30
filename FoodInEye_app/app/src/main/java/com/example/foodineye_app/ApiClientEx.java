@@ -1,6 +1,7 @@
 package com.example.foodineye_app;
 
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -9,6 +10,11 @@ public class ApiClientEx {
     private static OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
     static {
         httpClientBuilder.followRedirects(false); // 리디렉션 무시 설정
+
+        // HttpLoggingInterceptor를 추가하여 헤더와 내용을 로그로 출력
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        httpClientBuilder.addInterceptor(loggingInterceptor);
     }
 
     private static OkHttpClient httpClientex = httpClientBuilder.build();

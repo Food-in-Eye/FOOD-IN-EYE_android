@@ -10,7 +10,6 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.example.foodineye_app.activity.Data;
 import com.example.foodineye_app.post.PostRTokenResponse;
 
 import java.io.IOException;
@@ -18,7 +17,6 @@ import java.io.IOException;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class TokenRefreshservice extends Service {
     private Handler handler = new Handler(Looper.getMainLooper());
@@ -71,15 +69,13 @@ public class TokenRefreshservice extends Service {
         String refreshToken = sharedPreferences.getString("refresh_token", null);
         String refreshTokenHedaer = "Bearer " + refreshToken;
 
-        Log.d("TokenRefresh", "refresh: "+refreshTokenHedaer);
+        Log.d("TokenRefreshservice", "refresh: "+refreshTokenHedaer);
 
-        String u_id = ((Data) getApplication()).getUser_id();
+        String u_id = sharedPreferences.getString("u_id", null);
 
-        Log.d("TokenRefresh", "u_id: "+u_id);
+        Log.d("TokenRefreshservice", "u_id: "+u_id);
 
-        Retrofit exRetrofit = ApiClient.getExClient();
-        ApiInterface apiInterface = exRetrofit.create(ApiInterface.class);
-//        ApiInterface apiInterface = ApiClient.getExClient().create(ApiInterface.class);
+        ApiInterface apiInterface = ApiClientEx.getExClient().create(ApiInterface.class);
         Call<PostRTokenResponse> call = apiInterface.getNewRToken(u_id, refreshTokenHedaer);
 
         call.enqueue(new Callback<PostRTokenResponse>() {
@@ -90,6 +86,8 @@ public class TokenRefreshservice extends Service {
                     //new refresh_token 저장
                     PostRTokenResponse postRTokenResponse = response.body();
                     String newRToken = postRTokenResponse.getR_Token();
+
+                    Log.d("TokenRefreshservice", "new!!!!!!!refresh: "+newRToken);
 
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("refresh_token", newRToken);
@@ -106,20 +104,20 @@ public class TokenRefreshservice extends Service {
                     }
 
                     if(errorBody.contains("Signature verification failed.")){
-                        Log.d("TokenRefresh", "error: "+errorBody);
+                        Log.d("TokenRefreshservice", "error: "+errorBody);
                     }else if(errorBody.contains("Signature has expired.")){
-                        Log.d("TokenRefresh", "error: "+errorBody);
+                        Log.d("TokenRefreshservice", "error: "+errorBody);
                     }else if(errorBody.contains("Ownership verification failed.")){
-                        Log.d("TokenRefresh", "error: "+errorBody);
+                        Log.d("TokenRefreshservice", "error: "+errorBody);
                     }else{
-                        Log.d("TokenRefresh", "error: "+errorBody);
+                        Log.d("TokenRefreshservice", "error: "+errorBody);
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<PostRTokenResponse> call, Throwable t) {
-                Log.d("TokenRefresh", "Fail_error: "+t.toString());
+                Log.d("TokenRefreshservice", "Fail_error: "+t.toString());
             }
         });
 

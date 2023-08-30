@@ -5,10 +5,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class PostATokenResponse {
 
-    @SerializedName("request")
-    @Expose
-    public String request;
-
     @SerializedName("A_Token")
     @Expose
     public String A_Token;
@@ -16,8 +12,7 @@ public class PostATokenResponse {
     @Override
     public String toString() {
         return "PostATokenResponse{" +
-                "request='" + request + '\'' +
-                ", A_Token='" + A_Token + '\'' +
+                "A_Token='" + A_Token + '\'' +
                 '}';
     }
 

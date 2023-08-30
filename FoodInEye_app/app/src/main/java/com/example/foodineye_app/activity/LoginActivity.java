@@ -137,14 +137,16 @@ public class LoginActivity extends AppCompatActivity {
                     if (postLoginResponse != null) {
                         Log.i("LoginActivity", "로그인 서버 성공: " + postLoginResponse.toString());
 
-                        ((Data) getApplication()).setUser_id(postLoginResponse.getUser_id()); // 회원 고유의 ID
                         at = postLoginResponse.getA_Token();
                         rt = postLoginResponse.getR_Token();
+                        user_id = postLoginResponse.getUser_id(); // 회원 고유의 ID
 
                         // Access Token과 Refresh Token 저장
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("access_token", at);
                         editor.putString("refresh_token", rt);
+                        editor.putString("u_id", user_id);
+
                         editor.apply();
 
                         //로그인 후 R_Token Handler 실행

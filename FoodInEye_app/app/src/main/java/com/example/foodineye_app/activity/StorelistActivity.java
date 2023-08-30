@@ -67,32 +67,7 @@ public class StorelistActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        //storeList 세팅
-        ApiClient apiClient = new ApiClient(getApplicationContext());
-        ApiInterface apiInterface = apiClient.getClient().create(ApiInterface.class);
-
-        Call<StoreItem> call = apiInterface.getData();
-
-        call.enqueue(new Callback<StoreItem>() {
-            @Override
-            public void onResponse(Call<StoreItem> call, Response<StoreItem> response) {
-                if(response.isSuccessful()){
-                    StoreItem storeItem =
-                }
-                storeList = response.body();
-
-//                Log.d("StorelistActivity", storeList.toString());
-                storeInfo = storeList.response;
-
-                storeAdapter = new StoreAdapter(getApplicationContext(), storeInfo);
-                recyclerView.setAdapter(storeAdapter);
-            }
-
-            @Override
-            public void onFailure(Call<StoreItem> call, Throwable t) {
-                Log.d("StorelistActivity", t.toString());
-            }
-        });
+        setStoreList();
 
         //-------------------------------------------------------------------------------------
         //screenshot
@@ -120,8 +95,6 @@ public class StorelistActivity extends AppCompatActivity {
                 schoolFoodLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
-
-        //-------------------------------------------------------------------------------------
 
     }
 
@@ -167,6 +140,40 @@ public class StorelistActivity extends AppCompatActivity {
         if (gazeTrackerDataStorage != null) {
             gazeTrackerDataStorage.stopGazeTracker("store_list", 0, 0);
         }
+    }
+
+    public void setStoreList(){
+        //storeList 세팅
+        ApiClient apiClient = new ApiClient(getApplicationContext());
+        apiClient.initializeHttpClient();
+
+        ApiInterface apiInterface = apiClient.getClient().create(ApiInterface.class);
+
+        Call<StoreItem> call = apiInterface.getData();
+
+        call.enqueue(new Callback<StoreItem>() {
+            @Override
+            public void onResponse(Call<StoreItem> call, Response<StoreItem> response) {
+                if(response.isSuccessful()){
+                    storeList = response.body();
+
+//                Log.d("StorelistActivity", storeList.toString());
+                    storeInfo = storeList.response;
+
+                    storeAdapter = new StoreAdapter(getApplicationContext(), storeInfo);
+                    recyclerView.setAdapter(storeAdapter);
+
+                }else{
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<StoreItem> call, Throwable t) {
+                Log.d("StorelistActivity", t.toString());
+            }
+        });
     }
 
     //
