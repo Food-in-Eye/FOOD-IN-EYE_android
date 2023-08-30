@@ -89,7 +89,7 @@ public interface ApiInterface {
             @Field("password") String password
     );
 
-    @POST("api/v2/users/info")
+    @POST("api/v2/users/buyer/info")
     Call<PostPwCheckResponse> pwCheck(
             @Query("u_id") String u_id,
             @Body PostPw postPw
