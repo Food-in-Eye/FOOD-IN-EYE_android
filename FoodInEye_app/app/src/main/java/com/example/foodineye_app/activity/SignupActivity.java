@@ -16,7 +16,7 @@ import android.widget.ToggleButton;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.example.foodineye_app.ApiClient;
+import com.example.foodineye_app.ApiClientEx;
 import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.R;
 
@@ -230,7 +230,7 @@ public class SignupActivity extends AppCompatActivity {
     //아이디 중복 여부 함수
     public void idCheck(String editID){
 
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        ApiInterface apiInterface = ApiClientEx.getExClient().create(ApiInterface.class);
         PostId postId = new PostId(editID);
 
         Call<PostIdResponse> call = apiInterface.idCheck(postId);
@@ -326,7 +326,8 @@ public class SignupActivity extends AppCompatActivity {
 
     //회원가입하기
     public void signUp(){
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+        ApiInterface apiInterface = ApiClientEx.getExClient().create(ApiInterface.class);
         PostSignup postSignup = new PostSignup(id, password, nickname, gender, age);
         Log.i("SignupActivity", "postBuyer"+postSignup.toString());
 
