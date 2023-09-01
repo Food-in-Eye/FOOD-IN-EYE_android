@@ -51,7 +51,7 @@ public class TokenRefreshservice extends Service {
                 // 다음 갱신 예약
 //                handler.postDelayed(this, 50 * 60 * 1000); // 50분
 
-                handler.postDelayed(this, 50 * 1000);
+                handler.postDelayed(this, 50 * 1000); //50초
             }
         };
 

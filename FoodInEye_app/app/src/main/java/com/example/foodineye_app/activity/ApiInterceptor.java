@@ -80,9 +80,9 @@ public class ApiInterceptor implements Interceptor {
 
     // 토큰 만료 여부 확인
     private boolean isTokenExpired(Response response) {
-        // 여기에 토큰 만료 여부 확인 로직 작성
         return response.code() == 401; // 예시로 401 코드가 토큰 만료 코드라 가정합니다.
     }
+
 
     // Refresh 토큰으로 Access 토큰 갱신
     private Response refreshToken() throws IOException {
