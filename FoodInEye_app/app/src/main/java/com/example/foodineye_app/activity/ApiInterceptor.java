@@ -1,6 +1,7 @@
 package com.example.foodineye_app.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
@@ -129,10 +130,19 @@ public class ApiInterceptor implements Interceptor {
                 case 401:
                     String errorBody = response.errorBody().string();
 
+                    // 에러가 발생했을 때 인터셉터 수정 부분
                     if (errorBody.contains("Signature verification failed.")) {
-                        Log.d("ApiInterceptor", "Signature verification failed.");
+                        Log.d("ApiInterceptor", "서명 검증 실패.");
+
+                        // LoginActivity를 시작하기 위한 커스텀 이벤트를 브로드캐스트합니다.
+                        Intent intent = new Intent("start_login_activity");
+                        context.sendBroadcast(intent);
+
                     } else if (errorBody.contains("Signature has expired.")) {
                         Log.d("ApiInterceptor", "Signature has expired.");
+
+
+
                     } else if (errorBody.contains("Ownership verification failed.")) {
                         Log.d("ApiInterceptor", "Ownership verification failed.");
                     } else {
@@ -145,4 +155,5 @@ public class ApiInterceptor implements Interceptor {
             return null;
         }
     }
+
 }

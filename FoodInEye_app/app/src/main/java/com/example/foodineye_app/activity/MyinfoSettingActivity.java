@@ -296,11 +296,15 @@ public class MyinfoSettingActivity extends AppCompatActivity {
         }
     }
 
-    //새로운 정보 POST
+    //새로운 정보 PUT
     public void setMyInfo(){
         PutMyInfoSet putMyInfoSet = new PutMyInfoSet(id, oldpw, newpw, nickname, gender, age);
 
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        ApiClient apiClient = new ApiClient(getApplicationContext());
+        apiClient.initializeHttpClient();
+
+        ApiInterface apiInterface = apiClient.getClient().create(ApiInterface.class);
+
         Call<Void> call = apiInterface.setInfo(u_id, putMyInfoSet);
 
         Log.d("InfoSet", "put: " + putMyInfoSet.toString());

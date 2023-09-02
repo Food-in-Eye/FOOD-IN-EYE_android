@@ -1,13 +1,13 @@
 package com.example.foodineye_app.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodineye_app.ApiClient;
 import com.example.foodineye_app.ApiInterface;
@@ -50,8 +50,11 @@ public class OrderHistoryDetailActivity extends AppCompatActivity {
         total = (TextView) findViewById(R.id.detail_history_total);
         total.setText(total_price);
 
+        ApiClient apiClient = new ApiClient(getApplicationContext());
+        apiClient.initializeHttpClient();
 
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        ApiInterface apiInterface = apiClient.getClient().create(ApiInterface.class);
+
         Call<HistoryDetail> callHistoryDetail = apiInterface.getHistoryDetail(h_id);
 
         callHistoryDetail.enqueue(new Callback<HistoryDetail>() {

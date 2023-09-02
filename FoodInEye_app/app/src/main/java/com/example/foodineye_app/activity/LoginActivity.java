@@ -1,6 +1,9 @@
 package com.example.foodineye_app.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -39,10 +42,25 @@ public class LoginActivity extends AppCompatActivity {
 
     private SharedPreferences sharedPreferences;
 
+    // 앱의 메인 코드(예: 애플리케이션 클래스 또는 액티비티)에서 BroadcastReceiver를 등록합니다.
+    private BroadcastReceiver startLoginActivityReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if ("start_login_activity".equals(intent.getAction())) {
+                // 여기서 LoginActivity를 시작합니다.
+                startLoginActivity(context);
+            }
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        // 커스텀 이벤트를 수신하기 위한 BroadcastReceiver를 등록합니다.
+        IntentFilter filter = new IntentFilter("start_login_activity");
+        registerReceiver(startLoginActivityReceiver, filter);
 
         sharedPreferences = getSharedPreferences("test_token1", MODE_PRIVATE);
 
@@ -207,6 +225,14 @@ public class LoginActivity extends AppCompatActivity {
         });
 
     }
+
+    // ApiInterceptor 클래스 내부에서
+    private void startLoginActivity(Context context) {
+        Intent loginIntent = new Intent(context, LoginActivity.class);
+        loginIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        context.startActivity(loginIntent);
+    }
+
     private void show(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }

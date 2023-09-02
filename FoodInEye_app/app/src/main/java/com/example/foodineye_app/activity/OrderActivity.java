@@ -142,7 +142,11 @@ public class OrderActivity extends AppCompatActivity {
         totalPrice.setText(String.valueOf(total));
 
         //postOrder 세팅
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        ApiClient apiClient = new ApiClient(getApplicationContext());
+        apiClient.initializeHttpClient();
+
+        ApiInterface apiInterface = apiClient.getClient().create(ApiInterface.class);
+
         //요청 바디에 들어가 PostOrder 객체 생성
         postOrder = new PostOrder(u_id, total, content);
         Log.d("OrderActivity", "postOrder" + postOrder.toString());
@@ -190,7 +194,11 @@ public class OrderActivity extends AppCompatActivity {
                             WebSocketManager.getInstance(getApplicationContext()).connectWebSocket(history_id);
 
                             // gaze 보내기
-                            ApiInterface apiInterface1 = ApiClient.getClient().create(ApiInterface.class);
+                            ApiClient apiClient = new ApiClient(getApplicationContext());
+                            apiClient.initializeHttpClient();
+
+                            ApiInterface apiInterface1 = apiClient.getClient().create(ApiInterface.class);
+
                             jsonGazeArray = ((Data) getApplication()).getJsonArray();
 
                             postGazes = (List<PostGaze>) ((Data)getApplication()).getGazeList();

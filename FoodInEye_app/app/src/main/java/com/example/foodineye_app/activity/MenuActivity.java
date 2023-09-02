@@ -177,7 +177,10 @@ public class MenuActivity extends AppCompatActivity{
     }
     public void showMenu(String m_id, String tabs_id, String s_name, int s_num){
         //menuList 세팅
-        ApiInterface apiInterface1 = ApiClient.getClient().create(ApiInterface.class);
+        ApiClient apiClient = new ApiClient(getApplicationContext());
+        apiClient.initializeHttpClient();
+
+        ApiInterface apiInterface1 = apiClient.getClient().create(ApiInterface.class);
         Log.d("MenuActivity", "showMenu_M: " + m_id);
         Log.d("MenuActivity", "showMenu_S: " + tabs_id);
 

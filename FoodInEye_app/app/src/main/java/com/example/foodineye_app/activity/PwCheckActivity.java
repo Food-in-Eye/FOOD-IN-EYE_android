@@ -102,7 +102,11 @@ public class PwCheckActivity extends AppCompatActivity {
         Log.i("PwCheckActivity", "비밀번호 검증 오류: " + u_id);
         Log.i("PwCheckActivity", "비밀번호 검증 오류: " + pw);
 
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        ApiClient apiClient = new ApiClient(getApplicationContext());
+        apiClient.initializeHttpClient();
+
+        ApiInterface apiInterface = apiClient.getClient().create(ApiInterface.class);
+
         PostPw postPw = new PostPw(pw);
         Call<PostPwCheckResponse> call = apiInterface.pwCheck(u_id, postPw);
 

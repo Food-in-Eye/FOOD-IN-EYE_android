@@ -21,8 +21,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-//... (이전 코드 생략)
-
 public class OrderHistoryActivity extends AppCompatActivity {
 
     LakuePagingButton lpb_buttonlist;
@@ -47,7 +45,11 @@ public class OrderHistoryActivity extends AppCompatActivity {
 
         //-----------------------------------------------------------------------
         // 초기 페이지 로딩
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        ApiClient apiClient = new ApiClient(getApplicationContext());
+        apiClient.initializeHttpClient();
+
+        ApiInterface apiInterface = apiClient.getClient().create(ApiInterface.class);
+
         Call<History> callMenu = apiInterface.getHistory(u_id, 1);
 
         callMenu.enqueue(new Callback<History>() {
