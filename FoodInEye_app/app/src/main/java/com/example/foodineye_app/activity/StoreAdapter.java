@@ -82,6 +82,9 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.MyViewHolder
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 if (context instanceof Activity) {
                     ((Activity) context).startActivity(intent);
+                    ((Activity) context).overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                    ((Activity) context).finish();
+
                 } else {
                     context.startActivity(intent);
                 }

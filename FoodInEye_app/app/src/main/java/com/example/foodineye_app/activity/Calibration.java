@@ -1,7 +1,5 @@
 package com.example.foodineye_app.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,17 +7,14 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.webkit.WebView;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.example.foodineye_app.GazeTrackerDataStorage;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.foodineye_app.GazeTrackerManager;
 import com.example.foodineye_app.R;
 
-//calibration
 import camp.visual.gazetracker.callback.CalibrationCallback;
 import camp.visual.gazetracker.constant.AccuracyCriteria;
 import camp.visual.gazetracker.constant.CalibrationModeType;
@@ -89,8 +84,10 @@ public class Calibration extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //home -> storelist
-                Intent loginIntent = new Intent(getApplicationContext(), StorelistActivity.class);
-                startActivity(loginIntent);
+                Intent intent = new Intent(getApplicationContext(), StorelistActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                finish();
             }
         });
 

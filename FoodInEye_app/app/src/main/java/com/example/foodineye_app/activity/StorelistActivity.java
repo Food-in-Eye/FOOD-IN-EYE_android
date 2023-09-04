@@ -16,7 +16,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.foodineye_app.ApiClient;
+import com.example.foodineye_app.ApiClientEx;
 import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.GazeTrackerDataStorage;
 import com.example.foodineye_app.R;
@@ -58,7 +58,7 @@ public class StorelistActivity extends AppCompatActivity {
         storeLayout = findViewById(R.id.storelistLayout);
         viewpoint = findViewById(R.id.view_point_storelist);
 
-        setGazeTrackerDataStorage();
+//        setGazeTrackerDataStorage();
 
         //storeInfo 객체
         storeInfo = new ArrayList<>();
@@ -95,6 +95,7 @@ public class StorelistActivity extends AppCompatActivity {
                 schoolFoodLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
+
 
     }
 
@@ -144,10 +145,12 @@ public class StorelistActivity extends AppCompatActivity {
 
     public void setStoreList(){
         //storeList 세팅
-        ApiClient apiClient = new ApiClient(getApplicationContext());
-        apiClient.initializeHttpClient();
+//        ApiClient apiClient = new ApiClient(getApplicationContext());
+//        apiClient.initializeHttpClient();
+//
+//        ApiInterface apiInterface = apiClient.getClient().create(ApiInterface.class);
 
-        ApiInterface apiInterface = apiClient.getClient().create(ApiInterface.class);
+        ApiInterface apiInterface = ApiClientEx.getExClient().create(ApiInterface.class);
 
         Call<StoreItem> call = apiInterface.getData();
 

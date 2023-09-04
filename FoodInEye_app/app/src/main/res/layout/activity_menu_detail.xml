@@ -13,7 +13,33 @@
         android:orientation="vertical">
 
         <!-- 커스텀 툴바 추가 -->
-        <include layout="@layout/toolbar_layout"/>
+        <!-- 커스텀 툴바 추가 -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/menu_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorOnPrimary"
+            android:elevation="4dp">
+
+            <!-- 사용자 정의 뒤로 가기 버튼 추가 -->
+            <ImageView
+                android:id="@+id/menu_back"
+                android:layout_width="40dp"
+                android:layout_height="24dp"
+                android:layout_gravity="start"
+                android:src="@drawable/back_btn"
+                android:contentDescription="뒤로 가기" />
+
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="주문 하기"
+                android:fontFamily="@font/mice_gothic_bold"
+                android:textSize="20dp"
+                android:textColor="@color/black"/>
+
+        </androidx.appcompat.widget.Toolbar>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,36 +48,6 @@
             android:background="@drawable/menu_detail_bg">
 
 
-            <!--        <LinearLayout-->
-            <!--            android:layout_width="wrap_content"-->
-            <!--            android:layout_height="wrap_content"-->
-            <!--            android:orientation="horizontal"-->
-            <!--            android:layout_gravity="right"-->
-            <!--            android:layout_marginTop="10dp"-->
-            <!--            android:layout_marginRight="20dp">-->
-
-            <!--            <Button-->
-            <!--                android:id="@+id/findBtn"-->
-            <!--                android:layout_width="30dp"-->
-            <!--                android:layout_height="25dp"-->
-            <!--                android:background="@drawable/find_btn"-->
-            <!--                android:layout_marginRight="5dp"/>-->
-
-            <!--            <Button-->
-            <!--                android:id="@+id/basketBtn"-->
-            <!--                android:layout_width="35dp"-->
-            <!--                android:layout_height="25dp"-->
-            <!--                android:background="@drawable/basket_btn"-->
-            <!--                android:layout_marginRight="5dp"/>-->
-
-            <!--            <Button-->
-            <!--                android:id="@+id/myPageBtn"-->
-            <!--                android:layout_width="35dp"-->
-            <!--                android:layout_height="25dp"-->
-            <!--                android:background="@drawable/mypage_btn"-->
-            <!--                android:layout_marginRight="5dp"/>-->
-
-            <!--        </LinearLayout>-->
 
             <TextView
                 android:id="@+id/menuD_name"
