@@ -18,33 +18,18 @@
         android:orientation="vertical"
         tools:ignore="MissingConstraints">
 
-<!--        <LinearLayout-->
-<!--            android:layout_width="230dp"-->
-<!--            android:layout_height="40dp"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:layout_marginTop="20dp"-->
-<!--            android:background="@drawable/orange_rectop_300"-->
-<!--            android:backgroundTint="@color/navy"-->
-<!--            android:orientation="vertical"-->
-<!--            tools:ignore="MissingConstraints">-->
-
         <LinearLayout
-            android:layout_width="230dp"
-            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="30dp"
             android:orientation="vertical"
             tools:ignore="MissingConstraints">
 
-            <TextView
+            <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Food In Eye"
-                android:textColor="@color/black"
-                android:textSize="28dp"
-                android:textStyle="bold"
-                android:fontFamily="@font/jalnan"/>
+                android:layout_height="80dp"
+                android:src="@drawable/food_in_eye_gray"/>
 
         </LinearLayout>
 
@@ -52,39 +37,33 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="5dp"
-            android:background="@color/blue" />
+            android:background="@color/sygray" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_gravity="center"
-            android:layout_margin="25dp">
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp">
 
             <LinearLayout
                 android:id="@+id/home_mypage"
                 android:layout_width="120dp"
-                android:layout_height="120dp"
+                android:layout_height="110dp"
                 android:orientation="vertical"
-                android:background="@drawable/mypage_btn"/>
+                android:layout_gravity="center"
+                android:background="@drawable/mypage"/>
 
             <LinearLayout
                 android:id="@+id/home_orderdetail"
-                android:layout_width="140dp"
-                android:layout_height="120dp"
+                android:layout_width="150dp"
+                android:layout_height="110dp"
                 android:orientation="vertical"
                 android:background="@drawable/home_orderdetail"
                 android:layout_marginLeft="25dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="현재 주문내역"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:textSize="14dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="80dp"/>
 
             </LinearLayout>
 
@@ -92,34 +71,24 @@
 
         <LinearLayout
             android:id="@+id/home_order"
-            android:layout_width="290dp"
+            android:layout_width="300dp"
             android:layout_height="130dp"
             android:background="@drawable/home_order"
             android:orientation="vertical"
             android:layout_gravity="center"
-            android:layout_marginBottom="25dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:text="주문하기"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="14dp"
-                android:layout_marginTop="80dp"
-                android:layout_marginLeft="40dp"/>
+            android:layout_marginBottom="30dp">
 
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/home_calibration"
-            android:layout_width="290dp"
+            android:layout_width="300dp"
             android:layout_height="130dp"
             android:background="@drawable/orange_rec_30"
-            android:backgroundTint="@color/navy"
+            android:backgroundTint="@color/sygray"
             android:orientation="vertical"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:layout_marginBottom="30dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -127,10 +96,11 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:text="시선 추적 시 \n calibration"
-                android:textColor="@color/white"
+                android:textColor="@color/black_2"
                 android:textStyle="bold"
-                android:textSize="14dp"
-                android:layout_margin="40dp"/>
+                android:textSize="18dp"
+                android:layout_margin="40dp"
+                android:fontFamily="@font/bmjua"/>
 
         </LinearLayout>
 

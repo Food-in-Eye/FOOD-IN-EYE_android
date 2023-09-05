@@ -13,13 +13,10 @@
         android:background="@drawable/signin_light"
         android:layout_gravity="center"/>
 
-    <TextView
+    <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="한 눈에 학식 👀"
-        android:textSize="30dp"
-        android:fontFamily="@font/chab"
-        android:textColor="@color/meronna_ver2"
+        android:layout_height="80dp"
+        android:src="@drawable/food_in_eye_meronna"
         android:layout_gravity="center"
         android:layout_marginTop="120dp"/>
 
