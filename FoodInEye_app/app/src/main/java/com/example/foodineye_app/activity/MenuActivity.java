@@ -32,6 +32,7 @@ import com.example.foodineye_app.ApiClientEx;
 import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.GazeTrackerDataStorage;
 import com.example.foodineye_app.R;
+import com.example.foodineye_app.data.GetStoreList;
 import com.google.android.material.tabs.TabLayout;
 
 import java.io.File;
@@ -57,8 +58,8 @@ public class MenuActivity extends AppCompatActivity{
 
     List<Menus> menuInfo = new ArrayList<>();
 
-    StoreItem storeList; //전체 가게 목록
-    List<Stores> storeInfo = new ArrayList<>();
+    GetStoreList storeList; //전체 가게 목록
+    List<GetStoreList.Stores> storeInfo = new ArrayList<>();
 
     TabLayout tabLayout;
 
@@ -216,10 +217,10 @@ public class MenuActivity extends AppCompatActivity{
 
         ApiInterface apiInterface = ApiClientEx.getExClient().create(ApiInterface.class);
 
-        Call<StoreItem> call = apiInterface.getData();
-        call.enqueue(new Callback<StoreItem>() {
+        Call<GetStoreList> call = apiInterface.getData();
+        call.enqueue(new Callback<GetStoreList>() {
             @Override
-            public void onResponse(@NonNull Call<StoreItem> call, @NonNull Response<StoreItem> response) {
+            public void onResponse(@NonNull Call<GetStoreList> call, @NonNull Response<GetStoreList> response) {
                 if(response.isSuccessful()){
                     storeList=response.body();
                     storeInfo=storeList.response;
@@ -227,7 +228,7 @@ public class MenuActivity extends AppCompatActivity{
                     Log.d("storeInfo: ", "storeInfo" + storeInfo);
 
                     //categoryActivity -> MenuActivity
-                    for(Stores store: storeInfo){
+                    for(GetStoreList.Stores store: storeInfo){
                         if(store.get_id().equals(s_id)){
                             store_name = store.getName();
                             store_intro.setText(store.getDesc());
@@ -289,7 +290,7 @@ public class MenuActivity extends AppCompatActivity{
                                 String store_name = null;
                                 int position = tab.getPosition();
                                 String tabId = (String) tabLayout.getTabAt(position).getTag();
-                                for (Stores store : storeInfo) {
+                                for (GetStoreList.Stores store : storeInfo) {
                                     if (store.get_id().equals(tabId)) {
                                         store_name = store.getName();
                                         store_intro.setText(store.getDesc());
@@ -333,7 +334,7 @@ public class MenuActivity extends AppCompatActivity{
                 }
             }
             @Override
-            public void onFailure(Call<StoreItem> call, Throwable t) {
+            public void onFailure(Call<GetStoreList> call, Throwable t) {
                 Log.e("STORE", "Error: " + t.getMessage());
             }
         });
