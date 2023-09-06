@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.foodineye_app.ApiClient;
 import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.R;
+import com.example.foodineye_app.data.GetHistoryDetail;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -55,23 +56,21 @@ public class OrderHistoryDetailActivity extends AppCompatActivity {
 
         ApiInterface apiInterface = apiClient.getClient().create(ApiInterface.class);
 
-        Call<HistoryDetail> callHistoryDetail = apiInterface.getHistoryDetail(h_id);
+        Call<GetHistoryDetail> callHistoryDetail = apiInterface.getHistoryDetail(h_id);
 
-        callHistoryDetail.enqueue(new Callback<HistoryDetail>() {
+        callHistoryDetail.enqueue(new Callback<GetHistoryDetail>() {
             @Override
-            public void onResponse(Call<HistoryDetail> call, Response<HistoryDetail> response) {
+            public void onResponse(Call<GetHistoryDetail> call, Response<GetHistoryDetail> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    HistoryDetail historyDetail = response.body();
-                    Log.d("OrderHistoryDetailActivity", historyDetail.toString());
 
-                    HistoryDetail.HistoryDetailResponse historyDetailResponse = historyDetail.historyDetailResponse;
+                    GetHistoryDetail getHistoryDetail = response.body();
 
-                    List<HistoryDetail.HistoryDetailResponse.OrderItem> orderItemList = historyDetailResponse.orders;
+                    List<GetHistoryDetail.OrderItem> orderItemList = getHistoryDetail.getOrders();
                     HistoryDetailAdapter historyDetailAdapter = new HistoryDetailAdapter(getApplicationContext(), orderItemList);
                     recyclerView.setAdapter(historyDetailAdapter);
 
 
-                    String inputDateTime = historyDetailResponse.getDate();
+                    String inputDateTime = getHistoryDetail.getDate();
                     SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
                     SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy년 MM월 dd일 HH:mm:ss");
 
@@ -91,7 +90,7 @@ public class OrderHistoryDetailActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<HistoryDetail> call, Throwable t) {
+            public void onFailure(Call<GetHistoryDetail> call, Throwable t) {
                 Log.d("OrderHistoryDetailActivity", "onFailure: " + t.toString());
             }
         });

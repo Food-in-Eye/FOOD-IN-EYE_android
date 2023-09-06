@@ -1,21 +1,21 @@
 package com.example.foodineye_app;
 
-import com.example.foodineye_app.data.History;
-import com.example.foodineye_app.activity.HistoryDetail;
-import com.example.foodineye_app.data.PostId;
-import com.example.foodineye_app.data.PostIdResponse;
 import com.example.foodineye_app.activity.PostLoginResponse;
-import com.example.foodineye_app.data.PostSignup;
-import com.example.foodineye_app.data.PostSignupResponse;
 import com.example.foodineye_app.activity.PostTestResponse;
+import com.example.foodineye_app.data.GetHistoryDetail;
 import com.example.foodineye_app.data.GetMenu;
 import com.example.foodineye_app.data.GetStoreList;
+import com.example.foodineye_app.data.History;
 import com.example.foodineye_app.data.PostATokenResponse;
+import com.example.foodineye_app.data.PostId;
+import com.example.foodineye_app.data.PostIdResponse;
 import com.example.foodineye_app.data.PostOrder;
 import com.example.foodineye_app.data.PostOrderResponse;
 import com.example.foodineye_app.data.PostPw;
 import com.example.foodineye_app.data.PostPwCheckResponse;
 import com.example.foodineye_app.data.PostRTokenResponse;
+import com.example.foodineye_app.data.PostSignup;
+import com.example.foodineye_app.data.PostSignupResponse;
 import com.example.foodineye_app.data.PutMyInfoSet;
 import com.example.foodineye_app.gaze.PostGaze;
 import com.example.foodineye_app.gaze.PostGazeResponse;
@@ -56,7 +56,7 @@ public interface ApiInterface {
     );
 
     @GET("api/v2/orders/history")
-    Call<HistoryDetail> getHistoryDetail(
+    Call<GetHistoryDetail> getHistoryDetail(
             @Query("id") String history_id
     );
 
