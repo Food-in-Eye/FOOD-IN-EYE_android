@@ -2,11 +2,11 @@ package com.example.foodineye_app;
 
 import com.example.foodineye_app.data.History;
 import com.example.foodineye_app.activity.HistoryDetail;
-import com.example.foodineye_app.activity.PostId;
-import com.example.foodineye_app.activity.PostIdResponse;
+import com.example.foodineye_app.data.PostId;
+import com.example.foodineye_app.data.PostIdResponse;
 import com.example.foodineye_app.activity.PostLoginResponse;
-import com.example.foodineye_app.activity.PostSignup;
-import com.example.foodineye_app.activity.PostSignupResponse;
+import com.example.foodineye_app.data.PostSignup;
+import com.example.foodineye_app.data.PostSignupResponse;
 import com.example.foodineye_app.activity.PostTestResponse;
 import com.example.foodineye_app.data.GetMenu;
 import com.example.foodineye_app.data.GetStoreList;

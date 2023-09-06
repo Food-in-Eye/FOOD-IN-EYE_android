@@ -19,6 +19,10 @@ import androidx.core.content.ContextCompat;
 import com.example.foodineye_app.ApiClientEx;
 import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.R;
+import com.example.foodineye_app.data.PostId;
+import com.example.foodineye_app.data.PostIdResponse;
+import com.example.foodineye_app.data.PostSignup;
+import com.example.foodineye_app.data.PostSignupResponse;
 
 import java.util.regex.Pattern;
 
