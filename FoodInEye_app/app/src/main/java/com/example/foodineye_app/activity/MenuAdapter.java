@@ -3,7 +3,6 @@ package com.example.foodineye_app.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,23 +16,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.foodineye_app.R;
+import com.example.foodineye_app.data.GetMenu;
 
 import java.util.List;
 
 public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder> {
 
     private Context mContext;
-    private MenuItem.Response response;
-    private List<Menus> menusList;
-
+    private List<GetMenu.Menus> menusList;
     private String m_Id,s_Id;
     private String s_name;
     private int s_num;
-
     private int[] itemOLocation;
 
 
-    public MenuAdapter(Context mContext, List<Menus> menusList, String m_Id, String s_Id, String s_name, int s_num) {
+    public MenuAdapter(Context mContext, List<GetMenu.Menus> menusList, String m_Id, String s_Id, String s_name, int s_num) {
         this.mContext = mContext;
         this.menusList = menusList;
         this.m_Id = m_Id;
@@ -58,11 +55,11 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         //Bind the data for each item in the list
-        Menus menus = menusList.get(position);
+        GetMenu.Menus menus = menusList.get(position);
 
         holder.menuName.setText(menus.getName());
         holder.menuPrice.setText(String.valueOf(menus.getPrice()));
-        //holder.menuImg.setImage(menus.getImg_key());
+
         String imageUrl = "https://foodineye2.s3.ap-northeast-2.amazonaws.com/" + menus.getImg_key();
         Glide.with(holder.itemView.getContext())
                 .load(imageUrl)
@@ -70,19 +67,17 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder> 
                 .into(holder.menuImg);
 
         Food food = new Food();//객체 생성
-        food.setFood_id(menus.getf_id());
+        food.setFood_id(menus.getF_id());
         food.setM_name(menus.getName());
         food.setM_price(menus.getPrice());
         food.setM_img_key(menus.getImg_key());
-        food.setM_desc(menus.getM_desc());
+        food.setM_desc(menus.getDesc());
         food.setM_allergy(menus.getAllergy());
         food.setM_origin(menus.getOrigin());
         food.setF_num(menus.getNum());
         IntentToDetail intentToDetail = new IntentToDetail(s_Id, m_Id, s_name, food, s_num);
         Log.d("intentToDetail", "intentToDetail_snum: " + s_num);
         Log.d("intentToDetail", "intentToDetail_fnum:  " + menus.getNum());
-        Log.d("MenuAdapter", "intentToDetail"+intentToDetail.toString());
-
 
         //Click Menu Detail, intent에 Food 객체 전달, MenuDetailActivity와 연결
         holder.itemView.setOnClickListener(new View.OnClickListener() {

@@ -32,6 +32,7 @@ import com.example.foodineye_app.ApiClientEx;
 import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.GazeTrackerDataStorage;
 import com.example.foodineye_app.R;
+import com.example.foodineye_app.data.GetMenu;
 import com.example.foodineye_app.data.GetStoreList;
 import com.google.android.material.tabs.TabLayout;
 
@@ -56,7 +57,7 @@ public class MenuActivity extends AppCompatActivity{
     RecyclerView menurecyclerView;
     MenuAdapter menuAdapter;
 
-    List<Menus> menuInfo = new ArrayList<>();
+    List<GetMenu.Menus> menuInfo = new ArrayList<>(); //store의 메뉴판(음식들)
 
     GetStoreList storeList; //전체 가게 목록
     List<GetStoreList.Stores> storeInfo = new ArrayList<>();
@@ -187,26 +188,24 @@ public class MenuActivity extends AppCompatActivity{
         Log.d("MenuActivity", "showMenu_M: " + m_id);
         Log.d("MenuActivity", "showMenu_S: " + tabs_id);
 
-        Call<MenuItem> callMenu = apiInterface1.getMenusData(m_id);
-        callMenu.enqueue(new Callback<MenuItem>() {
+        Call<GetMenu> callMenu = apiInterface1.getMenusData(m_id);
+        callMenu.enqueue(new Callback<GetMenu>() {
             @Override
-            public void onResponse(Call<MenuItem> call, Response<MenuItem> response) {
-                MenuItem menuItem = response.body();
-//                Log.d("MenuActivity", "!!!!!!!!!!!!!!!!!!!MenuActivity: "+menuItem.toString());
+            public void onResponse(Call<GetMenu> call, Response<GetMenu> response) {
+                if(response.isSuccessful()){
+                    menuInfo = response.body().getMenus();
 
-                if (response.isSuccessful() && response.body() != null && response.body().response != null) {
-                    menuInfo = response.body().response.getMenus();
-                } else {
-                    menuInfo = new ArrayList<>(); // 빈 목록을 생성하여 초기화
+                    menuAdapter = new MenuAdapter(getApplicationContext(), menuInfo, m_id, tabs_id, s_name, s_num);
+                    menurecyclerView.setAdapter(menuAdapter);
+                }else{
+                    menuInfo = new ArrayList<>(); //빈 목록을 생성하여 초기화
+
                 }
-
-                menuAdapter = new MenuAdapter(getApplicationContext(), menuInfo, m_id, tabs_id, s_name, s_num);
-                menurecyclerView.setAdapter(menuAdapter);
             }
 
             @Override
-            public void onFailure(Call<MenuItem> call, Throwable t) {
-                // 실패 시 처리
+            public void onFailure(Call<GetMenu> call, Throwable t) {
+
             }
         });
 
