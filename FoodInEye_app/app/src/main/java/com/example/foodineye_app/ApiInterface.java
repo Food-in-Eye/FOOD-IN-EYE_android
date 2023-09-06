@@ -2,18 +2,17 @@ package com.example.foodineye_app;
 
 import com.example.foodineye_app.activity.History;
 import com.example.foodineye_app.activity.HistoryDetail;
-import com.example.foodineye_app.activity.OrderItem;
 import com.example.foodineye_app.activity.PostId;
 import com.example.foodineye_app.activity.PostIdResponse;
 import com.example.foodineye_app.activity.PostLoginResponse;
-import com.example.foodineye_app.data.PostOrder;
-import com.example.foodineye_app.data.PostOrderResponse;
 import com.example.foodineye_app.activity.PostSignup;
 import com.example.foodineye_app.activity.PostSignupResponse;
 import com.example.foodineye_app.activity.PostTestResponse;
 import com.example.foodineye_app.data.GetMenu;
 import com.example.foodineye_app.data.GetStoreList;
 import com.example.foodineye_app.data.PostATokenResponse;
+import com.example.foodineye_app.data.PostOrder;
+import com.example.foodineye_app.data.PostOrderResponse;
 import com.example.foodineye_app.data.PostPw;
 import com.example.foodineye_app.data.PostPwCheckResponse;
 import com.example.foodineye_app.data.PostRTokenResponse;
@@ -43,11 +42,6 @@ public interface ApiInterface {
 
     @POST("api/v2/orders/order")
     Call<PostOrderResponse> createOrder(@Body PostOrder postOrder);
-
-    @GET("api/v2/orders/order")
-    Call<OrderItem> getOrder(
-            @Query("id") String o_id,
-            @Query("detail") String isDetail);
 
     @POST("api/v2/orders/order/gaze")
     Call<PostGazeResponse> createGaze(

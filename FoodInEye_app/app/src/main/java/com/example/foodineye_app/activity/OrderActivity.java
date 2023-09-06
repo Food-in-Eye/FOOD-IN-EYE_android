@@ -206,7 +206,7 @@ public class OrderActivity extends AppCompatActivity {
                             postGazes = (List<PostGaze>) ((Data)getApplication()).getGazeList();
 
 
-                            Call<PostGazeResponse> gazeCall = apiInterface.createGaze(history_id, postGazes);
+                            Call<PostGazeResponse> gazeCall = apiInterface1.createGaze(history_id, postGazes);
                             Log.d("Response", "postGaze: "+postGazes.toString());
 
                             gazeCall.enqueue(new Callback<PostGazeResponse>() {
