@@ -216,7 +216,7 @@ public class MenuActivity extends AppCompatActivity{
 
         ApiInterface apiInterface = ApiClientEx.getExClient().create(ApiInterface.class);
 
-        Call<GetStoreList> call = apiInterface.getData();
+        Call<GetStoreList> call = apiInterface.getStore();
         call.enqueue(new Callback<GetStoreList>() {
             @Override
             public void onResponse(@NonNull Call<GetStoreList> call, @NonNull Response<GetStoreList> response) {

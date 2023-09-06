@@ -1,4 +1,4 @@
-package com.example.foodineye_app.activity;
+package com.example.foodineye_app.data;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -7,29 +7,21 @@ import java.util.List;
 
 public class PostOrderResponse {
 
-    @SerializedName("request")
-    @Expose
-    public String request;
-    @SerializedName("status")
-    @Expose
-    public String status;
-    @SerializedName("response")
-    @Expose
-    public List<Response> response;
     @SerializedName("h_id")
     @Expose
     public String history_id;
 
-    public String toString(){return "request: "+ request+ "status: "+ status+ " history_id: "+history_id + "response: "+response.toString();}
+    @SerializedName("response")
+    @Expose
+    public List<Response> response;
 
-    public String getRequest() {    return request;   }
-
-    public void setRequest(String request) {   this.request = request;   }
-
-    public String getStatus() {   return status;    }
-
-    public void setStatus(String status) {     this.status = status;   }
-
+    @Override
+    public String toString() {
+        return "PostOrderResponse{" +
+                "history_id='" + history_id + '\'' +
+                ", response=" + response +
+                '}';
+    }
     public List<Response> getResponse() {    return response;   }
 
     public void setResponse(List<Response> response) {     this.response = response;   }

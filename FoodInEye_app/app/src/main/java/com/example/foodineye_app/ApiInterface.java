@@ -6,8 +6,8 @@ import com.example.foodineye_app.activity.OrderItem;
 import com.example.foodineye_app.activity.PostId;
 import com.example.foodineye_app.activity.PostIdResponse;
 import com.example.foodineye_app.activity.PostLoginResponse;
-import com.example.foodineye_app.activity.PostOrder;
-import com.example.foodineye_app.activity.PostOrderResponse;
+import com.example.foodineye_app.data.PostOrder;
+import com.example.foodineye_app.data.PostOrderResponse;
 import com.example.foodineye_app.activity.PostSignup;
 import com.example.foodineye_app.activity.PostSignupResponse;
 import com.example.foodineye_app.activity.PostTestResponse;
@@ -36,7 +36,7 @@ import retrofit2.http.Query;
 public interface ApiInterface {
 
     @GET("api/v2/stores/")
-    Call<GetStoreList> getData();
+    Call<GetStoreList> getStore();
 
     @GET("api/v2/menus/menu/foods")
     Call<GetMenu> getMenusData(@Query("id") String m_id);
