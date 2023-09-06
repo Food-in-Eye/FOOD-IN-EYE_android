@@ -3,6 +3,7 @@ package com.example.foodineye_app.activity;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.HandlerThread;
 import android.util.Log;
@@ -54,7 +55,9 @@ public class OrderActivity extends AppCompatActivity {
     List<PostOrder.StoreOrder> content = new ArrayList<>();
     List<PostOrder.StoreOrder.FoodCount> f_list;
     PostOrder postOrder;
-    String u_id = "6458f67e50bde95733e4b57f";
+
+    SharedPreferences sharedPreferences;
+    String u_id;
     String history_id;
 
     //-----------------------------------------------------------------------------------------
@@ -149,6 +152,10 @@ public class OrderActivity extends AppCompatActivity {
 
         ApiInterface apiInterface = apiClient.getClient().create(ApiInterface.class);
 
+        //u_id
+        sharedPreferences = getSharedPreferences("test_token1", MODE_PRIVATE);
+        u_id = sharedPreferences.getString("u_id", null);
+
         //요청 바디에 들어가 PostOrder 객체 생성
         postOrder = new PostOrder(u_id, total, content);
         Log.d("OrderActivity", "postOrder" + postOrder.toString());
@@ -232,6 +239,8 @@ public class OrderActivity extends AppCompatActivity {
 
 
 
+                        }else{
+                            //요청이 실패한 경우 errorbody
                         }
                     }
 
