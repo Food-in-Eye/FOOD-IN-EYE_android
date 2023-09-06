@@ -7,7 +7,7 @@ import android.util.Log;
 
 import com.example.foodineye_app.ApiClientEx;
 import com.example.foodineye_app.ApiInterface;
-import com.example.foodineye_app.post.PostATokenResponse;
+import com.example.foodineye_app.data.PostATokenResponse;
 
 import java.io.IOException;
 

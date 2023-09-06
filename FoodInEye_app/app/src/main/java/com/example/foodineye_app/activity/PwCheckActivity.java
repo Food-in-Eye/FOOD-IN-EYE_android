@@ -21,8 +21,8 @@ import androidx.core.content.ContextCompat;
 import com.example.foodineye_app.ApiClient;
 import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.R;
-import com.example.foodineye_app.post.PostPw;
-import com.example.foodineye_app.post.PostPwCheckResponse;
+import com.example.foodineye_app.data.PostPw;
+import com.example.foodineye_app.data.PostPwCheckResponse;
 
 import java.io.IOException;
 

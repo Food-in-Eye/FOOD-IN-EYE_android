@@ -20,6 +20,7 @@ import com.example.foodineye_app.ApiClientEx;
 import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.GazeTrackerDataStorage;
 import com.example.foodineye_app.R;
+import com.example.foodineye_app.data.GetStoreList;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -33,8 +34,8 @@ import visual.camp.sample.view.PointView;
 
 public class StorelistActivity extends AppCompatActivity {
 
-    StoreItem storeList; //전체 가게 목록
-    List<Stores> storeInfo;
+    GetStoreList storeList; //전체 가게 목록
+    List<GetStoreList.Stores> storeInfo;
     RecyclerView recyclerView;
     StoreAdapter storeAdapter;
     ConstraintLayout storeLayout;
@@ -57,8 +58,6 @@ public class StorelistActivity extends AppCompatActivity {
         ctx = getApplicationContext();
         storeLayout = findViewById(R.id.storelistLayout);
         viewpoint = findViewById(R.id.view_point_storelist);
-
-//        setGazeTrackerDataStorage();
 
         //storeInfo 객체
         storeInfo = new ArrayList<>();
@@ -144,6 +143,7 @@ public class StorelistActivity extends AppCompatActivity {
     }
 
     public void setStoreList(){
+
         //storeList 세팅
 //        ApiClient apiClient = new ApiClient(getApplicationContext());
 //        apiClient.initializeHttpClient();
@@ -152,31 +152,31 @@ public class StorelistActivity extends AppCompatActivity {
 
         ApiInterface apiInterface = ApiClientEx.getExClient().create(ApiInterface.class);
 
-        Call<StoreItem> call = apiInterface.getData();
-
-        call.enqueue(new Callback<StoreItem>() {
+        Call<GetStoreList> call = apiInterface.getData();
+        call.enqueue(new Callback<GetStoreList>() {
             @Override
-            public void onResponse(Call<StoreItem> call, Response<StoreItem> response) {
+            public void onResponse(Call<GetStoreList> call, Response<GetStoreList> response) {
                 if(response.isSuccessful()){
-                    storeList = response.body();
 
-//                Log.d("StorelistActivity", storeList.toString());
+                    storeList = response.body();
                     storeInfo = storeList.response;
 
                     storeAdapter = new StoreAdapter(getApplicationContext(), storeInfo);
                     recyclerView.setAdapter(storeAdapter);
 
+
                 }else{
 
                 }
-
             }
 
             @Override
-            public void onFailure(Call<StoreItem> call, Throwable t) {
+            public void onFailure(Call<GetStoreList> call, Throwable t) {
                 Log.d("StorelistActivity", t.toString());
             }
         });
+
+
     }
 
     //

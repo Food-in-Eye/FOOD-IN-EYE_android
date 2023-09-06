@@ -1,4 +1,4 @@
-package com.example.foodineye_app.post;
+package com.example.foodineye_app.data;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -6,12 +6,6 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class GetStoreList {
-
-    @SerializedName("request")
-    public String request;
-
-    @SerializedName("status")
-    public String status;
 
     @SerializedName("response")
     public List<Stores> response;

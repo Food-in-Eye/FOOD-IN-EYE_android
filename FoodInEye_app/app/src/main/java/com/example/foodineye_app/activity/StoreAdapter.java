@@ -16,17 +16,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodineye_app.R;
+import com.example.foodineye_app.data.GetStoreList;
 
 import java.util.List;
 
 public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.MyViewHolder> {
 
     private Context mContext;
-    private List<Stores> storesList;
+    private List<GetStoreList.Stores> storesList;
 
     private int[] itemOLocation;
 
-    public StoreAdapter(Context context, List<Stores> storesList) {
+    public StoreAdapter(Context context, List<GetStoreList.Stores> storesList) {
         mContext = context;
         this.storesList = storesList;
     }
@@ -49,7 +50,7 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.MyViewHolder
     public void onBindViewHolder(@NonNull StoreAdapter.MyViewHolder holder, int position) {
 
         //Bind the data for each item in the list
-        Stores store = storesList.get(position);
+        GetStoreList.Stores store = storesList.get(position);
         holder.storeName.setText(store.getName());
 
         //Set the background color for each item in the list

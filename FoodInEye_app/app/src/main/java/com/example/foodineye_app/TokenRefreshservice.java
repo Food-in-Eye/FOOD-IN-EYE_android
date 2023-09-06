@@ -10,7 +10,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.example.foodineye_app.post.PostRTokenResponse;
+import com.example.foodineye_app.data.PostRTokenResponse;
 
 import java.io.IOException;
 

@@ -23,7 +23,7 @@ import androidx.core.content.ContextCompat;
 import com.example.foodineye_app.ApiClient;
 import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.R;
-import com.example.foodineye_app.post.PutMyInfoSet;
+import com.example.foodineye_app.data.PutMyInfoSet;
 
 import java.util.regex.Pattern;
 

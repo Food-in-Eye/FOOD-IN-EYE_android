@@ -12,14 +12,14 @@ import com.example.foodineye_app.activity.PostOrderResponse;
 import com.example.foodineye_app.activity.PostSignup;
 import com.example.foodineye_app.activity.PostSignupResponse;
 import com.example.foodineye_app.activity.PostTestResponse;
-import com.example.foodineye_app.activity.StoreItem;
+import com.example.foodineye_app.data.GetStoreList;
+import com.example.foodineye_app.data.PostATokenResponse;
+import com.example.foodineye_app.data.PostPw;
+import com.example.foodineye_app.data.PostPwCheckResponse;
+import com.example.foodineye_app.data.PostRTokenResponse;
+import com.example.foodineye_app.data.PutMyInfoSet;
 import com.example.foodineye_app.gaze.PostGaze;
 import com.example.foodineye_app.gaze.PostGazeResponse;
-import com.example.foodineye_app.post.PostATokenResponse;
-import com.example.foodineye_app.post.PostPw;
-import com.example.foodineye_app.post.PostPwCheckResponse;
-import com.example.foodineye_app.post.PostRTokenResponse;
-import com.example.foodineye_app.post.PutMyInfoSet;
 
 import java.util.List;
 
@@ -35,8 +35,11 @@ import retrofit2.http.Query;
 
 public interface ApiInterface {
 
+//    @GET("api/v2/stores/")
+//    Call<StoreItem> getData();
+
     @GET("api/v2/stores/")
-    Call<StoreItem> getData();
+    Call<GetStoreList> getData();
 
     @GET("api/v2/menus/menu/foods")
     Call<MenuItem> getMenusData(@Query("id") String m_id);
