@@ -339,20 +339,19 @@ public class SignupActivity extends AppCompatActivity {
         call.enqueue(new Callback<PostSignupResponse>() {
             @Override
             public void onResponse(Call<PostSignupResponse> call, Response<PostSignupResponse> response) {
-                if(response.isSuccessful() && response.body() != null){
+                if(response.isSuccessful()){
+
                     PostSignupResponse postSignupResponse = response.body();
-                    if(postSignupResponse.getDetail() != null && postSignupResponse.getDetail().equals("Duplicate ID")){
-                        show("입력된 id가 중복되었습니다.");
-                    }else{
-                        show("회원가입되었습니다!");
 
-                        Intent signToLoginIntent = new Intent(getApplicationContext(), SignToLoginActivity.class);
-                        startActivity(signToLoginIntent);
-                    }
+                    show("회원가입되었습니다!");
 
+                    Intent signToLoginIntent = new Intent(getApplicationContext(), SignToLoginActivity.class);
+                    startActivity(signToLoginIntent);
                 }else{
                     Log.i("SignupActivity", "회원가입 중복 체크 서버 응답 오류");
+
                 }
+
             }
 
             @Override
