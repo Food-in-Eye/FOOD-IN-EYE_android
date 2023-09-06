@@ -16,7 +16,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.foodineye_app.ApiClientEx;
+import com.example.foodineye_app.ApiClient;
 import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.GazeTrackerDataStorage;
 import com.example.foodineye_app.R;
@@ -145,12 +145,12 @@ public class StorelistActivity extends AppCompatActivity {
     public void setStoreList(){
 
         //storeList 세팅
-//        ApiClient apiClient = new ApiClient(getApplicationContext());
-//        apiClient.initializeHttpClient();
-//
-//        ApiInterface apiInterface = apiClient.getClient().create(ApiInterface.class);
+        ApiClient apiClient = new ApiClient(getApplicationContext());
+        apiClient.initializeHttpClient();
 
-        ApiInterface apiInterface = ApiClientEx.getExClient().create(ApiInterface.class);
+        ApiInterface apiInterface = apiClient.getClient().create(ApiInterface.class);
+
+//        ApiInterface apiInterface = ApiClientEx.getExClient().create(ApiInterface.class);
 
         Call<GetStoreList> call = apiInterface.getStore();
         call.enqueue(new Callback<GetStoreList>() {

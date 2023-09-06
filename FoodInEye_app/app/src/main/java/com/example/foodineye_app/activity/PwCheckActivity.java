@@ -48,8 +48,6 @@ public class PwCheckActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pw_check);
 
-        u_id = ((Data) getApplication()).getUser_id(); // 회원 고유의 ID
-
         // 현재 SharedPreferences에서 access_token을 가져오거나, 원하는 방식으로 토큰을 얻어옵니다.
         sharedPreferences = getSharedPreferences("test_token1", Context.MODE_PRIVATE);
         u_id = sharedPreferences.getString("u_id", null);

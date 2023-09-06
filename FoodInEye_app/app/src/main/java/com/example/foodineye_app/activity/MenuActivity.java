@@ -28,7 +28,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.foodineye_app.ApiClientEx;
+import com.example.foodineye_app.ApiClient;
 import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.GazeTrackerDataStorage;
 import com.example.foodineye_app.R;
@@ -179,12 +179,11 @@ public class MenuActivity extends AppCompatActivity{
     }
     public void showMenu(String m_id, String tabs_id, String s_name, int s_num){
         //menuList 세팅
-//        ApiClient apiClient = new ApiClient(getApplicationContext());
-//        apiClient.initializeHttpClient();
-//
-//        ApiInterface apiInterface1 = apiClient.getClient().create(ApiInterface.class);
+        ApiClient apiClient = new ApiClient(getApplicationContext());
+        apiClient.initializeHttpClient();
 
-        ApiInterface apiInterface1 = ApiClientEx.getExClient().create(ApiInterface.class);
+        ApiInterface apiInterface1 = apiClient.getClient().create(ApiInterface.class);
+
         Log.d("MenuActivity", "showMenu_M: " + m_id);
         Log.d("MenuActivity", "showMenu_S: " + tabs_id);
 
@@ -212,9 +211,7 @@ public class MenuActivity extends AppCompatActivity{
     }
     public void showStore(String s_id, String m_id){
         //retrofit2로 데이터 받아오기
-//        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-
-        ApiInterface apiInterface = ApiClientEx.getExClient().create(ApiInterface.class);
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         Call<GetStoreList> call = apiInterface.getStore();
         call.enqueue(new Callback<GetStoreList>() {

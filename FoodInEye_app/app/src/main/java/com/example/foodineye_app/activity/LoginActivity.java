@@ -121,9 +121,9 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
 
 //                HomeActivity로 이동
-                Intent loginIntent = new Intent(getApplicationContext(), HomeActivity.class);
-                startActivity(loginIntent);
-//                login();
+//                Intent loginIntent = new Intent(getApplicationContext(), HomeActivity.class);
+//                startActivity(loginIntent);
+                login();
             }
         });
 
