@@ -5,10 +5,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class PostIdResponse {
 
-    @SerializedName("request")
-    @Expose
-    public String request;
-
     @SerializedName("state")
     @Expose
     public String state;
@@ -20,8 +16,7 @@ public class PostIdResponse {
     @Override
     public String toString() {
         return "PostIdResponse{" +
-                "request='" + request + '\'' +
-                ", state='" + state + '\'' +
+                "state='" + state + '\'' +
                 '}';
     }
 }
