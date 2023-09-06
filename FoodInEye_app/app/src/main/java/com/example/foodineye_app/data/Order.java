@@ -1,4 +1,6 @@
-package com.example.foodineye_app.activity;
+package com.example.foodineye_app.data;
+
+import com.example.foodineye_app.activity.SubOrder;
 
 import java.util.List;
 

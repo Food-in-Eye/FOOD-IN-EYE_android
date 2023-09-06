@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodineye_app.R;
+import com.example.foodineye_app.data.History;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

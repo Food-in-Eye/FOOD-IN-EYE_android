@@ -1,6 +1,6 @@
 package com.example.foodineye_app;
 
-import com.example.foodineye_app.activity.History;
+import com.example.foodineye_app.data.History;
 import com.example.foodineye_app.activity.HistoryDetail;
 import com.example.foodineye_app.activity.PostId;
 import com.example.foodineye_app.activity.PostIdResponse;
@@ -54,12 +54,6 @@ public interface ApiInterface {
             @Query("u_id") String u_id,
             @Query("batch") int batch
     );
-
-//    @GET("api/v2/orders/test/historys")
-//    Call<History> getHistory(
-//            @Query("u_id") String u_id,
-//            @Query("batch") int batch
-//    );
 
     @GET("api/v2/orders/history")
     Call<HistoryDetail> getHistoryDetail(

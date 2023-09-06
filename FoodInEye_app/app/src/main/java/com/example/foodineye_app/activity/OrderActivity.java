@@ -22,6 +22,7 @@ import com.example.foodineye_app.ApiClient;
 import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.GazeTrackerDataStorage;
 import com.example.foodineye_app.R;
+import com.example.foodineye_app.data.Order;
 import com.example.foodineye_app.data.PostOrder;
 import com.example.foodineye_app.data.PostOrderResponse;
 import com.example.foodineye_app.gaze.PostGaze;

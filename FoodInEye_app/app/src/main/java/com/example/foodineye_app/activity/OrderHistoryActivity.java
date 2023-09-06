@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.foodineye_app.ApiClient;
 import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.R;
+import com.example.foodineye_app.data.History;
 import com.lakue.pagingbutton.LakuePagingButton;
 import com.lakue.pagingbutton.OnPageSelectListener;
 

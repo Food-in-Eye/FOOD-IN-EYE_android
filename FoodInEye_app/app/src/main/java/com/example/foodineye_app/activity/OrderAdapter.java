@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodineye_app.R;
+import com.example.foodineye_app.data.Order;
 
 import java.util.List;
 

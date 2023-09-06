@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodineye_app.R;
+import com.example.foodineye_app.data.Order;
 import com.example.foodineye_app.websocket.UpdateWebSocketModel;
 import com.example.foodineye_app.websocket.WebSocketManager;
 

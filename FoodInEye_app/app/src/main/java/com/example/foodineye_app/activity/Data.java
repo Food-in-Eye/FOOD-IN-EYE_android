@@ -3,6 +3,7 @@ package com.example.foodineye_app.activity;
 import android.app.Application;
 import android.util.Log;
 
+import com.example.foodineye_app.data.Order;
 import com.example.foodineye_app.gaze.PostGaze;
 
 import org.json.JSONArray;
@@ -14,9 +15,6 @@ import java.util.List;
 import visual.camp.sample.view.CalibrationViewer;
 
 public class Data extends Application {
-
-    // user_id
-    private String user_id;
 
     // layout 전체
     private static JSONArray jsonGazeArray = new JSONArray();
@@ -117,11 +115,4 @@ public class Data extends Application {
         GazeList.add(postGaze);
     }
 
-    public String getUser_id() {
-        return user_id;
-    }
-
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
-    }
 }
