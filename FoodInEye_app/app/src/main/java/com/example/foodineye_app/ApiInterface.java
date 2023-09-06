@@ -1,7 +1,6 @@
 package com.example.foodineye_app;
 
 import com.example.foodineye_app.activity.PostLoginResponse;
-import com.example.foodineye_app.activity.PostTestResponse;
 import com.example.foodineye_app.data.GetHistoryDetail;
 import com.example.foodineye_app.data.GetMenu;
 import com.example.foodineye_app.data.GetStoreList;
@@ -87,12 +86,6 @@ public interface ApiInterface {
     Call<Void> setInfo(
             @Query("u_id") String u_id,
             @Body PutMyInfoSet putMyInfoSet
-    );
-
-
-    @GET("api/v2/users/test/a_token")
-    Call<PostTestResponse> test(
-            @Header("Authorization") String authorizationHeader
     );
 
     @GET("api/v2/users/issue/refresh")
