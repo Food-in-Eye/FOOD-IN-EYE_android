@@ -20,9 +20,11 @@ import com.example.foodineye_app.ApiClient;
 import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.GazeTrackerDataStorage;
 import com.example.foodineye_app.R;
+import com.example.foodineye_app.data.GetStoreList;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,8 +35,8 @@ import visual.camp.sample.view.PointView;
 
 public class StorelistActivity extends AppCompatActivity {
 
-    StoreItem storeList; //전체 가게 목록
-    List<Stores> storeInfo;
+    GetStoreList storeList; //전체 가게 목록
+    List<GetStoreList.Stores> storeInfo;
     RecyclerView recyclerView;
     StoreAdapter storeAdapter;
     ConstraintLayout storeLayout;
@@ -58,8 +60,6 @@ public class StorelistActivity extends AppCompatActivity {
         storeLayout = findViewById(R.id.storelistLayout);
         viewpoint = findViewById(R.id.view_point_storelist);
 
-        setGazeTrackerDataStorage();
-
         //storeInfo 객체
         storeInfo = new ArrayList<>();
         recyclerView = findViewById(R.id.recyclerView_StoreList);
@@ -67,27 +67,7 @@ public class StorelistActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        //storeList 세팅
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<StoreItem> call = apiInterface.getData();
-
-        call.enqueue(new Callback<StoreItem>() {
-            @Override
-            public void onResponse(Call<StoreItem> call, Response<StoreItem> response) {
-                storeList = response.body();
-
-                Log.d("StorelistActivity", storeList.toString());
-                storeInfo = storeList.response;
-
-                storeAdapter = new StoreAdapter(getApplicationContext(), storeInfo);
-                recyclerView.setAdapter(storeAdapter);
-            }
-
-            @Override
-            public void onFailure(Call<StoreItem> call, Throwable t) {
-                Log.d("StorelistActivity", t.toString());
-            }
-        });
+        setStoreList();
 
         //-------------------------------------------------------------------------------------
         //screenshot
@@ -116,7 +96,6 @@ public class StorelistActivity extends AppCompatActivity {
             }
         });
 
-        //-------------------------------------------------------------------------------------
 
     }
 
@@ -162,6 +141,53 @@ public class StorelistActivity extends AppCompatActivity {
         if (gazeTrackerDataStorage != null) {
             gazeTrackerDataStorage.stopGazeTracker("store_list", 0, 0);
         }
+    }
+
+    public void setStoreList(){
+
+        //storeList 세팅
+        ApiClient apiClient = new ApiClient(getApplicationContext());
+        apiClient.initializeHttpClient();
+
+        ApiInterface apiInterface = apiClient.getClient().create(ApiInterface.class);
+
+//        ApiInterface apiInterface = ApiClientEx.getExClient().create(ApiInterface.class);
+
+        Call<GetStoreList> call = apiInterface.getStore();
+        call.enqueue(new Callback<GetStoreList>() {
+            @Override
+            public void onResponse(Call<GetStoreList> call, Response<GetStoreList> response) {
+                if(response.isSuccessful()){
+
+
+
+                    storeList = response.body();
+                    storeInfo = storeList.response;
+
+                    storeAdapter = new StoreAdapter(getApplicationContext(), storeInfo);
+                    recyclerView.setAdapter(storeAdapter);
+
+
+                }else{
+                    // 응답이 실패한 경우에 대한 처리를 여기서 수행합니다.
+                    String errorBody = null; // 실패한 응답의 본문을 얻음
+                    try {
+                        errorBody = response.errorBody().string();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    Log.i("StorelistActivity", "로그인 응답 오류: " + response.code() + ", " + errorBody);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetStoreList> call, Throwable t) {
+                Log.d("StorelistActivity", t.toString());
+            }
+        });
+
+
     }
 
     //

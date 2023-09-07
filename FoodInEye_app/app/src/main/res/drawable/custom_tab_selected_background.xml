@@ -1,0 +1,14 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background shape when tab is selected -->
+    <item android:id="@android:id/background">
+        <shape android:shape="rectangle">
+            <solid android:color="#FF9345" />
+            <corners android:radius="300dp" />
+            <corners
+                android:radius="0dp"
+                android:topLeftRadius="300dp"
+                android:bottomLeftRadius="0dp"
+                android:topRightRadius="300dp" />
+        </shape>
+    </item>
+</layer-list>

@@ -7,18 +7,23 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.HandlerThread;
 import android.util.Log;
 import android.util.LruCache;
+import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,6 +32,8 @@ import com.example.foodineye_app.ApiClient;
 import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.GazeTrackerDataStorage;
 import com.example.foodineye_app.R;
+import com.example.foodineye_app.data.GetMenu;
+import com.example.foodineye_app.data.GetStoreList;
 import com.google.android.material.tabs.TabLayout;
 
 import java.io.File;
@@ -41,6 +48,8 @@ import visual.camp.sample.view.PointView;
 
 public class MenuActivity extends AppCompatActivity{
 
+    Toolbar toolbar;
+
     TextView store_intro;
     TextView store_openTime;
     TextView store_notice;
@@ -48,10 +57,10 @@ public class MenuActivity extends AppCompatActivity{
     RecyclerView menurecyclerView;
     MenuAdapter menuAdapter;
 
-    List<Menus> menuInfo = new ArrayList<>();
+    List<GetMenu.Menus> menuInfo = new ArrayList<>(); //store의 메뉴판(음식들)
 
-    StoreItem storeList; //전체 가게 목록
-    List<Stores> storeInfo = new ArrayList<>();
+    GetStoreList storeList; //전체 가게 목록
+    List<GetStoreList.Stores> storeInfo = new ArrayList<>();
 
     TabLayout tabLayout;
 
@@ -75,6 +84,9 @@ public class MenuActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
+        toolbar = findViewById(R.id.menu_toolbar);
+        setToolBar(toolbar);
 
         TabLayout tabLayout = findViewById(R.id.store_tab);
 
@@ -167,30 +179,32 @@ public class MenuActivity extends AppCompatActivity{
     }
     public void showMenu(String m_id, String tabs_id, String s_name, int s_num){
         //menuList 세팅
-        ApiInterface apiInterface1 = ApiClient.getClient().create(ApiInterface.class);
+        ApiClient apiClient = new ApiClient(getApplicationContext());
+        apiClient.initializeHttpClient();
+
+        ApiInterface apiInterface1 = apiClient.getClient().create(ApiInterface.class);
+
         Log.d("MenuActivity", "showMenu_M: " + m_id);
         Log.d("MenuActivity", "showMenu_S: " + tabs_id);
 
-        Call<MenuItem> callMenu = apiInterface1.getMenusData(m_id);
-        callMenu.enqueue(new Callback<MenuItem>() {
+        Call<GetMenu> callMenu = apiInterface1.getMenusData(m_id);
+        callMenu.enqueue(new Callback<GetMenu>() {
             @Override
-            public void onResponse(Call<MenuItem> call, Response<MenuItem> response) {
-                MenuItem menuItem = response.body();
-//                Log.d("MenuActivity", "!!!!!!!!!!!!!!!!!!!MenuActivity: "+menuItem.toString());
+            public void onResponse(Call<GetMenu> call, Response<GetMenu> response) {
+                if(response.isSuccessful()){
+                    menuInfo = response.body().getMenus();
 
-                if (response.isSuccessful() && response.body() != null && response.body().response != null) {
-                    menuInfo = response.body().response.getMenus();
-                } else {
-                    menuInfo = new ArrayList<>(); // 빈 목록을 생성하여 초기화
+                    menuAdapter = new MenuAdapter(getApplicationContext(), menuInfo, m_id, tabs_id, s_name, s_num);
+                    menurecyclerView.setAdapter(menuAdapter);
+                }else{
+                    menuInfo = new ArrayList<>(); //빈 목록을 생성하여 초기화
+
                 }
-
-                menuAdapter = new MenuAdapter(getApplicationContext(), menuInfo, m_id, tabs_id, s_name, s_num);
-                menurecyclerView.setAdapter(menuAdapter);
             }
 
             @Override
-            public void onFailure(Call<MenuItem> call, Throwable t) {
-                // 실패 시 처리
+            public void onFailure(Call<GetMenu> call, Throwable t) {
+
             }
         });
 
@@ -199,10 +213,10 @@ public class MenuActivity extends AppCompatActivity{
         //retrofit2로 데이터 받아오기
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
-        Call<StoreItem> call = apiInterface.getData();
-        call.enqueue(new Callback<StoreItem>() {
+        Call<GetStoreList> call = apiInterface.getStore();
+        call.enqueue(new Callback<GetStoreList>() {
             @Override
-            public void onResponse(@NonNull Call<StoreItem> call, @NonNull Response<StoreItem> response) {
+            public void onResponse(@NonNull Call<GetStoreList> call, @NonNull Response<GetStoreList> response) {
                 if(response.isSuccessful()){
                     storeList=response.body();
                     storeInfo=storeList.response;
@@ -210,7 +224,7 @@ public class MenuActivity extends AppCompatActivity{
                     Log.d("storeInfo: ", "storeInfo" + storeInfo);
 
                     //categoryActivity -> MenuActivity
-                    for(Stores store: storeInfo){
+                    for(GetStoreList.Stores store: storeInfo){
                         if(store.get_id().equals(s_id)){
                             store_name = store.getName();
                             store_intro.setText(store.getDesc());
@@ -230,8 +244,8 @@ public class MenuActivity extends AppCompatActivity{
                         TabLayout.Tab tab = tabLayout.newTab().setText(tabTitle);
                         tab.setTag(tab_Id);
                         tabLayout.addTab(tab);
-                        //초기 tab 설정 category -> Menu
-                        if(tab_Id.equals(s_id)){
+                        // 초기 tab 설정 category -> Menu
+                        if (tab_Id.equals(s_id)) {
                             tabLayout.getTabAt(i).select();
                         }
 
@@ -241,12 +255,19 @@ public class MenuActivity extends AppCompatActivity{
                             tab.view.setEnabled(false);
                             tab.view.setBackgroundColor(Color.LTGRAY);
                         }
+
+                        // 탭의 너비를 130dp로 설정
+                        sizesmallTab(tab);
                     }
+                    customTab(tabLayout);
 
                     //tabLayout 클릭시 동작
                     tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                         @Override
                         public void onTabSelected(TabLayout.Tab tab) {
+                            tab.view.setBackgroundResource(R.drawable.tab_background_selector);
+                            // 탭의 너비를 200dp로 설정
+                            sizeLargeTab(tab);
                             // 중복 호출을 방지하기 위해 선택된 탭에서만 동작하도록 수정
                             int selectedTabIndex = tab.getPosition();
                             if (selectedTabIndex != previousTabIndex) {
@@ -265,7 +286,7 @@ public class MenuActivity extends AppCompatActivity{
                                 String store_name = null;
                                 int position = tab.getPosition();
                                 String tabId = (String) tabLayout.getTabAt(position).getTag();
-                                for (Stores store : storeInfo) {
+                                for (GetStoreList.Stores store : storeInfo) {
                                     if (store.get_id().equals(tabId)) {
                                         store_name = store.getName();
                                         store_intro.setText(store.getDesc());
@@ -290,21 +311,26 @@ public class MenuActivity extends AppCompatActivity{
                         @Override
                         public void onTabUnselected(TabLayout.Tab tab) {
                             // 선택 해제
+                            isnotSelectTab();
+                            sizesmallTab(tab);
                         }
 
                         @Override
                         public void onTabReselected(TabLayout.Tab tab) {
+                            tab.view.setBackgroundResource(R.drawable.tab_background_selector);
+                            sizeLargeTab(tab);
                             // 다시 선택
                             // 동일한 탭에서 GazeTracker 재시작
                             int selectedTabIndex = tab.getPosition();
                             setGazeTrackerDataStorage();
+
                         }
                     });
 
                 }
             }
             @Override
-            public void onFailure(Call<StoreItem> call, Throwable t) {
+            public void onFailure(Call<GetStoreList> call, Throwable t) {
                 Log.e("STORE", "Error: " + t.getMessage());
             }
         });
@@ -321,7 +347,7 @@ public class MenuActivity extends AppCompatActivity{
     @Override
     protected void onStop() {
         super.onStop();
-//        captureFullScreenshot();
+        captureFullScreenshot();
 
         gazeTrackerDataStorage.stopGazeTracker("store_menu", recent_sNum, 0);
     }
@@ -459,7 +485,7 @@ public class MenuActivity extends AppCompatActivity{
 
         // recyclerViewScreenshot을 그릴 위치 계산
         int recyclerViewLeft = 26;
-        int recyclerViewTop = 869;
+        int recyclerViewTop = 817;
 
         // 배경을 하얀색으로 그리기
         canvas.drawColor(Color.WHITE);
@@ -498,4 +524,127 @@ public class MenuActivity extends AppCompatActivity{
             e.printStackTrace();
         }
     }
+
+    //tab custom
+    public void customTab(TabLayout tabLayout){
+
+        // 3가지 색상을 순환할 인덱스 변수
+        int colorIndex = 0;
+
+        int tabWidth = (int) (100 * getResources().getDisplayMetrics().density); // 고정된 너비 (예: 100dp)
+        int tabHeight = (int) (50 * getResources().getDisplayMetrics().density); // 고정된 길이 (예: 60dp)
+
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+            TabLayout.Tab tab = tabLayout.getTabAt(i);
+
+            if (tab != null) {
+                // 선택되지 않은 탭에 색상을 순환하여 설정
+                // 3가지 색상 중 하나를 선택하고 배경색으로 설정
+                int[] colors = {Color.parseColor("#4DFF9345"), Color.parseColor("#4D337DB1"), Color.parseColor("#4DD9D9D9")};
+                tab.view.setBackgroundResource(R.drawable.tab_background_selector);
+                GradientDrawable shapeDrawable = new GradientDrawable();
+                shapeDrawable.setColor(colors[colorIndex]);
+                shapeDrawable.setCornerRadii(new float[]{30, 30, 30, 30, 0, 0, 0, 0});
+
+                // 고정된 너비와 길이 설정
+                ViewGroup.LayoutParams layoutParams = tab.view.getLayoutParams();
+                layoutParams.width = tabWidth;
+                layoutParams.height = tabHeight;
+                tab.view.setLayoutParams(layoutParams);
+
+                tab.view.setBackground(shapeDrawable);
+
+                // 다음 색상 인덱스로 이동 (0, 1, 2, 0, 1, 2, ...)
+                colorIndex = (colorIndex + 1) % colors.length;
+            }
+        }
+    }
+
+
+    public void isnotSelectTab(){
+        int colorIndex = 0;
+
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+            TabLayout.Tab tab = tabLayout.getTabAt(i);
+
+            if (tab != null) {
+                // 선택되지 않은 탭에 색상을 순환하여 설정
+                // 3가지 색상 중 하나를 선택하고 배경색으로 설정
+                int[] colors = {Color.parseColor("#33FF9345"), Color.parseColor("#33337DB1"), Color.parseColor("#33D9D9D9")};
+                tab.view.setBackgroundResource(R.drawable.tab_background_selector);
+                GradientDrawable shapeDrawable = new GradientDrawable();
+                shapeDrawable.setColor(colors[colorIndex]);
+                shapeDrawable.setCornerRadii(new float[]{30, 30, 30, 30, 0, 0, 0, 0});
+                tab.view.setBackground(shapeDrawable);
+
+                // 다음 색상 인덱스로 이동 (0, 1, 2, 0, 1, 2, ...)
+                colorIndex = (colorIndex + 1) % colors.length;
+            }
+        }
+    }
+
+    public void sizeLargeTab(TabLayout.Tab tab){
+
+        // 선택된 탭의 너비를 조정 (예: 200dp)
+        ViewGroup.LayoutParams layoutParams = tab.view.getLayoutParams();
+        layoutParams.width = (int) (130 * getResources().getDisplayMetrics().density);
+
+        // 선택된 탭의 높이를 조정 (예: 100dp)
+//        layoutParams.height = (int) (60 * getResources().getDisplayMetrics().density);
+
+        tab.view.setLayoutParams(layoutParams);
+
+    }
+
+    public void sizesmallTab(TabLayout.Tab tab){
+
+        // 선택된 탭의 너비를 조정 (예: 200dp)
+        ViewGroup.LayoutParams layoutParams = tab.view.getLayoutParams();
+        layoutParams.width = (int) (100 * getResources().getDisplayMetrics().density);
+
+        // 선택된 탭의 높이를 조정 (예: 50dp)
+//        layoutParams.height = (int) (50 * getResources().getDisplayMetrics().density);
+
+        tab.view.setLayoutParams(layoutParams);
+
+    }
+
+    //---------------------------------------------------------------------------------------------------
+    //툴바
+    public void setToolBar(Toolbar toolbar){
+        // 툴바를 액션바로 설정
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setTitle(""); // 툴바의 타이틀을 직접 설정
+        ImageView backBtn = (ImageView) findViewById(R.id.menu_back);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 뒤로 가기 버튼 동작을 처리
+                onBackPressed();
+            }
+        });
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_back, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(android.view.MenuItem item) {
+        // 메뉴 항목을 클릭했을 때의 동작을 처리합니다.
+        switch (item.getItemId()) {
+            case R.id.action_back:
+                show("뒤로가기 버튼");
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    //---------------------------------------------------------------------------------------------------
+
 }

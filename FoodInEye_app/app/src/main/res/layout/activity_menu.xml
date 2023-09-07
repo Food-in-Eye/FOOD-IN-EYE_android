@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -18,45 +17,40 @@
             android:orientation="vertical">
 
             <!-- 커스텀 툴바 추가 -->
-            <include layout="@layout/toolbar_layout"/>
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/menu_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorOnPrimary"
+                android:elevation="4dp">
 
-    <!--        <LinearLayout-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:orientation="horizontal"-->
-    <!--            android:layout_gravity="right"-->
-    <!--            android:layout_marginTop="10dp"-->
-    <!--            android:layout_marginRight="20dp">-->
+                <!-- 사용자 정의 뒤로 가기 버튼 추가 -->
+                <ImageView
+                    android:id="@+id/menu_back"
+                    android:layout_width="40dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="start"
+                    android:src="@drawable/back_btn"
+                    android:contentDescription="뒤로 가기" />
 
-    <!--            <Button-->
-    <!--                android:id="@+id/findBtn"-->
-    <!--                android:layout_width="30dp"-->
-    <!--                android:layout_height="25dp"-->
-    <!--                android:background="@drawable/find_btn"-->
-    <!--                android:layout_marginRight="5dp"/>-->
+                <TextView
+                    android:id="@+id/toolbar_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="주문 하기"
+                    android:fontFamily="@font/mice_gothic_bold"
+                    android:textSize="20dp"
+                    android:textColor="@color/black"/>
 
-    <!--            <Button-->
-    <!--                android:id="@+id/basketBtn"-->
-    <!--                android:layout_width="35dp"-->
-    <!--                android:layout_height="25dp"-->
-    <!--                android:background="@drawable/basket_btn"-->
-    <!--                android:layout_marginRight="5dp"/>-->
+            </androidx.appcompat.widget.Toolbar>
 
-    <!--            <Button-->
-    <!--                android:id="@+id/myPageBtn"-->
-    <!--                android:layout_width="35dp"-->
-    <!--                android:layout_height="25dp"-->
-    <!--                android:background="@drawable/mypage_btn"-->
-    <!--                android:layout_marginRight="5dp"/>-->
-
-    <!--        </LinearLayout>-->
 
             <LinearLayout
-                android:layout_width="350dp"
-                android:layout_height="50dp"
+                android:layout_width="380dp"
+                android:layout_height="60dp"
                 android:orientation="vertical"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="20dp">
 
                 <!--TabLayout-->
 
@@ -64,7 +58,8 @@
                     android:id="@+id/store_tab"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:tabMode="scrollable">
+                    app:tabMode="scrollable"
+                    app:tabIndicatorColor="@color/sygray">
 
                 </com.google.android.material.tabs.TabLayout>
 
@@ -77,12 +72,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:background="@drawable/navy_rec"
-                android:layout_margin="10dp">
+                android:background="@drawable/gray_rec"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:elevation="2dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="40dp"
                     android:orientation="horizontal"
                     android:layout_marginTop="3dp"
                     android:layout_marginBottom="3dp">
@@ -101,6 +100,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="가게 한줄소개"
+                        android:textSize="13dp"
                         android:textColor="@color/black"
                         android:textStyle="bold"
                         android:layout_gravity="center"/>
@@ -109,7 +109,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="40dp"
                     android:orientation="horizontal"
                     android:layout_marginTop="3dp"
                     android:layout_marginBottom="3dp">
@@ -128,6 +128,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="가게 운영소개\n가게 운영2소개"
+                        android:textSize="13dp"
                         android:textColor="@color/black"
                         android:textStyle="bold"
                         android:layout_gravity="center"/>
@@ -136,7 +137,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="40dp"
                     android:orientation="horizontal"
                     android:layout_marginTop="3dp"
                     android:layout_marginBottom="3dp">
@@ -155,6 +156,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="가게 공지사항\n가게 공지사항 2"
+                        android:textSize="13dp"
                         android:textColor="@color/black"
                         android:textStyle="bold"
                         android:layout_gravity="center"/>

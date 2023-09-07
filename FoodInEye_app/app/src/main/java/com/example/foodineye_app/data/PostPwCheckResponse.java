@@ -1,46 +1,49 @@
-package com.example.foodineye_app.activity;
+package com.example.foodineye_app.data;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class PostSignup {
+public class PostPwCheckResponse {
 
     @SerializedName("id")
     @Expose
-    String id;
-
-    @SerializedName("pw")
-    @Expose
-    String pw;
+    public String id;
 
     @SerializedName("name")
     @Expose
-    String name;
+    public String name;
 
     @SerializedName("gender")
     @Expose
-    int gender; //male(1), female(2)
+    public int gender;
 
     @SerializedName("age")
     @Expose
-    int age;
-
-    public PostSignup(String id, String pw, String name, int gender, int age) {
-        this.id = id;
-        this.pw = pw;
-        this.name = name;
-        this.gender = gender;
-        this.age = age;
-    }
+    public int age;
 
     @Override
     public String toString() {
-        return "PostBuyer{" +
+        return "PostPwCheckResponse{" +
                 "id='" + id + '\'' +
-                ", pw='" + pw + '\'' +
                 ", name='" + name + '\'' +
                 ", gender=" + gender +
                 ", age=" + age +
                 '}';
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getGender() {
+        return gender;
+    }
+
+    public int getAge() {
+        return age;
     }
 }

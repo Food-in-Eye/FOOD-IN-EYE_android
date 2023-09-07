@@ -16,9 +16,13 @@ import android.widget.ToggleButton;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.example.foodineye_app.ApiClient;
+import com.example.foodineye_app.ApiClientEx;
 import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.R;
+import com.example.foodineye_app.data.PostId;
+import com.example.foodineye_app.data.PostIdResponse;
+import com.example.foodineye_app.data.PostSignup;
+import com.example.foodineye_app.data.PostSignupResponse;
 
 import java.util.regex.Pattern;
 
@@ -212,9 +216,6 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 signUp();
-
-                Intent loginIntent = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(loginIntent);
             }
         });
 
@@ -233,7 +234,7 @@ public class SignupActivity extends AppCompatActivity {
     //아이디 중복 여부 함수
     public void idCheck(String editID){
 
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        ApiInterface apiInterface = ApiClientEx.getExClient().create(ApiInterface.class);
         PostId postId = new PostId(editID);
 
         Call<PostIdResponse> call = apiInterface.idCheck(postId);
@@ -329,7 +330,8 @@ public class SignupActivity extends AppCompatActivity {
 
     //회원가입하기
     public void signUp(){
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+        ApiInterface apiInterface = ApiClientEx.getExClient().create(ApiInterface.class);
         PostSignup postSignup = new PostSignup(id, password, nickname, gender, age);
         Log.i("SignupActivity", "postBuyer"+postSignup.toString());
 
@@ -337,20 +339,19 @@ public class SignupActivity extends AppCompatActivity {
         call.enqueue(new Callback<PostSignupResponse>() {
             @Override
             public void onResponse(Call<PostSignupResponse> call, Response<PostSignupResponse> response) {
-                if(response.isSuccessful() && response.body() != null){
+                if(response.isSuccessful()){
+
                     PostSignupResponse postSignupResponse = response.body();
-                    if(postSignupResponse.getDetail() != null && postSignupResponse.getDetail().equals("Duplicate ID")){
-                        show("입력된 id가 중복되었습니다.");
-                    }else{
-                        show("회원가입되었습니다!");
 
-                        Intent signToLoginIntent = new Intent(getApplicationContext(), SignToLoginActivity.class);
-                        startActivity(signToLoginIntent);
-                    }
+                    show("회원가입되었습니다!");
 
+                    Intent signToLoginIntent = new Intent(getApplicationContext(), SignToLoginActivity.class);
+                    startActivity(signToLoginIntent);
                 }else{
                     Log.i("SignupActivity", "회원가입 중복 체크 서버 응답 오류");
+
                 }
+
             }
 
             @Override

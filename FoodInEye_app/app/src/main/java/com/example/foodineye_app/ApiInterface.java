@@ -1,18 +1,21 @@
 package com.example.foodineye_app;
 
-import com.example.foodineye_app.activity.History;
-import com.example.foodineye_app.activity.HistoryDetail;
-import com.example.foodineye_app.activity.MenuItem;
-import com.example.foodineye_app.activity.OrderItem;
-import com.example.foodineye_app.activity.PostId;
-import com.example.foodineye_app.activity.PostIdResponse;
 import com.example.foodineye_app.activity.PostLoginResponse;
-import com.example.foodineye_app.activity.PostOrder;
-import com.example.foodineye_app.activity.PostOrderResponse;
-import com.example.foodineye_app.activity.PostSignup;
-import com.example.foodineye_app.activity.PostSignupResponse;
-import com.example.foodineye_app.activity.PostTestResponse;
-import com.example.foodineye_app.activity.StoreItem;
+import com.example.foodineye_app.data.GetHistoryDetail;
+import com.example.foodineye_app.data.GetMenu;
+import com.example.foodineye_app.data.GetStoreList;
+import com.example.foodineye_app.data.History;
+import com.example.foodineye_app.data.PostATokenResponse;
+import com.example.foodineye_app.data.PostId;
+import com.example.foodineye_app.data.PostIdResponse;
+import com.example.foodineye_app.data.PostOrder;
+import com.example.foodineye_app.data.PostOrderResponse;
+import com.example.foodineye_app.data.PostPw;
+import com.example.foodineye_app.data.PostPwCheckResponse;
+import com.example.foodineye_app.data.PostRTokenResponse;
+import com.example.foodineye_app.data.PostSignup;
+import com.example.foodineye_app.data.PostSignupResponse;
+import com.example.foodineye_app.data.PutMyInfoSet;
 import com.example.foodineye_app.gaze.PostGaze;
 import com.example.foodineye_app.gaze.PostGazeResponse;
 
@@ -25,23 +28,19 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 public interface ApiInterface {
 
     @GET("api/v2/stores/")
-    Call<StoreItem> getData();
+    Call<GetStoreList> getStore();
 
     @GET("api/v2/menus/menu/foods")
-    Call<MenuItem> getMenusData(@Query("id") String m_id);
+    Call<GetMenu> getMenusData(@Query("id") String m_id);
 
     @POST("api/v2/orders/order")
     Call<PostOrderResponse> createOrder(@Body PostOrder postOrder);
-
-    @GET("api/v2/orders/order")
-    Call<OrderItem> getOrder(
-            @Query("id") String o_id,
-            @Query("detail") String isDetail);
 
     @POST("api/v2/orders/order/gaze")
     Call<PostGazeResponse> createGaze(
@@ -55,14 +54,8 @@ public interface ApiInterface {
             @Query("batch") int batch
     );
 
-//    @GET("api/v2/orders/test/historys")
-//    Call<History> getHistory(
-//            @Query("u_id") String u_id,
-//            @Query("batch") int batch
-//    );
-
     @GET("api/v2/orders/history")
-    Call<HistoryDetail> getHistoryDetail(
+    Call<GetHistoryDetail> getHistoryDetail(
             @Query("id") String history_id
     );
 
@@ -76,21 +69,34 @@ public interface ApiInterface {
             @Body PostSignup postSignup
     );
 
-//    @Multipart
-//    @POST("api/v2/users/buyer/login")
-//    Call<PostLoginResponse> login(
-//            @Part("username") String username,
-//            @Part("password") String password
-//    );
-
     @FormUrlEncoded
     @POST("api/v2/users/buyer/login")
     Call<PostLoginResponse> login(
             @Field("username") String username,
             @Field("password") String password
     );
-    @GET("api/v2/users/test/a_token")
-    Call<PostTestResponse> test(
+
+    @POST("api/v2/users/buyer/info")
+    Call<PostPwCheckResponse> pwCheck(
+            @Query("u_id") String u_id,
+            @Body PostPw postPw
+    );
+
+    @PUT("api/v2/users/buyer/change")
+    Call<Void> setInfo(
+            @Query("u_id") String u_id,
+            @Body PutMyInfoSet putMyInfoSet
+    );
+
+    @GET("api/v2/users/issue/refresh")
+    Call<PostRTokenResponse> getNewRToken(
+            @Query("u_id") String u_id,
+            @Header("Authorization") String authorizationHeader
+    );
+
+    @GET("api/v2/users/issue/access")
+    Call<PostATokenResponse> getNewAToken(
+            @Query("u_id") String u_id,
             @Header("Authorization") String authorizationHeader
     );
 

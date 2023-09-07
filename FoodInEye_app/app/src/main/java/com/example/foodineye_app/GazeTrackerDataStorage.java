@@ -118,7 +118,7 @@ public class GazeTrackerDataStorage {
         new Thread(() -> {
             initGazeTracker();
             try {
-                Thread.sleep(3000);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -483,7 +483,7 @@ public class GazeTrackerDataStorage {
             @Override
             public void getOffset(int x, int y) {
                 viewPoint.setOffset(x, y);
-                viewCalibration.setOffset(x, y);
+//                viewCalibration.setOffset(x, y);
             }
         });
     }

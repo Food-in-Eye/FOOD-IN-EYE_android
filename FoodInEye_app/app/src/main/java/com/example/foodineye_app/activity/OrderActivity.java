@@ -3,6 +3,7 @@ package com.example.foodineye_app.activity;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.HandlerThread;
 import android.util.Log;
@@ -21,6 +22,9 @@ import com.example.foodineye_app.ApiClient;
 import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.GazeTrackerDataStorage;
 import com.example.foodineye_app.R;
+import com.example.foodineye_app.data.Order;
+import com.example.foodineye_app.data.PostOrder;
+import com.example.foodineye_app.data.PostOrderResponse;
 import com.example.foodineye_app.gaze.PostGaze;
 import com.example.foodineye_app.gaze.PostGazeResponse;
 import com.example.foodineye_app.websocket.WebSocketManager;
@@ -52,7 +56,9 @@ public class OrderActivity extends AppCompatActivity {
     List<PostOrder.StoreOrder> content = new ArrayList<>();
     List<PostOrder.StoreOrder.FoodCount> f_list;
     PostOrder postOrder;
-    String u_id = "6458f67e50bde95733e4b57f";
+
+    SharedPreferences sharedPreferences;
+    String u_id;
     String history_id;
 
     //-----------------------------------------------------------------------------------------
@@ -142,7 +148,15 @@ public class OrderActivity extends AppCompatActivity {
         totalPrice.setText(String.valueOf(total));
 
         //postOrder 세팅
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        ApiClient apiClient = new ApiClient(getApplicationContext());
+        apiClient.initializeHttpClient();
+
+        ApiInterface apiInterface = apiClient.getClient().create(ApiInterface.class);
+
+        //u_id
+        sharedPreferences = getSharedPreferences("test_token1", MODE_PRIVATE);
+        u_id = sharedPreferences.getString("u_id", null);
+
         //요청 바디에 들어가 PostOrder 객체 생성
         postOrder = new PostOrder(u_id, total, content);
         Log.d("OrderActivity", "postOrder" + postOrder.toString());
@@ -190,13 +204,17 @@ public class OrderActivity extends AppCompatActivity {
                             WebSocketManager.getInstance(getApplicationContext()).connectWebSocket(history_id);
 
                             // gaze 보내기
-                            ApiInterface apiInterface1 = ApiClient.getClient().create(ApiInterface.class);
+                            ApiClient apiClient = new ApiClient(getApplicationContext());
+                            apiClient.initializeHttpClient();
+
+                            ApiInterface apiInterface1 = apiClient.getClient().create(ApiInterface.class);
+
                             jsonGazeArray = ((Data) getApplication()).getJsonArray();
 
                             postGazes = (List<PostGaze>) ((Data)getApplication()).getGazeList();
 
 
-                            Call<PostGazeResponse> gazeCall = apiInterface.createGaze(history_id, postGazes);
+                            Call<PostGazeResponse> gazeCall = apiInterface1.createGaze(history_id, postGazes);
                             Log.d("Response", "postGaze: "+postGazes.toString());
 
                             gazeCall.enqueue(new Callback<PostGazeResponse>() {
@@ -222,6 +240,8 @@ public class OrderActivity extends AppCompatActivity {
 
 
 
+                        }else{
+                            //요청이 실패한 경우 errorbody
                         }
                     }
 

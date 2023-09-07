@@ -1,13 +1,14 @@
 package com.example.foodineye_app.activity;
 
+import android.content.Intent;
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-import android.os.Bundle;
-
 import com.example.foodineye_app.R;
+import com.example.foodineye_app.data.Order;
 import com.example.foodineye_app.websocket.UpdateWebSocketModel;
 
 import java.util.List;

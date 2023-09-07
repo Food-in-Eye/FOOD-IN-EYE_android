@@ -1,6 +1,9 @@
 package com.example.foodineye_app.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -16,9 +19,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.example.foodineye_app.ApiClient;
+import com.example.foodineye_app.ApiClientEx;
 import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.R;
+import com.example.foodineye_app.RefreshTokenService;
 
 import java.io.IOException;
 
@@ -38,12 +42,27 @@ public class LoginActivity extends AppCompatActivity {
 
     private SharedPreferences sharedPreferences;
 
+    // 앱의 메인 코드(예: 애플리케이션 클래스 또는 액티비티)에서 BroadcastReceiver를 등록합니다.
+    private BroadcastReceiver startLoginActivityReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if ("start_login_activity".equals(intent.getAction())) {
+                // 여기서 LoginActivity를 시작합니다.
+                startLoginActivity(context);
+            }
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        sharedPreferences = getSharedPreferences("test_token", MODE_PRIVATE);
+        // 커스텀 이벤트를 수신하기 위한 BroadcastReceiver를 등록합니다.
+        IntentFilter filter = new IntentFilter("start_login_activity");
+        registerReceiver(startLoginActivityReceiver, filter);
+
+        sharedPreferences = getSharedPreferences("test_token1", MODE_PRIVATE);
 
         //아이디 입력
         editId = (EditText) findViewById(R.id.login_id);
@@ -65,9 +84,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 id = s.toString();
-                //edittext 배경 stroke 색상 변경하기
-                GradientDrawable background = (GradientDrawable) editId.getBackground();
-                background.setStroke(3, ContextCompat.getColor(getApplicationContext(), R.color.green));
+
             }
         });
         Log.i("LoginActivity", "!!!!!!!!로그인 : " + id);
@@ -93,9 +110,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 password = s.toString();
-                //edittext 배경 stroke 색상 변경하기
-                GradientDrawable background = (GradientDrawable) editId.getBackground();
-                background.setStroke(3, ContextCompat.getColor(getApplicationContext(), R.color.green));
+
             }
         });
 
@@ -104,6 +119,10 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+//                HomeActivity로 이동
+//                Intent loginIntent = new Intent(getApplicationContext(), HomeActivity.class);
+//                startActivity(loginIntent);
                 login();
             }
         });
@@ -121,7 +140,8 @@ public class LoginActivity extends AppCompatActivity {
 
     //로그인하기
     private void login(){
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+        ApiInterface apiInterface = ApiClientEx.getExClient().create(ApiInterface.class);
 
         Call<PostLoginResponse> call = apiInterface.login(id, password);
         Log.i("LoginActivity", "!!!!!!!!로그인 : " + id);
@@ -133,25 +153,40 @@ public class LoginActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     PostLoginResponse postLoginResponse = response.body();
                     if (postLoginResponse != null) {
-                        Log.i("LoginActivity", "로그인 서버 성공: " + postLoginResponse.toString());
-                        ((Data) getApplication()).setUser_id(postLoginResponse.getUser_id()); // 회원 고유의 ID
+                        Log.d("LoginActivity", "로그인 서버 성공: " + postLoginResponse.toString());
+
                         at = postLoginResponse.getA_Token();
                         rt = postLoginResponse.getR_Token();
+                        user_id = postLoginResponse.getUser_id(); // 회원 고유의 ID
 
                         // Access Token과 Refresh Token 저장
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("access_token", at);
                         editor.putString("refresh_token", rt);
+                        editor.putString("u_id", user_id);
+
                         editor.apply();
 
-//                        Intent loginIntent = new Intent(getApplicationContext(), HomeActivity.class);
-//                        startActivity(loginIntent);
+//                        //로그인 후 R_Token Handler 실행
+//                        startService(new Intent(getApplicationContext(), TokenRefreshservice.class));
 
-                        Intent loginIntent = new Intent(getApplicationContext(), ActivitytTestActivity.class);
+                        // 로그인 후 R_Token Handler 실행
+                        Intent serviceIntent = new Intent(getApplicationContext(), RefreshTokenService.class);
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                            // 안드로이드 Oreo (API 레벨 26) 이상에서는 startForegroundService 사용
+                            startForegroundService(serviceIntent);
+                        } else {
+                            // Oreo 이전 버전에서는 그냥 startService 사용
+                            startService(serviceIntent);
+                        }
+
+
+                        //HomeActivity로 이동
+                        Intent loginIntent = new Intent(getApplicationContext(), HomeActivity.class);
                         startActivity(loginIntent);
 
                     } else {
-                        Log.i("LoginActivity", "로그인 응답 오류: response.body()가 null입니다.");
+                        Log.d("LoginActivity", "로그인 응답 오류: response.body()가 null입니다.");
                     }
                 } else {
 
@@ -163,7 +198,7 @@ public class LoginActivity extends AppCompatActivity {
                         throw new RuntimeException(e);
                     }
 
-                    Log.i("LoginActivity", "로그인 응답 오류: " + response.code() + ", " + errorBody);
+                    Log.d("LoginActivity", "로그인 응답 오류: " + response.code() + ", " + errorBody);
 
                     // 여기서 오류 메시지를 해석하고 사용자에게 알맞은 안내를 제공합니다.
                     if (errorBody.contains("Nonexistent ID")) {
@@ -198,6 +233,14 @@ public class LoginActivity extends AppCompatActivity {
         });
 
     }
+
+    // ApiInterceptor 클래스 내부에서
+    private void startLoginActivity(Context context) {
+        Intent loginIntent = new Intent(context, LoginActivity.class);
+        loginIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        context.startActivity(loginIntent);
+    }
+
     private void show(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }

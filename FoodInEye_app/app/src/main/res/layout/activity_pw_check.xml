@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- 커스텀 툴바 추가 -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/pwcheck_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorOnPrimary"
+        android:elevation="4dp">
+
+        <!-- 사용자 정의 뒤로 가기 버튼 추가 -->
+        <ImageView
+            android:id="@+id/pwcheck_back"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="start"
+            android:src="@drawable/back_btn"
+            android:contentDescription="뒤로 가기" />
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="비밀번호 확인"
+            android:fontFamily="@font/mice_gothic_bold"
+            android:textSize="20dp"
+            android:textColor="@color/black"/>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="비밀번호 재확인"
+                android:textSize="15dp"
+                android:textColor="@color/black"/>
+
+
+            <EditText
+                android:id="@+id/pwcheck_pw"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:hint="현재 비밀번호를 입력하세요."
+                android:textColorHint="@color/light_gray"
+                android:textSize="13dp"
+                android:paddingLeft="20dp"
+                android:background="@drawable/edittext_shape"
+                android:layout_marginTop="5dp"
+                android:inputType="textPassword"/>
+
+            <TextView
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="- 고객님의 소중한 개인정보를 보호하기 위해 비밀번호를 다시 한번 확인합니다."
+                android:textSize="12dp"
+                android:textColor="@color/light_gray"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp" />
+
+            <TextView
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="- 비밀번호 입력 시 타인에게 노출되지 않도록 주의해 주시기 바랍니다."
+                android:textSize="12dp"
+                android:textColor="@color/light_gray"
+                android:textStyle="bold"
+                android:layout_marginTop="5dp" />
+
+            <TextView
+                android:id="@+id/pwcheck_noti"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:text="비밀번호가 일치하지 않습니다"
+                android:textSize="13dp"
+                android:textColor="@color/red"
+                android:textStyle="bold"
+                android:layout_marginTop="2dp"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/pwcheck_btn"
+            android:layout_width="140dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="400dp"
+            android:background="@drawable/button_orange"
+            android:backgroundTint="@color/meronna_ver2"
+            android:text="확인"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

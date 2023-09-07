@@ -10,15 +10,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodineye_app.R;
+import com.example.foodineye_app.data.GetHistoryDetail;
 
 import java.util.List;
 
 public class HistoryDetailAdapter extends RecyclerView.Adapter<HistoryDetailAdapter.MyViewHolder> {
 
     private Context context;
-    private List<HistoryDetail.HistoryDetailResponse.OrderItem> orderItemList;
+    private List<GetHistoryDetail.OrderItem> orderItemList;
 
-    public HistoryDetailAdapter(Context context, List<HistoryDetail.HistoryDetailResponse.OrderItem> orderItemList) {
+    public HistoryDetailAdapter(Context context, List<GetHistoryDetail.OrderItem> orderItemList) {
         this.context = context;
         this.orderItemList = orderItemList;
     }
@@ -32,7 +33,7 @@ public class HistoryDetailAdapter extends RecyclerView.Adapter<HistoryDetailAdap
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        HistoryDetail.HistoryDetailResponse.OrderItem orderItem = orderItemList.get(position);
+        GetHistoryDetail.OrderItem orderItem = orderItemList.get(position);
 
         holder.storeName.setText(orderItem.s_name);
         holder.foodName.setText(orderItem.f_name);

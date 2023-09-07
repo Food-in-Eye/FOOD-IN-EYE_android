@@ -81,7 +81,7 @@ public class CalibrationViewer extends ViewGroup {
 //    addView(calibrationPoint);
 
     //drawable 리소스에서 이미지 가져오기
-    Drawable drawable = ContextCompat.getDrawable(context, R.drawable.logo_green);
+    Drawable drawable = ContextCompat.getDrawable(context, R.drawable.hamburger);
     if(drawable != null){
       calibrationPoint.setImageDrawable(drawable);
     }
@@ -122,8 +122,9 @@ public class CalibrationViewer extends ViewGroup {
     }
   }
 
-  public void setPointAnimationPower(float power) {
+  public float setPointAnimationPower(float power) {
     calibrationPoint.setPower(power);
+    return power;
   }
 
   public void setPointPosition(float x, float y) {
@@ -161,26 +162,6 @@ public class CalibrationViewer extends ViewGroup {
     this.msg = msgToShow;
     invalidate();
   }
-
-//  public void changeBackgroundColor(int color) {
-//    setBackgroundColor(color);
-//    invalidate();
-//  }
-//
-//  public void setDrawGazePoint(boolean toDraw) {
-//    this.toDraw = toDraw;
-//    invalidate();
-//  }
-//
-//  public void setMessage(String msg) {
-//    this.msg = msg;
-//    invalidate();
-//  }
-
-  //  @Override
-//  protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-//    super.onLayout(changed, left, top, right, bottom);
-//  }
 
   private class CalibrationPoint extends View {
     private static final float default_radius = 40;
@@ -272,11 +253,15 @@ public class CalibrationViewer extends ViewGroup {
       }
     }
 
+
+
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
       super.onLayout(changed, left, top, right, bottom);
       center_x = (right - left) / 2.0f;
       center_y = (bottom - top) / 2.0f;
     }
+
+
   }
 }

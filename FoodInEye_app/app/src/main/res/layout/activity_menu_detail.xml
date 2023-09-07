@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/navy"
+    android:background="@color/sygray"
     android:id="@+id/menuDetailLayout">
 
     <LinearLayout
@@ -13,45 +13,40 @@
         android:orientation="vertical">
 
         <!-- 커스텀 툴바 추가 -->
-        <include layout="@layout/toolbar_layout"/>
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/menu_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorOnPrimary"
+            android:elevation="4dp">
+
+            <!-- 사용자 정의 뒤로 가기 버튼 추가 -->
+            <ImageView
+                android:id="@+id/menu_back"
+                android:layout_width="40dp"
+                android:layout_height="24dp"
+                android:layout_gravity="start"
+                android:src="@drawable/back_btn"
+                android:contentDescription="뒤로 가기" />
+
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="주문 하기"
+                android:fontFamily="@font/mice_gothic_bold"
+                android:textSize="20dp"
+                android:textColor="@color/black"/>
+
+        </androidx.appcompat.widget.Toolbar>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="420dp"
             android:orientation="vertical"
-            android:background="@drawable/menu_detail_bg">
+            android:background="@drawable/menu_detail_bg"
+            android:elevation="10dp">
 
-
-            <!--        <LinearLayout-->
-            <!--            android:layout_width="wrap_content"-->
-            <!--            android:layout_height="wrap_content"-->
-            <!--            android:orientation="horizontal"-->
-            <!--            android:layout_gravity="right"-->
-            <!--            android:layout_marginTop="10dp"-->
-            <!--            android:layout_marginRight="20dp">-->
-
-            <!--            <Button-->
-            <!--                android:id="@+id/findBtn"-->
-            <!--                android:layout_width="30dp"-->
-            <!--                android:layout_height="25dp"-->
-            <!--                android:background="@drawable/find_btn"-->
-            <!--                android:layout_marginRight="5dp"/>-->
-
-            <!--            <Button-->
-            <!--                android:id="@+id/basketBtn"-->
-            <!--                android:layout_width="35dp"-->
-            <!--                android:layout_height="25dp"-->
-            <!--                android:background="@drawable/basket_btn"-->
-            <!--                android:layout_marginRight="5dp"/>-->
-
-            <!--            <Button-->
-            <!--                android:id="@+id/myPageBtn"-->
-            <!--                android:layout_width="35dp"-->
-            <!--                android:layout_height="25dp"-->
-            <!--                android:background="@drawable/mypage_btn"-->
-            <!--                android:layout_marginRight="5dp"/>-->
-
-            <!--        </LinearLayout>-->
 
             <TextView
                 android:id="@+id/menuD_name"
@@ -64,7 +59,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:layout_marginRight="5dp"
-                android:layout_marginTop="25dp"/>
+                android:layout_marginTop="30dp"/>
 
             <ImageView
                 android:id="@+id/menuD_img"
@@ -72,7 +67,7 @@
                 android:layout_height="260dp"
                 android:orientation="vertical"
                 android:layout_gravity="center"
-                android:layout_marginTop="30dp"/>
+                android:layout_marginTop="35dp"/>
 
         </LinearLayout>
 
@@ -84,14 +79,16 @@
             android:layout_height="180dp"
             android:orientation="vertical"
             android:layout_gravity="center"
-            android:layout_marginTop="15dp">
+            android:layout_marginTop="20dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:orientation="horizontal"
                 android:layout_marginTop="3dp"
-                android:layout_marginBottom="3dp">
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
 
                 <TextView
                     android:layout_width="20dp"
@@ -107,7 +104,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="메뉴 한 줄 소개\n메뉴 한 줄 소개"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="18dp"
                     android:textStyle="bold"
                     android:layout_gravity="center"/>
@@ -119,13 +116,15 @@
                 android:layout_height="50dp"
                 android:orientation="horizontal"
                 android:layout_marginTop="3dp"
-                android:layout_marginBottom="3dp">
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
 
                 <TextView
                     android:layout_width="50dp"
                     android:layout_height="20dp"
                     android:text="알러지: "
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textStyle="bold"
                     android:layout_gravity="center"
                     android:layout_marginLeft="5dp"
@@ -135,7 +134,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="메뉴 알러지\n메뉴 알러지"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="15dp"
                     android:textStyle="bold"
                     android:layout_gravity="center"/>
@@ -147,13 +146,15 @@
                 android:layout_height="45dp"
                 android:orientation="horizontal"
                 android:layout_marginTop="3dp"
-                android:layout_marginBottom="3dp">
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
 
                 <TextView
                     android:layout_width="50dp"
                     android:layout_height="20dp"
                     android:text="원산지: "
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textStyle="bold"
                     android:layout_gravity="center"
                     android:layout_marginLeft="5dp"
@@ -163,7 +164,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="메뉴 원산지"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textStyle="bold"
                     android:layout_gravity="center"/>
 
@@ -178,8 +179,9 @@
             android:layout_height="50dp"
             android:orientation="horizontal"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/orange_rec_300">
+            android:layout_marginTop="15dp"
+            android:background="@drawable/orange_rec_300"
+            android:elevation="2dp">
 
             <TextView
                 android:id="@+id/menuD_price"
@@ -190,7 +192,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/white"
                 android:layout_gravity="center"
-                android:layout_marginLeft="40dp"/>
+                android:layout_marginLeft="30dp"/>
 
             <TextView
                 android:layout_width="wrap_content"

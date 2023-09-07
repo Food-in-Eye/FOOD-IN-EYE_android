@@ -6,6 +6,8 @@
     <uses-permission android:name="android.intent.action.MEDIA_MOUNTED" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
 
     <application
         android:name=".activity.Data"
@@ -20,16 +22,26 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".activity.ActivitytTestActivity"
+            android:name=".activity.PersonalActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.LogoutActivity"
+            android:exported="false" />
+
+<!--        <service android:name=".TokenRefreshservice" />-->
+        <service android:name=".RefreshTokenService" />
+
+        <activity
+            android:name=".activity.PwCheckActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.MyinfoSettingActivity"
             android:exported="false" />
         <activity
             android:name=".activity.SignToLoginActivity"
             android:exported="false" />
         <activity
             android:name=".activity.SignupActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activity.SingupActivity"
             android:exported="false" />
         <activity
             android:name=".activity.OrderHistoryDetailActivity"

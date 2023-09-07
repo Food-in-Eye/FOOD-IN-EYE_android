@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.PersonalActivity"
+    android:orientation="vertical">
+
+<!--    &lt;!&ndash; 커스텀 툴바 추가 &ndash;&gt;-->
+<!--    <include layout="@layout/toolbar_layout"/>-->
+
+<!--    <LinearLayout-->
+<!--        android:id="@+id/school_food"-->
+<!--        android:layout_width="250dp"-->
+<!--        android:layout_height="40dp"-->
+<!--        android:orientation="vertical"-->
+<!--        android:background="@drawable/orange_rectop_300"-->
+<!--        android:backgroundTint="@color/blue_1"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:layout_marginTop="20dp">-->
+
+<!--        <TextView-->
+<!--            android:layout_width="200dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:text="개인정보 수집 동의"-->
+<!--            android:textSize="20dp"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textStyle="bold"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:gravity="center"/>-->
+
+<!--    </LinearLayout>-->
+
+<!--    <View-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="1dp"-->
+<!--        android:background="@color/blue_1"/>-->
+
+<!--    &lt;!&ndash;필수&ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="vertical"-->
+<!--        android:layout_marginLeft="15dp"-->
+<!--        android:layout_marginRight="15dp">-->
+
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="(필수) 개인정보 수집 동의"-->
+<!--            android:textSize="15dp"-->
+<!--            android:textColor="@color/black_2"-->
+<!--            android:textStyle="bold"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:layout_marginBottom="10dp"-->
+<!--            android:layout_marginLeft="10dp"/>-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="200dp"-->
+<!--            android:orientation="vertical"-->
+<!--            android:scrollbars="vertical"-->
+<!--            android:background="@drawable/rec_str0"-->
+<!--            android:padding="10dp">-->
+
+<!--        <TextView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text=" 아래의 개인정보 처리 방침은 Intension팀이 서비스 하는 모든 제품에 적용 됩니다.\n\n-->
+<!--한 눈에 학식은(는) 「개인정보 보호법」 제30조에 따라 정보주체의 개인정보를 보호하고 이와 관련한 고충을 신속하고 원활하게 처리할 수 있도록-->
+<!--하기 위하여 다음과 같이 개인정보 처리방침을 수립·공개합니다.\n ○ 이 개인정보처리방침은 2023년 9월 1부터 적용됩니다.-->
+<!--\n\n-->
+<!--제1조(개인정보의 처리 목적)\n-->
+<!--한 눈에 학식은(는) 다음의 목적을 위하여 개인정보를 처리합니다. 처리하고 있는 개인정보는 다음의 목적 이외의 용도로는 이용되지 않으며 이용 목적이 변경되는 경우에는 「개인정보 보호법」 제18조에 따라 별도의 동의를 받는 등 필요한 조치를 이행할 예정입니다.-->
+<!--\n-->
+
+<!--제2조(개인정보의 처리 및 보유 기간)\n-->
+<!--① < 한 눈에 학식 >은(는) 법령에 따른 개인정보 보유·이용기간 또는 정보주체로부터 개인정보를 수집 시에 동의받은 개인정보 보유·이용기간 내에서 개인정보를 처리·보유합니다.-->
+<!--\n-->
+<!--② 각각의 개인정보 처리 및 보유 기간은 다음과 같습니다.\n "/>-->
+
+<!--        </LinearLayout>-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_gravity="right">-->
+
+<!--            <CheckBox-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="동의함"-->
+<!--                android:layout_marginRight="20dp"/>-->
+
+<!--            <CheckBox-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="동의함하지 않음"/>-->
+
+<!--        </LinearLayout>-->
+
+<!--    </LinearLayout>-->
+
+<!--    &lt;!&ndash;선택&ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="vertical"-->
+<!--        android:layout_marginLeft="15dp"-->
+<!--        android:layout_marginRight="15dp">-->
+
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="(선택) 시선데이터 수집 동의"-->
+<!--            android:textSize="15dp"-->
+<!--            android:textColor="@color/black_2"-->
+<!--            android:textStyle="bold"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:layout_marginBottom="10dp"-->
+<!--            android:layout_marginLeft="10dp"/>-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="230dp"-->
+<!--            android:orientation="vertical"-->
+<!--            android:scrollbars="vertical"-->
+<!--            android:background="@drawable/rec_str0"-->
+<!--            android:padding="10dp">-->
+
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text=" 아래의 개인정보 처리 방침은 Intension팀이 서비스 하는 모든 제품에 적용 됩니다.\n\n-->
+<!--한 눈에 학식은(는) 「개인정보 보호법」 제30조에 따라 정보주체의 개인정보를 보호하고 이와 관련한 고충을 신속하고 원활하게 처리할 수 있도록-->
+<!--하기 위하여 다음과 같이 개인정보 처리방침을 수립·공개합니다.\n ○ 이 개인정보처리방침은 2023년 9월 1부터 적용됩니다.-->
+<!--\n\n-->
+<!--제1조(개인정보의 처리 목적)\n-->
+<!--한 눈에 학식은(는) 다음의 목적을 위하여 개인정보를 처리합니다. 처리하고 있는 개인정보는 다음의 목적 이외의 용도로는 이용되지 않으며 이용 목적이 변경되는 경우에는 「개인정보 보호법」 제18조에 따라 별도의 동의를 받는 등 필요한 조치를 이행할 예정입니다.-->
+<!--\n-->
+
+<!--제2조(개인정보의 처리 및 보유 기간)\n-->
+<!--① < 한 눈에 학식 >은(는) 법령에 따른 개인정보 보유·이용기간 또는 정보주체로부터 개인정보를 수집 시에 동의받은 개인정보 보유·이용기간 내에서 개인정보를 처리·보유합니다.-->
+<!--\n-->
+<!--② 각각의 개인정보 처리 및 보유 기간은 다음과 같습니다.\n "/>-->
+
+<!--        </LinearLayout>-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_gravity="right">-->
+
+<!--            <CheckBox-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="동의함"-->
+<!--                android:layout_marginRight="20dp"/>-->
+
+<!--            <CheckBox-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="동의함하지 않음"/>-->
+
+<!--        </LinearLayout>-->
+
+
+
+
+
+
+<!--    </LinearLayout>-->
+
+
+</LinearLayout>

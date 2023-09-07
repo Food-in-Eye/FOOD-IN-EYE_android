@@ -1,4 +1,4 @@
-package com.example.foodineye_app.activity;
+package com.example.foodineye_app.data;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -6,14 +6,6 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class History {
-
-    @SerializedName("request")
-    @Expose
-    public String request;
-
-    @SerializedName("status")
-    @Expose
-    public String status;
 
     @SerializedName("max_batch")
     @Expose
@@ -23,8 +15,12 @@ public class History {
     @Expose
     public List<HistoryResponse> historyResponse;
 
+    @Override
     public String toString() {
-        return "request: " + request + ", status: " + status + ", max_batch: " + max_batch;
+        return "History{" +
+                "max_batch=" + max_batch +
+                ", historyResponse=" + historyResponse +
+                '}';
     }
 
     public int getMax_batch() {

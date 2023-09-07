@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.foodineye_app.ApiClient;
 import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.R;
+import com.example.foodineye_app.data.History;
 import com.lakue.pagingbutton.LakuePagingButton;
 import com.lakue.pagingbutton.OnPageSelectListener;
 
@@ -20,8 +21,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-//... (이전 코드 생략)
 
 public class OrderHistoryActivity extends AppCompatActivity {
 
@@ -47,7 +46,11 @@ public class OrderHistoryActivity extends AppCompatActivity {
 
         //-----------------------------------------------------------------------
         // 초기 페이지 로딩
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        ApiClient apiClient = new ApiClient(getApplicationContext());
+        apiClient.initializeHttpClient();
+
+        ApiInterface apiInterface = apiClient.getClient().create(ApiInterface.class);
+
         Call<History> callMenu = apiInterface.getHistory(u_id, 1);
 
         callMenu.enqueue(new Callback<History>() {

@@ -39,16 +39,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:text="주문하기"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="14dp"
-                android:layout_marginTop="80dp"
-                android:layout_marginLeft="40dp"/>
 
         </LinearLayout>
 
