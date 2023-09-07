@@ -22,7 +22,7 @@ import androidx.core.content.ContextCompat;
 import com.example.foodineye_app.ApiClientEx;
 import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.R;
-import com.example.foodineye_app.TokenRefreshservice;
+import com.example.foodineye_app.RefreshTokenService;
 
 import java.io.IOException;
 
@@ -153,7 +153,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     PostLoginResponse postLoginResponse = response.body();
                     if (postLoginResponse != null) {
-                        Log.i("LoginActivity", "로그인 서버 성공: " + postLoginResponse.toString());
+                        Log.d("LoginActivity", "로그인 서버 성공: " + postLoginResponse.toString());
 
                         at = postLoginResponse.getA_Token();
                         rt = postLoginResponse.getR_Token();
@@ -167,18 +167,26 @@ public class LoginActivity extends AppCompatActivity {
 
                         editor.apply();
 
-                        //로그인 후 R_Token Handler 실행
-                        startService(new Intent(getApplicationContext(), TokenRefreshservice.class));
+//                        //로그인 후 R_Token Handler 실행
+//                        startService(new Intent(getApplicationContext(), TokenRefreshservice.class));
+
+                        // 로그인 후 R_Token Handler 실행
+                        Intent serviceIntent = new Intent(getApplicationContext(), RefreshTokenService.class);
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                            // 안드로이드 Oreo (API 레벨 26) 이상에서는 startForegroundService 사용
+                            startForegroundService(serviceIntent);
+                        } else {
+                            // Oreo 이전 버전에서는 그냥 startService 사용
+                            startService(serviceIntent);
+                        }
+
 
                         //HomeActivity로 이동
                         Intent loginIntent = new Intent(getApplicationContext(), HomeActivity.class);
                         startActivity(loginIntent);
 
-//                        Intent loginIntent = new Intent(getApplicationContext(), ActivitytTestActivity.class);
-//                        startActivity(loginIntent);
-
                     } else {
-                        Log.i("LoginActivity", "로그인 응답 오류: response.body()가 null입니다.");
+                        Log.d("LoginActivity", "로그인 응답 오류: response.body()가 null입니다.");
                     }
                 } else {
 
@@ -190,7 +198,7 @@ public class LoginActivity extends AppCompatActivity {
                         throw new RuntimeException(e);
                     }
 
-                    Log.i("LoginActivity", "로그인 응답 오류: " + response.code() + ", " + errorBody);
+                    Log.d("LoginActivity", "로그인 응답 오류: " + response.code() + ", " + errorBody);
 
                     // 여기서 오류 메시지를 해석하고 사용자에게 알맞은 안내를 제공합니다.
                     if (errorBody.contains("Nonexistent ID")) {

@@ -24,6 +24,7 @@ import com.example.foodineye_app.data.GetStoreList;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -158,6 +159,8 @@ public class StorelistActivity extends AppCompatActivity {
             public void onResponse(Call<GetStoreList> call, Response<GetStoreList> response) {
                 if(response.isSuccessful()){
 
+
+
                     storeList = response.body();
                     storeInfo = storeList.response;
 
@@ -166,7 +169,15 @@ public class StorelistActivity extends AppCompatActivity {
 
 
                 }else{
+                    // 응답이 실패한 경우에 대한 처리를 여기서 수행합니다.
+                    String errorBody = null; // 실패한 응답의 본문을 얻음
+                    try {
+                        errorBody = response.errorBody().string();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
 
+                    Log.i("StorelistActivity", "로그인 응답 오류: " + response.code() + ", " + errorBody);
                 }
             }
 

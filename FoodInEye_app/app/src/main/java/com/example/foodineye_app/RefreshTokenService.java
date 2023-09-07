@@ -1,15 +1,22 @@
 package com.example.foodineye_app;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 
+import com.example.foodineye_app.activity.HomeActivity;
 import com.example.foodineye_app.data.PostRTokenResponse;
 
 import java.io.IOException;
@@ -18,7 +25,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TokenRefreshservice extends Service {
+public class RefreshTokenService extends Service {
+    private static final int NOTIFICATION_ID = 1;
     private Handler handler = new Handler(Looper.getMainLooper());
     private Runnable refreshTokenTask;
     SharedPreferences sharedPreferences;
@@ -49,18 +57,43 @@ public class TokenRefreshservice extends Service {
                 getRefreshToken();
 
                 // 다음 갱신 예약
-                handler.postDelayed(this, 50 * 60 * 1000); // 50분
-
-//                handler.postDelayed(this, 50 * 1000); //50초
+//                handler.postDelayed(this, 50 * 60 * 1000); // 50분
+                handler.postDelayed(this, 5 * 60 * 1000); // 5분
             }
         };
 
         // 최초 실행
         handler.post(refreshTokenTask);
+
+        // Foreground Service로 설정
+        startForeground(NOTIFICATION_ID, createNotification());
     }
 
     private void stopRefreshTokenScheduler() {
         handler.removeCallbacks(refreshTokenTask);
+        stopForeground(true);
+    }
+
+    // Notification을 생성하는 메서드
+    private Notification createNotification() {
+        Intent notificationIntent = new Intent(this, HomeActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+
+        // Android 8.0 이상에서는 Notification 채널 설정이 필요합니다.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String channelId = "channel_id";
+            String channelName = "Channel Name";
+            NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        return new NotificationCompat.Builder(this, "channel_id")
+                .setContentTitle("Foreground Service")
+                .setContentText("Refresh Token Service is running")
+                .setSmallIcon(R.drawable.food_in_eye)
+                .setContentIntent(pendingIntent)
+                .build();
     }
 
     //Refresh Token 50분마다 재발급
@@ -69,11 +102,11 @@ public class TokenRefreshservice extends Service {
         String refreshToken = sharedPreferences.getString("refresh_token", null);
         String refreshTokenHedaer = "Bearer " + refreshToken;
 
-        Log.d("TokenRefreshservice", "refresh: "+refreshTokenHedaer);
+        Log.d("RefreshTokenService", "refresh: "+refreshTokenHedaer);
 
         String u_id = sharedPreferences.getString("u_id", null);
 
-        Log.d("TokenRefreshservice", "u_id: "+u_id);
+        Log.d("RefreshTokenService", "u_id: "+u_id);
 
         ApiInterface apiInterface = ApiClientEx.getExClient().create(ApiInterface.class);
         Call<PostRTokenResponse> call = apiInterface.getNewRToken(u_id, refreshTokenHedaer);
@@ -87,7 +120,7 @@ public class TokenRefreshservice extends Service {
                     PostRTokenResponse postRTokenResponse = response.body();
                     String newRToken = postRTokenResponse.getR_Token();
 
-                    Log.d("TokenRefreshservice", "new!!!!!!!refresh: "+newRToken);
+                    Log.d("RefreshTokenService", "new!!!!!!!refresh: "+newRToken);
 
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("refresh_token", newRToken);
@@ -104,20 +137,20 @@ public class TokenRefreshservice extends Service {
                     }
 
                     if(errorBody.contains("Signature verification failed.")){
-                        Log.d("TokenRefreshservice", "error: "+errorBody);
+                        Log.d("RefreshTokenService", "error: "+errorBody);
                     }else if(errorBody.contains("Signature has expired.")){
-                        Log.d("TokenRefreshservice", "error: "+errorBody);
+                        Log.d("RefreshTokenService", "error: "+errorBody);
                     }else if(errorBody.contains("Ownership verification failed.")){
-                        Log.d("TokenRefreshservice", "error: "+errorBody);
+                        Log.d("RefreshTokenService", "error: "+errorBody);
                     }else{
-                        Log.d("TokenRefreshservice", "error: "+errorBody);
+                        Log.d("RefreshTokenService", "error: "+errorBody);
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<PostRTokenResponse> call, Throwable t) {
-                Log.d("TokenRefreshservice", "Fail_error: "+t.toString());
+                Log.d("RefreshTokenService", "Fail_error: "+t.toString());
             }
         });
 

@@ -5,10 +5,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class PostLoginResponse {
 
-    @SerializedName("request")
-    @Expose
-    public String request;
-
     @SerializedName("u_id")
     @Expose
     public String user_id; //회원 고유의 ID
@@ -24,10 +20,6 @@ public class PostLoginResponse {
     @SerializedName("R_Token")
     @Expose
     public String R_Token;
-
-    @SerializedName("detail")
-    @Expose
-    public String detail; //error_message
 
     public String getUser_id() {
         return user_id;
@@ -45,19 +37,13 @@ public class PostLoginResponse {
         return R_Token;
     }
 
-    public String getDetail() {
-        return detail;
-    }
-
     @Override
     public String toString() {
         return "PostLoginResponse{" +
-                "request='" + request + '\'' +
-                ", user_id='" + user_id + '\'' +
+                "user_id='" + user_id + '\'' +
                 ", token_type='" + token_type + '\'' +
                 ", A_Token='" + A_Token + '\'' +
                 ", R_Token='" + R_Token + '\'' +
-                ", detail='" + detail + '\'' +
                 '}';
     }
 }

@@ -119,6 +119,8 @@ public class ApiInterceptor implements Interceptor {
         } else {
             // 데이터 요청 실패 처리
             Log.d("ApiInterceptor", "postATokenResponse: " + response.errorBody().toString());
+            String errorBody = response.errorBody().string();
+
             // HTTP 상태 코드에 따라 다른 메시지 표시
             switch (response.code()) {
                 case 404:
@@ -128,7 +130,6 @@ public class ApiInterceptor implements Interceptor {
                     Log.d("InfoSet", "error(400): " + response.errorBody().toString());
                     break;
                 case 401:
-                    String errorBody = response.errorBody().string();
 
                     // 에러가 발생했을 때 인터셉터 수정 부분
                     if (errorBody.contains("Signature verification failed.")) {
@@ -149,6 +150,13 @@ public class ApiInterceptor implements Interceptor {
                         Log.d("ApiInterceptor", "error: " + errorBody);
                     }
                     break;
+                case 403:
+
+                    if(errorBody.contains("Token renewal forbidden.")){
+                        Log.d("ApiInterceptor", "Token renewal forbidden.");
+                    }
+                    break;
+
                 default:
                     break;
             }

@@ -10,7 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.foodineye_app.R;
-import com.example.foodineye_app.TokenRefreshservice;
+import com.example.foodineye_app.RefreshTokenService;
 
 public class MypageActivity extends AppCompatActivity {
     Button logout;
@@ -50,8 +50,17 @@ public class MypageActivity extends AppCompatActivity {
     }
 
     public void logout(){
-        //로그아웃 후 R_Token Handler 중지
-        stopService(new Intent(getApplicationContext(), TokenRefreshservice.class));
+
+        // 로그아웃 후 R_Token Handler 중지
+        Intent serviceIntent = new Intent(getApplicationContext(), RefreshTokenService.class);
+        stopService(serviceIntent);
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+//            // 안드로이드 Oreo (API 레벨 26) 이상에서는 stopForegroundService 사용
+//            stopForegroundService(serviceIntent);
+//        } else {
+//            // Oreo 이전 버전에서는 그냥 stopService 사용
+//            stopService(serviceIntent);
+//        }
 
         // SharedPreferences 객체 가져오기
         SharedPreferences sharedPreferences = getSharedPreferences("test_token1", MODE_PRIVATE);
