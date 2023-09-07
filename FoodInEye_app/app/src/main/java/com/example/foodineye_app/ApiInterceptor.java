@@ -1,12 +1,10 @@
-package com.example.foodineye_app.activity;
+package com.example.foodineye_app;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.example.foodineye_app.ApiClientEx;
-import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.data.PostATokenResponse;
 
 import java.io.IOException;
@@ -81,7 +79,7 @@ public class ApiInterceptor implements Interceptor {
 
     // 토큰 만료 여부 확인
     private boolean isTokenExpired(Response response) {
-        return response.code() == 401; // 예시로 401 코드가 토큰 만료 코드라 가정합니다.
+        return response.code() == 401 || response.code() ==422; // 401:Token has expired, 422:A_Token mismatch
     }
 
 
@@ -123,38 +121,31 @@ public class ApiInterceptor implements Interceptor {
 
             // HTTP 상태 코드에 따라 다른 메시지 표시
             switch (response.code()) {
-                case 404:
-                    Log.d("InfoSet", "error(404): " + response.errorBody().toString());
+                case 402:
+
+                    Log.d("ApiInterceptor", "402");
+
+                    // LoginActivity를 시작하기 위한 커스텀 이벤트를 브로드캐스트합니다.
+                    Intent intent = new Intent("start_login_activity");
+                    context.sendBroadcast(intent);
                     break;
-                case 400:
-                    Log.d("InfoSet", "error(400): " + response.errorBody().toString());
-                    break;
+
                 case 401:
 
-                    // 에러가 발생했을 때 인터셉터 수정 부분
-                    if (errorBody.contains("Signature verification failed.")) {
-                        Log.d("ApiInterceptor", "서명 검증 실패.");
+                    Log.d("ApiInterceptor", "401");
 
-                        // LoginActivity를 시작하기 위한 커스텀 이벤트를 브로드캐스트합니다.
-                        Intent intent = new Intent("start_login_activity");
-                        context.sendBroadcast(intent);
-
-                    } else if (errorBody.contains("Signature has expired.")) {
-                        Log.d("ApiInterceptor", "Signature has expired.");
-
-
-
-                    } else if (errorBody.contains("Ownership verification failed.")) {
-                        Log.d("ApiInterceptor", "Ownership verification failed.");
-                    } else {
-                        Log.d("ApiInterceptor", "error: " + errorBody);
-                    }
+                    // LoginActivity를 시작하기 위한 커스텀 이벤트를 브로드캐스트합니다.
+                    Intent intent1 = new Intent("start_login_activity");
+                    context.sendBroadcast(intent1);
                     break;
+
                 case 403:
 
-                    if(errorBody.contains("Token renewal forbidden.")){
-                        Log.d("ApiInterceptor", "Token renewal forbidden.");
-                    }
+                    Log.d("ApiInterceptor", "403");
+
+                    // LoginActivity를 시작하기 위한 커스텀 이벤트를 브로드캐스트합니다.
+                    Intent intent2 = new Intent("start_login_activity");
+                    context.sendBroadcast(intent2);
                     break;
 
                 default:

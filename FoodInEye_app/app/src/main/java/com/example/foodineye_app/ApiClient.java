@@ -2,8 +2,6 @@ package com.example.foodineye_app;
 
 import android.content.Context;
 
-import com.example.foodineye_app.activity.ApiInterceptor;
-
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;

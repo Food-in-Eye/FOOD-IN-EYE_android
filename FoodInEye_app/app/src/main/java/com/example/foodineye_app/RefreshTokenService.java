@@ -5,6 +5,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -19,8 +20,6 @@ import androidx.core.app.NotificationCompat;
 import com.example.foodineye_app.activity.HomeActivity;
 import com.example.foodineye_app.data.PostRTokenResponse;
 
-import java.io.IOException;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -30,6 +29,7 @@ public class RefreshTokenService extends Service {
     private Handler handler = new Handler(Looper.getMainLooper());
     private Runnable refreshTokenTask;
     SharedPreferences sharedPreferences;
+    Context context;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -53,6 +53,7 @@ public class RefreshTokenService extends Service {
         refreshTokenTask = new Runnable() {
             @Override
             public void run() {
+
                 // 50분마다 Refresh Token 갱신
                 getRefreshToken();
 
@@ -79,7 +80,7 @@ public class RefreshTokenService extends Service {
         Intent notificationIntent = new Intent(this, HomeActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
 
-        // Android 8.0 이상에서는 Notification 채널 설정이 필요합니다.
+        // Android 8.0 이상에서는 Notification 채널 설정이 필요
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             String channelId = "channel_id";
             String channelName = "Channel Name";
@@ -128,22 +129,37 @@ public class RefreshTokenService extends Service {
 
                 }else{
                     //데이터 요청 실패 처리
-                    //데이터 실패 시
-                    String errorBody = null; // 실패한 응답의 본문을 얻음
-                    try {
-                        errorBody = response.errorBody().string();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+                    // HTTP 상태 코드에 따라 다른 메시지 표시
+                    switch (response.code()) {
+                        case 402:
 
-                    if(errorBody.contains("Signature verification failed.")){
-                        Log.d("RefreshTokenService", "error: "+errorBody);
-                    }else if(errorBody.contains("Signature has expired.")){
-                        Log.d("RefreshTokenService", "error: "+errorBody);
-                    }else if(errorBody.contains("Ownership verification failed.")){
-                        Log.d("RefreshTokenService", "error: "+errorBody);
-                    }else{
-                        Log.d("RefreshTokenService", "error: "+errorBody);
+//                            Log.d("ApiInterceptor", "402");
+//
+//                            // LoginActivity를 시작하기 위한 커스텀 이벤트를 브로드캐스트합니다.
+//                            Intent intent = new Intent("start_login_activity");
+//                            context.sendBroadcast(intent);
+//                            break;
+
+                        case 401:
+
+//                            Log.d("ApiInterceptor", "401");
+//
+//                            // LoginActivity를 시작하기 위한 커스텀 이벤트를 브로드캐스트합니다.
+//                            Intent intent1 = new Intent("start_login_activity");
+//                            context.sendBroadcast(intent1);
+//                            break;
+
+                        case 403:
+
+                            Log.d("ApiInterceptor", "403");
+
+//                            // LoginActivity를 시작하기 위한 커스텀 이벤트를 브로드캐스트합니다.
+//                            Intent intent2 = new Intent("start_login_activity");
+//                            context.sendBroadcast(intent2);
+//                            break;
+
+                        default:
+                            break;
                     }
                 }
             }
@@ -153,8 +169,6 @@ public class RefreshTokenService extends Service {
                 Log.d("RefreshTokenService", "Fail_error: "+t.toString());
             }
         });
-
-
 
     }
 }
