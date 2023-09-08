@@ -1,6 +1,7 @@
 package com.example.foodineye_app.activity;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -32,12 +33,16 @@ public class OrderHistoryActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     HistoryAdapter historyAdapter;
 
-    String u_id = "test";
+    SharedPreferences sharedPreferences;
+    String u_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_history);
+
+        sharedPreferences = getSharedPreferences("test_token1", MODE_PRIVATE);
+        u_id = sharedPreferences.getString("u_id", null);
 
         lpb_buttonlist = findViewById(R.id.lakuePagingButton);
 
