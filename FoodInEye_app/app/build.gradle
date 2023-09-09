@@ -8,7 +8,7 @@ android {
     defaultConfig {
         applicationId "com.example.foodineye_app"
         minSdk 23
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -27,8 +27,8 @@ android {
     }
     namespace 'com.example.foodineye_app'
     dependenciesInfo {
-        includeInApk true
-        includeInBundle true
+        includeInApk false
+        includeInBundle false
     }
 }
 
@@ -64,6 +64,13 @@ dependencies {
     implementation project(path: ':libgaze-release')
     implementation project(path: ':pagingbutton')
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+//    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+//    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    //navigation bar
+//    def nav_version = '2.6.0'
+//
+//    implementation "androidx.navigation:navigation-fragment:$nav_version"
+//    implementation "androidx.navigation:navigation-ui:$nav_version"
+
 }
