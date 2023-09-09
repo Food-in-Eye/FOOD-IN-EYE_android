@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -51,24 +50,22 @@ public class CameraActivity extends AppCompatActivity {
         agreeCK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                agreeCK.setChecked(true);
-                disagreeCK.setChecked(false);
-
-//                isPermission();
-                checkCameraPermission();
-
-                eyePermission = true;
-
+                //동의했을 때
+                if (agreeCK.isChecked()) {
+                    disagreeCK.setChecked(false);
+                    checkCameraPermission();
+                }
             }
         });
 
         disagreeCK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                disagreeCK.setChecked(false);
-                agreeCK.setChecked(true);
-
-                eyePermission = false;
+                //동의하지 않았을 때
+                if (disagreeCK.isChecked()) {
+                    agreeCK.setChecked(false);
+                    eyePermission = false;
+                }
             }
         });
 
@@ -81,15 +78,13 @@ public class CameraActivity extends AppCompatActivity {
 
                 if(eyePermission){
 
-                    //home -> calibration
-                    Intent intent = new Intent(getApplicationContext(), CalibrationActivity.class);
-                    startActivity(intent);
+                    //동의
+                    startCalibrationActivity();
 
                 }else{
 
-                    //home -> storelist
-                    Intent intent = new Intent(getApplicationContext(), StorelistActivity.class);
-                    startActivity(intent);
+                    //비동의
+                    startStorelistActivity();
 
                 }
             }
@@ -152,7 +147,7 @@ public class CameraActivity extends AppCompatActivity {
     private void checkCameraPermission() {
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this, "카메라 권한이 이미 있습니다.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "카메라 권한에 동의했습니다.", Toast.LENGTH_SHORT).show();
             // 권한이 이미 허용된 경우
 //            startCalibrationActivity();
 
@@ -160,12 +155,14 @@ public class CameraActivity extends AppCompatActivity {
             // 권한이 허용되지 않은 경우
             if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
                 // 사용자가 이전에 권한 요청을 거절한 경우
-                Toast.makeText(this, "카메라 권한이 필요합니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "시선추적을 하기 위해서는 카메라 권한이 필요합니다.", Toast.LENGTH_SHORT).show();
             }
 
             // 권한 요청
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, MODE_PRIVATE);
         }
+
+        eyePermission = true;
     }
 
     public void startCalibrationActivity(){
@@ -174,18 +171,24 @@ public class CameraActivity extends AppCompatActivity {
         finish();
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // 권한이 허용된 경우
-                startCalibrationActivity();
-            } else {
-                // 권한이 거부된 경우
-                Toast.makeText(this, "카메라 권한이 거부되었습니다.", Toast.LENGTH_SHORT).show();
-                // 권한이 거부되면 다시 권한 요청
-                checkCameraPermission();
-            }
-        }
+    public void startStorelistActivity(){
+        Intent intent = new Intent(this, StorelistActivity.class);
+        startActivity(intent);
+        finish();
     }
+
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
+//            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                // 권한이 허용된 경우
+//                startCalibrationActivity();
+//            } else {
+//                // 권한이 거부된 경우
+//                Toast.makeText(this, "카메라 권한이 거부되었습니다.", Toast.LENGTH_SHORT).show();
+//                // 권한이 거부되면 다시 권한 요청
+//                checkCameraPermission();
+//            }
+//        }
+//    }
 }
