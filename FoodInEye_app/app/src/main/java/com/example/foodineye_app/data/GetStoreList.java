@@ -7,7 +7,7 @@ import java.util.List;
 
 public class GetStoreList {
 
-    @SerializedName("response")
+    @SerializedName("store_list")
     public List<Stores> response;
 
     public class Stores {
