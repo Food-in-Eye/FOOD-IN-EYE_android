@@ -3,14 +3,18 @@ package com.example.foodineye_app.activity;
 import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.foodineye_app.ApiClient;
 import com.example.foodineye_app.ApiInterface;
@@ -31,6 +35,8 @@ public class CameraActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     String u_id;
 
+    private static final int CAMERA_PERMISSION_REQUEST_CODE = 123;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +54,8 @@ public class CameraActivity extends AppCompatActivity {
                 agreeCK.setChecked(true);
                 disagreeCK.setChecked(false);
 
-                isPermission();
+//                isPermission();
+                checkCameraPermission();
 
                 eyePermission = true;
 
@@ -71,7 +78,7 @@ public class CameraActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 putCheck();
-                
+
                 if(eyePermission){
 
                     //home -> calibration
@@ -125,10 +132,13 @@ public class CameraActivity extends AppCompatActivity {
 
         // 권한을 먼저 확인하고, 권한이 없는 경우에만 권한 요청을 수행합니다.
         if (PermissionRequester.hasPermissions(this, Manifest.permission.CAMERA)) {
+
             // 권한이 이미 동의되어 있을 때의 처리
             Intent loginIntent = new Intent(getApplicationContext(), CalibrationActivity.class);
             startActivity(loginIntent);
+
         } else {
+
             // 권한이 없는 경우 권한 요청
             PermissionRequester.request(this);
             setContentView(R.layout.activity_camera);
@@ -136,6 +146,46 @@ public class CameraActivity extends AppCompatActivity {
                     {Manifest.permission.WRITE_EXTERNAL_STORAGE}, MODE_PRIVATE);
 
             //권한 요청했는데 허용하지 않음을 체크하면 checkbox -> disagree
+        }
+    }
+
+    private void checkCameraPermission() {
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "카메라 권한이 이미 있습니다.", Toast.LENGTH_SHORT).show();
+            // 권한이 이미 허용된 경우
+//            startCalibrationActivity();
+
+        } else {
+            // 권한이 허용되지 않은 경우
+            if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+                // 사용자가 이전에 권한 요청을 거절한 경우
+                Toast.makeText(this, "카메라 권한이 필요합니다.", Toast.LENGTH_SHORT).show();
+            }
+
+            // 권한 요청
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, MODE_PRIVATE);
+        }
+    }
+
+    public void startCalibrationActivity(){
+        Intent intent = new Intent(this, CalibrationActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // 권한이 허용된 경우
+                startCalibrationActivity();
+            } else {
+                // 권한이 거부된 경우
+                Toast.makeText(this, "카메라 권한이 거부되었습니다.", Toast.LENGTH_SHORT).show();
+                // 권한이 거부되면 다시 권한 요청
+                checkCameraPermission();
+            }
         }
     }
 }
