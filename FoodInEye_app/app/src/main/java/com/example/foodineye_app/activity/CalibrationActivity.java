@@ -1,11 +1,13 @@
 package com.example.foodineye_app.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -15,6 +17,8 @@ import com.example.foodineye_app.GazeTrackerManager;
 import com.example.foodineye_app.R;
 
 import camp.visual.gazetracker.callback.CalibrationCallback;
+import camp.visual.gazetracker.constant.AccuracyCriteria;
+import camp.visual.gazetracker.constant.CalibrationModeType;
 import camp.visual.gazetracker.constant.UserStatusOption;
 import camp.visual.gazetracker.util.ViewLayoutChecker;
 import visual.camp.sample.view.CalibrationViewer;
@@ -33,7 +37,7 @@ public class CalibrationActivity extends AppCompatActivity {
     Context context;
     //-----------------------------------------------------------------------------------------
     //calibration
-    LinearLayout calibrationBtn;
+    Button calibrationBtn;
     LinearLayout calibration;
     ViewLayoutChecker viewLayoutChecker = new ViewLayoutChecker();
 
@@ -46,46 +50,36 @@ public class CalibrationActivity extends AppCompatActivity {
         //-----------------------------------------------------------------------------------------
         //calibration
 
-//        gazeTracker = GazeTrackerManager.makeNewInstance(this);
-//
-//        calibrationBtn = (LinearLayout) findViewById(R.id.calibrationBtn);
-//        calibration = (LinearLayout) findViewById(R.id.calibration);
-//        initTrackerView();
-//        initHandler();
-//
-//        final Data data = (Data) getApplication();
-//        data.setViewCalibration(viewCalibration);
-//
-//        // gazeTracker 객체 초기화 후 콜백 등록
-//        gazeTracker.setGazeTrackerCallbacks(calibrationCallback);
-//        runGazeTracker();
-//
-//        setOffsetOfView();
-//
-//        calibrationBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                show("start-calibration");
-//                runOnUiThread(()->calibration.setVisibility(View.INVISIBLE));
-//                // 타이틀바 숨기기
-//                hideNavigationBar();
-//                gazeTracker.startCalibration(CalibrationModeType.DEFAULT, AccuracyCriteria.DEFAULT);
-//                Log.d("Calibration", "startCalibration: "+ gazeTracker.startCalibration(CalibrationModeType.DEFAULT, AccuracyCriteria.DEFAULT));
-////                gazeTracker.startCalibration(CalibrationModeType.DEFAULT, AccuracyCriteria.DEFAULT, 20.000001, 100.00001, 1050.01, 2000.01);
-//            }
-//        });
-//
-//        LinearLayout orderBtn = (LinearLayout) findViewById(R.id.real_home_order);
-//        orderBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                //home -> storelist
-//                Intent intent = new Intent(getApplicationContext(), StorelistActivity.class);
-//                startActivity(intent);
-//                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-//                finish();
-//            }
-//        });
+        gazeTracker = GazeTrackerManager.makeNewInstance(this);
+
+        calibrationBtn = (Button) findViewById(R.id.calibraionBtn);
+        calibration = (LinearLayout) findViewById(R.id.calibration);
+
+        initTrackerView();
+        initHandler();
+
+        final Data data = (Data) getApplication();
+        data.setViewCalibration(viewCalibration);
+
+        // gazeTracker 객체 초기화 후 콜백 등록
+        gazeTracker.setGazeTrackerCallbacks(calibrationCallback);
+        runGazeTracker();
+
+        setOffsetOfView();
+
+        calibrationBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                show("start-calibration");
+                runOnUiThread(()->calibration.setVisibility(View.INVISIBLE));
+                // 타이틀바 숨기기
+                hideNavigationBar();
+                gazeTracker.startCalibration(CalibrationModeType.DEFAULT, AccuracyCriteria.DEFAULT);
+                Log.d("Calibration", "startCalibration: "+ gazeTracker.startCalibration(CalibrationModeType.DEFAULT, AccuracyCriteria.DEFAULT));
+//                gazeTracker.startCalibration(CalibrationModeType.DEFAULT, AccuracyCriteria.DEFAULT, 20.000001, 100.00001, 1050.01, 2000.01);
+            }
+        });
+
 
         //-----------------------------------------------------------------------------------------
 
@@ -158,10 +152,14 @@ public class CalibrationActivity extends AppCompatActivity {
         public void onCalibrationFinished(double[] calibrationData) {
             // When calibration is finished, calibration data is stored to SharedPreference
             runOnUiThread(() -> viewCalibration.setVisibility(View.INVISIBLE));
-            runOnUiThread(() -> calibration.setVisibility(View.VISIBLE));
+//            runOnUiThread(() -> calibration.setVisibility(View.VISIBLE));
             showNavigationBar();
             gazeTracker.setCalibrationData(calibrationData);
             show("calibrationFinished");
+            show("주문하기!");
+
+            //calibraion 종료 후 -> storelistactivity()
+            startStorelistActivity();
         }
     };
 
@@ -194,5 +192,13 @@ public class CalibrationActivity extends AppCompatActivity {
                 viewCalibration.setOffset(x, y);
             }
         });
+    }
+
+    public void startStorelistActivity(){
+        //calibraion -> storelist
+        Intent intent = new Intent(getApplicationContext(), StorelistActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+        finish();
     }
 }
