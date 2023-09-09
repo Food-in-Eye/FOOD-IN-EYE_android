@@ -20,9 +20,8 @@ public class ApiClientEx {
     private static OkHttpClient httpClientex = httpClientBuilder.build();
 
 //    public static String BASE_URL="http://10.0.2.2:8000/";
-//    public static String BASE_URL="http://203.252.213.200:4040/";
-//    public static String BASE_URL="http://203.252.213.200:2020/";     //외부 서버
-    public static String BASE_URL = "http://192.168.219.200:4040/";   //내부 서버
+    public static String BASE_URL="http://203.252.213.200:4040/"; //외부 서버
+//    public static String BASE_URL = "http://192.168.219.200:4040/";   //내부 서버
 //        public static String BASE_URL="http://127.0.0.1:8000/";
 
     private static Retrofit retrofit;

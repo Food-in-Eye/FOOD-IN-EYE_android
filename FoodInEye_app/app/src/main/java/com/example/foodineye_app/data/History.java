@@ -11,7 +11,7 @@ public class History {
     @Expose
     public int max_batch;
 
-    @SerializedName("response")
+    @SerializedName("history_list")
     @Expose
     public List<HistoryResponse> historyResponse;
 
