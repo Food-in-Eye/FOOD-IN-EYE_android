@@ -11,7 +11,7 @@ public class PostOrderResponse {
     @Expose
     public String history_id;
 
-    @SerializedName("response")
+    @SerializedName("order_list")
     @Expose
     public List<Response> response;
 

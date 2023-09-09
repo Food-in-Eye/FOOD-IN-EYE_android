@@ -10,7 +10,7 @@ public class GetHistoryDetail {
     @Expose
     public String date;
 
-    @SerializedName("orders")
+    @SerializedName("order_list")
     @Expose
     public List<GetHistoryDetail.OrderItem> orders;
 
