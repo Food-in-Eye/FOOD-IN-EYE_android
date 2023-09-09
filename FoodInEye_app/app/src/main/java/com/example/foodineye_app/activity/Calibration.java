@@ -46,7 +46,6 @@ public class Calibration extends AppCompatActivity {
         setContentView(R.layout.activity_calibration);
 
         context = getApplicationContext();
-
         //-----------------------------------------------------------------------------------------
         //calibration
 

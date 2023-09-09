@@ -5,9 +5,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.intent.action.MEDIA_MOUNTED" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-
 
     <application
         android:name=".activity.Data"
@@ -22,13 +21,14 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".activity.CameraActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.PersonalActivity"
             android:exported="false" />
         <activity
             android:name=".activity.LogoutActivity"
-            android:exported="false" />
-
-<!--        <service android:name=".TokenRefreshservice" />-->
+            android:exported="false" /> <!-- <service android:name=".TokenRefreshservice" /> -->
         <service android:name=".RefreshTokenService" />
 
         <activity

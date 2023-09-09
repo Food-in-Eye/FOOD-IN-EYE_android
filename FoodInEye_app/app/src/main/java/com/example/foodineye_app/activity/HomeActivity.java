@@ -1,46 +1,33 @@
 package com.example.foodineye_app.activity;
 
-import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
 
-import com.example.foodineye_app.GazeTrackerDataStorage;
-import com.example.foodineye_app.GazeTrackerManager;
 import com.example.foodineye_app.R;
-import com.example.foodineye_app.gaze.PermissionRequester;
-
-import camp.visual.gazetracker.constant.AccuracyCriteria;
-import visual.camp.sample.view.PointView;
-
-//calibration
-import camp.visual.gazetracker.callback.CalibrationCallback;
-import camp.visual.gazetracker.constant.CalibrationModeType;
-import visual.camp.sample.view.CalibrationViewer;
 
 
 public class HomeActivity extends AppCompatActivity {
 
+    Context context;
+    Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        //camera permissionrequester
-        PermissionRequester.request(this);
-        setContentView(R.layout.activity_home);
-        ActivityCompat.requestPermissions(this, new String[]
-                {Manifest.permission.WRITE_EXTERNAL_STORAGE}, MODE_PRIVATE);
+        context = getApplicationContext();
+
+//        PermissionRequester.request(this);
+//        setContentView(R.layout.activity_home);
+//        ActivityCompat.requestPermissions(this, new String[]
+//                {Manifest.permission.WRITE_EXTERNAL_STORAGE}, MODE_PRIVATE);
 
 
         LinearLayout mypageBtn = (LinearLayout) findViewById(R.id.home_mypage);
@@ -66,8 +53,27 @@ public class HomeActivity extends AppCompatActivity {
 //            @Override
 //            public void onClick(View view) {
 //                //home -> storelist
-//                Intent loginIntent = new Intent(getApplicationContext(), StorelistActivity.class);
+//                Intent loginIntent = new Intent(getApplicationContext(), Calibration.class);
 //                startActivity(loginIntent);
+//            }
+//        });
+
+//        LinearLayout orderBtn = (LinearLayout) findViewById(R.id.home_order);
+//        orderBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                // 권한을 먼저 확인하고, 권한이 없는 경우에만 권한 요청을 수행합니다.
+//                if (PermissionRequester.hasPermissions(context,Manifest.permission.CAMERA)) {
+//                    // 권한이 이미 동의되어 있을 때의 처리
+//                    Intent loginIntent = new Intent(getApplicationContext(), Calibration.class);
+//                    startActivity(loginIntent);
+//                } else {
+//                    // 권한이 없는 경우 권한 요청
+//                    PermissionRequester.request((Activity) context);
+//                    setContentView(R.layout.activity_home);
+//                    ActivityCompat.requestPermissions((Activity) context, new String[]
+//                            {Manifest.permission.WRITE_EXTERNAL_STORAGE}, MODE_PRIVATE);
+//                }
 //            }
 //        });
 
@@ -75,11 +81,12 @@ public class HomeActivity extends AppCompatActivity {
         orderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //home -> calibration
-                Intent loginIntent = new Intent(getApplicationContext(), Calibration.class);
-                startActivity(loginIntent);
+                //home -> storelist
+                Intent cameraIntent = new Intent(getApplicationContext(), CameraActivity.class);
+                startActivity(cameraIntent);
             }
         });
+
 
         LinearLayout calibrationBtn = (LinearLayout) findViewById(R.id.home_calibration);
         calibrationBtn.setOnClickListener(new View.OnClickListener() {
@@ -90,4 +97,6 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }

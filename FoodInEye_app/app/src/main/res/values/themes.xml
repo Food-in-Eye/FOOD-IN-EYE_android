@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.FoodInEye_app" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimary">@color/black_4</item>
         <item name="colorPrimaryVariant">@color/carrot</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->

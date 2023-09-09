@@ -72,7 +72,7 @@
         <LinearLayout
             android:id="@+id/home_order"
             android:layout_width="300dp"
-            android:layout_height="130dp"
+            android:layout_height="150dp"
             android:background="@drawable/home_order"
             android:orientation="vertical"
             android:layout_gravity="center"
@@ -83,7 +83,7 @@
         <LinearLayout
             android:id="@+id/home_calibration"
             android:layout_width="300dp"
-            android:layout_height="130dp"
+            android:layout_height="260dp"
             android:background="@drawable/orange_rec_30"
             android:backgroundTint="@color/sygray"
             android:orientation="vertical"
