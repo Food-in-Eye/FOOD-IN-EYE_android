@@ -89,16 +89,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="000"
-                        android:textSize="18dp"
+                        android:textSize="16dp"
                         android:textColor="@color/black_6" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="님, 배고프시죠!"
-                        android:textSize="18dp"
+                        android:textSize="16dp"
                         android:textColor="@color/black_6"
-                        android:layout_gravity="center" />
+                        android:layout_gravity="center"/>
 
                 </LinearLayout>
 
@@ -106,8 +106,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="주문하기까지 마지막 단계입니다.\n"
-                    android:textSize="18dp"
-                    android:textColor="@color/black_6"/>
+                    android:textSize="16dp"
+                    android:textColor="@color/black_6"
+                    android:layout_marginTop="3dp"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -119,14 +120,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="다음은 "
-                        android:textSize="18dp"
+                        android:textSize="16dp"
                         android:textColor="@color/black_6"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="시선 추적의 정확도를 높이기 위한"
-                        android:textSize="18dp"
+                        android:textSize="16dp"
                         android:textColor="@color/blue"/>
 
 
@@ -141,15 +142,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="조정작업"
-                        android:textSize="18dp"
-                        android:textColor="@color/blue"/>
+                        android:textSize="16dp"
+                        android:textColor="@color/blue"
+                        android:layout_marginTop="3dp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="입니다\n"
-                        android:textSize="18dp"
-                        android:textColor="@color/black_6"/>
+                        android:textSize="16dp"
+                        android:textColor="@color/black_6"
+                        android:layout_marginTop="3dp"/>
 
 
                 </LinearLayout>
@@ -158,29 +161,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="화면에 나타나는 햄버거(🍔)를 따라 시선을 움직이면서 바라보시면 됩니다.\n"
-                    android:textSize="18dp"
-                    android:textColor="@color/black_6"/>
+                    android:textSize="16dp"
+                    android:textColor="@color/black_6"
+                    android:lineSpacingExtra="5dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="* 정확도를 위해 최대한 핸드폰을 고정한채로 진행해주세요\n"
-                    android:textSize="18dp"
+                    android:textSize="16dp"
                     android:textColor="@color/black_11"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="준비되셨으면 시작 버튼을 눌러주세요!"
-                    android:textSize="18dp"
+                    android:textSize="16dp"
                     android:textColor="@color/black_8"/>
-
-
-
-
-
-
-
 
             </LinearLayout>
 
@@ -198,6 +195,110 @@
                 android:layout_marginBottom="30dp"/>
 
         </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/calibration_to_store"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="invisible"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- 커스텀 툴바 추가 -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/calibration_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorOnPrimary"
+            android:elevation="4dp">
+
+            <!-- 사용자 정의 뒤로 가기 버튼 추가 -->
+            <ImageView
+                android:id="@+id/calibration_back"
+                android:layout_width="40dp"
+                android:layout_height="24dp"
+                android:layout_gravity="start"
+                android:src="@drawable/back_btn"
+                android:contentDescription="뒤로 가기" />
+
+            <TextView
+                android:id="@+id/calibration_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="주문하기"
+                android:fontFamily="@font/mice_gothic_bold"
+                android:textSize="20dp"
+                android:textColor="@color/black"/>
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:src="@drawable/order_3"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"/>
+
+        <!--Calibration-->
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:src="@drawable/calibration_blue"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"/>
+
+        <!--멘트-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:orientation="vertical"
+            android:background="@drawable/rec_str10"
+            android:layout_margin="10dp"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="모든 작업이 완료되었습니다!\n이제 주문하러 가볼까요?\n"
+                android:textSize="20dp"
+                android:textColor="@color/black_10"
+                android:lineSpacingExtra="5dp"
+                android:layout_marginTop="100dp"/>
+
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/to_storeBtn"
+            android:layout_width="140dp"
+            android:layout_height="60dp"
+            android:text="주문하기"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:background="@drawable/sign_up"
+            android:backgroundTint="@color/blue"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="30dp"/>
+
+
+    </LinearLayout>
+
 
     </LinearLayout>
 
@@ -219,6 +320,6 @@
         tools:layout_editor_absoluteY="87dp">
 
     </visual.camp.sample.view.CalibrationViewer>
-    
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

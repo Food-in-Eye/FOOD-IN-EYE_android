@@ -37,8 +37,8 @@ public class CalibrationActivity extends AppCompatActivity {
     Context context;
     //-----------------------------------------------------------------------------------------
     //calibration
-    Button calibrationBtn;
-    LinearLayout calibration;
+    Button calibrationBtn, goStoreBtn;
+    LinearLayout calibration, calibrationFinish;
     ViewLayoutChecker viewLayoutChecker = new ViewLayoutChecker();
 
     @Override
@@ -54,6 +54,8 @@ public class CalibrationActivity extends AppCompatActivity {
 
         calibrationBtn = (Button) findViewById(R.id.calibraionBtn);
         calibration = (LinearLayout) findViewById(R.id.calibration);
+        calibrationFinish = (LinearLayout) findViewById(R.id.calibration_to_store);
+        goStoreBtn = (Button) findViewById(R.id.to_storeBtn);
 
         initTrackerView();
         initHandler();
@@ -77,6 +79,13 @@ public class CalibrationActivity extends AppCompatActivity {
                 gazeTracker.startCalibration(CalibrationModeType.DEFAULT, AccuracyCriteria.DEFAULT);
                 Log.d("Calibration", "startCalibration: "+ gazeTracker.startCalibration(CalibrationModeType.DEFAULT, AccuracyCriteria.DEFAULT));
 //                gazeTracker.startCalibration(CalibrationModeType.DEFAULT, AccuracyCriteria.DEFAULT, 20.000001, 100.00001, 1050.01, 2000.01);
+            }
+        });
+
+        goStoreBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startStorelistActivity();
             }
         });
 
@@ -152,14 +161,11 @@ public class CalibrationActivity extends AppCompatActivity {
         public void onCalibrationFinished(double[] calibrationData) {
             // When calibration is finished, calibration data is stored to SharedPreference
             runOnUiThread(() -> viewCalibration.setVisibility(View.INVISIBLE));
-//            runOnUiThread(() -> calibration.setVisibility(View.VISIBLE));
+            runOnUiThread(() -> calibrationFinish.setVisibility(View.VISIBLE));
+            runOnUiThread(() -> calibration.setVisibility(View.INVISIBLE));
             showNavigationBar();
             gazeTracker.setCalibrationData(calibrationData);
             show("calibrationFinished");
-            show("주문하기!");
-
-            //calibraion 종료 후 -> storelistactivity()
-            startStorelistActivity();
         }
     };
 
