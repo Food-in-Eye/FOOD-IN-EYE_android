@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import com.example.foodineye_app.ApiClientEx;
 import com.example.foodineye_app.ApiInterface;
@@ -33,7 +31,6 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity {
 
     EditText editId, editPw;
-    TextView errorId, errorPw;
 
     String id, password;
 
@@ -67,20 +64,13 @@ public class LoginActivity extends AppCompatActivity {
 
         //아이디 입력
         editId = (EditText) findViewById(R.id.login_id);
-        errorId = (TextView) findViewById(R.id.login_availableId);
         editId.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //배경색 원래대로 변경하기
-                GradientDrawable background = (GradientDrawable) editId.getBackground();
-                background.setStroke(2, ContextCompat.getColor(getApplicationContext(), R.color.light_gray)); // 원래 배경 색상으로 변경
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //배경색 원래대로 변경하기
-                GradientDrawable background = (GradientDrawable) editId.getBackground();
-                background.setStroke(2, ContextCompat.getColor(getApplicationContext(), R.color.light_gray)); // 원래 배경 색상으로 변경
             }
             @Override
             public void afterTextChanged(Editable s) {
@@ -92,20 +82,13 @@ public class LoginActivity extends AppCompatActivity {
 
         //패스워드 입력
         editPw = (EditText) findViewById(R.id.login_pw);
-        errorPw = (TextView) findViewById(R.id.login_availablePw);
         editPw.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //배경색 원래대로 변경하기
-                GradientDrawable background = (GradientDrawable) editId.getBackground();
-                background.setStroke(2, ContextCompat.getColor(getApplicationContext(), R.color.light_gray)); // 원래 배경 색상으로 변경
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //배경색 원래대로 변경하기
-                GradientDrawable background = (GradientDrawable) editId.getBackground();
-                background.setStroke(2, ContextCompat.getColor(getApplicationContext(), R.color.light_gray)); // 원래 배경 색상으로 변경
             }
 
             @Override
@@ -204,24 +187,8 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d("LoginActivity", "로그인 응답 오류: " + response.code() + ", " + errorBody);
 
                     // 여기서 오류 메시지를 해석하고 사용자에게 알맞은 안내를 제공합니다.
-                    if (errorBody.contains("Nonexistent ID")) {
-                        show("아이디가 존재하지 않습니다!");
-                        errorId.setVisibility(View.VISIBLE);
-                        // 배경색 원래대로 변경하기
-                        GradientDrawable backgroundId = (GradientDrawable) editId.getBackground();
-                        backgroundId.setStroke(2, ContextCompat.getColor(getApplicationContext(), R.color.red)); // 원래 배경 색상으로 변경
-
-                        // 배경색 원래대로 변경하기
-                        GradientDrawable backgroundPw = (GradientDrawable) editPw.getBackground();
-                        backgroundPw.setStroke(2, ContextCompat.getColor(getApplicationContext(), R.color.red)); // 원래 배경 색상으로 변경
-
-                    } else if (errorBody.contains("Incorrect PW")) {
-                        errorPw.setVisibility(View.VISIBLE);
-                        show("비밀번호가 일치하지 않습니다!");
-
-                        // 배경색 원래대로 변경하기
-                        GradientDrawable backgroundPw = (GradientDrawable) editPw.getBackground();
-                        backgroundPw.setStroke(2, ContextCompat.getColor(getApplicationContext(), R.color.red)); // 원래 배경 색상으로 변경
+                    if (errorBody.contains("Logon failed.")) {
+                        show("로그인에 실패했습니다!");
 
                     } else {
                         // 다른 오류 처리 로직을 추가할 수 있습니다.
