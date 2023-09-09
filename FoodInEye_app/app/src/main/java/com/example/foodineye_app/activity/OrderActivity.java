@@ -175,6 +175,7 @@ public class OrderActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<PostOrderResponse> call, Response<PostOrderResponse> response) {
                         if(response.isSuccessful()){
+
                             //요청이 성공한 경우 처리할 작업
 
                             PostOrderResponse responseBody = response.body();
@@ -203,42 +204,7 @@ public class OrderActivity extends AppCompatActivity {
 
                             WebSocketManager.getInstance(getApplicationContext()).connectWebSocket(history_id);
 
-                            // gaze 보내기
-                            ApiClient apiClient = new ApiClient(getApplicationContext());
-                            apiClient.initializeHttpClient();
-
-                            ApiInterface apiInterface1 = apiClient.getClient().create(ApiInterface.class);
-
-                            jsonGazeArray = ((Data) getApplication()).getJsonArray();
-
-                            postGazes = (List<PostGaze>) ((Data)getApplication()).getGazeList();
-
-
-                            Call<PostGazeResponse> gazeCall = apiInterface1.createGaze(history_id, postGazes);
-                            Log.d("Response", "postGaze: "+postGazes.toString());
-
-                            gazeCall.enqueue(new Callback<PostGazeResponse>() {
-                                @Override
-                                public void onResponse(Call<PostGazeResponse> call, Response<PostGazeResponse> response) {
-                                    if (response.isSuccessful() && response.body() != null) {
-                                        // 성공적인 응답을 받은 경우
-                                        //요청이 성공할 경우 처리할 작업
-                                        PostGazeResponse postGazeResponse = response.body();
-                                        Log.d("Response", "postGazeResponse: " +postGazeResponse.toString());
-                                        // postGazeResponse를 사용하여 원하는 작업 수행
-                                    } else {
-                                        // 응답이 실패하거나 response.body()가 null인 경우
-                                        Log.e("Response", "Response is unsuccessful or body is null");
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<PostGazeResponse> call, Throwable t) {
-                                    Log.d("OrderActivity", "postGazeResponse 전송 실패");
-                                }
-                            });
-
-
+                            putGaze();
 
                         }else{
                             //요청이 실패한 경우 errorbody
@@ -251,6 +217,7 @@ public class OrderActivity extends AppCompatActivity {
                         Log.d("OrderActivity", "요청실패!");
                     }
                 });
+
                 //Data orderList에 주문내용 추가하기
                 final Data data = (Data) getApplicationContext();
                 data.setOrderList(orderList);
@@ -304,6 +271,46 @@ public class OrderActivity extends AppCompatActivity {
         if (gazeTrackerDataStorage != null) {
             gazeTrackerDataStorage.stopGazeTracker("order", 0, 0);
         }
+    }
+
+    //POST gaze
+    public void putGaze(){
+
+        //websocket 연결 후에 gaze 보내기
+        ApiClient apiClient = new ApiClient(getApplicationContext());
+        apiClient.initializeHttpClient();
+
+        ApiInterface apiInterface1 = apiClient.getClient().create(ApiInterface.class);
+
+        jsonGazeArray = ((Data) getApplication()).getJsonArray();
+
+        postGazes = (List<PostGaze>) ((Data)getApplication()).getGazeList();
+
+
+        Call<PostGazeResponse> gazeCall = apiInterface1.createGaze(history_id, postGazes);
+        Log.d("Response", "postGaze: "+postGazes.toString());
+
+        gazeCall.enqueue(new Callback<PostGazeResponse>() {
+            @Override
+            public void onResponse(Call<PostGazeResponse> call, Response<PostGazeResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    // 성공적인 응답을 받은 경우
+                    //요청이 성공할 경우 처리할 작업
+                    PostGazeResponse postGazeResponse = response.body();
+                    Log.d("Response", "postGazeResponse: " +postGazeResponse.toString());
+                    // postGazeResponse를 사용하여 원하는 작업 수행
+                } else {
+                    // 응답이 실패하거나 response.body()가 null인 경우
+                    Log.e("Response", "Response is unsuccessful or body is null");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PostGazeResponse> call, Throwable t) {
+                Log.d("OrderActivity", "postGazeResponse 전송 실패");
+            }
+        });
+
     }
 
     //

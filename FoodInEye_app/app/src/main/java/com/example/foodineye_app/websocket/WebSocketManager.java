@@ -29,6 +29,7 @@ public class WebSocketManager {
     }
 
     public void connectWebSocket(String historyId){
+
         //WebSocket 연결
         //WebSocket 연결 코드
         OkHttpClient client = new OkHttpClient();
