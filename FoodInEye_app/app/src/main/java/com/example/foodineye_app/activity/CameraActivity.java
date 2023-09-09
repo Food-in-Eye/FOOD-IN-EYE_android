@@ -2,7 +2,9 @@ package com.example.foodineye_app.activity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -10,9 +12,15 @@ import android.widget.CheckBox;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.example.foodineye_app.ApiClient;
+import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.R;
 import com.example.foodineye_app.data.PutEyePermission;
 import com.example.foodineye_app.gaze.PermissionRequester;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CameraActivity extends AppCompatActivity {
 
@@ -20,10 +28,16 @@ public class CameraActivity extends AppCompatActivity {
     Boolean eyePermission;
     Button nextBtn;
 
+    SharedPreferences sharedPreferences;
+    String u_id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
+
+        sharedPreferences = getSharedPreferences("test_token1", MODE_PRIVATE);
+        u_id = sharedPreferences.getString("u_id", null);
 
         agreeCK = (CheckBox) findViewById(R.id.camera_agree);
         disagreeCK = (CheckBox) findViewById(R.id.camera_disagree);
@@ -57,7 +71,7 @@ public class CameraActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 putCheck();
-
+                
                 if(eyePermission){
 
                     //home -> calibration
@@ -81,6 +95,27 @@ public class CameraActivity extends AppCompatActivity {
     public void putCheck(){
 
         PutEyePermission putEyePermission = new PutEyePermission(u_id, eyePermission);
+
+        // 초기 페이지 로딩
+        ApiClient apiClient = new ApiClient(getApplicationContext());
+        apiClient.initializeHttpClient();
+
+        ApiInterface apiInterface = apiClient.getClient().create(ApiInterface.class);
+
+        Call<Void> call = apiInterface.putEyePermission(u_id, putEyePermission);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()){
+                    Log.d("CameraActivity", "PUT: 200 OK");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.d("CameraActivity", "onFailure: " + t.toString());
+            }
+        });
 
 
     }
