@@ -92,7 +92,7 @@ public class HomeActivity extends AppCompatActivity {
         calibrationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent calibrationIntent = new Intent(getApplicationContext(), Calibration.class);
+                Intent calibrationIntent = new Intent(getApplicationContext(), CalibrationActivity.class);
                 startActivity(calibrationIntent);
             }
         });

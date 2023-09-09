@@ -15,6 +15,7 @@ import com.example.foodineye_app.data.PostPwCheckResponse;
 import com.example.foodineye_app.data.PostRTokenResponse;
 import com.example.foodineye_app.data.PostSignup;
 import com.example.foodineye_app.data.PostSignupResponse;
+import com.example.foodineye_app.data.PutEyePermission;
 import com.example.foodineye_app.data.PutMyInfoSet;
 import com.example.foodineye_app.gaze.PostGaze;
 import com.example.foodineye_app.gaze.PostGazeResponse;
@@ -98,6 +99,12 @@ public interface ApiInterface {
     Call<PostATokenResponse> getNewAToken(
             @Query("u_id") String u_id,
             @Header("Authorization") String authorizationHeader
+    );
+
+    @PUT("api/v2/users/buyer/eye")
+    Call<Void> putEyePermission(
+            @Query("u_id") String u_id,
+            @Body PutEyePermission putEyePermission
     );
 
 }

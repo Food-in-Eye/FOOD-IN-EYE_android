@@ -50,7 +50,7 @@
             android:name=".activity.OrderHistoryActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.Calibration"
+            android:name=".activity.CalibrationActivity"
             android:exported="false" />
         <activity
             android:name=".activity.StorelistActivity"

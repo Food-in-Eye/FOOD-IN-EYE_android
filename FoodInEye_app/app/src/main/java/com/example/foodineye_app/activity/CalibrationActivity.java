@@ -23,7 +23,7 @@ import camp.visual.gazetracker.util.ViewLayoutChecker;
 import visual.camp.sample.view.CalibrationViewer;
 import visual.camp.sample.view.PointView;
 
-public class Calibration extends AppCompatActivity {
+public class CalibrationActivity extends AppCompatActivity {
 
     //-----------------------------------------------------------------------------------------
     //gazetracker
