@@ -21,7 +21,6 @@ import com.example.foodineye_app.ApiClient;
 import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.R;
 import com.example.foodineye_app.data.PutEyePermission;
-import com.example.foodineye_app.gaze.PermissionRequester;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,6 +31,7 @@ public class CameraActivity extends AppCompatActivity {
     Toolbar toolbar;
     CheckBox agreeCK, disagreeCK;
     Boolean eyePermission;
+    String eyeP;
     Button nextBtn;
 
     SharedPreferences sharedPreferences;
@@ -46,9 +46,9 @@ public class CameraActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.camera_toolbar);
         setToolBar(toolbar);
 
-        //
         sharedPreferences = getSharedPreferences("test_token1", MODE_PRIVATE);
         u_id = sharedPreferences.getString("u_id", null);
+        eyeP = sharedPreferences.getString("eye_permission", null);
 
         agreeCK = (CheckBox) findViewById(R.id.camera_agree);
         disagreeCK = (CheckBox) findViewById(R.id.camera_disagree);
@@ -60,6 +60,7 @@ public class CameraActivity extends AppCompatActivity {
                 if (agreeCK.isChecked()) {
                     disagreeCK.setChecked(false);
                     checkCameraPermission();
+                    eyePermission = true;
                 }
             }
         });
@@ -75,23 +76,20 @@ public class CameraActivity extends AppCompatActivity {
             }
         });
 
+        Log.d("CameraActivity", "ceyePermission: "+eyePermission);
+
         nextBtn = (Button) findViewById(R.id.next_btn);
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 putCheck();
-
                 if(eyePermission){
-
                     //동의
-                    startCalibrationActivity();
-
+//                    startCalibrationActivity();
                 }else{
-
                     //비동의
                     startStorelistActivity();
-
                 }
             }
         });
@@ -101,7 +99,7 @@ public class CameraActivity extends AppCompatActivity {
     //checkbox 결과 PUT 보내기
     public void putCheck(){
 
-        PutEyePermission putEyePermission = new PutEyePermission(u_id, eyePermission);
+        PutEyePermission putEyePermission = new PutEyePermission(eyePermission);
 
         // 초기 페이지 로딩
         ApiClient apiClient = new ApiClient(getApplicationContext());
@@ -114,13 +112,14 @@ public class CameraActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()){
-                    Log.d("CameraActivity", "PUT: 200 OK");
+                    Log.d("CameraActivity", "cPUT: 200 OK");
+                    startCalibrationActivity();
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Log.d("CameraActivity", "onFailure: " + t.toString());
+                Log.d("CameraActivity", "conFailure: " + t.toString());
             }
         });
 
@@ -128,27 +127,6 @@ public class CameraActivity extends AppCompatActivity {
     }
 
     //권한 체크하고 카메라 권한 요청
-    public void isPermission(){
-
-        // 권한을 먼저 확인하고, 권한이 없는 경우에만 권한 요청을 수행합니다.
-        if (PermissionRequester.hasPermissions(this, Manifest.permission.CAMERA)) {
-
-            // 권한이 이미 동의되어 있을 때의 처리
-            Intent loginIntent = new Intent(getApplicationContext(), CalibrationActivity.class);
-            startActivity(loginIntent);
-
-        } else {
-
-            // 권한이 없는 경우 권한 요청
-            PermissionRequester.request(this);
-            setContentView(R.layout.activity_camera);
-            ActivityCompat.requestPermissions(this, new String[]
-                    {Manifest.permission.WRITE_EXTERNAL_STORAGE}, MODE_PRIVATE);
-
-            //권한 요청했는데 허용하지 않음을 체크하면 checkbox -> disagree
-        }
-    }
-
     private void checkCameraPermission() {
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
@@ -167,7 +145,6 @@ public class CameraActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, MODE_PRIVATE);
         }
 
-        eyePermission = true;
     }
 
     public void startCalibrationActivity(){

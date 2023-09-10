@@ -12,15 +12,6 @@
         android:orientation="horizontal"
         android:padding="15dp">
 
-<!--        <ImageView-->
-<!--            android:layout_width="20dp"-->
-<!--            android:layout_height="20dp"-->
-<!--            android:background="@drawable/category_pin"-->
-<!--            android:backgroundTint="@color/navy"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:layout_marginLeft="15dp"-->
-<!--            android:layout_marginRight="20dp"/>-->
-
         <ImageView
             android:id="@+id/storelist_img"
             android:layout_width="50dp"

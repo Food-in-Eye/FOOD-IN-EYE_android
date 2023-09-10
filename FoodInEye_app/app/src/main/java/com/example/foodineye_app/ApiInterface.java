@@ -101,7 +101,7 @@ public interface ApiInterface {
             @Header("Authorization") String authorizationHeader
     );
 
-    @PUT("api/v2/users/buyer/eye")
+    @PUT("api/v2/users/buyer/camera")
     Call<Void> putEyePermission(
             @Query("u_id") String u_id,
             @Body PutEyePermission putEyePermission
