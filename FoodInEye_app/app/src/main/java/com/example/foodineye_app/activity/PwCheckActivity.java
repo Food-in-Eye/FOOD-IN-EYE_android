@@ -84,8 +84,10 @@ public class PwCheckActivity extends AppCompatActivity {
     }
 
     //---------------------------------------------------------------------------------------------------
-    //툴바
-    public void setToolBar(Toolbar toolbar){
+
+    //toolbar
+    private void setToolBar(androidx.appcompat.widget.Toolbar toolbar){
+
         // 툴바를 액션바로 설정
         setSupportActionBar(toolbar);
 
@@ -96,6 +98,17 @@ public class PwCheckActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // 뒤로 가기 버튼 동작을 처리
                 onBackPressed();
+            }
+        });
+
+        ImageView homeBtn = (ImageView) findViewById(R.id.pwcheck_home);
+        homeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //-> home
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
 

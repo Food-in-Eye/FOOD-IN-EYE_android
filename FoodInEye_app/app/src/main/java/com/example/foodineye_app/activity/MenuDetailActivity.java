@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,7 +31,7 @@ import visual.camp.sample.view.PointView;
 
 public class MenuDetailActivity extends AppCompatActivity {
 
-    Toolbar toolbar;
+    androidx.appcompat.widget.Toolbar toolbar;
 
     LinearLayout order_btn;
     ImageView menu_Img;
@@ -64,6 +64,7 @@ public class MenuDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu_detail);
 
         toolbar = (Toolbar) findViewById(R.id.menu_detail_toolbar);
+        setToolBar(toolbar);
 
         //-------------------------------------------------------------------------------------
         //screenshot

@@ -73,7 +73,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setTitle(""); // 툴바의 타이틀을 직접 설정
-        ImageView backBtn = (ImageView) findViewById(R.id.camera_back);
+        ImageView backBtn = (ImageView) findViewById(R.id.order_detail_back);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,7 +82,7 @@ public class OrderDetailActivity extends AppCompatActivity {
             }
         });
 
-        ImageView homeBtn = (ImageView) findViewById(R.id.camera_home);
+        ImageView homeBtn = (ImageView) findViewById(R.id.order_detail_home);
         homeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -35,8 +35,8 @@ public class WebSocketManager {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
 //                .url("ws://10.0.2.2:8000/api/v2/websockets/ws?h_id=" + historyId)
-//                .url("ws://203.252.213.200:2020/api/v2/websockets/ws?h_id=" + historyId)
-                .url("ws://203.252.213.200:4040/api/v2/websockets/ws?h_id=" + historyId)
+//                .url("ws://203.252.213.200:4040/api/v2/websockets/ws?h_id=" + historyId)
+                .url("ws://192.168.219.200:4040/api/v2/websockets/ws?h_id=" + historyId)
 //                .url("ws://127.0.0.1:8000//api/v2/websockets/ws?h_id=" + historyId)
                 .build();
 
