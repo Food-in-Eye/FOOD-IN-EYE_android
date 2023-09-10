@@ -23,7 +23,7 @@ public class PostLoginResponse {
 
     @SerializedName("camera")
     @Expose
-    public boolean eye_permssion; //true 1, false 2, null 0
+    public int eye_permssion; //null 0, true 1, false 2
 
     public String getUser_id() {
         return user_id;
@@ -42,10 +42,12 @@ public class PostLoginResponse {
     }
 
     public String isEye_permssion() {
-        if(eye_permssion == true){
+        if(eye_permssion == 1){
             return "true";
-        } else if (eye_permssion == false) {
+        } else if (eye_permssion == 2) {
             return "false";
+        }else if (eye_permssion == 0){
+            return "null";
         }else{
             return "null";
         }
