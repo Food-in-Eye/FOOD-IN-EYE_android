@@ -37,6 +37,10 @@ public class GetStoreList {
         @Expose
         private int s_num;
 
+        @SerializedName("img_key")
+        @Expose
+        private String img_key;
+
         // status == 2 -> Close, status == 1 -> Open
         public boolean isOpen(){
             if (status == 2){
@@ -106,6 +110,10 @@ public class GetStoreList {
 
         public void setS_num(int s_num) {
             this.s_num = s_num;
+        }
+
+        public String getImg_key() {
+            return img_key;
         }
 
         @Override
