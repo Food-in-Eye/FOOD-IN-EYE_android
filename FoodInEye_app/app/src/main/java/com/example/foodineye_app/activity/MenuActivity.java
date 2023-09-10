@@ -12,7 +12,7 @@ import android.os.Bundle;
 import android.os.HandlerThread;
 import android.util.Log;
 import android.util.LruCache;
-import android.view.Menu;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -631,32 +632,56 @@ public class MenuActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 //-> home
-                Intent loginIntent = new Intent(getApplicationContext(), HomeActivity.class);
-                startActivity(loginIntent);
-                finish();
+                showDialog();
             }
         });
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_back, menu);
-        return true;
-    }
+    //home_dialog
+    public void showDialog(){
 
-    @Override
-    public boolean onOptionsItemSelected(android.view.MenuItem item) {
-        // 메뉴 항목을 클릭했을 때의 동작을 처리합니다.
-        switch (item.getItemId()) {
-            case R.id.action_back:
-                show("뒤로가기 버튼");
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
+        LayoutInflater layoutInflater = LayoutInflater.from(MenuActivity.this);
+        View view = layoutInflater.inflate(R.layout.alert_dialog_home, null);
 
-    //---------------------------------------------------------------------------------------------------
+        AlertDialog alertDialog = new AlertDialog.Builder(MenuActivity.this, R.style.CustomAlertDialog)
+                .setView(view)
+                .create();
+
+        TextView homeTxt = view.findViewById(R.id.home_alert_home);
+        TextView orderTxt = view.findViewById(R.id.home_alert_order);
+        ImageView delete = view.findViewById(R.id.home_alert_delete);
+
+        //홈 화면 이동
+        homeTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //storelist
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(intent);
+                //현재 데이터 삭제하기
+                Data data = (Data) getApplication();
+                data.initializeAllVariables();
+
+            }
+        });
+
+        //계속 주문하기
+        orderTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.show();
+    }
 
 }

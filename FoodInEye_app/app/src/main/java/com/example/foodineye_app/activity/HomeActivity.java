@@ -56,17 +56,6 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-//        LinearLayout orderBtn = (LinearLayout) findViewById(R.id.home_order);
-//        orderBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                //home -> storelist
-//                Intent loginIntent = new Intent(getApplicationContext(), Calibration.class);
-//                startActivity(loginIntent);
-//            }
-//        });
-
-
         //시선 권한 동의 여부 확인
         sharedPreferences = getSharedPreferences("test_token1", MODE_PRIVATE);
         eye_permission = sharedPreferences.getString("eye_permission", null);
@@ -121,9 +110,6 @@ public class HomeActivity extends AppCompatActivity {
         TextView contiTxt = view.findViewById(R.id.camera_alert_continue);
         TextView agreeTxt = view.findViewById(R.id.camera_alert_agree);
         ImageView delete = view.findViewById(R.id.camera_alert_delete);
-
-        contiTxt.setText("유지하기");
-        agreeTxt.setText("동의하러 가기");
 
         contiTxt.setOnClickListener(new View.OnClickListener() {
             @Override

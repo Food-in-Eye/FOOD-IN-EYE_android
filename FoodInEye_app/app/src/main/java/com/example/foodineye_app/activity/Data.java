@@ -115,4 +115,27 @@ public class Data extends Application {
         GazeList.add(postGaze);
     }
 
+    //초기화
+    public void initializeAllVariables() {
+        jsonGazeArray = new JSONArray();
+        GazeList = new ArrayList<>();
+        cartList = new ArrayList<>();
+        recentS_id = null;
+        recentM_id = null;
+        orderList = new ArrayList<>();
+        history_id = null;
+        viewCalibration = null;
+    }
+
+    @Override
+    public String toString() {
+        return "Data{" +
+                "cartList=" + cartList +
+                ", recentS_id='" + recentS_id + '\'' +
+                ", recentM_id='" + recentM_id + '\'' +
+                ", orderList=" + orderList +
+                ", history_id='" + history_id + '\'' +
+                ", viewCalibration=" + viewCalibration +
+                '}';
+    }
 }

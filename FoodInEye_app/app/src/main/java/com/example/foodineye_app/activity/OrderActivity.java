@@ -7,11 +7,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.HandlerThread;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -342,12 +345,56 @@ public class OrderActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //-> home
-                Intent loginIntent = new Intent(getApplicationContext(), HomeActivity.class);
-                startActivity(loginIntent);
-                finish();
+                showDialog();
             }
         });
 
+    }
+
+    //home_dialog
+    public void showDialog(){
+
+        LayoutInflater layoutInflater = LayoutInflater.from(OrderActivity.this);
+        View view = layoutInflater.inflate(R.layout.alert_dialog_home, null);
+
+        AlertDialog alertDialog = new AlertDialog.Builder(OrderActivity.this, R.style.CustomAlertDialog)
+                .setView(view)
+                .create();
+
+        TextView homeTxt = view.findViewById(R.id.home_alert_home);
+        TextView orderTxt = view.findViewById(R.id.home_alert_order);
+        ImageView delete = view.findViewById(R.id.home_alert_delete);
+
+        //홈 화면 이동
+        homeTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //storelist
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(intent);
+                //현재 데이터 삭제하기
+                Data data = (Data) getApplication();
+                data.initializeAllVariables();
+
+            }
+        });
+
+        //계속 주문하기
+        orderTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.show();
     }
 
     //

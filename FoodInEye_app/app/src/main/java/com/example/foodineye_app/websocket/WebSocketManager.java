@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.example.foodineye_app.activity.Data;
 import com.example.foodineye_app.activity.OrderDetailActivity;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -120,6 +121,10 @@ public class WebSocketManager {
             webSocket.send(jsonMessage.toString()); // JSON 메시지 전송
             webSocket.close(1000, "Connection closed"); // 연결 종료
             Log.d("WebSocket", "WebSocket Closed");
+
+            //데이터 모두 삭제
+            Data data = (Data) context;
+            data.initializeAllVariables();
         }
     }
 

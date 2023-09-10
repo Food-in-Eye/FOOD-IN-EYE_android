@@ -404,12 +404,58 @@ public class MenuDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //-> home
-                Intent loginIntent = new Intent(getApplicationContext(), HomeActivity.class);
-                startActivity(loginIntent);
-                finish();
+                showDialoghome();
+
+
             }
         });
 
+    }
+
+    //home_dialog
+    public void showDialoghome(){
+
+        LayoutInflater layoutInflater = LayoutInflater.from(MenuDetailActivity.this);
+        View view = layoutInflater.inflate(R.layout.alert_dialog_home, null);
+
+        AlertDialog alertDialog = new AlertDialog.Builder(MenuDetailActivity.this, R.style.CustomAlertDialog)
+                .setView(view)
+                .create();
+
+        TextView homeTxt = view.findViewById(R.id.home_alert_home);
+        TextView orderTxt = view.findViewById(R.id.home_alert_order);
+        ImageView delete = view.findViewById(R.id.home_alert_delete);
+
+        //홈 화면 이동
+        homeTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //storelist
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(intent);
+                //현재 데이터 삭제하기
+                Data data = (Data) getApplication();
+                data.initializeAllVariables();
+
+            }
+        });
+
+        //계속 주문하기
+        orderTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.show();
     }
 
 }

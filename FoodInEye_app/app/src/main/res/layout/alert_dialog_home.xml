@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="380dp"
+    android:layout_height="match_parent"
+    android:background="@drawable/alert_dialog_background"
+    android:layout_margin="10dp"
+    android:layout_gravity="center">
+
+    <ImageView
+        android:id="@+id/home_alert_delete"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:background="@drawable/delete_btn"
+        android:backgroundTint="@color/gray"
+        android:layout_gravity="right"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"/>
+
+
+    <TextView
+        android:layout_width="420dp"
+        android:layout_height="130dp"
+        android:text="홈화면으로 돌아갈 시 \n ❗️현재 주문은 초기화됩니다️.❗️"
+        android:textSize="15dp"
+        android:textColor="@color/gray_up"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:background="@drawable/tape_orange"
+        android:backgroundTint="@color/meronna_ver2"
+        android:lineSpacingExtra="5dp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp">
+
+        <TextView
+            android:id="@+id/home_alert_home"
+            android:layout_width="160dp"
+            android:layout_height="45dp"
+            android:text="홈 화면 가기"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:textColor="@color/black_10"
+            android:background="@drawable/navy_rec_l300"
+            android:backgroundTint="@color/sygray"
+            android:gravity="center"
+            android:layout_gravity="center"/>
+
+        <View
+            android:layout_width="3dp"
+            android:layout_height="45dp"
+            android:background="@color/white"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:id="@+id/home_alert_order"
+            android:layout_width="160dp"
+            android:layout_height="45dp"
+            android:text="계속 주문하기"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:textColor="@color/black_10"
+            android:background="@drawable/navy_rec_r300"
+            android:backgroundTint="@color/sygray"
+            android:gravity="center"
+            android:layout_gravity="center"/>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
