@@ -6,13 +6,11 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -22,7 +20,6 @@ import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.R;
 import com.example.foodineye_app.data.PutEyePermission;
 import com.example.foodineye_app.gaze.PermissionRequester;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,10 +34,6 @@ public class CameraActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     String u_id;
 
-    BottomNavigationView bottomNavigationView;
-
-    private static final int CAMERA_PERMISSION_REQUEST_CODE = 123;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,9 +41,6 @@ public class CameraActivity extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences("test_token1", MODE_PRIVATE);
         u_id = sharedPreferences.getString("u_id", null);
-
-        bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-        clickNavigation();
 
         agreeCK = (CheckBox) findViewById(R.id.camera_agree);
         disagreeCK = (CheckBox) findViewById(R.id.camera_disagree);
@@ -182,48 +172,5 @@ public class CameraActivity extends AppCompatActivity {
         Intent intent = new Intent(this, StorelistActivity.class);
         startActivity(intent);
         finish();
-    }
-
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
-//            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                // 권한이 허용된 경우
-//                startCalibrationActivity();
-//            } else {
-//                // 권한이 거부된 경우
-//                Toast.makeText(this, "카메라 권한이 거부되었습니다.", Toast.LENGTH_SHORT).show();
-//                // 권한이 거부되면 다시 권한 요청
-//                checkCameraPermission();
-//            }
-//        }
-//    }
-
-    public void clickNavigation(){
-
-        // Bottom Navigation Bar에서 항목을 선택할 때의 리스너 설정
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.bottom_order:
-                        // order 탭을 선택한 경우
-                        // 홈 화면으로 이동하는 코드를 여기에 추가
-
-                        return true;
-                    case R.id.bottom_home:
-                        // home 탭을 선택한 경우
-                        // 프로필 화면으로 이동하는 코드를 여기에 추가
-
-                        return true;
-                    case R.id.bottom_mypage:
-                        // mypage 탭을 선택한 경우
-                        // 프로필 화면으로 이동하는 코드를 여기에 추가
-
-                        return true;
-                }
-                return false;
-            }
-        });
     }
 }
