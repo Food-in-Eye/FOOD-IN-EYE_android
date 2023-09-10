@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,6 +30,8 @@ import java.io.FileOutputStream;
 import visual.camp.sample.view.PointView;
 
 public class MenuDetailActivity extends AppCompatActivity {
+
+    Toolbar toolbar;
 
     LinearLayout order_btn;
     ImageView menu_Img;
@@ -59,6 +62,8 @@ public class MenuDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_detail);
+
+        toolbar = (Toolbar) findViewById(R.id.menu_detail_toolbar);
 
         //-------------------------------------------------------------------------------------
         //screenshot
@@ -375,6 +380,35 @@ public class MenuDetailActivity extends AppCompatActivity {
             show("save fail");
             e.printStackTrace();
         }
+    }
+
+    //toolbar
+    private void setToolBar(androidx.appcompat.widget.Toolbar toolbar){
+
+        // 툴바를 액션바로 설정
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setTitle(""); // 툴바의 타이틀을 직접 설정
+        ImageView backBtn = (ImageView) findViewById(R.id.menu_detail_back);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 뒤로 가기 버튼 동작을 처리
+                onBackPressed();
+            }
+        });
+
+        ImageView homeBtn = (ImageView) findViewById(R.id.menu_detail_home);
+        homeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //-> home
+                Intent loginIntent = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(loginIntent);
+                finish();
+            }
+        });
+
     }
 
 }

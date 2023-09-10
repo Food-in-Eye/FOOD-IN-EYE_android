@@ -8,7 +8,40 @@
     android:orientation="vertical">
 
     <!-- 커스텀 툴바 추가 -->
-    <include layout="@layout/toolbar_layout"/>
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/history_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorOnPrimary"
+        android:elevation="4dp">
+
+        <!-- 사용자 정의 뒤로 가기 버튼 추가 -->
+        <ImageView
+            android:id="@+id/history_back"
+            android:layout_width="40dp"
+            android:layout_height="24dp"
+            android:layout_gravity="start"
+            android:src="@drawable/back_btn"
+            android:contentDescription="뒤로 가기" />
+
+        <TextView
+            android:id="@+id/history_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="주문 내역"
+            android:fontFamily="@font/mice_gothic_bold"
+            android:textSize="20dp"
+            android:textColor="@color/black_10"/>
+
+        <ImageView
+            android:id="@+id/history_home"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/home"
+            android:layout_gravity="right"
+            android:layout_marginRight="20dp"/>
+
+    </androidx.appcompat.widget.Toolbar>
 
 
     <LinearLayout
@@ -16,37 +49,34 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="주문 내역"
-            android:textSize="18dp"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:layout_gravity="center"
-            android:layout_marginTop="40dp"/>
-
-        <View
-            android:layout_width="150dp"
-            android:layout_height="10dp"
-            android:background="@drawable/underline"
-            android:layout_gravity="center" />
-
-        <View
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/meronna"/>
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/orange_rectop_300"
+            android:backgroundTint="@color/meronna_ver2"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="주문 내역"
+                android:textSize="20dp"
+                android:textColor="@color/black_10"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:fontFamily="@font/ddag"/>
+
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/history_recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"/>
+            android:layout_margin="10dp"/>
 
-<!--         LakuePagingButton -->
+        <!--LakuePagingButton -->
         <com.lakue.pagingbutton.LakuePagingButton
             android:id="@+id/lakuePagingButton"
             android:layout_width="wrap_content"

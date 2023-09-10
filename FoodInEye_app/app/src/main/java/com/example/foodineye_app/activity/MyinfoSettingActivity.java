@@ -34,7 +34,6 @@ import retrofit2.Response;
 public class MyinfoSettingActivity extends AppCompatActivity {
 
     Toolbar toolbar;
-
     EditText editNickname, editId, editOldPw, editNewPw, editRePw, editAge;
     ToggleButton maleBtn, femaleBtn;
 

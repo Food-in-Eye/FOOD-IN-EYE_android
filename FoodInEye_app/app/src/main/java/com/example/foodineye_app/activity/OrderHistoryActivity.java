@@ -1,12 +1,16 @@
 package com.example.foodineye_app.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,6 +29,7 @@ import retrofit2.Response;
 
 public class OrderHistoryActivity extends AppCompatActivity {
 
+    Toolbar toolbar;
     LakuePagingButton lpb_buttonlist;
     int max_page;
 
@@ -40,6 +45,9 @@ public class OrderHistoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_history);
+
+        toolbar = (Toolbar) findViewById(R.id.history_toolbar);
+        setToolBar(toolbar);
 
         sharedPreferences = getSharedPreferences("test_token1", MODE_PRIVATE);
         u_id = sharedPreferences.getString("u_id", null);
@@ -147,5 +155,35 @@ public class OrderHistoryActivity extends AppCompatActivity {
                 Log.d("OrderHistoryActivity", "onFailure: " + t.toString());
             }
         });
+    }
+
+
+    //toolbar
+    private void setToolBar(androidx.appcompat.widget.Toolbar toolbar){
+
+        // 툴바를 액션바로 설정
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setTitle(""); // 툴바의 타이틀을 직접 설정
+        ImageView backBtn = (ImageView) findViewById(R.id.history_back);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 뒤로 가기 버튼 동작을 처리
+                onBackPressed();
+            }
+        });
+
+        ImageView homeBtn = (ImageView) findViewById(R.id.history_home);
+        homeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //-> home
+                Intent loginIntent = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(loginIntent);
+                finish();
+            }
+        });
+
     }
 }

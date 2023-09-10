@@ -8,10 +8,12 @@ import android.os.HandlerThread;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.foodineye_app.GazeTrackerManager;
 import com.example.foodineye_app.R;
@@ -25,6 +27,10 @@ import visual.camp.sample.view.CalibrationViewer;
 import visual.camp.sample.view.PointView;
 
 public class CalibrationActivity extends AppCompatActivity {
+
+    Toolbar toolbar, toolbarfinish;
+    ImageView backBtn, homeBtn;
+    ImageView backBtnf, homeBtnf;
 
     //-----------------------------------------------------------------------------------------
     //gazetracker
@@ -47,6 +53,13 @@ public class CalibrationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_calibration);
 
         context = getApplicationContext();
+
+        toolbar = (Toolbar) findViewById(R.id.calibration_toolbar);
+        backBtn = (ImageView) findViewById(R.id.calibration_back);
+        homeBtn = (ImageView) findViewById(R.id.calibration_home);
+
+        setToolBar(toolbar, backBtn, homeBtn);
+
         //-----------------------------------------------------------------------------------------
         //calibration
 
@@ -163,7 +176,14 @@ public class CalibrationActivity extends AppCompatActivity {
             runOnUiThread(() -> viewCalibration.setVisibility(View.INVISIBLE));
             runOnUiThread(() -> calibrationFinish.setVisibility(View.VISIBLE));
             runOnUiThread(() -> calibration.setVisibility(View.INVISIBLE));
-            showNavigationBar();
+//            showNavigationBar();
+
+            toolbarfinish = findViewById(R.id.calibrationfinish_toolbar);
+            backBtnf = (ImageView) findViewById(R.id.calibrationfinish_back);
+            homeBtnf = (ImageView) findViewById(R.id.calibrationfinish_home);
+            setToolBar(toolbarfinish, backBtnf, homeBtnf);
+
+
             gazeTracker.setCalibrationData(calibrationData);
             show("calibrationFinished");
         }
@@ -206,5 +226,32 @@ public class CalibrationActivity extends AppCompatActivity {
         startActivity(intent);
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         finish();
+    }
+
+    //toolbar
+    public void setToolBar(androidx.appcompat.widget.Toolbar toolbar, ImageView backBtn, ImageView homeBtn){
+
+        // 툴바를 액션바로 설정
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setTitle(""); // 툴바의 타이틀을 직접 설정
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 뒤로 가기 버튼 동작을 처리
+                onBackPressed();
+            }
+        });
+
+        homeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //-> home
+                Intent loginIntent = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(loginIntent);
+                finish();
+            }
+        });
+
     }
 }

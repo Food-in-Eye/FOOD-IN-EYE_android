@@ -9,9 +9,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -27,6 +29,7 @@ import retrofit2.Response;
 
 public class CameraActivity extends AppCompatActivity {
 
+    Toolbar toolbar;
     CheckBox agreeCK, disagreeCK;
     Boolean eyePermission;
     Button nextBtn;
@@ -39,6 +42,11 @@ public class CameraActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
 
+        //toolbar
+        toolbar = (Toolbar) findViewById(R.id.camera_toolbar);
+        setToolBar(toolbar);
+
+        //
         sharedPreferences = getSharedPreferences("test_token1", MODE_PRIVATE);
         u_id = sharedPreferences.getString("u_id", null);
 
@@ -172,5 +180,35 @@ public class CameraActivity extends AppCompatActivity {
         Intent intent = new Intent(this, StorelistActivity.class);
         startActivity(intent);
         finish();
+    }
+
+
+    //toolbar
+    private void setToolBar(androidx.appcompat.widget.Toolbar toolbar){
+
+        // 툴바를 액션바로 설정
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setTitle(""); // 툴바의 타이틀을 직접 설정
+        ImageView backBtn = (ImageView) findViewById(R.id.camera_back);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 뒤로 가기 버튼 동작을 처리
+                onBackPressed();
+            }
+        });
+
+        ImageView homeBtn = (ImageView) findViewById(R.id.camera_home);
+        homeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //-> home
+                Intent loginIntent = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(loginIntent);
+                finish();
+            }
+        });
+
     }
 }

@@ -3,9 +3,12 @@ package com.example.foodineye_app.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,6 +28,8 @@ import retrofit2.Response;
 
 public class OrderHistoryDetailActivity extends AppCompatActivity {
 
+    Toolbar toolbar;
+
     RecyclerView recyclerView;
     HistoryDetailAdapter historyDetailAdapter;
     TextView dateTime;
@@ -35,6 +40,8 @@ public class OrderHistoryDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_history_detail);
 
+        toolbar = (Toolbar) findViewById(R.id.history_detail_toolbar);
+        setToolBar(toolbar);
 
         Intent intent = getIntent();
         String h_id = intent.getStringExtra("h_id");
@@ -96,7 +103,35 @@ public class OrderHistoryDetailActivity extends AppCompatActivity {
         });
 
 
+    }
 
+
+    //toolbar
+    private void setToolBar(androidx.appcompat.widget.Toolbar toolbar){
+
+        // 툴바를 액션바로 설정
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setTitle(""); // 툴바의 타이틀을 직접 설정
+        ImageView backBtn = (ImageView) findViewById(R.id.camera_back);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 뒤로 가기 버튼 동작을 처리
+                onBackPressed();
+            }
+        });
+
+        ImageView homeBtn = (ImageView) findViewById(R.id.camera_home);
+        homeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //-> home
+                Intent loginIntent = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(loginIntent);
+                finish();
+            }
+        });
 
     }
 }

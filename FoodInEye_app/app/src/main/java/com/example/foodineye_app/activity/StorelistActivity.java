@@ -2,14 +2,17 @@ package com.example.foodineye_app.activity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.HandlerThread;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -35,6 +38,8 @@ import visual.camp.sample.view.PointView;
 
 public class StorelistActivity extends AppCompatActivity {
 
+    Toolbar toolbar;
+
     GetStoreList storeList; //전체 가게 목록
     List<GetStoreList.Stores> storeInfo;
     RecyclerView recyclerView;
@@ -54,6 +59,8 @@ public class StorelistActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_storelist);
+
+        toolbar = (Toolbar) findViewById(R.id.stolelist_toolbar);
 
         //start-gaze-tracking
         ctx = getApplicationContext();
@@ -240,6 +247,35 @@ public class StorelistActivity extends AppCompatActivity {
             show("save fail");
             e.printStackTrace();
         }
+    }
+
+    //toolbar
+    private void setToolBar(androidx.appcompat.widget.Toolbar toolbar){
+
+        // 툴바를 액션바로 설정
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setTitle(""); // 툴바의 타이틀을 직접 설정
+        ImageView backBtn = (ImageView) findViewById(R.id.storelist_back);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 뒤로 가기 버튼 동작을 처리
+                onBackPressed();
+            }
+        });
+
+        ImageView homeBtn = (ImageView) findViewById(R.id.storelist_home);
+        homeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //-> home
+                Intent loginIntent = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(loginIntent);
+                finish();
+            }
+        });
+
     }
 
 }

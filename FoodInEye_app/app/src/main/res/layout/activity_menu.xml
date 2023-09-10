@@ -34,7 +34,7 @@
                     android:contentDescription="뒤로 가기" />
 
                 <TextView
-                    android:id="@+id/toolbar_title"
+                    android:id="@+id/menu_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="주문 하기"
@@ -43,6 +43,7 @@
                     android:textColor="@color/black"/>
 
                 <ImageView
+                    android:id="@+id/menu_home"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/home"

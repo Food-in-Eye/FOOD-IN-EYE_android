@@ -7,7 +7,7 @@
 
     <!-- 커스텀 툴바 추가 -->
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/menu_toolbar"
+        android:id="@+id/camera_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorOnPrimary"
@@ -15,7 +15,7 @@
 
         <!-- 사용자 정의 뒤로 가기 버튼 추가 -->
         <ImageView
-            android:id="@+id/menu_back"
+            android:id="@+id/camera_back"
             android:layout_width="40dp"
             android:layout_height="24dp"
             android:layout_gravity="start"
@@ -23,7 +23,7 @@
             android:contentDescription="뒤로 가기" />
 
         <TextView
-            android:id="@+id/toolbar_title"
+            android:id="@+id/camera_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="주문하기"
@@ -32,6 +32,7 @@
             android:textColor="@color/black"/>
 
         <ImageView
+            android:id="@+id/camera_home"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/home"

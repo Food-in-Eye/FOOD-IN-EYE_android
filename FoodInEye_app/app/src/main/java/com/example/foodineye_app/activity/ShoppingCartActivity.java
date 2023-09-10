@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.HandlerThread;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -21,6 +23,8 @@ import java.util.List;
 import visual.camp.sample.view.PointView;
 
 public class ShoppingCartActivity extends AppCompatActivity implements CartAdapter.OnItemClickListener {
+
+    Toolbar toolbar;
 
     List<Cart> cartList;
     RecyclerView recyclerView;
@@ -44,6 +48,9 @@ public class ShoppingCartActivity extends AppCompatActivity implements CartAdapt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_cart);
+
+        toolbar = (Toolbar) findViewById(R.id.cart_toolbar);
+        setToolBar(toolbar);
 
         //-------------------------------------------------------------------------------------
         //start-gaze-tracking
@@ -140,6 +147,35 @@ public class ShoppingCartActivity extends AppCompatActivity implements CartAdapt
         if (gazeTrackerDataStorage != null) {
             gazeTrackerDataStorage.stopGazeTracker("cart", 0, 0);
         }
+    }
+
+    //toolbar
+    private void setToolBar(androidx.appcompat.widget.Toolbar toolbar){
+
+        // 툴바를 액션바로 설정
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setTitle(""); // 툴바의 타이틀을 직접 설정
+        ImageView backBtn = (ImageView) findViewById(R.id.cart_back);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 뒤로 가기 버튼 동작을 처리
+                onBackPressed();
+            }
+        });
+
+        ImageView homeBtn = (ImageView) findViewById(R.id.cart_home);
+        homeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //-> home
+                Intent loginIntent = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(loginIntent);
+                finish();
+            }
+        });
+
     }
 
 
