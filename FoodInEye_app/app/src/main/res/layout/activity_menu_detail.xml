@@ -95,12 +95,14 @@
                 android:layout_marginTop="3dp"
                 android:layout_marginBottom="3dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp">
+                android:layout_marginRight="10dp"
+                android:padding="5dp">
 
                 <TextView
                     android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_height="match_parent"
                     android:text="📌"
+                    android:textSize="18dp"
                     android:textStyle="bold"
                     android:layout_gravity="center"
                     android:layout_marginLeft="5dp"
@@ -108,7 +110,7 @@
                 <TextView
                     android:id="@+id/menuD_desc"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:text="메뉴 한 줄 소개\n메뉴 한 줄 소개"
                     android:textColor="@color/black_10"
                     android:textSize="18dp"
@@ -124,11 +126,12 @@
                 android:layout_marginTop="3dp"
                 android:layout_marginBottom="3dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp">
+                android:layout_marginRight="10dp"
+                android:padding="5dp">
 
                 <TextView
                     android:layout_width="50dp"
-                    android:layout_height="20dp"
+                    android:layout_height="match_parent"
                     android:text="알러지: "
                     android:textSize="15dp"
                     android:textColor="@color/black_10"
@@ -139,7 +142,7 @@
                 <TextView
                     android:id="@+id/menuD_allergy"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:text="메뉴 알러지\n메뉴 알러지"
                     android:textSize="15dp"
                     android:textColor="@color/black_10"
@@ -155,11 +158,12 @@
                 android:layout_marginTop="3dp"
                 android:layout_marginBottom="3dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp">
+                android:layout_marginRight="10dp"
+                android:padding="5dp">
 
                 <TextView
                     android:layout_width="50dp"
-                    android:layout_height="20dp"
+                    android:layout_height="match_parent"
                     android:text="원산지: "
                     android:textSize="15dp"
                     android:textColor="@color/black_10"
@@ -170,7 +174,7 @@
                 <TextView
                     android:id="@+id/menuD_origin"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:text="메뉴 원산지"
                     android:textSize="15dp"
                     android:textColor="@color/black_10"
