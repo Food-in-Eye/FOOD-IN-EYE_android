@@ -71,6 +71,9 @@ public class StorelistActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.stolelist_toolbar);
         setToolBar(toolbar);
 
+        sharedPreferences = getSharedPreferences("test_token1", MODE_PRIVATE);
+        eyePermission = sharedPreferences.getInt("eye_permission", 0);
+
         //start-gaze-tracking
         ctx = getApplicationContext();
         storeLayout = findViewById(R.id.storelistLayout);
@@ -122,8 +125,6 @@ public class StorelistActivity extends AppCompatActivity {
         super.onStart();
 
         //시선 권한 동의 여부 확인
-        sharedPreferences = getSharedPreferences("test_token1", MODE_PRIVATE);
-        eyePermission = sharedPreferences.getInt("eye_permission", 0);
         if(eyePermission == 1){ //true
             setGazeTrackerDataStorage();
         }

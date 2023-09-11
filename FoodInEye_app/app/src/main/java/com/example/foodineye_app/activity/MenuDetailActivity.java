@@ -3,6 +3,7 @@ package com.example.foodineye_app.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.HandlerThread;
@@ -32,6 +33,8 @@ import visual.camp.sample.view.PointView;
 public class MenuDetailActivity extends AppCompatActivity {
 
     androidx.appcompat.widget.Toolbar toolbar;
+    SharedPreferences sharedPreferences;
+    int eyePermission;
 
     LinearLayout order_btn;
     ImageView menu_Img;
@@ -65,6 +68,10 @@ public class MenuDetailActivity extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.menu_detail_toolbar);
         setToolBar(toolbar);
+
+        //시선 권한 동의 여부 확인
+        sharedPreferences = getSharedPreferences("test_token1", MODE_PRIVATE);
+        eyePermission = sharedPreferences.getInt("eye_permission", 0);
 
         //-------------------------------------------------------------------------------------
         //screenshot
@@ -238,7 +245,9 @@ public class MenuDetailActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        setGazeTrackerDataStorage();
+        if(eyePermission == 1){ //true
+            setGazeTrackerDataStorage();
+        }
     }
 
     @Override
@@ -246,14 +255,19 @@ public class MenuDetailActivity extends AppCompatActivity {
         takeAndSaveScreenShot();
         super.onStop();
         Log.d("MenuDetailActivity", "onStop");
-        stopGazeTracker();
+
+        if(eyePermission == 1){
+            stopGazeTracker();
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        gazeTrackerDataStorage.quitBackgroundThread();
-        backgroundThread.quitSafely();
+        if(eyePermission == 1){
+            gazeTrackerDataStorage.quitBackgroundThread();
+            backgroundThread.quitSafely();
+        }
     }
 
 

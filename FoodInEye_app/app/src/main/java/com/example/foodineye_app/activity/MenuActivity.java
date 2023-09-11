@@ -2,6 +2,7 @@ package com.example.foodineye_app.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -50,6 +51,8 @@ import visual.camp.sample.view.PointView;
 public class MenuActivity extends AppCompatActivity{
 
     Toolbar toolbar;
+    SharedPreferences sharedPreferences;
+    int eyePermission;
 
     TextView store_intro;
     TextView store_openTime;
@@ -88,6 +91,9 @@ public class MenuActivity extends AppCompatActivity{
 
         toolbar = findViewById(R.id.menu_toolbar);
         setToolBar(toolbar);
+
+        sharedPreferences = getSharedPreferences("test_token1", MODE_PRIVATE);
+        eyePermission = sharedPreferences.getInt("eye_permission", 0);
 
         TabLayout tabLayout = findViewById(R.id.store_tab);
 
@@ -273,7 +279,10 @@ public class MenuActivity extends AppCompatActivity{
                             int selectedTabIndex = tab.getPosition();
                             if (selectedTabIndex != previousTabIndex) {
                                 // 이전 탭에서 GazeTracker 중지
-                                stopGazeTracker();
+
+                                if(eyePermission == 1){
+                                    stopGazeTracker();
+                                }
 
                                 // 선택된 탭에서 GazeTracker 시작
                                 setGazeTrackerDataStorage();
@@ -302,7 +311,9 @@ public class MenuActivity extends AppCompatActivity{
                                         recent_sNum = sNum;
 
                                         // 선택된 탭에서 GazeTracker 시작
-                                        setGazeTrackerDataStorage();
+                                        if(eyePermission == 1){ //true
+                                            setGazeTrackerDataStorage();
+                                        }
                                         break;
                                     }
                                 }
@@ -323,7 +334,9 @@ public class MenuActivity extends AppCompatActivity{
                             // 다시 선택
                             // 동일한 탭에서 GazeTracker 재시작
                             int selectedTabIndex = tab.getPosition();
-                            setGazeTrackerDataStorage();
+                            if(eyePermission == 1){ //true
+                                setGazeTrackerDataStorage();
+                            }
 
                         }
                     });
@@ -342,7 +355,10 @@ public class MenuActivity extends AppCompatActivity{
     @Override
     protected void onStart() {
         super.onStart();
-        setGazeTrackerDataStorage();
+        //시선 권한 동의 여부 확인
+        if(eyePermission == 1){ //true
+            setGazeTrackerDataStorage();
+        }
     }
 
     @Override
@@ -350,14 +366,21 @@ public class MenuActivity extends AppCompatActivity{
         super.onStop();
         captureFullScreenshot();
 
-        gazeTrackerDataStorage.stopGazeTracker("store_menu", recent_sNum, 0);
+        if(eyePermission == 1){
+            gazeTrackerDataStorage.stopGazeTracker("store_menu", recent_sNum, 0);
+        }
+
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        gazeTrackerDataStorage.quitBackgroundThread();
-        backgroundThread.quitSafely();
+
+        if(eyePermission == 1){
+            gazeTrackerDataStorage.quitBackgroundThread();
+            backgroundThread.quitSafely();
+        }
     }
 
     @Override

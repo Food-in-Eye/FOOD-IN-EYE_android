@@ -66,6 +66,7 @@ public class OrderActivity extends AppCompatActivity {
     PostOrder postOrder;
 
     SharedPreferences sharedPreferences;
+    int eyePermission;
     String u_id;
     String history_id;
 
@@ -90,6 +91,11 @@ public class OrderActivity extends AppCompatActivity {
         setToolBar(toolbar);
 
         data = (Data) getApplication();
+        //u_id
+        sharedPreferences = getSharedPreferences("test_token1", MODE_PRIVATE);
+        u_id = sharedPreferences.getString("u_id", null);
+
+        eyePermission = sharedPreferences.getInt("eye_permission", 0);
 
         //-------------------------------------------------------------------------------------
         //start-gaze-tracking
@@ -166,9 +172,6 @@ public class OrderActivity extends AppCompatActivity {
 
         ApiInterface apiInterface = apiClient.getClient().create(ApiInterface.class);
 
-        //u_id
-        sharedPreferences = getSharedPreferences("test_token1", MODE_PRIVATE);
-        u_id = sharedPreferences.getString("u_id", null);
 
         //요청 바디에 들어가 PostOrder 객체 생성
         postOrder = new PostOrder(u_id, total, content);
@@ -250,20 +253,27 @@ public class OrderActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        setGazeTrackerDataStorage();
+        //시선 권한 동의 여부 확인
+        if(eyePermission == 1){ //true
+            setGazeTrackerDataStorage();
+        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        stopGazeTracker();
+        if(eyePermission == 1){
+            stopGazeTracker();
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        gazeTrackerDataStorage.quitBackgroundThread();
-        backgroundThread.quitSafely();
+        if(eyePermission == 1){
+            gazeTrackerDataStorage.quitBackgroundThread();
+            backgroundThread.quitSafely();
+        }
     }
 
     @Override

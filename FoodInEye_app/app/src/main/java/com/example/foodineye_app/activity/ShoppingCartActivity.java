@@ -2,6 +2,7 @@ package com.example.foodineye_app.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.HandlerThread;
 import android.view.LayoutInflater;
@@ -27,6 +28,8 @@ import visual.camp.sample.view.PointView;
 public class ShoppingCartActivity extends AppCompatActivity implements CartAdapter.OnItemClickListener {
 
     Toolbar toolbar;
+    SharedPreferences sharedPreferences;
+    int eyePermission;
 
     List<Cart> cartList;
     RecyclerView recyclerView;
@@ -53,6 +56,10 @@ public class ShoppingCartActivity extends AppCompatActivity implements CartAdapt
 
         toolbar = (Toolbar) findViewById(R.id.cart_toolbar);
         setToolBar(toolbar);
+
+        //시선 권한 동의 여부 확인
+        sharedPreferences = getSharedPreferences("test_token1", MODE_PRIVATE);
+        eyePermission = sharedPreferences.getInt("eye_permission", 0);
 
         //-------------------------------------------------------------------------------------
         //start-gaze-tracking
@@ -112,20 +119,26 @@ public class ShoppingCartActivity extends AppCompatActivity implements CartAdapt
     @Override
     protected void onStart() {
         super.onStart();
-        setGazeTrackerDataStorage();
+        if(eyePermission == 1){ //true
+            setGazeTrackerDataStorage();
+        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        stopGazeTracker();
+        if(eyePermission == 1){
+            stopGazeTracker();
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        gazeTrackerDataStorage.quitBackgroundThread();
-        backgroundThread.quitSafely();
+        if(eyePermission == 1){
+            gazeTrackerDataStorage.quitBackgroundThread();
+            backgroundThread.quitSafely();
+        }
     }
 
     @Override
