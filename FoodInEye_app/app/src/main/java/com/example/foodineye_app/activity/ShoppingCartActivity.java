@@ -108,12 +108,17 @@ public class ShoppingCartActivity extends AppCompatActivity implements CartAdapt
     }
     @Override
     public void onToMenuClick(){
+
+        if(eyePermission == 1){
+            stopGazeTracker();
+        }
         String s_id = ((Data)getApplication()).getRecentS_id();
         String m_id = ((Data)getApplication()).getRecentM_id();
         Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
         intent.putExtra("intent_recentSId", s_id);
         intent.putExtra("intent_cartMId", m_id);
         startActivity(intent);
+
     }
 
     @Override

@@ -239,7 +239,10 @@ public class CalibrationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // 뒤로 가기 버튼 동작을 처리
-                onBackPressed();
+//                onBackPressed();
+                //home -> calibration
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(intent);
             }
         });
 

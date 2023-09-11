@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -31,6 +32,8 @@ public class HomeActivity extends AppCompatActivity {
 
     Data data;
     Boolean isOrder;
+
+    private static final int CAMERA_PERMISSION_REQUEST_CODE = 123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,9 +86,6 @@ public class HomeActivity extends AppCompatActivity {
 
                     if(eye_permission == 1){
                         checkCameraPermission();
-                        //home -> calibration
-                        Intent intent = new Intent(getApplicationContext(), CalibrationActivity.class);
-                        startActivity(intent);
 
                     }else if(eye_permission == 2){
                         //false
@@ -158,38 +158,43 @@ public class HomeActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
+    // 권한 체크하고 카메라 권한 요청
     private void checkCameraPermission() {
-
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this, "카메라 권한 동의", Toast.LENGTH_SHORT).show();
-            // 권한이 이미 허용된 경우
+            Toast.makeText(this, "카메라 권한에 동의했습니다.", Toast.LENGTH_SHORT).show();
 
+            // 카메라 권한이 허용된 경우, CalibrationActivity로 이동
+            Intent intent = new Intent(getApplicationContext(), CalibrationActivity.class);
+            startActivity(intent);
         } else {
-            // 권한이 허용되지 않은 경우
+            // 권한이 허용되지 않은 경우 권한 요청
             if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
                 // 사용자가 이전에 권한 요청을 거절한 경우
-                Toast.makeText(this, "시선 수집 이용 약관에 동의를 하셨습니다. 카메라 권한을 동의 해주세요.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "시선추적을 하기 위해서는 카메라 권한이 필요합니다.", Toast.LENGTH_SHORT).show();
             }
 
             // 권한 요청
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, MODE_PRIVATE);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST_CODE);
         }
-
-        startCalibrationActivity();
     }
 
-//    private void checkCameraPermission() {
-//
-//        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, MODE_PRIVATE);
-////        startCalibrationActivity();
-//    }
-
-
-    public void startCalibrationActivity(){
-        Intent intent = new Intent(this, CalibrationActivity.class);
-        startActivity(intent);
-        finish();
+    // 권한 요청 결과 처리
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // 사용자가 권한을 허용한 경우, CalibrationActivity로 이동
+                Intent intent = new Intent(getApplicationContext(), CalibrationActivity.class);
+                startActivity(intent);
+            } else {
+                // 사용자가 권한을 거부한 경우, 필요한 처리를 수행
+                Toast.makeText(this, "카메라 권한이 거부되었습니다.", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
+
+
 
     private void show(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
