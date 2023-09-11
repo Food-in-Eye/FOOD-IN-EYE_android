@@ -6,7 +6,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.os.Looper;
 import android.os.Message;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -39,9 +38,12 @@ import visual.camp.sample.view.PointView;
 
 public class GazeTrackerDataStorage {
     private Context context;
+
+//    public Handler gazeHandler = new Handler(Looper.getMainLooper());
+    public Handler gazeHandler;
     public GazeTrackerDataStorage(Context context, Handler handler) {
         this.context = context;
-        gazeHandler = handler;
+        this.gazeHandler = handler;
     }
     public void setContext(Context context) {
         this.context = context;
@@ -77,14 +79,10 @@ public class GazeTrackerDataStorage {
 
     //-----------------------------------------------------------------------------------------
     //Handler!!!!!!!!!!
-    private Handler gazeHandler = new Handler(Looper.getMainLooper());
     private boolean gazeDataCapturing = true; // 클릭 시 데이터 수집 여부
     // 이벤트 타입을 정의
     public static final int EVENT_HOME_BUTTON_CLICKED = 1;
     public static final int EVENT_ORDER_BUTTON_CLICKED = 2;
-    public GazeTrackerDataStorage(Handler handler) {
-        gazeHandler = handler;
-    }
 
     //-----------------------------------------------------------------------------------------
 
@@ -506,14 +504,16 @@ public class GazeTrackerDataStorage {
                 Bundle data = message.getData();
                 String buttonName = data.getString("buttonName");
                 // 이벤트 처리
-                if(buttonName.equals("homeBtn")){
-                    //gaze 추가 안함
+                if (buttonName.equals("homeBtn")) {
+                    Log.d("Handler!!!!!!!!!", "핸들러!!!!!!!!!!!!homeBtn");
+                    // gaze 추가 안함
                     handleHomeButtonClicked(buttonName);
 
-                }else if(buttonName.equals("orderTxt")){
-                    //gaze 추가 계속
+                } else if (buttonName.equals("orderTxt")) {
+                    Log.d("Handler!!!!!!!!!", "핸들러!!!!!!!!!!!!orderTxt");
+                    // gaze 추가 계속
                     handleOrderButtonClicked(buttonName);
-                }else{
+                } else {
                 }
                 break;
             // 다른 이벤트 타입에 대한 처리 추가
@@ -522,6 +522,7 @@ public class GazeTrackerDataStorage {
                 break;
         }
     }
+
 
     public void handleHomeButtonClicked(String buttonName) {
         // 이벤트 처리

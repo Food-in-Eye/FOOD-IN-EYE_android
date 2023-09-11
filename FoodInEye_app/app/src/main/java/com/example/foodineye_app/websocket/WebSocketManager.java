@@ -71,6 +71,8 @@ public class WebSocketManager {
                                 WebSocketModel webSocketModel = new WebSocketModel(messageType, messageResult);
                                 Log.d("WebSocketManager", "webSocketModel: "+ webSocketModel.toString());
                                 String o_id = jsonObject.get("o_id").getAsString();
+
+                                //status 받기
                                 int status = Integer.parseInt(jsonObject.get("status").getAsString());
                                 UpdateWebSocketModel updateWebSocketModel = new UpdateWebSocketModel(webSocketModel, o_id, status);
                                 //update UI

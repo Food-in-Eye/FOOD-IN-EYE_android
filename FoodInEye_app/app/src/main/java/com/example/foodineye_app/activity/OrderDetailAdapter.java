@@ -74,6 +74,7 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
         if (allStatusTwo) {
             Log.d("OrderDetailAdapter", "WebSocket Closed want");
             WebSocketManager.getInstance(mContext.getApplicationContext()).disconnectWebSocket();
+            // 여기서 주문내역이 완료되었음을,,,
         }
     }
 

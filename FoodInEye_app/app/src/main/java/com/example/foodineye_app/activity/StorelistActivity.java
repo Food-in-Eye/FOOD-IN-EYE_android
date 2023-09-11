@@ -310,7 +310,7 @@ public class StorelistActivity extends AppCompatActivity {
                 // 핸들러를 통해 메시지 전달
                 gazeHandler.sendMessage(message);
 
-                Log.d("Handler!!!!!!!!!", "핸들러!!!!!!!!!!!!");
+                Log.d("Handler!!!!!!!!!", "핸들러!!!!!!!!!!!!"+message);
 
                 showDialog();
             }
