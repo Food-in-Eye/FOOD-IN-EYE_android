@@ -369,7 +369,7 @@ public class MenuActivity extends AppCompatActivity{
     @Override
     protected void onStop() {
         super.onStop();
-        captureFullScreenshot();
+//        captureFullScreenshot();
 
         if(eyePermission == 1){
             gazeTrackerDataStorage.stopGazeTracker("store_menu", recent_sNum, 0);
@@ -546,10 +546,10 @@ public class MenuActivity extends AppCompatActivity{
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
             fos.close();
 
-            show("save success");
+//            show("save success");
 
         } catch (Exception e){
-            show("save fail");
+//            show("save fail");
             e.printStackTrace();
         }
     }

@@ -139,7 +139,7 @@ public class StorelistActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        takeAndSaveScreenShot();
+//        takeAndSaveScreenShot();
         super.onStop();
 
         if(eyePermission == 1){
@@ -270,10 +270,8 @@ public class StorelistActivity extends AppCompatActivity {
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
             fos.close();
 
-            show("save success");
-
         } catch (Exception e){
-            show("save fail");
+//            show("save fail");
             e.printStackTrace();
         }
     }

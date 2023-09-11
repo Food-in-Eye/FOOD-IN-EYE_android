@@ -258,7 +258,7 @@ public class MenuDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        takeAndSaveScreenShot();
+//        takeAndSaveScreenShot();
         super.onStop();
         Log.d("MenuDetailActivity", "onStop");
 
@@ -396,9 +396,9 @@ public class MenuDetailActivity extends AppCompatActivity {
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
             fos.close();
 
-            show("save success");
+//            show("save success");
         } catch (Exception e) {
-            show("save fail");
+//            show("save fail");
             e.printStackTrace();
         }
     }

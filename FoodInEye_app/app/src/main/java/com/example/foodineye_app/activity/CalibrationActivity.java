@@ -85,7 +85,7 @@ public class CalibrationActivity extends AppCompatActivity {
         calibrationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                show("start-calibration");
+//                show("calibration");
                 runOnUiThread(()->calibration.setVisibility(View.INVISIBLE));
                 // 타이틀바 숨기기
                 hideNavigationBar();
@@ -137,7 +137,7 @@ public class CalibrationActivity extends AppCompatActivity {
                 Log.d("Calibration", "Gaze Tracker Is NULL NULL NULL");
             } else {
                 Log.d("Calibration", "Gaze Tracker INIT SUCCESS");
-                show("Gaze Tracker INIT SUCCESS");
+                show("햄버거 생성 🍞 🍅 🥬 🥓");
             }
         }, userStatusOption);
     }
@@ -185,7 +185,7 @@ public class CalibrationActivity extends AppCompatActivity {
 
 
             gazeTracker.setCalibrationData(calibrationData);
-            show("calibrationFinished");
+//            show("calibrationFinished");
         }
     };
 
