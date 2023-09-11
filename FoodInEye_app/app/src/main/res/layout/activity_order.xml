@@ -32,7 +32,7 @@
                 android:id="@+id/order_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="주문하기"
+                android:text="결제하기"
                 android:fontFamily="@font/mice_gothic_bold"
                 android:textSize="20dp"
                 android:textColor="@color/black"/>
