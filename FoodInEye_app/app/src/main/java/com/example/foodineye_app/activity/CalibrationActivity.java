@@ -2,6 +2,7 @@ package com.example.foodineye_app.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +30,9 @@ import visual.camp.sample.view.PointView;
 
 public class CalibrationActivity extends AppCompatActivity {
 
+    SharedPreferences sharedPreferences;
+    String name;
+    TextView nameTxt;
     Toolbar toolbar, toolbarfinish;
     ImageView backBtn, homeBtn;
     ImageView backBtnf, homeBtnf;
@@ -53,6 +58,12 @@ public class CalibrationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_calibration);
 
         context = getApplicationContext();
+
+        sharedPreferences = getSharedPreferences("test_token1", MODE_PRIVATE);
+        name = sharedPreferences.getString("name", null);
+
+        nameTxt = (TextView) findViewById(R.id.calibration_name);
+        nameTxt.setText(name);
 
         toolbar = (Toolbar) findViewById(R.id.calibration_toolbar);
         backBtn = (ImageView) findViewById(R.id.calibration_back);
@@ -116,9 +127,19 @@ public class CalibrationActivity extends AppCompatActivity {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
+            // UI 스레드에서 실행하도록 변경
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    calibrationBtn.setEnabled(true);
+                }
+            });
+
             gazeTracker.startGazeTracking();
         }).start();
     }
+
 
     private void initTrackerView() {
         viewPoint = findViewById(R.id.view_point);
@@ -137,7 +158,10 @@ public class CalibrationActivity extends AppCompatActivity {
                 Log.d("Calibration", "Gaze Tracker Is NULL NULL NULL");
             } else {
                 Log.d("Calibration", "Gaze Tracker INIT SUCCESS");
-                show("햄버거 생성 🍞 🍅 🥬 🥓");
+//                show("햄버거 생성중 🍞 🍅 🥬 🥓");
+//                calibrationBtn.setBackgroundColor(Color.LTGRAY);
+                calibrationBtn.setEnabled(false);
+
             }
         }, userStatusOption);
     }

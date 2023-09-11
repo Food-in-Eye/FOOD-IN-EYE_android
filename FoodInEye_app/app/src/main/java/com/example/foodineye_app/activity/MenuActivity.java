@@ -10,9 +10,7 @@ import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.HandlerThread;
-import android.os.Looper;
 import android.util.Log;
 import android.util.LruCache;
 import android.view.LayoutInflater;
@@ -85,10 +83,6 @@ public class MenuActivity extends AppCompatActivity{
     boolean isGazeTrackerRunning = false; // GazeTracker가 실행 중인지 여부를 저장하는 변수
 
     //-----------------------------------------------------------------------------------------
-    private Handler gazeHandler = new Handler(Looper.getMainLooper());
-
-    //-----------------------------------------------------------------------------------------
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -155,7 +149,7 @@ public class MenuActivity extends AppCompatActivity{
         menuLayout = findViewById(R.id.menuLayout);
         viewpoint = findViewById(R.id.view_point_menu);
 
-        setGazeTrackerDataStorage();
+//        setGazeTrackerDataStorage();
 
         //menuRecyclerview
         menurecyclerView = findViewById(R.id.recyclerView_menuList);
@@ -395,7 +389,7 @@ public class MenuActivity extends AppCompatActivity{
     }
 
     private void setGazeTrackerDataStorage(){
-        gazeTrackerDataStorage = new GazeTrackerDataStorage(this, gazeHandler);
+        gazeTrackerDataStorage = new GazeTrackerDataStorage(this);
         gazeTrackerDataStorage.setContext(this);
 
         if (gazeTrackerDataStorage != null) {
@@ -660,6 +654,8 @@ public class MenuActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 //-> home
+                gazeTrackerDataStorage.stopGazeDataCapturing();
+
                 showDialog();
             }
         });
@@ -698,6 +694,7 @@ public class MenuActivity extends AppCompatActivity{
         orderTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                gazeTrackerDataStorage.startGazeDataCapturing();
                 alertDialog.dismiss();
             }
         });
@@ -705,11 +702,11 @@ public class MenuActivity extends AppCompatActivity{
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                gazeTrackerDataStorage.startGazeDataCapturing();
                 alertDialog.dismiss();
             }
         });
 
         alertDialog.show();
     }
-
 }

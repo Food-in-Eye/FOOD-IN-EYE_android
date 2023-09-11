@@ -37,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     String at, rt; //tokens
     String user_id;
     int eye_permission;
+    String name;
 
     private SharedPreferences sharedPreferences;
 
@@ -143,6 +144,7 @@ public class LoginActivity extends AppCompatActivity {
                         rt = postLoginResponse.getR_Token();
                         user_id = postLoginResponse.getUser_id(); // 회원 고유의 ID
                         eye_permission = postLoginResponse.getEye_permission(); //회원 시선 수집 동의 여부
+                        name = postLoginResponse.getName();
 
                         // Access Token과 Refresh Token 저장
                         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -150,6 +152,7 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString("refresh_token", rt);
                         editor.putString("u_id", user_id);
                         editor.putInt("eye_permission", eye_permission);
+                        editor.putString("name", name);
 
                         editor.apply();
 

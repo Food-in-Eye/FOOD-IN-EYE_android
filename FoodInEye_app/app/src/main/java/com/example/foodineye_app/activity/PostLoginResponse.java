@@ -9,6 +9,10 @@ public class PostLoginResponse {
     @Expose
     public String user_id; //회원 고유의 ID
 
+    @SerializedName("name")
+    @Expose
+    public String name; //name
+
     @SerializedName("token_type")
     @Expose
     public String token_type; //bearer
@@ -45,14 +49,19 @@ public class PostLoginResponse {
         return eye_permission;
     }
 
+    public String getName() {
+        return name;
+    }
+
     @Override
     public String toString() {
         return "PostLoginResponse{" +
                 "user_id='" + user_id + '\'' +
+                ", name='" + name + '\'' +
                 ", token_type='" + token_type + '\'' +
                 ", A_Token='" + A_Token + '\'' +
                 ", R_Token='" + R_Token + '\'' +
-                ", eye_permssion=" + eye_permission +
+                ", eye_permission=" + eye_permission +
                 '}';
     }
 }

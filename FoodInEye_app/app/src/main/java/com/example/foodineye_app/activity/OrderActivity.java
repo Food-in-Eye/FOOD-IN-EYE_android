@@ -5,9 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.HandlerThread;
-import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.Toolbar;
-
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -84,8 +81,6 @@ public class OrderActivity extends AppCompatActivity {
 
     //-----------------------------------------------------------------------------------------
 
-    private Handler gazeHandler = new Handler(Looper.getMainLooper());
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,8 +101,6 @@ public class OrderActivity extends AppCompatActivity {
         ctx = getApplicationContext();
         orderLayout = findViewById(R.id.orderLayout);
         viewpoint = findViewById(R.id.view_point_order);
-
-        setGazeTrackerDataStorage();
 
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MODE_PRIVATE);
         //-------------------------------------------------------------------------------------
@@ -286,13 +279,12 @@ public class OrderActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
         finish();
     }
 
     //gazeTracker
     private void setGazeTrackerDataStorage(){
-        gazeTrackerDataStorage = new GazeTrackerDataStorage(this, gazeHandler);
+        gazeTrackerDataStorage = new GazeTrackerDataStorage(this);
         gazeTrackerDataStorage.setContext(this);
 
         if (gazeTrackerDataStorage != null) {
@@ -368,6 +360,7 @@ public class OrderActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //-> home
+                gazeTrackerDataStorage.stopGazeDataCapturing();
                 showDialog();
             }
         });
@@ -406,6 +399,8 @@ public class OrderActivity extends AppCompatActivity {
         orderTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                gazeTrackerDataStorage.startGazeDataCapturing();
                 alertDialog.dismiss();
             }
         });
@@ -413,6 +408,8 @@ public class OrderActivity extends AppCompatActivity {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                gazeTrackerDataStorage.startGazeDataCapturing();
                 alertDialog.dismiss();
             }
         });
