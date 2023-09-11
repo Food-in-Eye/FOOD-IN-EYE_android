@@ -59,13 +59,13 @@
             android:layout_height="40dp"
             android:orientation="vertical"
             android:background="@drawable/orange_rectop_300"
-            android:backgroundTint="@color/light_carrot"
+            android:backgroundTint="@color/carrot"
             android:layout_gravity="center"
             android:layout_marginTop="20dp">
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="School Food"
                 android:textSize="30dp"
                 android:textColor="@color/black"
@@ -78,8 +78,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/navy"
-            android:layout_marginTop="10dp"/>
+            android:background="@color/sygray"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -88,7 +87,8 @@
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp">
+            android:layout_marginRight="10dp"
+            android:background="@color/white">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView_StoreList"

@@ -55,19 +55,18 @@
             android:background="@drawable/menu_detail_bg"
             android:elevation="10dp">
 
-
             <TextView
                 android:id="@+id/menuD_name"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
+                android:layout_width="250dp"
+                android:layout_height="60dp"
                 android:text="메뉴 1"
-                android:textSize="30dp"
-                android:textColor="@color/navy"
-                android:textStyle="bold"
+                android:textSize="20dp"
+                android:textColor="@color/black_10"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:layout_marginRight="5dp"
-                android:layout_marginTop="30dp"/>
+                android:layout_marginTop="20dp"
+                android:background="@drawable/tape_orange"/>
 
             <ImageView
                 android:id="@+id/menuD_img"
@@ -102,7 +101,6 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:text="📌"
-                    android:textColor="@color/black"
                     android:textStyle="bold"
                     android:layout_gravity="center"
                     android:layout_marginLeft="5dp"
@@ -112,7 +110,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="메뉴 한 줄 소개\n메뉴 한 줄 소개"
-                    android:textColor="@color/black"
+                    android:textColor="@color/black_10"
                     android:textSize="18dp"
                     android:textStyle="bold"
                     android:layout_gravity="center"/>
@@ -132,7 +130,8 @@
                     android:layout_width="50dp"
                     android:layout_height="20dp"
                     android:text="알러지: "
-                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:textColor="@color/black_10"
                     android:textStyle="bold"
                     android:layout_gravity="center"
                     android:layout_marginLeft="5dp"
@@ -142,8 +141,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="메뉴 알러지\n메뉴 알러지"
-                    android:textColor="@color/black"
                     android:textSize="15dp"
+                    android:textColor="@color/black_10"
                     android:textStyle="bold"
                     android:layout_gravity="center"/>
 
@@ -162,7 +161,8 @@
                     android:layout_width="50dp"
                     android:layout_height="20dp"
                     android:text="원산지: "
-                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:textColor="@color/black_10"
                     android:textStyle="bold"
                     android:layout_gravity="center"
                     android:layout_marginLeft="5dp"
@@ -172,7 +172,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="메뉴 원산지"
-                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:textColor="@color/black_10"
                     android:textStyle="bold"
                     android:layout_gravity="center"/>
 
@@ -200,7 +201,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/white"
                 android:layout_gravity="center"
-                android:layout_marginLeft="30dp"/>
+                android:layout_marginLeft="35dp"/>
 
             <TextView
                 android:layout_width="wrap_content"

@@ -15,6 +15,7 @@
         android:gravity="center"
         android:layout_gravity="center"
         android:background="@drawable/orange_rec_300"
+        android:backgroundTint="@color/light_carrot"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"/>
 

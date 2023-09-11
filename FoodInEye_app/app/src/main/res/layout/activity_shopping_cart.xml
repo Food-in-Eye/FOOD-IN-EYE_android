@@ -51,14 +51,14 @@
             android:layout_height="wrap_content"
             android:text="장바구니"
             android:textSize="20dp"
-            android:textColor="@color/black"
+            android:textColor="@color/black_10"
             android:layout_gravity="center"
             android:layout_marginTop="35dp"/>
 
         <View
             android:layout_width="200dp"
             android:layout_height="1dp"
-            android:background="@color/navy"
+            android:background="@color/sygray"
             android:layout_gravity="center"/>
 
         <LinearLayout
@@ -81,15 +81,16 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/navy"
-            android:layout_gravity="center"/>
+            android:background="@color/sygray"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_gravity="center"
-            android:layout_marginTop="25dp">
+            android:layout_marginTop="15dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -97,7 +98,7 @@
                 android:text="총"
                 android:textSize="18dp"
                 android:textStyle="bold"
-                android:textColor="@color/black"
+                android:textColor="@color/black_10"
                 android:padding="10dp"
                 android:layout_gravity="center"/>
 
@@ -108,7 +109,7 @@
                 android:text="26,000"
                 android:textSize="18dp"
                 android:textStyle="bold"
-                android:textColor="@color/black"
+                android:textColor="@color/black_10"
                 android:layout_gravity="center"/>
 
             <TextView
@@ -117,7 +118,7 @@
                 android:text="원"
                 android:textSize="18dp"
                 android:textStyle="bold"
-                android:textColor="@color/black"
+                android:textColor="@color/black_10"
                 android:layout_gravity="center"
                 android:layout_marginRight="25dp"/>
 
@@ -128,7 +129,7 @@
                 android:text="주문하기"
                 android:textSize="18dp"
                 android:textStyle="bold"
-                android:textColor="@color/black"
+                android:textColor="@color/black_10"
                 android:background="@drawable/orange_srec_30"
                 android:padding="5dp"/>
 

@@ -52,26 +52,22 @@
             android:layout_height="wrap_content"
             android:text="결제하기"
             android:textSize="20dp"
-            android:textColor="@color/black"
+            android:textColor="@color/black_10"
             android:textStyle="bold"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"/>
 
-<!--        <View-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="1dp"-->
-<!--            android:background="@color/blue_1"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:layout_marginTop="10dp"/>-->
+        <View
+            android:layout_width="200dp"
+            android:layout_height="1dp"
+            android:background="@color/sygray"
+            android:layout_gravity="center"/>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="580dp"
+            android:layout_height="550dp"
             android:orientation="vertical"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/rec_str0"
-            android:layout_margin="10dp"
-            android:padding="5dp">
+            android:layout_marginTop="15dp">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView_orderList"
@@ -84,13 +80,20 @@
 
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/sygray"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"/>
+
         <LinearLayout
             android:id="@+id/payBtn"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
             android:orientation="horizontal"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:background="@drawable/blue_rec_30">
 
             <TextView
