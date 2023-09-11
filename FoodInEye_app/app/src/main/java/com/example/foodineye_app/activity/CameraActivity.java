@@ -138,7 +138,7 @@ public class CameraActivity extends AppCompatActivity {
     private void checkCameraPermission() {
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this, "카메라 권한에 동의했습니다.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "카메라 권한 항상 동의", Toast.LENGTH_SHORT).show();
             // 권한이 이미 허용된 경우
 //            startCalibrationActivity();
 
