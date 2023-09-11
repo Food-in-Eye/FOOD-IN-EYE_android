@@ -10,7 +10,9 @@ import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.Looper;
 import android.util.Log;
 import android.util.LruCache;
 import android.view.LayoutInflater;
@@ -81,6 +83,9 @@ public class MenuActivity extends AppCompatActivity{
     int sNum, fNum;
     int recent_sNum;
     boolean isGazeTrackerRunning = false; // GazeTracker가 실행 중인지 여부를 저장하는 변수
+
+    //-----------------------------------------------------------------------------------------
+    private Handler gazeHandler = new Handler(Looper.getMainLooper());
 
     //-----------------------------------------------------------------------------------------
 
@@ -390,7 +395,7 @@ public class MenuActivity extends AppCompatActivity{
     }
 
     private void setGazeTrackerDataStorage(){
-        gazeTrackerDataStorage = new GazeTrackerDataStorage(this);
+        gazeTrackerDataStorage = new GazeTrackerDataStorage(this, gazeHandler);
         gazeTrackerDataStorage.setContext(this);
 
         if (gazeTrackerDataStorage != null) {

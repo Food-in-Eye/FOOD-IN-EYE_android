@@ -6,7 +6,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.Toolbar;
-
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -60,6 +62,11 @@ public class StorelistActivity extends AppCompatActivity {
     GazeTrackerDataStorage gazeTrackerDataStorage;
     private final HandlerThread backgroundThread = new HandlerThread("background");
     PointView viewpoint;
+
+    //-----------------------------------------------------------------------------------------
+    //Handler
+    private Handler gazeHandler = new Handler(Looper.getMainLooper());
+//    private boolean gazeDataCapturing = true; //클릭 시 데이터 수집 여부 true false
 
     //-----------------------------------------------------------------------------------------
 
@@ -158,7 +165,7 @@ public class StorelistActivity extends AppCompatActivity {
 
     //gazeTracker
     private void setGazeTrackerDataStorage(){
-        gazeTrackerDataStorage = new GazeTrackerDataStorage(this);
+        gazeTrackerDataStorage = new GazeTrackerDataStorage(this, gazeHandler);
         gazeTrackerDataStorage.setContext(this);
 
         if (gazeTrackerDataStorage != null) {
@@ -292,6 +299,19 @@ public class StorelistActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //-> home
+
+                // 값과 함께 이벤트를 전달하는 메시지 생성
+                Message message = Message.obtain();
+                message.what = GazeTrackerDataStorage.EVENT_HOME_BUTTON_CLICKED;
+                Bundle data = new Bundle();
+                data.putString("buttonName", "homeBtn");
+                message.setData(data);
+
+                // 핸들러를 통해 메시지 전달
+                gazeHandler.sendMessage(message);
+
+                Log.d("Handler!!!!!!!!!", "핸들러!!!!!!!!!!!!");
+
                 showDialog();
             }
         });
@@ -331,6 +351,17 @@ public class StorelistActivity extends AppCompatActivity {
         orderTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // orderBtn 클릭 시 Gaze 데이터 수집 재개
+                // 값과 함께 이벤트를 전달하는 메시지 생성
+                Message message = Message.obtain();
+                message.what = GazeTrackerDataStorage.EVENT_HOME_BUTTON_CLICKED;
+                Bundle data = new Bundle();
+                data.putString("buttonName", "orderTxt");
+                message.setData(data);
+
+                // 핸들러를 통해 메시지 전달
+                gazeHandler.sendMessage(message);
+
                 alertDialog.dismiss();
             }
         });
@@ -344,5 +375,6 @@ public class StorelistActivity extends AppCompatActivity {
 
         alertDialog.show();
     }
+
 
 }

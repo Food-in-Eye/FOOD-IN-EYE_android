@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -48,6 +50,9 @@ public class ShoppingCartActivity extends AppCompatActivity implements CartAdapt
     ConstraintLayout storeLayout;
     PointView viewpoint;
 
+    //-----------------------------------------------------------------------------------------
+
+    private Handler gazeHandler = new Handler(Looper.getMainLooper());
     //-----------------------------------------------------------------------------------------
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,7 +160,7 @@ public class ShoppingCartActivity extends AppCompatActivity implements CartAdapt
 
     //gazeTracker
     private void setGazeTrackerDataStorage(){
-        gazeTrackerDataStorage = new GazeTrackerDataStorage(this);
+        gazeTrackerDataStorage = new GazeTrackerDataStorage(this, gazeHandler);
         gazeTrackerDataStorage.setContext(this);
 
         if (gazeTrackerDataStorage != null) {

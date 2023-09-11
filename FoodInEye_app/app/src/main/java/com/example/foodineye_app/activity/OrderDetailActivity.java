@@ -48,8 +48,6 @@ public class OrderDetailActivity extends AppCompatActivity {
         orderDetailAdapter = new OrderDetailAdapter(getApplicationContext(), orderList);
         orderRecyclerview.setAdapter(orderDetailAdapter);
 
-
-
         //WebSocket으로 받은 메시지 확인하기
         Intent intent = getIntent();
         UpdateWebSocketModel updateWebSocketModel = (UpdateWebSocketModel) intent.getSerializableExtra("updateWebSocketModel");
@@ -59,6 +57,9 @@ public class OrderDetailActivity extends AppCompatActivity {
             orderDetailAdapter.setUpdateWebSocketModel(updateWebSocketModel);
 //            // 새로운 주문 목록을 받아온다고 가정
 //            List<Order> newOrderList = getUpdatedOrderList(updateWebSocketModel);
+            orderDetailAdapter.updateOrderList();
+        }else{
+            orderDetailAdapter.setUpdateWebSocketModel(updateWebSocketModel);
             orderDetailAdapter.updateOrderList();
         }
 

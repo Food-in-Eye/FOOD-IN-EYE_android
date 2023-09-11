@@ -3,8 +3,11 @@ package com.example.foodineye_app;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.Looper;
+import android.os.Message;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -36,8 +39,9 @@ import visual.camp.sample.view.PointView;
 
 public class GazeTrackerDataStorage {
     private Context context;
-    public GazeTrackerDataStorage(Context context) {
+    public GazeTrackerDataStorage(Context context, Handler handler) {
         this.context = context;
+        gazeHandler = handler;
     }
     public void setContext(Context context) {
         this.context = context;
@@ -70,6 +74,18 @@ public class GazeTrackerDataStorage {
     //scroll change
     private int scroll;
     private ArrayList list_scroll = new ArrayList();
+
+    //-----------------------------------------------------------------------------------------
+    //Handler!!!!!!!!!!
+    private Handler gazeHandler = new Handler(Looper.getMainLooper());
+    private boolean gazeDataCapturing = true; // 클릭 시 데이터 수집 여부
+    // 이벤트 타입을 정의
+    public static final int EVENT_HOME_BUTTON_CLICKED = 1;
+    public static final int EVENT_ORDER_BUTTON_CLICKED = 2;
+    public GazeTrackerDataStorage(Handler handler) {
+        gazeHandler = handler;
+    }
+
     //-----------------------------------------------------------------------------------------
 
     public void setGazeTracker(Context context, ConstraintLayout constraintLayout, PointView viewPoint){
@@ -431,6 +447,27 @@ public class GazeTrackerDataStorage {
     }
 
     /// for save file ----------------------------------------------------------------------
+//    private void gazeInfoToJson(String layout_name, int store_num, int food_num) {
+//
+//        String layoutName = layout_name;
+//        int s_num = store_num;
+//        int f_num = food_num;
+//
+//        Log.d("Gaze", "!!!!!!!!: "+System.identityHashCode(list_gazeInfo));
+//
+//        for(int j = 0; j<list_gazeInfo.size(); j++){
+//            long t = list_gazeInfo.get(j).timestamp;
+//            float x = list_gazeInfo.get(j).x;
+//            float y = (list_gazeInfo.get(j).y) + scroll;
+//            gaze = new PostGaze.Gaze(x, y, t);
+//            gazeArrayList.add(gaze);
+//        }
+//
+//        postGaze = new PostGaze(layoutName, s_num, f_num, gazeArrayList);
+//        Log.d("Gaze", "gaze: "+postGaze);
+//        Data.addGazeList(postGaze);
+//    }
+
     private void gazeInfoToJson(String layout_name, int store_num, int food_num) {
 
         String layoutName = layout_name;
@@ -439,19 +476,81 @@ public class GazeTrackerDataStorage {
 
         Log.d("Gaze", "!!!!!!!!: "+System.identityHashCode(list_gazeInfo));
 
-        for(int j = 0; j<list_gazeInfo.size(); j++){
-            long t = list_gazeInfo.get(j).timestamp;
-            float x = list_gazeInfo.get(j).x;
-            float y = (list_gazeInfo.get(j).y) + scroll;
-            gaze = new PostGaze.Gaze(x, y, t);
-            gazeArrayList.add(gaze);
-        }
+        addGaze();
 
         postGaze = new PostGaze(layoutName, s_num, f_num, gazeArrayList);
         Log.d("Gaze", "gaze: "+postGaze);
         Data.addGazeList(postGaze);
-
     }
+
+
+    public void addGaze(){
+        if(gazeDataCapturing) {
+            for (int j = 0; j < list_gazeInfo.size(); j++) {
+                long t = list_gazeInfo.get(j).timestamp;
+                float x = list_gazeInfo.get(j).x;
+                float y = (list_gazeInfo.get(j).y) + scroll;
+                gaze = new PostGaze.Gaze(x, y, t);
+                gazeArrayList.add(gaze);
+            }
+        }else{
+        }
+    }
+
+
+    //Handler!!!!!!!!!!
+    public void handleMessage(Message message) {
+        switch (message.what) {
+            case EVENT_HOME_BUTTON_CLICKED:
+                // 메시지에서 데이터 추출
+                Bundle data = message.getData();
+                String buttonName = data.getString("buttonName");
+                // 이벤트 처리
+                if(buttonName.equals("homeBtn")){
+                    //gaze 추가 안함
+                    handleHomeButtonClicked(buttonName);
+
+                }else if(buttonName.equals("orderTxt")){
+                    //gaze 추가 계속
+                    handleOrderButtonClicked(buttonName);
+                }else{
+                }
+                break;
+            // 다른 이벤트 타입에 대한 처리 추가
+            case EVENT_ORDER_BUTTON_CLICKED:
+                // 이벤트 처리
+                break;
+        }
+    }
+
+    public void handleHomeButtonClicked(String buttonName) {
+        // 이벤트 처리
+        if (gazeDataCapturing) {
+            // 이벤트에 따른 처리 수행
+            // 예: Gaze 데이터 수집 중지
+            stopGazeDataCapturing();
+            addGaze();
+        }
+    }
+
+    public void handleOrderButtonClicked(String buttonName) {
+        // 이벤트 처리
+        if (gazeDataCapturing) {
+            // 이벤트에 따른 처리 수행
+            // 예: Gaze 데이터 수집 시작
+            startGazeDataCapturing();
+            addGaze();
+        }
+    }
+
+    private void stopGazeDataCapturing() {
+        gazeDataCapturing = false;
+    }
+
+    private void startGazeDataCapturing() {
+        gazeDataCapturing = true;
+    }
+
 
     private void modelInfo(){
 

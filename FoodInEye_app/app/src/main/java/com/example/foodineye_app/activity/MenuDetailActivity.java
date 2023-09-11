@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,6 +61,10 @@ public class MenuDetailActivity extends AppCompatActivity {
     GazeTrackerDataStorage gazeTrackerDataStorage;
     private final HandlerThread backgroundThread = new HandlerThread("background");
     boolean isCartClicked = false;
+
+    //----------------------------------------------------------------------
+
+    private Handler gazeHandler = new Handler(Looper.getMainLooper());
 
     //----------------------------------------------------------------------
     @Override
@@ -329,7 +335,7 @@ public class MenuDetailActivity extends AppCompatActivity {
 
     //gazeTracker
     private void setGazeTrackerDataStorage(){
-        gazeTrackerDataStorage = new GazeTrackerDataStorage(this);
+        gazeTrackerDataStorage = new GazeTrackerDataStorage(this, gazeHandler);
         gazeTrackerDataStorage.setContext(this);
 
         if (gazeTrackerDataStorage != null) {

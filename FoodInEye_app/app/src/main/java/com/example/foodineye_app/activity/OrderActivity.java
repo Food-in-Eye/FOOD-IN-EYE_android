@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -81,6 +83,8 @@ public class OrderActivity extends AppCompatActivity {
     PointView viewpoint;
 
     //-----------------------------------------------------------------------------------------
+
+    private Handler gazeHandler = new Handler(Looper.getMainLooper());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -223,7 +227,10 @@ public class OrderActivity extends AppCompatActivity {
 
                             WebSocketManager.getInstance(getApplicationContext()).connectWebSocket(history_id);
 
-                            putGaze();
+                            //시선 권한 동의 여부 확인
+                            if(eyePermission == 1){ //true
+                                putGaze();
+                            }
 
                         }else{
                             //요청이 실패한 경우 errorbody
@@ -285,7 +292,7 @@ public class OrderActivity extends AppCompatActivity {
 
     //gazeTracker
     private void setGazeTrackerDataStorage(){
-        gazeTrackerDataStorage = new GazeTrackerDataStorage(this);
+        gazeTrackerDataStorage = new GazeTrackerDataStorage(this, gazeHandler);
         gazeTrackerDataStorage.setContext(this);
 
         if (gazeTrackerDataStorage != null) {

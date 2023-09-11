@@ -86,9 +86,11 @@ public class CameraActivity extends AppCompatActivity {
                 if(eyeP == 1){
                     //동의
 //                    startCalibrationActivity();
-                }else{
+                }else if(eyeP ==2){
                     //비동의
                     startStorelistActivity();
+                }else{
+
                 }
             }
         });
