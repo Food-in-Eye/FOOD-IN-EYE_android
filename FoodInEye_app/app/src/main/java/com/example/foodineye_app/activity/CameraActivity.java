@@ -98,6 +98,13 @@ public class CameraActivity extends AppCompatActivity {
     //checkbox 결과 PUT 보내기
     public void putCheck(){
 
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        // 기존 access_token 삭제
+        editor.remove("eye_permission");
+        editor.putInt("eye_permission", eyeP);
+        editor.apply();
+
         PutEyePermission putEyePermission = new PutEyePermission(eyeP);
 
         // 초기 페이지 로딩

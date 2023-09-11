@@ -290,11 +290,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="모든 작업이 완료되었습니다!\n이제 주문하러 가볼까요?\n"
-                android:textSize="20dp"
+                android:text="모든 작업이 완료되었습니다!"
+                android:textSize="18dp"
                 android:textColor="@color/black_10"
                 android:lineSpacingExtra="5dp"
                 android:layout_marginTop="100dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="이제 주문하러 가볼까요?\n"
+                android:textSize="18dp"
+                android:textColor="@color/black_10"
+                android:lineSpacingExtra="5dp"
+                android:layout_marginTop="5dp"/>
+
+
 
 
         </LinearLayout>

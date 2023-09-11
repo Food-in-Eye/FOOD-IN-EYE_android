@@ -83,9 +83,9 @@ public class HomeActivity extends AppCompatActivity {
 
                     if(eye_permission == 1){
                         checkCameraPermission();
-//                    //home -> calibration
-//                    Intent intent = new Intent(getApplicationContext(), CalibrationActivity.class);
-//                    startActivity(intent);
+                        //home -> calibration
+                        Intent intent = new Intent(getApplicationContext(), CalibrationActivity.class);
+                        startActivity(intent);
 
                     }else if(eye_permission == 2){
                         //false
@@ -177,6 +177,13 @@ public class HomeActivity extends AppCompatActivity {
 
         startCalibrationActivity();
     }
+
+//    private void checkCameraPermission() {
+//
+//        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, MODE_PRIVATE);
+////        startCalibrationActivity();
+//    }
+
 
     public void startCalibrationActivity(){
         Intent intent = new Intent(this, CalibrationActivity.class);
