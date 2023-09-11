@@ -12,8 +12,6 @@ import com.google.gson.JsonObject;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
-
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -50,38 +48,43 @@ public class WebSocketManager {
 
             @Override
             public void onMessage(WebSocket webSocket, String text) {
-                Log.d("WebSocket", "onMessage: " + text);
                 Gson gson = new Gson();
                 JsonObject jsonObject = gson.fromJson(text, JsonObject.class);
 
                 if(jsonObject.has("type")){
                     String messageType = jsonObject.get("type").getAsString();
-                    Log.d("WebSocketManager", "1번");
-                    Log.d("WebSocketManager", "messageType: "+messageType);
                     switch (messageType){
+
                         case "connect":
                             if(jsonObject.has("result")){
                                 Log.d("WebSocketManager", "websocket: " +jsonObject.get("result").getAsString());
                                 Log.d("WebSocketManager", "2번");
                             }break;
+
                         case "update_status":
                             if(jsonObject.has("result")){
                                 Log.d("WebSocketManager", "3번");
                                 String messageResult = jsonObject.get("result").getAsString();
                                 WebSocketModel webSocketModel = new WebSocketModel(messageType, messageResult);
                                 Log.d("WebSocketManager", "webSocketModel: "+ webSocketModel.toString());
-                                String o_id = jsonObject.get("o_id").getAsString();
 
-                                //status 받기
+                                //o_id에 해당하는 status
+                                String o_id = jsonObject.get("o_id").getAsString();
                                 int status = Integer.parseInt(jsonObject.get("status").getAsString());
-                                UpdateWebSocketModel updateWebSocketModel = new UpdateWebSocketModel(webSocketModel, o_id, status);
+
+                                Data data = (Data) context;
+                                data.updateStatus(o_id, status); //order의 status 업데이트
+
+
+//                                UpdateWebSocketModel updateWebSocketModel = new UpdateWebSocketModel(webSocketModel, o_id, status);
                                 //update UI
                                 Intent intent = new Intent(context, OrderDetailActivity.class);
-                                intent.putExtra("updateWebSocketModel", (Serializable) updateWebSocketModel);
+//                                intent.putExtra("updateWebSocketModel", (Serializable) updateWebSocketModel);
+                                intent.putExtra("order update", "status update");
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // FLAG_ACTIVITY_NEW_TASK 플래그 추가
-                                Log.d("WebSocketManager", "updateWebSocketModel: "+ updateWebSocketModel.getStatus());
                                 context.startActivity(intent);
                             }break;
+
                         // 추가적인 메시지 타입에 대한 처리 로직 추가
                         default:
                             // 알 수 없는 메시지 타입에 대한 처리 로직

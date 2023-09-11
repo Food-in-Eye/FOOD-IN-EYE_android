@@ -150,4 +150,33 @@ public class Data extends Application {
                 ", viewCalibration=" + viewCalibration +
                 '}';
     }
+
+    //orderList에 있는 모든 status == 2 인지 확인
+    public boolean checkStatus(){
+
+        boolean allStatusTwo = true;
+        for(Order o : orderList){
+            if (o.getStatus() != 2) {
+                allStatusTwo = false;
+                break;
+            }
+        }
+
+        if (allStatusTwo) {
+            return true;
+        }return false;
+    }
+
+    //orderList 돌면서 order_id에 해당하는 status update하기
+    public void updateStatus(String o_id, int status){
+
+        for(Order o : orderList){
+            if(o.getOrderId().equals(o_id)){
+                o.setStatus(status);
+                break;
+            }
+        }
+
+    }
+
 }

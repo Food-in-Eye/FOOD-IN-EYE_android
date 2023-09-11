@@ -18,23 +18,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodineye_app.R;
 import com.example.foodineye_app.data.Order;
-import com.example.foodineye_app.websocket.UpdateWebSocketModel;
 import com.example.foodineye_app.websocket.WebSocketManager;
 
 import java.util.List;
 
 public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.MyViewHolder> {
 
-    OrderItem orderItem; // 가게별 GET
-    OrderItem.OrderResponse orderResponses;
-
     private Context mContext;
     private List<Order> orderList;
     private RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
-    private UpdateWebSocketModel updateWebSocketModel;
 
     public void updateOrderList() {
         notifyDataSetChanged();
+        checkStatus();
     }
 
     //Item 클릭 상태를 저장할 array 객체
@@ -47,21 +43,7 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
         this.orderList = orderList;
     }
 
-    public UpdateWebSocketModel getUpdateWebSocketModel() {   return updateWebSocketModel;   }
 
-    public void setUpdateWebSocketModel(UpdateWebSocketModel updateWebSocketModel) {  this.updateWebSocketModel = updateWebSocketModel;   }
-
-    public void updateStatus(){
-
-        for (Order o : orderList) {
-            Log.d("OrderDetailAdapter", "o.getOrderId(): " + o.getOrderId());
-            Log.d("OrderDetailAdapter", "updateWebSocketModel.getO_id(): " + updateWebSocketModel.getO_id());
-            if (o.getOrderId().equals(updateWebSocketModel.getO_id())) {
-                o.setStatus(updateWebSocketModel.getStatus());
-                Log.d("OrderDetailAdapter", "status: " + o.getStatus());
-            }
-        }
-    }
     public void checkStatus(){
         boolean allStatusTwo = true;
         for(Order o : orderList){
@@ -70,7 +52,7 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
                 break;
             }
         }
-        Log.d("OrderDetailAdapter", "checkStatus"+allStatusTwo);
+
         if (allStatusTwo) {
             Log.d("OrderDetailAdapter", "WebSocket Closed want");
             WebSocketManager.getInstance(mContext.getApplicationContext()).disconnectWebSocket();
@@ -90,31 +72,19 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
         Order order = orderList.get(position);
         holder.storeName.setText(order.getStoreName());
 
-        if(updateWebSocketModel != null){
-            updateStatus();
-            Log.d("OrderDetailAdapter", "updateWebSocketModel: "+ updateWebSocketModel.toString());
-            Log.d("OrderDetailAdapter", "updateWebSocketModel status: "+ updateWebSocketModel.getStatus());
-
-            if(order.getStatus() == 2){
-                holder.finishedCooking.setImageResource(R.drawable.status_finished);
-                holder.cooking.setImageResource(R.drawable.cooking);
-                holder.orderReceived.setImageResource(R.drawable.order_received);
-            }else if(order.getStatus() == 1){
-                holder.cooking.setImageResource(R.drawable.status_cooking);
-                holder.finishedCooking.setImageResource(R.drawable.finished_cooking);
-                holder.orderReceived.setImageResource(R.drawable.order_received);
-            }else{
-                holder.orderReceived.setImageResource(R.drawable.status_order_received);
-                holder.finishedCooking.setImageResource(R.drawable.finished_cooking);
-                holder.cooking.setImageResource(R.drawable.cooking);
-            }
+        if(order.getStatus() == 2){
+            holder.finishedCooking.setImageResource(R.drawable.status_finished);
+            holder.cooking.setImageResource(R.drawable.cooking);
+            holder.orderReceived.setImageResource(R.drawable.order_received);
+        }else if(order.getStatus() == 1){
+            holder.cooking.setImageResource(R.drawable.status_cooking);
+            holder.finishedCooking.setImageResource(R.drawable.finished_cooking);
+            holder.orderReceived.setImageResource(R.drawable.order_received);
         }else{
             holder.orderReceived.setImageResource(R.drawable.status_order_received);
             holder.finishedCooking.setImageResource(R.drawable.finished_cooking);
             holder.cooking.setImageResource(R.drawable.cooking);
         }
-
-        checkStatus();
 
         holder.order.setOnClickListener(new View.OnClickListener() {
             @Override
