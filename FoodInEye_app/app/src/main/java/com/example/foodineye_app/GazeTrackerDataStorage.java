@@ -10,7 +10,7 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.WindowManager;
-import android.webkit.WebView;
+import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -43,9 +43,6 @@ public class GazeTrackerDataStorage {
         this.context = context;
     }
     private static final String TAG = StorelistActivity.class.getSimpleName();
-
-    private String userId;
-    private WebView webView;
     private ConstraintLayout constraintLayout;
 
     private PointView viewPoint;
@@ -78,7 +75,7 @@ public class GazeTrackerDataStorage {
         setGazeTracker(gazeTrackerManager);
         setconstraintLayout(constraintLayout);
 
-        initSpeedDial();
+        releaseGaze();
         setViewPoint(viewPoint);
         final Data data = (Data) context;
         viewCalibration = data.getViewCalibration();
@@ -124,7 +121,7 @@ public class GazeTrackerDataStorage {
             }
             synchronized (list_gazeInfo){
                 gazeTracker.startGazeTracking();
-                show("start gaze tracking");
+                show("시선 수집 시작");
             }
         }).start();
     }
@@ -144,13 +141,6 @@ public class GazeTrackerDataStorage {
         this.viewPoint = viewPoint;
     }
 
-    private void initSpeedDial(){
-
-        Log.d("GazeTrackerDataStorage", "initSpeedDial success!");
-        show("start-gaze-tracking");
-        releaseGaze();
-
-    }
 
     public void initCalibrationView(CalibrationViewer calibrationViewer){
         viewCalibration = calibrationViewer;
@@ -274,11 +264,6 @@ public class GazeTrackerDataStorage {
         //화면에서 gazepoint 보여주기
         showGazePoint(gx, gy, gazeInfo.screenState);
 
-//        context.runOnUiThread(() -> {
-//            onGazeEvent(gx, gy);
-//            Log.v("gaze", "x=" + gx + ", y=" + gy + "scroll=" + scroll);
-//        });
-
         //save gazeInfo in arraylist -----
         Log.d("GazeTrackerDataStorage", "list_gazeInfo"+list_gazeInfo.toString());
         list_gazeInfo.add(gazeInfo);
@@ -368,61 +353,14 @@ public class GazeTrackerDataStorage {
     //--------------------------------------------------------------------
 
     private void show(String message) {
-
-//        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 
-    //
-    // js
-    //
-    private void executeJs(String cmd) {
-        webView.evaluateJavascript(cmd, s -> Log.e(TAG, ">>> " + s));
-    }
 
-    private void setUserId() {
-        String cmd = "setUserId('" + userId + "')";
-        executeJs(cmd);
-    }
-
-    private void writeTerm(String msg) {
-        webView.evaluateJavascript("writeTerm('" + msg + "')", null);
-    }
-
-    private void onGazeEvent(float gx, float gy) {
-        int x = pxToDp(gx);
-        int y = pxToDp(gy);
-        String cmd = "onGazeEvent('" + x + "','" + y + "')";
-
-//        linearLayout.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                linearLayout.evaluateJavascript(cmd, null);
-//            }
-//        });
-
-//        webView.evaluateJavascript(cmd, null);
-    }
 
     private void onTouchClickEvent(float gx, float gy) {
         int x = pxToDp(gx);
         int y = pxToDp(gy);
-
-        String cmd = "onTouchClick('" + x + "','" + y + "')";
-
-//        linearLayout.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                linearLayout.evaluateJavascript(cmd, null);
-//            }
-//        });
-
-//        webView.evaluateJavascript(cmd, null);
-    }
-
-    private void inspect(float gx, float gy) {
-        int x = pxToDp(gx);
-        int y = pxToDp(gy);
-        webView.evaluateJavascript("inspect('" + x + "','" + y + "')", s -> Log.e(TAG, ">>> " + s));
     }
 
     private int pxToDp(float dp) {
