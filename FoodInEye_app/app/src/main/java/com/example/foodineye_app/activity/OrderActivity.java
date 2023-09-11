@@ -47,7 +47,7 @@ import retrofit2.Response;
 import visual.camp.sample.view.PointView;
 
 public class OrderActivity extends AppCompatActivity {
-    Data data = (Data) getApplication();
+    Data data;
 
     Toolbar toolbar;
 
@@ -88,6 +88,8 @@ public class OrderActivity extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.order_toolbar);
         setToolBar(toolbar);
+
+        data = (Data) getApplication();
 
         //-------------------------------------------------------------------------------------
         //start-gaze-tracking

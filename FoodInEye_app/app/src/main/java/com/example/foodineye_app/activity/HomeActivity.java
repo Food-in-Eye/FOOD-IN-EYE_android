@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -26,9 +27,9 @@ public class HomeActivity extends AppCompatActivity {
     Context context;
 
     SharedPreferences sharedPreferences;
-    String eye_permission; //null, true, false
+    int eye_permission;
 
-    Data data = (Data) getApplication();
+    Data data;
     Boolean isOrder;
 
     @Override
@@ -37,6 +38,8 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         context = getApplicationContext();
+
+        data = (Data) getApplication();
 
 
         LinearLayout mypageBtn = (LinearLayout) findViewById(R.id.home_mypage);
@@ -59,10 +62,15 @@ public class HomeActivity extends AppCompatActivity {
 
         //시선 권한 동의 여부 확인
         sharedPreferences = getSharedPreferences("test_token1", MODE_PRIVATE);
-        eye_permission = sharedPreferences.getString("eye_permission", null);
+        eye_permission = sharedPreferences.getInt("eye_permission", 0);
 
         //주문 가능한지
-        isOrder = data.isOrder();
+        if(data != null){
+            Log.d("HomeActivity", "isOrder: "+data.isOrder());
+            isOrder = data.isOrder();
+        }else{
+            data.setOrder(true);
+        }
 
 
         LinearLayout orderBtn = (LinearLayout) findViewById(R.id.home_order);
@@ -73,13 +81,13 @@ public class HomeActivity extends AppCompatActivity {
                 if(isOrder){
                     //주문 가능하면 isOrder = true
 
-                    if(eye_permission.equals("true")){
+                    if(eye_permission == 1){
                         checkCameraPermission();
 //                    //home -> calibration
 //                    Intent intent = new Intent(getApplicationContext(), CalibrationActivity.class);
 //                    startActivity(intent);
 
-                    }else if(eye_permission.equals("false")){
+                    }else if(eye_permission == 2){
                         //false
                         showDialog();
 

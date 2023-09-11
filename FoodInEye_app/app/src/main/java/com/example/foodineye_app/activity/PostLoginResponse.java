@@ -23,7 +23,7 @@ public class PostLoginResponse {
 
     @SerializedName("camera")
     @Expose
-    public int eye_permssion; //null 0, true 1, false 2
+    public int eye_permission; //null 0, true 1, false 2
 
     public String getUser_id() {
         return user_id;
@@ -41,16 +41,8 @@ public class PostLoginResponse {
         return R_Token;
     }
 
-    public String isEye_permssion() {
-        if(eye_permssion == 1){
-            return "true";
-        } else if (eye_permssion == 2) {
-            return "false";
-        }else if (eye_permssion == 0){
-            return "null";
-        }else{
-            return "null";
-        }
+    public int getEye_permission() {
+        return eye_permission;
     }
 
     @Override
@@ -60,7 +52,7 @@ public class PostLoginResponse {
                 ", token_type='" + token_type + '\'' +
                 ", A_Token='" + A_Token + '\'' +
                 ", R_Token='" + R_Token + '\'' +
-                ", eye_permssion=" + eye_permssion +
+                ", eye_permssion=" + eye_permission +
                 '}';
     }
 }

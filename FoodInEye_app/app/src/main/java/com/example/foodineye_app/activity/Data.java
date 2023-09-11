@@ -29,7 +29,7 @@ public class Data extends Application {
     private CalibrationViewer viewCalibration;
 
     //주문 가능한 상태인지 - 현재 모든 주문이 status==2가 아닌 경우 주문 false
-    private boolean isOrder = true;
+    private boolean isOrder;
 
     //-------------------------------------------------------------------------------------
     public CalibrationViewer getViewCalibration() {

@@ -176,7 +176,7 @@ public class CalibrationViewer extends ViewGroup {
       animation_power = 0;
       point_paint = new Paint();
       point_paint.setAntiAlias(true);
-      point_paint.setColor(pointColors[0]);
+//      point_paint.setColor(pointColors[0]);
       oval = new RectF();
       last_end_degree = 0;
       next_end_degree = 0;

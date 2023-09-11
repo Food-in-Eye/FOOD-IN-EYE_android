@@ -30,8 +30,7 @@ public class CameraActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     CheckBox agreeCK, disagreeCK;
-    Boolean eyePermission;
-    String eyeP;
+    int eyeP;
     Button nextBtn;
 
     SharedPreferences sharedPreferences;
@@ -48,7 +47,7 @@ public class CameraActivity extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences("test_token1", MODE_PRIVATE);
         u_id = sharedPreferences.getString("u_id", null);
-        eyeP = sharedPreferences.getString("eye_permission", null);
+        eyeP = sharedPreferences.getInt("eye_permission", 0);
 
         agreeCK = (CheckBox) findViewById(R.id.camera_agree);
         disagreeCK = (CheckBox) findViewById(R.id.camera_disagree);
@@ -60,7 +59,7 @@ public class CameraActivity extends AppCompatActivity {
                 if (agreeCK.isChecked()) {
                     disagreeCK.setChecked(false);
                     checkCameraPermission();
-                    eyePermission = true;
+                    eyeP = 1; //true
                 }
             }
         });
@@ -71,12 +70,12 @@ public class CameraActivity extends AppCompatActivity {
                 //동의하지 않았을 때
                 if (disagreeCK.isChecked()) {
                     agreeCK.setChecked(false);
-                    eyePermission = false;
+                    eyeP = 2; //false
                 }
             }
         });
 
-        Log.d("CameraActivity", "ceyePermission: "+eyePermission);
+        Log.d("CameraActivity", "ceyePermission: "+eyeP);
 
         nextBtn = (Button) findViewById(R.id.next_btn);
         nextBtn.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +83,7 @@ public class CameraActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 putCheck();
-                if(eyePermission){
+                if(eyeP == 1){
                     //동의
 //                    startCalibrationActivity();
                 }else{
@@ -99,7 +98,7 @@ public class CameraActivity extends AppCompatActivity {
     //checkbox 결과 PUT 보내기
     public void putCheck(){
 
-        PutEyePermission putEyePermission = new PutEyePermission(eyePermission);
+        PutEyePermission putEyePermission = new PutEyePermission(eyeP);
 
         // 초기 페이지 로딩
         ApiClient apiClient = new ApiClient(getApplicationContext());

@@ -7,9 +7,9 @@ public class PutEyePermission {
 
     @SerializedName("camera")
     @Expose
-    Boolean eye_permission;
+    int eye_permission;
 
-    public PutEyePermission(Boolean eye_permission) {
+    public PutEyePermission(int eye_permission) {
         this.eye_permission = eye_permission;
     }
 }
