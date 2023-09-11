@@ -28,7 +28,8 @@ public class HomeActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     String eye_permission; //null, true, false
 
-
+    Data data = (Data) getApplication();
+    Boolean isOrder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,28 +61,38 @@ public class HomeActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences("test_token1", MODE_PRIVATE);
         eye_permission = sharedPreferences.getString("eye_permission", null);
 
+        //주문 가능한지
+        isOrder = data.isOrder();
+
+
         LinearLayout orderBtn = (LinearLayout) findViewById(R.id.home_order);
         orderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if(eye_permission.equals("true")){
-                    checkCameraPermission();
-                    //home -> calibration
-                    Intent intent = new Intent(getApplicationContext(), CalibrationActivity.class);
-                    startActivity(intent);
+                if(isOrder){
+                    //주문 가능하면 isOrder = true
 
-                }else if(eye_permission.equals("false")){
-                    //false
-                    showDialog();
+                    if(eye_permission.equals("true")){
+                        checkCameraPermission();
+//                    //home -> calibration
+//                    Intent intent = new Intent(getApplicationContext(), CalibrationActivity.class);
+//                    startActivity(intent);
 
+                    }else if(eye_permission.equals("false")){
+                        //false
+                        showDialog();
+
+                    }else{
+                        //null
+                        //home -> camera
+                        Intent cameraIntent = new Intent(getApplicationContext(), CameraActivity.class);
+                        startActivity(cameraIntent);
+                    }
                 }else{
-                    //null
-                    //home -> camera
-                    Intent cameraIntent = new Intent(getApplicationContext(), CameraActivity.class);
-                    startActivity(cameraIntent);
+                    //주문 불가능
+                    show("현재 진행중인 주문이 존재하기 때문에 주문을 진행 할 수 없습니다!");
                 }
-
             }
         });
 
@@ -144,7 +155,6 @@ public class HomeActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(this, "카메라 권한 동의", Toast.LENGTH_SHORT).show();
             // 권한이 이미 허용된 경우
-//            startCalibrationActivity();
 
         } else {
             // 권한이 허용되지 않은 경우
@@ -156,6 +166,18 @@ public class HomeActivity extends AppCompatActivity {
             // 권한 요청
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, MODE_PRIVATE);
         }
+
+        startCalibrationActivity();
+    }
+
+    public void startCalibrationActivity(){
+        Intent intent = new Intent(this, CalibrationActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void show(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
 }

@@ -55,10 +55,6 @@ public class CalibrationViewer extends ViewGroup {
     init(context);
   }
 
-  public CalibrationViewer(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-    super(context, attrs, defStyleAttr, defStyleRes);
-    init(context);
-  }
   private void init(Context context) {
     textPaint.setAntiAlias(true);
     textPaint.setTextSize(16 * getResources().getDisplayMetrics().density);
@@ -67,12 +63,12 @@ public class CalibrationViewer extends ViewGroup {
 
     backgroundColor = Color.rgb(153, 153, 153);
     setBackgroundColor(backgroundColor);
-    pointColors = new int[] {
-            redColor, purpleColor, orangeColor, blueColor, greenColor, brownColor, yellowColor
-    };
+//    pointColors = new int[] {
+//            redColor, purpleColor, orangeColor, blueColor, greenColor, brownColor, yellowColor
+//    };
     calibPoint = new Paint();
     calibPoint.setAntiAlias(true);
-    calibPoint.setColor(pointColors[index]);
+//    calibPoint.setColor(pointColors[index]);
     calibrationPoint = new CalibrationPoint(context);
     // CalibrationPoint의 크기를 100x100 픽셀로 설정
     int size = (int) (300 * getResources().getDisplayMetrics().density);

@@ -125,6 +125,7 @@ public class WebSocketManager {
             //데이터 모두 삭제
             Data data = (Data) context;
             data.initializeAllVariables();
+            data.setOrder(true);
         }
     }
 

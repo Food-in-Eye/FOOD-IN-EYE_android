@@ -47,6 +47,7 @@ import retrofit2.Response;
 import visual.camp.sample.view.PointView;
 
 public class OrderActivity extends AppCompatActivity {
+    Data data = (Data) getApplication();
 
     Toolbar toolbar;
 
@@ -176,6 +177,9 @@ public class OrderActivity extends AppCompatActivity {
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                data.setOrder(false); //이제 다른 주문 불가
+
                 if (gazeTrackerDataStorage != null) {
                     gazeTrackerDataStorage.stopGazeTracker("order", 0, 0);
                 }
@@ -229,7 +233,7 @@ public class OrderActivity extends AppCompatActivity {
                 });
 
                 //Data orderList에 주문내용 추가하기
-                final Data data = (Data) getApplicationContext();
+//                final Data data = (Data) getApplicationContext();
                 data.setOrderList(orderList);
 
                 //OrderDetial 화면으로 이동
