@@ -44,7 +44,6 @@ public class HomeActivity extends AppCompatActivity {
 
         data = (Data) getApplication();
 
-
         LinearLayout mypageBtn = (LinearLayout) findViewById(R.id.home_mypage);
         mypageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,22 +66,15 @@ public class HomeActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences("test_token1", MODE_PRIVATE);
         eye_permission = sharedPreferences.getInt("eye_permission", 0);
 
-        //주문 가능한지
-        if(data != null){
-            Log.d("HomeActivity", "isOrder: "+data.isOrder());
-            isOrder = data.isOrder();
-        }else{
-            data.setOrder(true);
-        }
-
-
         LinearLayout orderBtn = (LinearLayout) findViewById(R.id.home_order);
         orderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if(isOrder){
-                    //주문 가능하면 isOrder = true
+                Log.d("확인!!!!!!!!!!!", "data.isOrder(): "+data.isOrder());
+                //history_id 확인 여부
+                if(data.isOrder() == null){
+                    //주문 가능, history_id == null
 
                     if(eye_permission == 1){
                         checkCameraPermission();
@@ -98,8 +90,31 @@ public class HomeActivity extends AppCompatActivity {
                         startActivity(cameraIntent);
                     }
                 }else{
-                    //주문 불가능
-                    show("현재 진행중인 주문이 존재하기 때문에 주문을 진행 할 수 없습니다!");
+                    Log.d("확인!!!!!!!!!!!", "data.checkStatus(): "+data.checkStatus());
+                    //주문 불가능, history_id != null
+                    if(data.checkStatus()){
+                        //status == 2, 초기화 후 주문
+                        data.initializeAllVariables();
+
+                        if(eye_permission == 1){
+                            checkCameraPermission();
+
+                        }else if(eye_permission == 2){
+                            //false
+                            showDialog();
+
+                        }else{
+                            //null
+                            //home -> camera
+                            Intent cameraIntent = new Intent(getApplicationContext(), CameraActivity.class);
+                            startActivity(cameraIntent);
+                        }
+
+                    }else{
+                        //status != 2
+                        show("현재 진행중인 주문이 존재하기 때문에 주문을 진행 할 수 없습니다!");
+                    }
+
                 }
             }
         });

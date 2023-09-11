@@ -187,8 +187,6 @@ public class OrderActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                data.setOrder(false); //이제 다른 주문 불가
-
                 if (gazeTrackerDataStorage != null) {
                     gazeTrackerDataStorage.stopGazeTracker("order", 0, 0);
                 }
@@ -203,6 +201,8 @@ public class OrderActivity extends AppCompatActivity {
 
                             PostOrderResponse responseBody = response.body();
                             history_id = responseBody.getHistory_id();
+                            data.setHistory_id(history_id);
+
                             List<PostOrderResponse.Response> responseList;
                             responseList = responseBody.getResponse();
 

@@ -28,8 +28,6 @@ public class Data extends Application {
     //calibration
     private CalibrationViewer viewCalibration;
 
-    //주문 가능한 상태인지 - 현재 모든 주문이 status==2가 아닌 경우 주문 false
-    private boolean isOrder;
 
     //-------------------------------------------------------------------------------------
     public CalibrationViewer getViewCalibration() {
@@ -118,13 +116,6 @@ public class Data extends Application {
         GazeList.add(postGaze);
     }
 
-    public boolean isOrder() {
-        return isOrder;
-    }
-
-    public void setOrder(boolean order) {
-        isOrder = order;
-    }
 
     //초기화
     public void initializeAllVariables() {
@@ -136,7 +127,6 @@ public class Data extends Application {
         orderList = new ArrayList<>();
         history_id = null;
         viewCalibration = null;
-        isOrder = true;
     }
 
     @Override
@@ -179,4 +169,12 @@ public class Data extends Application {
 
     }
 
+    //주문 가능한 상태인지 - history id가 있는지 확인
+    public String isOrder(){
+        if(history_id != null){
+            //현재 진행중인 주문이 있음
+            return history_id;
+        }
+        return null;
+    }
 }

@@ -154,7 +154,6 @@ public class LoginActivity extends AppCompatActivity {
                         editor.apply();
 
                         Data data = (Data) getApplication();
-                        data.setOrder(true);
                         Log.d("LoginActivity", "isOrder: "+data.isOrder());
 
 //                        //로그인 후 R_Token Handler 실행
