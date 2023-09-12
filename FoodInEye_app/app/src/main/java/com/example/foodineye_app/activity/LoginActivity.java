@@ -17,13 +17,18 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.foodineye_app.ApiClient;
 import com.example.foodineye_app.ApiClientEx;
 import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.R;
 import com.example.foodineye_app.RefreshTokenService;
+import com.example.foodineye_app.data.GetOrder;
+import com.example.foodineye_app.data.Order;
 import com.example.foodineye_app.websocket.WebSocketManager;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -183,12 +188,7 @@ public class LoginActivity extends AppCompatActivity {
 
                             Log.d("modify!!!!!!!!!", "modify!!!!!!!!!login: "+data.getHistory_id());
 
-                            //websocket 연결
-                            //웹소켓 연결하기
-                            Log.d("WebSocket", "history_id: "+h_id);
-                            Log.d("WebSocket", "WebSocket 시도");
-
-                            WebSocketManager.getInstance(getApplicationContext()).connectWebSocket(h_id);
+                            getOrder(h_id);
                         }
                         //------------------------------------------------------------
 
@@ -248,5 +248,67 @@ public class LoginActivity extends AppCompatActivity {
         Log.d("WebSocket", "WebSocket 시도");
 
         WebSocketManager.getInstance(getApplicationContext()).connectWebSocket(h_id);
+    }
+
+    private void getOrder(String h_id){
+
+        ApiClient apiClient = new ApiClient(getApplicationContext());
+        apiClient.initializeHttpClient();
+
+        ApiInterface apiInterface = apiClient.getClient().create(ApiInterface.class);
+        Call<GetOrder> call = apiInterface.getOrder(h_id);
+        call.enqueue(new Callback<GetOrder>() {
+            @Override
+            public void onResponse(Call<GetOrder> call, Response<GetOrder> response) {
+                if(response.isSuccessful()){
+
+                    data.initializeAllVariables();
+
+                    data.setHistory_id(h_id);
+                    // 총 주문 내역 불러오기
+                    List<GetOrder.nOrder> orderList = response.body().orderLists;
+                    List<Order> orderList1 = new ArrayList<>();
+
+                    for (GetOrder.nOrder order : orderList) {
+                        // Order 객체에서 필요한 정보를 추출합니다.
+                        String orderId = order.o_id;
+                        String storeId = order.s_id;
+                        String storeName = order.s_name;
+                        String menuId = order.m_id;
+                        int status = order.status;
+
+                        // SubOrder 목록을 가져옵니다.
+                        List<GetOrder.nOrder.FoodList> foodList = order.f_list;
+                        List<SubOrder> subOrderList = new ArrayList<>();
+
+                        // SubOrder 목록 출력
+                        for (GetOrder.nOrder.FoodList foodItem : foodList) {
+                            String foodId = foodItem.f_id;
+                            String foodName = foodItem.name;
+                            int price = foodItem.price;
+                            int count = foodItem.count;
+
+                            SubOrder subOrder = new SubOrder(foodId, foodName, price, count);
+                            subOrderList.add(subOrder);
+                        }
+                        Order newOrder = new Order(storeId, storeName, menuId, subOrderList);
+                        newOrder.setOrderId(orderId);
+                        newOrder.setStatus(status);
+
+                        orderList1.add(newOrder);
+                        data.setOrderList(orderList1);
+
+                    }
+                }else{
+                    show("현재 주문 내역이 없습니다.");
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<GetOrder> call, Throwable t) {
+
+            }
+        });
     }
 }

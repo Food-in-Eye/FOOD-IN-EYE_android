@@ -264,8 +264,6 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-
-
     private void show(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
