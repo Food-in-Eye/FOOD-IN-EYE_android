@@ -1,10 +1,12 @@
 package com.example.foodineye_app;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -120,20 +122,100 @@ public class GazeTrackerDataStorage {
     }
 
 
+//    private void runGazeTracker() {
+//        new Thread(() -> {
+//            initGazeTracker();
+//            try {
+//                Thread.sleep(2000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            synchronized (list_gazeInfo){
+//                gazeTracker.startGazeTracking();
+//                show("start gaze tracking");
+//            }
+//        }).start();
+//    }
+
+    private ProgressDialog progressDialog;
+
+    private final Handler uiHandler = new Handler(Looper.getMainLooper());
+
     private void runGazeTracker() {
         new Thread(() -> {
+            // 로딩창 표시
+            uiHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    // UI 작업을 여기에서 수행
+                    progressDialog = new ProgressDialog(context);
+                    progressDialog.setMessage("로딩 중...");
+                    progressDialog.setCancelable(false); // 사용자가 취소하지 못하도록 설정
+                    progressDialog.show();
+                }
+            });
+
             initGazeTracker();
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            synchronized (list_gazeInfo){
+
+            synchronized (list_gazeInfo) {
+                // 로딩창 닫기
+                uiHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (progressDialog != null && progressDialog.isShowing()) {
+                            progressDialog.dismiss();
+                        }
+                    }
+                });
                 gazeTracker.startGazeTracking();
                 show("start gaze tracking");
             }
         }).start();
     }
+
+    //loading custom
+
+//    private void runGazeTracker() {
+//        new Thread(() -> {
+//            // 로딩창 표시
+//            uiHandler.post(new Runnable() {
+//                @Override
+//                public void run() {
+//                    // UI 작업을 여기에서 수행
+//                    CustomLoading loadingDialog = new CustomLoading(context);
+//                    loadingDialog.show();
+//                }
+//            });
+//
+//            initGazeTracker();
+//            try {
+//                Thread.sleep(2000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//
+//            synchronized (list_gazeInfo) {
+//                // 로딩창 닫기
+//                uiHandler.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        CustomLoading loadingDialog = new CustomLoading(context);
+//
+//                        if (loadingDialog != null && loadingDialog.isShowing()) {
+//                            loadingDialog.dismiss();
+//                        }
+//                    }
+//                });
+//                gazeTracker.startGazeTracking();
+//                show("start gaze tracking");
+//            }
+//        }).start();
+//    }
 
     //-----------------------------------------------------------------------------------------
 
