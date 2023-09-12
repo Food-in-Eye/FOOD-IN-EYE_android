@@ -110,15 +110,15 @@ public interface ApiInterface {
     );
 
     //h_id로 현재 진행 주문 불러오기
-    @GET("api/v2/order/order")
+    @GET("api/v2api/v2/orders/order/h")
     Call<GetOrder> getOrder(
-            @Query("h_id") String h_id
+            @Query("id") String h_id
     );
 
 
     //h_id로 현재 주문이 끝났는지 true, 진행중인지
-    @GET("api/v2/order/order")
+    @GET("api/v2api/v2/orders/history/status")
     Call<checkOrderResponse> checkOrderStatus(
-            @Query("h_id") String h_id
+            @Query("id") String h_id
     );
 }

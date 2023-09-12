@@ -285,8 +285,9 @@ public class StorelistActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //-> home, gaze 일시정지
-
-                gazeTrackerDataStorage.stopGazeDataCapturing();
+                if(eyePermission == 1){ //true
+                    gazeTrackerDataStorage.stopGazeDataCapturing();
+                }
 
                 showDialog();
             }
@@ -328,7 +329,9 @@ public class StorelistActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // orderBtn 클릭 시 Gaze 데이터 수집 재개
-                gazeTrackerDataStorage.startGazeDataCapturing();
+                if(eyePermission == 1){ //true
+                    gazeTrackerDataStorage.startGazeDataCapturing();
+                }
 
                 alertDialog.dismiss();
             }
@@ -337,7 +340,9 @@ public class StorelistActivity extends AppCompatActivity {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gazeTrackerDataStorage.startGazeDataCapturing();
+                if(eyePermission == 1){ //true
+                    gazeTrackerDataStorage.startGazeDataCapturing();
+                }
                 alertDialog.dismiss();
             }
         });

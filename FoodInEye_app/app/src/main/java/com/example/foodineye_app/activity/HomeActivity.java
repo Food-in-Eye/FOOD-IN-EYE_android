@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -35,7 +36,7 @@ public class HomeActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     int eye_permission;
     Data data;
-    Boolean orderComplete; // 주문이 끝났으면 true
+    Boolean orderComplete = false; // 주문이 끝났으면 true
 
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 123;
 
@@ -75,8 +76,11 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+
+                Log.d("modify!!!!!!!!!", "modify!!!!!!!!!Data에 h_id: "+data.getHistory_id());
                 //Data에 h_id 있는지 없는지
-                if(data.isOrder() == null){
+                if(data.isOrder().isEmpty()){
+                    Log.d("modify!!!!!!!!!", "modify!!!!!!!!!Data에 h_id가 없어");
                     //주문 가능, history_id == null
 
                     if(eye_permission == 1){
@@ -115,6 +119,7 @@ public class HomeActivity extends AppCompatActivity {
                     //history_id 로 주문이 완료인지 true, 진행중인지 false
                     getOrderStatus();
                     if(orderComplete){
+                        Log.d("modify!!!!!!!!!", "modify!!!!!!!!!주문완료 -> 초기화 ->  완료");
                         //주문 완료 -> 초기화 -> 주문
                         data.initializeAllVariables();
 
@@ -133,6 +138,7 @@ public class HomeActivity extends AppCompatActivity {
                         }
 
                     }else{
+                        Log.d("modify!!!!!!!!!", "modify!!!!!!!!!주문 진행중");
                         //주문 진행 중 -> 주문 못함
                         show("현재 진행 중인 주문이 있습니다. \n현재 주문 내역을 확인하세요!");
                     }
@@ -233,6 +239,7 @@ public class HomeActivity extends AppCompatActivity {
 
     public void getOrderStatus(){
 
+        Log.d("modify!!!!!!!!!", "modify!!!!!!!!!checkGET ");
         ApiClient apiClient = new ApiClient(getApplicationContext());
         apiClient.initializeHttpClient();
 
@@ -244,6 +251,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onResponse(Call<checkOrderResponse> call, Response<checkOrderResponse> response) {
                 if(response.isSuccessful()){
                     orderComplete = response.body().getOrderComplete();
+                    Log.d("modify!!!!!!!!!", "modify!!!!!!!!!h_id의 상태: "+orderComplete);
                 }else{
                     //errorBody처리
                 }
@@ -254,7 +262,6 @@ public class HomeActivity extends AppCompatActivity {
 
             }
         });
-
     }
 
 

@@ -188,7 +188,9 @@ public class ShoppingCartActivity extends AppCompatActivity implements CartAdapt
             @Override
             public void onClick(View v) {
                 //-> home
-                gazeTrackerDataStorage.stopGazeDataCapturing();
+                if(eyePermission == 1){
+                    gazeTrackerDataStorage.stopGazeDataCapturing();
+                }
                 showDialog();
             }
         });
@@ -227,8 +229,9 @@ public class ShoppingCartActivity extends AppCompatActivity implements CartAdapt
         orderTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                gazeTrackerDataStorage.startGazeDataCapturing();
+                if(eyePermission == 1){
+                    gazeTrackerDataStorage.startGazeDataCapturing();
+                }
                 alertDialog.dismiss();
             }
         });
@@ -236,8 +239,9 @@ public class ShoppingCartActivity extends AppCompatActivity implements CartAdapt
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                gazeTrackerDataStorage.startGazeDataCapturing();
+                if(eyePermission == 1){
+                    gazeTrackerDataStorage.startGazeDataCapturing();
+                }
                 alertDialog.dismiss();
             }
         });

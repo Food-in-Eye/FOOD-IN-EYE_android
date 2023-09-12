@@ -236,7 +236,9 @@ public class MenuDetailActivity extends AppCompatActivity {
                 data.setRecentM_id(cart.m_id);
                 Log.d("MenuDetailActivity", "cart: "+cart.toString());
 
-                gazeTrackerDataStorage.stopGazeDataCapturing();
+                if(eyePermission == 1){
+                    gazeTrackerDataStorage.stopGazeDataCapturing();
+                }
                 showDialog();
             }
         });
@@ -319,6 +321,9 @@ public class MenuDetailActivity extends AppCompatActivity {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(eyePermission == 1){
+                    gazeTrackerDataStorage.startGazeDataCapturing();
+                }
                 alertDialog.dismiss();
             }
         });
@@ -417,7 +422,9 @@ public class MenuDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //-> home
-                gazeTrackerDataStorage.stopGazeDataCapturing();
+                if(eyePermission == 1){
+                    gazeTrackerDataStorage.stopGazeDataCapturing();
+                }
                 showDialoghome();
 
 
@@ -458,8 +465,9 @@ public class MenuDetailActivity extends AppCompatActivity {
         orderTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                gazeTrackerDataStorage.startGazeDataCapturing();
+                if(eyePermission == 1){
+                    gazeTrackerDataStorage.startGazeDataCapturing();
+                }
                 alertDialog.dismiss();
             }
         });
@@ -467,8 +475,9 @@ public class MenuDetailActivity extends AppCompatActivity {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                gazeTrackerDataStorage.startGazeDataCapturing();
+                if(eyePermission == 1){
+                    gazeTrackerDataStorage.startGazeDataCapturing();
+                }
                 alertDialog.dismiss();
             }
         });

@@ -216,8 +216,12 @@ public class MenuActivity extends AppCompatActivity{
 
     }
     public void showStore(String s_id, String m_id){
-        //retrofit2로 데이터 받아오기
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+        ApiClient apiClient = new ApiClient(getApplicationContext());
+        apiClient.initializeHttpClient();
+
+        ApiInterface apiInterface = apiClient.getClient().create(ApiInterface.class);
+
 
         Call<GetStoreList> call = apiInterface.getStore();
         call.enqueue(new Callback<GetStoreList>() {
@@ -654,8 +658,9 @@ public class MenuActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 //-> home
-                gazeTrackerDataStorage.stopGazeDataCapturing();
-
+                if(eyePermission == 1){
+                    gazeTrackerDataStorage.stopGazeDataCapturing();
+                }
                 showDialog();
             }
         });
@@ -694,7 +699,9 @@ public class MenuActivity extends AppCompatActivity{
         orderTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gazeTrackerDataStorage.startGazeDataCapturing();
+                if(eyePermission == 1){
+                    gazeTrackerDataStorage.startGazeDataCapturing();
+                }
                 alertDialog.dismiss();
             }
         });
@@ -702,7 +709,9 @@ public class MenuActivity extends AppCompatActivity{
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gazeTrackerDataStorage.startGazeDataCapturing();
+                if(eyePermission == 1){
+                    gazeTrackerDataStorage.startGazeDataCapturing();
+                }
                 alertDialog.dismiss();
             }
         });

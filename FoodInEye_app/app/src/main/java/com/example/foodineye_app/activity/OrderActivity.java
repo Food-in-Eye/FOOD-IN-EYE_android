@@ -360,7 +360,9 @@ public class OrderActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //-> home
-                gazeTrackerDataStorage.stopGazeDataCapturing();
+                if(eyePermission == 1){
+                    gazeTrackerDataStorage.stopGazeDataCapturing();
+                }
                 showDialog();
             }
         });
@@ -400,7 +402,9 @@ public class OrderActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                gazeTrackerDataStorage.startGazeDataCapturing();
+                if(eyePermission == 1){
+                    gazeTrackerDataStorage.startGazeDataCapturing();
+                }
                 alertDialog.dismiss();
             }
         });
@@ -409,7 +413,9 @@ public class OrderActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                gazeTrackerDataStorage.startGazeDataCapturing();
+                if(eyePermission == 1){
+                    gazeTrackerDataStorage.startGazeDataCapturing();
+                }
                 alertDialog.dismiss();
             }
         });

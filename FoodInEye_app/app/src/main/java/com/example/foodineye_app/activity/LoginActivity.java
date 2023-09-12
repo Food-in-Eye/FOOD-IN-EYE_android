@@ -179,6 +179,7 @@ public class LoginActivity extends AppCompatActivity {
                             //해당 user의 진행중인 주문이 있을 경우
                             h_id = postLoginResponse.getH_id();
                             data.setHistory_id(h_id);
+                            Log.d("modify!!!!!!!!!", "modify!!!!!!!!!login: "+postLoginResponse.getH_id());
                             Log.d("modify!!!!!!!!!", "modify!!!!!!!!!login: "+data.getHistory_id());
                         }
                         //------------------------------------------------------------

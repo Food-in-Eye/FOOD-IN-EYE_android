@@ -175,12 +175,12 @@ public class Data extends Application {
 
     //주문 가능한 상태인지 - history id가 있는지 확인
     public String isOrder(){
-        if(history_id != null){
-            //현재 진행중인 주문이 있음
+        if (history_id != null){
+            // 현재 진행중인 주문이 있음
             return history_id;
         }
-        return null;
+        // 진행중인 주문이 없을 경우 빈 문자열 반환
+        return "";
     }
-
 
 }

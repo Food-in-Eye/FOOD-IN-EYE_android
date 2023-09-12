@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -107,40 +108,45 @@ public class OrderDetailActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<GetOrder> call, Response<GetOrder> response) {
 
-                data.initializeAllVariables();
-                // 총 주문 내역 불러오기
-                List<GetOrder.nOrder> orderList = response.body().orderLists;
-                List<Order> orderList1 = new ArrayList<>();
+                if(response.isSuccessful() && response.body()!=null){
+                    data.initializeAllVariables();
+                    // 총 주문 내역 불러오기
+                    List<GetOrder.nOrder> orderList = response.body().orderLists;
+                    List<Order> orderList1 = new ArrayList<>();
 
-                for (GetOrder.nOrder order : orderList) {
-                    // Order 객체에서 필요한 정보를 추출합니다.
-                    String orderId = order.o_id;
-                    String storeId = order.s_id;
-                    String storeName = order.s_name;
-                    String menuId = order.m_id;
-                    int status = order.status;
+                    for (GetOrder.nOrder order : orderList) {
+                        // Order 객체에서 필요한 정보를 추출합니다.
+                        String orderId = order.o_id;
+                        String storeId = order.s_id;
+                        String storeName = order.s_name;
+                        String menuId = order.m_id;
+                        int status = order.status;
 
-                    // SubOrder 목록을 가져옵니다.
-                    List<GetOrder.nOrder.FoodList> foodList = order.f_list;
-                    List<SubOrder> subOrderList = new ArrayList<>();
+                        // SubOrder 목록을 가져옵니다.
+                        List<GetOrder.nOrder.FoodList> foodList = order.f_list;
+                        List<SubOrder> subOrderList = new ArrayList<>();
 
-                    // SubOrder 목록 출력
-                    for (GetOrder.nOrder.FoodList foodItem : foodList) {
-                        String foodId = foodItem.f_id;
-                        String foodName = foodItem.name;
-                        int price = foodItem.price;
-                        int count = foodItem.count;
+                        // SubOrder 목록 출력
+                        for (GetOrder.nOrder.FoodList foodItem : foodList) {
+                            String foodId = foodItem.f_id;
+                            String foodName = foodItem.name;
+                            int price = foodItem.price;
+                            int count = foodItem.count;
 
-                        SubOrder subOrder = new SubOrder(foodId, foodName, price, count);
-                        subOrderList.add(subOrder);
+                            SubOrder subOrder = new SubOrder(foodId, foodName, price, count);
+                            subOrderList.add(subOrder);
+                        }
+                        Order newOrder = new Order(storeId, storeName, menuId, subOrderList);
+                        newOrder.setOrderId(orderId);
+                        newOrder.setStatus(status);
+
+                        orderList1.add(newOrder);
+                        data.setOrderList(orderList1);
                     }
-                    Order newOrder = new Order(storeId, storeName, menuId, subOrderList);
-                    newOrder.setOrderId(orderId);
-                    newOrder.setStatus(status);
-
-                    orderList1.add(newOrder);
-                    data.setOrderList(orderList1);
+                }else{
+                    show("현재 주문 내역이 없습니다.");
                 }
+
             }
 
             @Override
@@ -148,6 +154,10 @@ public class OrderDetailActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void show(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
 }
