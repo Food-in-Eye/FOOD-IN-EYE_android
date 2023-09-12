@@ -47,9 +47,9 @@ public class OrderDetailActivity extends AppCompatActivity {
         setToolBar(toolbar);
 
         data = (Data) getApplication();
-        getOrder(data.getHistory_id()); //h_id로 GET하기
+//        getOrder(data.getHistory_id()); //h_id로 GET하기
 
-//        setOrderRecyclerview();
+        setOrderRecyclerview();
 
     }
     //toolbar

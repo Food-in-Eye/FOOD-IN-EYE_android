@@ -181,15 +181,15 @@ public class LoginActivity extends AppCompatActivity {
                         }
 
                         //------------------------------------------------------------
-                        if(postLoginResponse.getH_id() != null){
-                            //해당 user의 진행중인 주문이 있을 경우
-                            h_id = postLoginResponse.getH_id();
-                            data.setHistory_id(h_id);
-
-                            Log.d("modify!!!!!!!!!", "modify!!!!!!!!!login: "+data.getHistory_id());
-
-                            getOrder(h_id);
-                        }
+//                        if(postLoginResponse.getH_id() != null){
+//                            //해당 user의 진행중인 주문이 있을 경우
+//                            h_id = postLoginResponse.getH_id();
+//                            data.setHistory_id(h_id);
+//
+//                            Log.d("modify!!!!!!!!!", "modify!!!!!!!!!login: "+data.getHistory_id());
+//
+//                            getOrder(h_id);
+//                        }
                         //------------------------------------------------------------
 
 
