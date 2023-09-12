@@ -7,10 +7,10 @@ import java.util.List;
 //상위 리사이클러뷰 주문내역을 정의
 public class Order {
     private String orderId;
-    private int status;
     private String storeId;
     private String storeName;
     private String menuId;
+    private int status;
     //하위 리사이클러뷰 아이템으로 정의한 subOrderList를 전역변수 선언
     private List<SubOrder> subOrderList;
 

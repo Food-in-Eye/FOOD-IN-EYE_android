@@ -29,6 +29,10 @@ public class PostLoginResponse {
     @Expose
     public int eye_permission; //null 0, true 1, false 2
 
+    @SerializedName("h_id")
+    @Expose
+    public String h_id; //null, h_id
+
     public String getUser_id() {
         return user_id;
     }
@@ -53,6 +57,10 @@ public class PostLoginResponse {
         return name;
     }
 
+    public String getH_id() {
+        return h_id;
+    }
+
     @Override
     public String toString() {
         return "PostLoginResponse{" +
@@ -62,6 +70,7 @@ public class PostLoginResponse {
                 ", A_Token='" + A_Token + '\'' +
                 ", R_Token='" + R_Token + '\'' +
                 ", eye_permission=" + eye_permission +
+                ", h_id='" + h_id + '\'' +
                 '}';
     }
 }

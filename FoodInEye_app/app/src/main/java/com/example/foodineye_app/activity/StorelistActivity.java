@@ -185,8 +185,6 @@ public class StorelistActivity extends AppCompatActivity {
             public void onResponse(Call<GetStoreList> call, Response<GetStoreList> response) {
                 if(response.isSuccessful()){
 
-
-
                     storeList = response.body();
                     storeInfo = storeList.response;
 

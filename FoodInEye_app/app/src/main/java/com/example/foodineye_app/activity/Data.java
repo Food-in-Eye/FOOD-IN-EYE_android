@@ -40,6 +40,10 @@ public class Data extends Application {
 
     //orderList
     public List<Order> getOrderList(){ return orderList; }
+    public void setOrderList(){
+
+    }
+
 
     //carList
     @Override
@@ -177,4 +181,6 @@ public class Data extends Application {
         }
         return null;
     }
+
+
 }

@@ -37,9 +37,10 @@ public class LoginActivity extends AppCompatActivity {
     String at, rt; //tokens
     String user_id;
     int eye_permission;
-    String name;
+    String name, h_id;
 
     private SharedPreferences sharedPreferences;
+    Data data;
 
     // 앱의 메인 코드(예: 애플리케이션 클래스 또는 액티비티)에서 BroadcastReceiver를 등록합니다.
     private BroadcastReceiver startLoginActivityReceiver = new BroadcastReceiver() {
@@ -56,6 +57,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        data = (Data) getApplication();
 
         // 커스텀 이벤트를 수신하기 위한 BroadcastReceiver를 등록합니다.
         IntentFilter filter = new IntentFilter("start_login_activity");
@@ -156,7 +159,6 @@ public class LoginActivity extends AppCompatActivity {
 
                         editor.apply();
 
-                        Data data = (Data) getApplication();
                         Log.d("LoginActivity", "isOrder: "+data.isOrder());
 
 //                        //로그인 후 R_Token Handler 실행
@@ -171,6 +173,15 @@ public class LoginActivity extends AppCompatActivity {
                             // Oreo 이전 버전에서는 그냥 startService 사용
                             startService(serviceIntent);
                         }
+
+                        //------------------------------------------------------------
+                        if(postLoginResponse.getH_id() != null){
+                            //해당 user의 진행중인 주문이 있을 경우
+                            h_id = postLoginResponse.getH_id();
+                            data.setHistory_id(h_id);
+                            Log.d("modify!!!!!!!!!", "modify!!!!!!!!!login: "+data.getHistory_id());
+                        }
+                        //------------------------------------------------------------
 
 
                         //HomeActivity로 이동

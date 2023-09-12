@@ -10,12 +10,19 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.foodineye_app.ApiClient;
+import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.R;
+import com.example.foodineye_app.data.GetOrder;
 import com.example.foodineye_app.data.Order;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.WebSocket;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class OrderDetailActivity extends AppCompatActivity {
 
@@ -38,7 +45,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         setToolBar(toolbar);
 
         data = (Data) getApplication();
-
+        getOrder(data.getHistory_id()); //h_id로 GET하기
 
         //주문내역 store 받기
         orderList = data.getOrderList();
@@ -58,11 +65,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         if (extras != null && extras.getString("order update") != null) {
             orderDetailAdapter.updateOrderList();
         }
-
-
     }
-
-
     //toolbar
     private void setToolBar(androidx.appcompat.widget.Toolbar toolbar){
 
@@ -90,6 +93,61 @@ public class OrderDetailActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void getOrder(String h_id){
+
+        //storeList 세팅
+        ApiClient apiClient = new ApiClient(getApplicationContext());
+        apiClient.initializeHttpClient();
+
+        ApiInterface apiInterface = apiClient.getClient().create(ApiInterface.class);
+        Call<GetOrder> call = apiInterface.getOrder(h_id);
+        call.enqueue(new Callback<GetOrder>() {
+            @Override
+            public void onResponse(Call<GetOrder> call, Response<GetOrder> response) {
+
+                data.initializeAllVariables();
+                // 총 주문 내역 불러오기
+                List<GetOrder.nOrder> orderList = response.body().orderLists;
+                List<Order> orderList1 = new ArrayList<>();
+
+                for (GetOrder.nOrder order : orderList) {
+                    // Order 객체에서 필요한 정보를 추출합니다.
+                    String orderId = order.o_id;
+                    String storeId = order.s_id;
+                    String storeName = order.s_name;
+                    String menuId = order.m_id;
+                    int status = order.status;
+
+                    // SubOrder 목록을 가져옵니다.
+                    List<GetOrder.nOrder.FoodList> foodList = order.f_list;
+                    List<SubOrder> subOrderList = new ArrayList<>();
+
+                    // SubOrder 목록 출력
+                    for (GetOrder.nOrder.FoodList foodItem : foodList) {
+                        String foodId = foodItem.f_id;
+                        String foodName = foodItem.name;
+                        int price = foodItem.price;
+                        int count = foodItem.count;
+
+                        SubOrder subOrder = new SubOrder(foodId, foodName, price, count);
+                        subOrderList.add(subOrder);
+                    }
+                    Order newOrder = new Order(storeId, storeName, menuId, subOrderList);
+                    newOrder.setOrderId(orderId);
+                    newOrder.setStatus(status);
+
+                    orderList1.add(newOrder);
+                    data.setOrderList(orderList1);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetOrder> call, Throwable t) {
+
+            }
+        });
     }
 
 }
