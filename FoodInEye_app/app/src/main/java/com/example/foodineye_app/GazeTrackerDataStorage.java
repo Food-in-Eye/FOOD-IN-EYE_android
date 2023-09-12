@@ -3,6 +3,7 @@ package com.example.foodineye_app;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -16,6 +17,7 @@ import android.webkit.WebView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.example.foodineye_app.activity.CustomLoading;
 import com.example.foodineye_app.activity.Data;
 import com.example.foodineye_app.activity.StorelistActivity;
 import com.example.foodineye_app.gaze.PostGaze;
@@ -141,45 +143,6 @@ public class GazeTrackerDataStorage {
 
     private final Handler uiHandler = new Handler(Looper.getMainLooper());
 
-    private void runGazeTracker() {
-        new Thread(() -> {
-            // 로딩창 표시
-            uiHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    // UI 작업을 여기에서 수행
-                    progressDialog = new ProgressDialog(context);
-                    progressDialog.setMessage("로딩 중...");
-                    progressDialog.setCancelable(false); // 사용자가 취소하지 못하도록 설정
-                    progressDialog.show();
-                }
-            });
-
-            initGazeTracker();
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            synchronized (list_gazeInfo) {
-                // 로딩창 닫기
-                uiHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (progressDialog != null && progressDialog.isShowing()) {
-                            progressDialog.dismiss();
-                        }
-                    }
-                });
-                gazeTracker.startGazeTracking();
-                show("start gaze tracking");
-            }
-        }).start();
-    }
-
-    //loading custom
-
 //    private void runGazeTracker() {
 //        new Thread(() -> {
 //            // 로딩창 표시
@@ -187,8 +150,10 @@ public class GazeTrackerDataStorage {
 //                @Override
 //                public void run() {
 //                    // UI 작업을 여기에서 수행
-//                    CustomLoading loadingDialog = new CustomLoading(context);
-//                    loadingDialog.show();
+//                    progressDialog = new ProgressDialog(context);
+//                    progressDialog.setMessage("로딩 중...");
+//                    progressDialog.setCancelable(false); // 사용자가 취소하지 못하도록 설정
+//                    progressDialog.show();
 //                }
 //            });
 //
@@ -204,10 +169,8 @@ public class GazeTrackerDataStorage {
 //                uiHandler.post(new Runnable() {
 //                    @Override
 //                    public void run() {
-//                        CustomLoading loadingDialog = new CustomLoading(context);
-//
-//                        if (loadingDialog != null && loadingDialog.isShowing()) {
-//                            loadingDialog.dismiss();
+//                        if (progressDialog != null && progressDialog.isShowing()) {
+//                            progressDialog.dismiss();
 //                        }
 //                    }
 //                });
@@ -216,6 +179,47 @@ public class GazeTrackerDataStorage {
 //            }
 //        }).start();
 //    }
+
+    //loading custom
+
+    private void runGazeTracker() {
+        CustomLoading loadingDialog = new CustomLoading(context);
+        new Thread(() -> {
+            // 로딩창 표시
+            uiHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    // UI 작업을 여기에서 수행
+                    //    로딩창을 투명하게
+                    loadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                    loadingDialog.show();
+                }
+            });
+
+            initGazeTracker();
+
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            synchronized (list_gazeInfo) {
+                // 로딩창 닫기
+                uiHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        if (loadingDialog != null || loadingDialog.isShowing()) {
+                            loadingDialog.dismiss();
+                        }
+                    }
+                });
+                gazeTracker.startGazeTracking();
+                show("start gaze tracking");
+            }
+        }).start();
+    }
 
     //-----------------------------------------------------------------------------------------
 
