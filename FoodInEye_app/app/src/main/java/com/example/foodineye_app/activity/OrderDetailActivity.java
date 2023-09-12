@@ -2,6 +2,7 @@ package com.example.foodineye_app.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -48,24 +49,6 @@ public class OrderDetailActivity extends AppCompatActivity {
         data = (Data) getApplication();
         getOrder(data.getHistory_id()); //h_id로 GET하기
 
-        //주문내역 store 받기
-        orderList = data.getOrderList();
-
-        //상위 recyclerview 설정
-        orderRecyclerview = findViewById(R.id.recyclerView_orderDetailList);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        orderRecyclerview.setLayoutManager(layoutManager);
-
-        orderDetailAdapter = new OrderDetailAdapter(getApplicationContext(), orderList);
-        orderRecyclerview.setAdapter(orderDetailAdapter);
-
-        //WebSocket으로 받은 메시지 확인하기
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-
-        if (extras != null && extras.getString("order update") != null) {
-            orderDetailAdapter.updateOrderList();
-        }
     }
     //toolbar
     private void setToolBar(androidx.appcompat.widget.Toolbar toolbar){
@@ -98,7 +81,6 @@ public class OrderDetailActivity extends AppCompatActivity {
 
     private void getOrder(String h_id){
 
-        //storeList 세팅
         ApiClient apiClient = new ApiClient(getApplicationContext());
         apiClient.initializeHttpClient();
 
@@ -107,9 +89,10 @@ public class OrderDetailActivity extends AppCompatActivity {
         call.enqueue(new Callback<GetOrder>() {
             @Override
             public void onResponse(Call<GetOrder> call, Response<GetOrder> response) {
+                if(response.isSuccessful()){
 
-                if(response.isSuccessful() && response.body()!=null){
                     data.initializeAllVariables();
+                    data.setHistory_id(h_id);
                     // 총 주문 내역 불러오기
                     List<GetOrder.nOrder> orderList = response.body().orderLists;
                     List<Order> orderList1 = new ArrayList<>();
@@ -142,6 +125,9 @@ public class OrderDetailActivity extends AppCompatActivity {
 
                         orderList1.add(newOrder);
                         data.setOrderList(orderList1);
+                        
+
+                        setOrderRecyclerview();
                     }
                 }else{
                     show("현재 주문 내역이 없습니다.");
@@ -154,6 +140,28 @@ public class OrderDetailActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    //recyclerview setting
+    public void setOrderRecyclerview(){
+        //주문내역 store 받기
+        orderList = data.getOrderList();
+
+        //상위 recyclerview 설정
+        orderRecyclerview = findViewById(R.id.recyclerView_orderDetailList);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        orderRecyclerview.setLayoutManager(layoutManager);
+
+        orderDetailAdapter = new OrderDetailAdapter(getApplicationContext(), orderList);
+        orderRecyclerview.setAdapter(orderDetailAdapter);
+
+        //WebSocket으로 받은 메시지 확인하기
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+
+        if (extras != null && extras.getString("order update") != null) {
+            orderDetailAdapter.updateOrderList();
+        }
     }
 
     private void show(String message) {

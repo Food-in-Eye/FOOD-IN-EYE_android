@@ -11,6 +11,13 @@ public class GetOrder {
     @Expose
     public List<nOrder> orderLists;
 
+    @Override
+    public String toString() {
+        return "GetOrder{" +
+                "orderLists=" + orderLists +
+                '}';
+    }
+
     public class nOrder {
 
         @SerializedName("o_id")
@@ -55,6 +62,18 @@ public class GetOrder {
             this.f_list = f_list;
         }
 
+        @Override
+        public String toString() {
+            return "nOrder{" +
+                    "o_id='" + o_id + '\'' +
+                    ", s_id='" + s_id + '\'' +
+                    ", s_name='" + s_name + '\'' +
+                    ", m_id='" + m_id + '\'' +
+                    ", status=" + status +
+                    ", f_list=" + f_list +
+                    '}';
+        }
+
         public class FoodList {
 
             @SerializedName("f_id")
@@ -73,7 +92,17 @@ public class GetOrder {
             @Expose
             public int count;
 
+            @Override
+            public String toString() {
+                return "FoodList{" +
+                        "f_id='" + f_id + '\'' +
+                        ", name='" + name + '\'' +
+                        ", price=" + price +
+                        ", count=" + count +
+                        '}';
+            }
+        }
 
         }
-    }
 }
+
