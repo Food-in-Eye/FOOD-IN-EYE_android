@@ -2,6 +2,7 @@ package com.example.foodineye_app.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -46,9 +47,9 @@ public class OrderDetailActivity extends AppCompatActivity {
         setToolBar(toolbar);
 
         data = (Data) getApplication();
-//        getOrder(data.getHistory_id()); //h_id로 GET하기
+        getOrder(data.getHistory_id()); //h_id로 GET하기
 
-        setOrderRecyclerview();
+//        setOrderRecyclerview();
 
     }
     //toolbar
@@ -128,6 +129,7 @@ public class OrderDetailActivity extends AppCompatActivity {
                         data.setOrderList(orderList1);
 
 
+                        Log.d("modify!!!!!!!!!", "modify!!!!!!!!!login: "+data.getOrderList());
                         setOrderRecyclerview();
                     }
                 }else{
