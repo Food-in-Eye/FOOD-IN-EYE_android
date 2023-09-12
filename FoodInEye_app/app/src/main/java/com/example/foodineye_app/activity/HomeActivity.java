@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,18 +19,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.foodineye_app.ApiClient;
+import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.R;
+import com.example.foodineye_app.data.checkOrderResponse;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class HomeActivity extends AppCompatActivity {
 
     Context context;
-
     SharedPreferences sharedPreferences;
     int eye_permission;
-
     Data data;
-    Boolean isOrder;
+    Boolean orderComplete; // 주문이 끝났으면 true
 
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 123;
 
@@ -71,8 +75,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Log.d("확인!!!!!!!!!!!", "data.isOrder(): "+data.isOrder());
-                //history_id 확인 여부
+                //Data에 h_id 있는지 없는지
                 if(data.isOrder() == null){
                     //주문 가능, history_id == null
 
@@ -90,10 +93,29 @@ public class HomeActivity extends AppCompatActivity {
                         startActivity(cameraIntent);
                     }
                 }else{
-                    Log.d("확인!!!!!!!!!!!", "data.checkStatus(): "+data.checkStatus());
-                    //주문 불가능, history_id != null
-                    if(data.checkStatus()){
-                        //status == 2, 초기화 후 주문
+
+                    //데이터 수집 기간만 사용
+//                    data.initializeAllVariables();
+//
+//                    if(eye_permission == 1){
+//                        checkCameraPermission();
+//
+//                    }else if(eye_permission == 2){
+//                        //false
+//                        showDialog();
+//
+//                    }else{
+//                        //null
+//                        //home -> camera
+//                        Intent cameraIntent = new Intent(getApplicationContext(), CameraActivity.class);
+//                        startActivity(cameraIntent);
+//                    }
+
+                    //----------------------------------------------------------
+                    //history_id 로 주문이 완료인지 true, 진행중인지 false
+                    getOrderStatus();
+                    if(orderComplete){
+                        //주문 완료 -> 초기화 -> 주문
                         data.initializeAllVariables();
 
                         if(eye_permission == 1){
@@ -111,8 +133,8 @@ public class HomeActivity extends AppCompatActivity {
                         }
 
                     }else{
-                        //status != 2
-                        show("현재 진행중인 주문이 존재하기 때문에 주문을 진행 할 수 없습니다!");
+                        //주문 진행 중 -> 주문 못함
+                        show("현재 진행 중인 주문이 있습니다. \n현재 주문 내역을 확인하세요!");
                     }
 
                 }
@@ -207,6 +229,32 @@ public class HomeActivity extends AppCompatActivity {
                 Toast.makeText(this, "카메라 권한이 거부되었습니다.", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    public void getOrderStatus(){
+
+        ApiClient apiClient = new ApiClient(getApplicationContext());
+        apiClient.initializeHttpClient();
+
+        ApiInterface apiInterface = apiClient.getClient().create(ApiInterface.class);
+        Call<checkOrderResponse> call = apiInterface.checkOrderStatus(data.getHistory_id());
+
+        call.enqueue(new Callback<checkOrderResponse>() {
+            @Override
+            public void onResponse(Call<checkOrderResponse> call, Response<checkOrderResponse> response) {
+                if(response.isSuccessful()){
+                    orderComplete = response.body().getOrderComplete();
+                }else{
+                    //errorBody처리
+                }
+            }
+
+            @Override
+            public void onFailure(Call<checkOrderResponse> call, Throwable t) {
+
+            }
+        });
+
     }
 
 
