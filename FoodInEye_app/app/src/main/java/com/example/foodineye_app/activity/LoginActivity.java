@@ -21,6 +21,7 @@ import com.example.foodineye_app.ApiClientEx;
 import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.R;
 import com.example.foodineye_app.RefreshTokenService;
+import com.example.foodineye_app.websocket.WebSocketManager;
 
 import java.io.IOException;
 
@@ -179,8 +180,15 @@ public class LoginActivity extends AppCompatActivity {
                             //해당 user의 진행중인 주문이 있을 경우
                             h_id = postLoginResponse.getH_id();
                             data.setHistory_id(h_id);
-                            Log.d("modify!!!!!!!!!", "modify!!!!!!!!!login: "+postLoginResponse.getH_id());
+
                             Log.d("modify!!!!!!!!!", "modify!!!!!!!!!login: "+data.getHistory_id());
+
+                            //websocket 연결
+                            //웹소켓 연결하기
+                            Log.d("WebSocket", "history_id: "+h_id);
+                            Log.d("WebSocket", "WebSocket 시도");
+
+                            WebSocketManager.getInstance(getApplicationContext()).connectWebSocket(h_id);
                         }
                         //------------------------------------------------------------
 
@@ -231,5 +239,14 @@ public class LoginActivity extends AppCompatActivity {
 
     private void show(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    //웹소켓 연결
+    public void connectWebSocket(){
+        //웹소켓 연결하기
+        Log.d("WebSocket", "history_id: "+h_id);
+        Log.d("WebSocket", "WebSocket 시도");
+
+        WebSocketManager.getInstance(getApplicationContext()).connectWebSocket(h_id);
     }
 }

@@ -2,7 +2,6 @@ package com.example.foodineye_app.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -125,7 +124,7 @@ public class OrderDetailActivity extends AppCompatActivity {
 
                         orderList1.add(newOrder);
                         data.setOrderList(orderList1);
-                        
+
 
                         setOrderRecyclerview();
                     }

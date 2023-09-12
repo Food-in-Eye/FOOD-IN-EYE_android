@@ -96,7 +96,8 @@ public class WebSocketManager {
 
             @Override
             public void onClosing(WebSocket webSocket, int code, String reason) {
-                Log.d("WebSocket", "WebSocket onClosing");
+                Log.d("WebSocket", "WebSocket onClosing code: "+code);
+                Log.d("WebSocket", "WebSocket onClosing reason:"+reason.toString());
             }
 
             @Override
