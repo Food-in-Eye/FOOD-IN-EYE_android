@@ -167,9 +167,6 @@ public class LoginActivity extends AppCompatActivity {
 
                         Log.d("LoginActivity", "isOrder: "+data.isOrder());
 
-//                        //로그인 후 R_Token Handler 실행
-//                        startService(new Intent(getApplicationContext(), TokenRefreshservice.class));
-
                         // 로그인 후 R_Token Handler 실행
                         Intent serviceIntent = new Intent(getApplicationContext(), RefreshTokenService.class);
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -181,16 +178,15 @@ public class LoginActivity extends AppCompatActivity {
                         }
 
                         //------------------------------------------------------------
-//                        if(postLoginResponse.getH_id() != null){
-//                            //해당 user의 진행중인 주문이 있을 경우
-//                            h_id = postLoginResponse.getH_id();
-//                            data.setHistory_id(h_id);
-//
-//                            Log.d("modify!!!!!!!!!", "modify!!!!!!!!!login: "+data.getHistory_id());
-//
+                        if(postLoginResponse.getH_id() != null){
+                            //해당 user의 진행중인 주문이 있을 경우
+                            h_id = postLoginResponse.getH_id();
+                            data.setHistory_id(h_id);
+
+                            Log.d("LoginActivity", "modify!!!!!!!!!login: "+data.getHistory_id());
+
 //                            getOrder(h_id);
-////                            connectWebSocket(h_id);
-//                        }
+                        }
                         //------------------------------------------------------------
 
 

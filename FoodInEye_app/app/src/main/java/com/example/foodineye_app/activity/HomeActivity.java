@@ -77,10 +77,10 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View view) {
 
 
-                Log.d("modify!!!!!!!!!", "modify!!!!!!!!!Data에 h_id: "+data.getHistory_id());
+                Log.d("HomaActivity", "modify!!!!!!!!!Data에 h_id: "+data.getHistory_id());
                 //Data에 h_id 있는지 없는지
                 if(data.isOrder().isEmpty()){
-                    Log.d("modify!!!!!!!!!", "modify!!!!!!!!!Data에 h_id가 없어");
+                    Log.d("HomaActivity!!!!!!!!!", "modify!!!!!!!!!Data에 h_id가 없어");
                     //주문 가능, history_id == null
 
                     if(eye_permission == 1){
@@ -99,49 +99,49 @@ public class HomeActivity extends AppCompatActivity {
                 }else{
 
 //                    데이터 수집 기간만 사용
-                    data.initializeAllVariables();
-
-                    if(eye_permission == 1){
-                        checkCameraPermission();
-
-                    }else if(eye_permission == 2){
-                        //false
-                        showDialog();
-
-                    }else{
-                        //null
-                        //home -> camera
-                        Intent cameraIntent = new Intent(getApplicationContext(), CameraActivity.class);
-                        startActivity(cameraIntent);
-                    }
+//                    data.initializeAllVariables();
+//
+//                    if(eye_permission == 1){
+//                        checkCameraPermission();
+//
+//                    }else if(eye_permission == 2){
+//                        //false
+//                        showDialog();
+//
+//                    }else{
+//                        //null
+//                        //home -> camera
+//                        Intent cameraIntent = new Intent(getApplicationContext(), CameraActivity.class);
+//                        startActivity(cameraIntent);
+//                    }
 
                     //----------------------------------------------------------
                     //history_id 로 주문이 완료인지 true, 진행중인지 false
-//                    getOrderStatus();
-//                    if(orderComplete){
-//                        Log.d("modify!!!!!!!!!", "modify!!!!!!!!!주문완료 -> 초기화 ->  완료");
-//                        //주문 완료 -> 초기화 -> 주문
-//                        data.initializeAllVariables();
-//
-//                        if(eye_permission == 1){
-//                            checkCameraPermission();
-//
-//                        }else if(eye_permission == 2){
-//                            //false
-//                            showDialog();
-//
-//                        }else{
-//                            //null
-//                            //home -> camera
-//                            Intent cameraIntent = new Intent(getApplicationContext(), CameraActivity.class);
-//                            startActivity(cameraIntent);
-//                        }
-//
-//                    }else{
-//                        Log.d("modify!!!!!!!!!", "modify!!!!!!!!!주문 진행중");
-//                        //주문 진행 중 -> 주문 못함
-//                        show("현재 진행 중인 주문이 있습니다. \n현재 주문 내역을 확인하세요!");
-//                    }
+                    getOrderStatus();
+                    if(orderComplete){
+                        Log.d("modify!!!!!!!!!", "modify!!!!!!!!!주문완료 -> 초기화 ->  완료");
+                        //주문 완료 -> 초기화 -> 주문
+                        data.initializeAllVariables();
+
+                        if(eye_permission == 1){
+                            checkCameraPermission();
+
+                        }else if(eye_permission == 2){
+                            //false
+                            showDialog();
+
+                        }else{
+                            //null
+                            //home -> camera
+                            Intent cameraIntent = new Intent(getApplicationContext(), CameraActivity.class);
+                            startActivity(cameraIntent);
+                        }
+
+                    }else{
+                        Log.d("modify!!!!!!!!!", "modify!!!!!!!!!주문 진행중");
+                        //주문 진행 중 -> 주문 못함
+                        show("현재 진행 중인 주문이 있습니다. \n현재 주문 내역을 확인하세요!");
+                    }
 
                 }
             }

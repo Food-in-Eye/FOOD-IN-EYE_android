@@ -17,6 +17,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 public class WebSocketManager {
     private static WebSocketManager instance;
@@ -29,9 +30,16 @@ public class WebSocketManager {
 
     public void connectWebSocket(String historyId){
 
+        // HttpLoggingInterceptor 설정
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY); // 로그 레벨 설정 (BODY는 모든 요청 및 응답을 로깅합니다)
+
         //WebSocket 연결
         //WebSocket 연결 코드
-        OkHttpClient client = new OkHttpClient();
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(loggingInterceptor)
+                .build();
+
         Request request = new Request.Builder()
 //                .url("ws://10.0.2.2:8000/api/v2/websockets/ws?h_id=" + historyId)
 //                .url("ws://203.252.213.200:4040/api/v2/websockets/ws?h_id=" + historyId)

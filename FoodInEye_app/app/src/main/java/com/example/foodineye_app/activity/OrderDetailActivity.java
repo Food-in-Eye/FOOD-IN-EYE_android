@@ -17,6 +17,7 @@ import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.R;
 import com.example.foodineye_app.data.GetOrder;
 import com.example.foodineye_app.data.Order;
+import com.example.foodineye_app.websocket.WebSocketManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,7 @@ public class OrderDetailActivity extends AppCompatActivity {
     //WebSocket
     WebSocket webSocket;
     Data data;
+    String h_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +49,10 @@ public class OrderDetailActivity extends AppCompatActivity {
         setToolBar(toolbar);
 
         data = (Data) getApplication();
-//        getOrder(data.getHistory_id()); //h_id로 GET하기
+        h_id = data.getHistory_id();
+        getOrder(data.getHistory_id()); //h_id로 GET하기
 
-        setOrderRecyclerview();
+//        setOrderRecyclerview();
 
     }
     //toolbar
@@ -129,11 +132,13 @@ public class OrderDetailActivity extends AppCompatActivity {
                         data.setOrderList(orderList1);
 
 
-                        Log.d("modify!!!!!!!!!", "modify!!!!!!!!!login: "+data.getOrderList());
+                        Log.d("OrderDetailActivity", "modify!!!!!!!!!login: "+data.getOrderList());
                         setOrderRecyclerview();
+
+//                        connectWebSocket(h_id);
                     }
                 }else{
-                    show("현재 주문 내역이 없습니다.");
+//                    show("현재 주문 내역이 없습니다.");
                 }
 
             }
@@ -165,6 +170,15 @@ public class OrderDetailActivity extends AppCompatActivity {
         if (extras != null && extras.getString("order update") != null) {
             orderDetailAdapter.updateOrderList();
         }
+    }
+
+    //웹소켓 연결
+    public void connectWebSocket(String history_id){
+        //웹소켓 연결하기
+        Log.d("WebSocket", "history_id: "+history_id);
+        Log.d("WebSocket", "WebSocket 시도");
+
+        WebSocketManager.getInstance(getApplicationContext()).connectWebSocket(history_id);
     }
 
     private void show(String message) {
