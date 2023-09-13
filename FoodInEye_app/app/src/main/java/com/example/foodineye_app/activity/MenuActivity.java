@@ -285,11 +285,8 @@ public class MenuActivity extends AppCompatActivity{
 
                                 if(eyePermission == 1){
                                     stopGazeTracker();
+                                    setGazeTrackerDataStorage();
                                 }
-
-                                // 선택된 탭에서 GazeTracker 시작
-                                setGazeTrackerDataStorage();
-                                Log.d("gazetrackerrunning", "onTabselected: " + isGazeTrackerRunning);
 
                                 // 최근 선택된 탭의 인덱스 업데이트
                                 previousTabIndex = selectedTabIndex;
@@ -367,7 +364,7 @@ public class MenuActivity extends AppCompatActivity{
     @Override
     protected void onStop() {
         super.onStop();
-//        captureFullScreenshot();
+        captureFullScreenshot();
 
         if(eyePermission == 1){
             gazeTrackerDataStorage.stopGazeTracker("store_menu", recent_sNum, 0);
