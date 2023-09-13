@@ -126,11 +126,11 @@ public class MenuActivity extends AppCompatActivity{
             public void onGlobalLayout() {
                 store_description.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
-                int[] tabLocation = new int[2];
-                store_description.getLocationOnScreen(tabLocation);
+                int[] storeLocation = new int[2];
+                store_description.getLocationOnScreen(storeLocation);
 
-                int left = tabLocation[0]; // TabLayout의 왼쪽 좌표
-                int top = tabLocation[1]; // TabLayout의 위쪽 좌표
+                int left = storeLocation[0]; // TabLayout의 왼쪽 좌표
+                int top = storeLocation[1]; // TabLayout의 위쪽 좌표
                 int right = left + store_description.getWidth(); // TabLayout의 오른쪽 좌표
                 int bottom = top + store_description.getHeight(); // TabLayout의 아래쪽 좌표
 
@@ -500,7 +500,7 @@ public class MenuActivity extends AppCompatActivity{
 
         // 캡쳐한 비트맵을 합성
         int combinedWidth = Math.max(fullScreenshot.getWidth(), recyclerViewScreenshot.getWidth());
-        int combinedHeight = 868 + recyclerViewScreenshot.getHeight();
+        int combinedHeight = 822 + recyclerViewScreenshot.getHeight();
         Log.d("screenshot", "recyclerViewScreenshot_height: " + recyclerViewScreenshot.getHeight());
 
         Bitmap combinedBitmap = Bitmap.createBitmap(combinedWidth, combinedHeight, Bitmap.Config.ARGB_8888);
@@ -509,7 +509,7 @@ public class MenuActivity extends AppCompatActivity{
 
         // recyclerViewScreenshot을 그릴 위치 계산
         int recyclerViewLeft = 26;
-        int recyclerViewTop = 817;
+        int recyclerViewTop = 822;
 
         // 배경을 하얀색으로 그리기
         canvas.drawColor(Color.WHITE);

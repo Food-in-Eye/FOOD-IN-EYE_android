@@ -189,6 +189,7 @@ public class LoginActivity extends AppCompatActivity {
 //                            Log.d("modify!!!!!!!!!", "modify!!!!!!!!!login: "+data.getHistory_id());
 //
 //                            getOrder(h_id);
+////                            connectWebSocket(h_id);
 //                        }
                         //------------------------------------------------------------
 
@@ -242,12 +243,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     //웹소켓 연결
-    public void connectWebSocket(){
+    public void connectWebSocket(String history_id){
         //웹소켓 연결하기
-        Log.d("WebSocket", "history_id: "+h_id);
+        Log.d("WebSocket", "history_id: "+history_id);
         Log.d("WebSocket", "WebSocket 시도");
 
-        WebSocketManager.getInstance(getApplicationContext()).connectWebSocket(h_id);
+        WebSocketManager.getInstance(getApplicationContext()).connectWebSocket(history_id);
     }
 
     private void getOrder(String h_id){
@@ -297,6 +298,8 @@ public class LoginActivity extends AppCompatActivity {
 
                         orderList1.add(newOrder);
                         data.setOrderList(orderList1);
+
+                        connectWebSocket(h_id);
 
                     }
                 }else{
