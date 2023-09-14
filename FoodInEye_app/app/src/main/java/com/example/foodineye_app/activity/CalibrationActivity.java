@@ -48,7 +48,7 @@ public class CalibrationActivity extends AppCompatActivity {
     Context context;
     //-----------------------------------------------------------------------------------------
     //calibration
-    Button calibrationBtn, goStoreBtn;
+    Button calibrationBtn, readyBtn, goStoreBtn;
     LinearLayout calibration, calibrationFinish;
     ViewLayoutChecker viewLayoutChecker = new ViewLayoutChecker();
 
@@ -77,6 +77,14 @@ public class CalibrationActivity extends AppCompatActivity {
         gazeTracker = GazeTrackerManager.makeNewInstance(this);
 
         calibrationBtn = (Button) findViewById(R.id.calibraionBtn);
+        readyBtn = (Button) findViewById(R.id.readycalibraionBtn);
+
+        readyBtn.setVisibility(View.VISIBLE);
+        calibrationBtn.setVisibility(View.INVISIBLE);
+
+        //준비 2초동안은 readyBtn -> 그 후, calibrationBtn
+
+
         calibration = (LinearLayout) findViewById(R.id.calibration);
         calibrationFinish = (LinearLayout) findViewById(R.id.calibration_to_store);
         goStoreBtn = (Button) findViewById(R.id.to_storeBtn);
@@ -128,15 +136,18 @@ public class CalibrationActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
+            gazeTracker.startGazeTracking();
+
             // UI 스레드에서 실행하도록 변경
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    readyBtn.setVisibility(View.INVISIBLE);
+                    calibrationBtn.setVisibility(View.VISIBLE);
                     calibrationBtn.setEnabled(true);
                 }
             });
 
-            gazeTracker.startGazeTracking();
         }).start();
     }
 

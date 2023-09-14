@@ -190,18 +190,46 @@
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/calibraionBtn"
-                android:layout_width="140dp"
-                android:layout_height="60dp"
-                android:text="시작"
-                android:textStyle="bold"
-                android:textColor="@color/white"
-                android:background="@drawable/sign_up"
-                android:backgroundTint="@color/blue"
-                android:layout_gravity="center"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="30dp"/>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center">
+
+                <Button
+                    android:id="@+id/readycalibraionBtn"
+                    android:layout_width="140dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="1"
+                    android:visibility="visible"
+                    android:text="준비"
+                    android:textStyle="bold"
+                    android:textColor="@color/black_10"
+                    android:background="@drawable/sign_up"
+                    android:backgroundTint="@color/light_gray"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="30dp"/>
+
+                <Button
+                    android:id="@+id/calibraionBtn"
+                    android:layout_width="140dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="1"
+                    android:visibility="invisible"
+                    android:text="시작"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:background="@drawable/sign_up"
+                    android:backgroundTint="@color/blue"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="30dp"/>
+
+            </RelativeLayout>
+
+
+
 
         </LinearLayout>
 
@@ -221,112 +249,112 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <!-- 커스텀 툴바 추가 -->
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/calibrationfinish_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorOnPrimary"
-            android:elevation="4dp">
-
-            <!-- 사용자 정의 뒤로 가기 버튼 추가 -->
-            <ImageView
-                android:id="@+id/calibrationfinish_back"
-                android:layout_width="40dp"
-                android:layout_height="24dp"
-                android:layout_gravity="start"
-                android:src="@drawable/back_btn"
-                android:contentDescription="뒤로 가기" />
-
-            <TextView
-                android:id="@+id/calibrationfinish_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="주문하기"
-                android:fontFamily="@font/mice_gothic_bold"
-                android:textSize="20dp"
-                android:textColor="@color/black"/>
-
-            <ImageView
-                android:id="@+id/calibrationfinish_home"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/home"
-                android:layout_gravity="right"
-                android:layout_marginRight="20dp"/>
-
-        </androidx.appcompat.widget.Toolbar>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:src="@drawable/order_3"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"/>
-
-        <!--Calibration-->
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:src="@drawable/calibration_blue"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"/>
-
-        <!--멘트-->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="500dp"
-            android:orientation="vertical"
-            android:background="@drawable/rec_str10"
-            android:layout_margin="10dp"
-            android:padding="20dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <TextView
+            <!-- 커스텀 툴바 추가 -->
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/calibrationfinish_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorOnPrimary"
+                android:elevation="4dp">
+
+                <!-- 사용자 정의 뒤로 가기 버튼 추가 -->
+                <ImageView
+                    android:id="@+id/calibrationfinish_back"
+                    android:layout_width="40dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="start"
+                    android:src="@drawable/back_btn"
+                    android:contentDescription="뒤로 가기" />
+
+                <TextView
+                    android:id="@+id/calibrationfinish_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="주문하기"
+                    android:fontFamily="@font/mice_gothic_bold"
+                    android:textSize="20dp"
+                    android:textColor="@color/black"/>
+
+                <ImageView
+                    android:id="@+id/calibrationfinish_home"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/home"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="20dp"/>
+
+            </androidx.appcompat.widget.Toolbar>
+
+            <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
+                android:src="@drawable/order_3"
                 android:layout_gravity="center"
-                android:text="모든 작업이 완료되었습니다!"
-                android:textSize="18dp"
-                android:textColor="@color/black_10"
-                android:lineSpacingExtra="5dp"
-                android:layout_marginTop="100dp"/>
+                android:layout_marginTop="10dp"/>
 
-            <TextView
+            <!--Calibration-->
+
+            <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
+                android:src="@drawable/calibration_blue"
                 android:layout_gravity="center"
-                android:text="이제 주문하러 가볼까요?\n"
-                android:textSize="18dp"
-                android:textColor="@color/black_10"
-                android:lineSpacingExtra="5dp"
-                android:layout_marginTop="5dp"/>
+                android:layout_marginTop="10dp"/>
+
+            <!--멘트-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                android:orientation="vertical"
+                android:background="@drawable/rec_str10"
+                android:layout_margin="10dp"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="모든 작업이 완료되었습니다!"
+                    android:textSize="18dp"
+                    android:textColor="@color/black_10"
+                    android:lineSpacingExtra="5dp"
+                    android:layout_marginTop="100dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="이제 주문하러 가볼까요?\n"
+                    android:textSize="18dp"
+                    android:textColor="@color/black_10"
+                    android:lineSpacingExtra="5dp"
+                    android:layout_marginTop="5dp"/>
 
 
+
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/to_storeBtn"
+                android:layout_width="140dp"
+                android:layout_height="60dp"
+                android:text="주문하기"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:background="@drawable/sign_up"
+                android:backgroundTint="@color/blue"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="30dp"/>
 
 
         </LinearLayout>
-
-        <Button
-            android:id="@+id/to_storeBtn"
-            android:layout_width="140dp"
-            android:layout_height="60dp"
-            android:text="주문하기"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            android:background="@drawable/sign_up"
-            android:backgroundTint="@color/blue"
-            android:layout_gravity="center"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="30dp"/>
-
-
-    </LinearLayout>
 
 
     </LinearLayout>

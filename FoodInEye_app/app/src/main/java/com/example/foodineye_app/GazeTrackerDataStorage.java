@@ -325,6 +325,10 @@ public class GazeTrackerDataStorage {
         gazeTracker.deinitGazeTracker();
     }
 
+    public void removeGaze(){
+        gazeTracker.removeGazeTracker();
+    }
+
     private void setCalibration() {
         GazeTrackerManager.LoadCalibrationResult result = gazeTracker.loadCalibrationData();
         switch (result) {
