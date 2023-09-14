@@ -76,11 +76,9 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-
-                Log.d("HomaActivity", "modify!!!!!!!!!Data에 h_id: "+data.getHistory_id());
                 //Data에 h_id 있는지 없는지
                 if(data.isOrder().isEmpty()){
-                    Log.d("HomaActivity!!!!!!!!!", "modify!!!!!!!!!Data에 h_id가 없어");
+
                     //주문 가능, history_id == null
 
                     if(eye_permission == 1){

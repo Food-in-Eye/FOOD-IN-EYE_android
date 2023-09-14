@@ -1,6 +1,7 @@
 package com.example.foodineye_app.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.Editable;
@@ -47,6 +48,9 @@ public class MyinfoSettingActivity extends AppCompatActivity {
 
     Button setInfoBtn;
     CheckBox agreeCK, disagreeCK;
+    int eyeP;
+
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,10 +75,10 @@ public class MyinfoSettingActivity extends AppCompatActivity {
         nickname = intent.getExtras().getString("nickname");
         age = intent.getExtras().getInt("age");
 
+
         editNickname.setHint(nickname);
         editId.setHint(id);
         editAge.setHint(String.valueOf(age));
-
 
     //닉네임 작성
         editNickname.addTextChangedListener(new TextWatcher() {
@@ -153,7 +157,9 @@ public class MyinfoSettingActivity extends AppCompatActivity {
         intentGender = intent.getExtras().getInt("gender");
         if (intentGender == 1){
             femaleBtn.setChecked(false);
+            maleBtn.setChecked(true);
         }else{
+            femaleBtn.setChecked(true);
             maleBtn.setChecked(false);
         }
         gender = intentGender;
@@ -206,10 +212,44 @@ public class MyinfoSettingActivity extends AppCompatActivity {
         });
 
     //시선 수집 동의 여부
+        sharedPreferences = getSharedPreferences("test_token1", MODE_PRIVATE);
+        eyeP = sharedPreferences.getInt("eye_permission", 0);
+
         agreeCK = (CheckBox) findViewById(R.id.setmyinfo_agree);
         disagreeCK = (CheckBox) findViewById(R.id.setmyinfo_disagree);
 
+        if (eyeP == 1) {
+            disagreeCK.setChecked(false);
+            agreeCK.setChecked(true);
+            eyeP = 1; //true
+        }else if (eyeP == 2){
+            disagreeCK.setChecked(true);
+            agreeCK.setChecked(false);
+            eyeP =2; //false
+        }else{
+            Log.d("MyinfoSetting", "error");
+        }
 
+        agreeCK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //camera 동의했을 때
+                if(agreeCK.isChecked()){
+                    disagreeCK.setChecked(false);
+                    eyeP = 1;
+                }
+            }
+        });
+        disagreeCK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //camera 동의하지 않았을 때
+                if(disagreeCK.isChecked()){
+                    agreeCK.setChecked(false);
+                    eyeP = 2;
+                }
+            }
+        });
 
     //내 정보 수정 버튼 클릭
         setInfoBtn = (Button) findViewById(R.id.setmyinfo_Btn);
@@ -305,7 +345,13 @@ public class MyinfoSettingActivity extends AppCompatActivity {
 
     //새로운 정보 PUT
     public void setMyInfo(){
-        PutMyInfoSet putMyInfoSet = new PutMyInfoSet(id, oldpw, newpw, nickname, gender, age);
+        PutMyInfoSet putMyInfoSet = new PutMyInfoSet(id, oldpw, newpw, nickname, gender, age, eyeP);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove("eye_permission");
+        editor.putInt("eye_permission", eyeP);
+        editor.apply();
+
 
         ApiClient apiClient = new ApiClient(getApplicationContext());
         apiClient.initializeHttpClient();
@@ -313,8 +359,6 @@ public class MyinfoSettingActivity extends AppCompatActivity {
         ApiInterface apiInterface = apiClient.getClient().create(ApiInterface.class);
 
         Call<Void> call = apiInterface.setInfo(u_id, putMyInfoSet);
-
-        Log.d("InfoSet", "put: " + putMyInfoSet.toString());
 
         call.enqueue(new Callback<Void>() {
             @Override

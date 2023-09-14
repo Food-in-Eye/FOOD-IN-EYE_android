@@ -32,6 +32,7 @@ public class PostPwCheckResponse {
                 ", name='" + name + '\'' +
                 ", gender=" + gender +
                 ", age=" + age +
+                ", eye_permission=" + eye_permission +
                 '}';
     }
 

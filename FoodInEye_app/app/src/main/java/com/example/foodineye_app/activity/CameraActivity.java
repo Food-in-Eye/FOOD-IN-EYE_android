@@ -102,7 +102,7 @@ public class CameraActivity extends AppCompatActivity {
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        // 기존 access_token 삭제
+        // 기존 eyepermission 삭제
         editor.remove("eye_permission");
         editor.putInt("eye_permission", eyeP);
         editor.apply();

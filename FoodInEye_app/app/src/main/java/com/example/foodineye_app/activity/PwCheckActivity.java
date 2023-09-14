@@ -41,6 +41,7 @@ public class PwCheckActivity extends AppCompatActivity {
     String u_id;
     String nickname, id;
     int gender, age;
+    Boolean eye_permission;
     SharedPreferences sharedPreferences;
 
     @Override
@@ -138,6 +139,8 @@ public class PwCheckActivity extends AppCompatActivity {
                     id = postPwCheckResponse.getId();
                     gender = postPwCheckResponse.getGender();
                     age = postPwCheckResponse.getAge();
+
+                    Log.d("Camera", "Camera: "+postPwCheckResponse.toString());
 
                     //인텐트 넘겨주기
                     Intent intent = new Intent(getApplicationContext(), MyinfoSettingActivity.class);

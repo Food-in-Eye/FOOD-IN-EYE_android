@@ -29,13 +29,18 @@ public class PutMyInfoSet {
     @Expose
     int age;
 
-    public PutMyInfoSet(String id, String old_pw, String new_pw, String name, int gender, int age) {
+    @SerializedName("camera")
+    @Expose
+    int camera;
+
+    public PutMyInfoSet(String id, String old_pw, String new_pw, String name, int gender, int age, int camera) {
         this.id = id;
         this.old_pw = old_pw;
         this.new_pw = new_pw;
         this.name = name;
         this.gender = gender;
         this.age = age;
+        this.camera = camera;
     }
 
     @Override
