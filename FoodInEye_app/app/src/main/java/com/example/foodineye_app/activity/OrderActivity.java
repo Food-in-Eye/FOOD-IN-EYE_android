@@ -324,6 +324,7 @@ public class OrderActivity extends AppCompatActivity {
                     PostGazeResponse postGazeResponse = response.body();
                     Log.d("Response", "postGazeResponse: " +postGazeResponse.toString());
                     // postGazeResponse를 사용하여 원하는 작업 수행
+                    gazeTrackerDataStorage.removeGaze();
                 } else {
                     // 응답이 실패하거나 response.body()가 null인 경우
                     Log.e("Response", "Response is unsuccessful or body is null");
