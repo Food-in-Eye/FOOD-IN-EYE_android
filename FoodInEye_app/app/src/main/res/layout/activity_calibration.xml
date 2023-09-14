@@ -190,18 +190,46 @@
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/calibraionBtn"
-                android:layout_width="140dp"
-                android:layout_height="60dp"
-                android:text="시작"
-                android:textStyle="bold"
-                android:textColor="@color/white"
-                android:background="@drawable/sign_up"
-                android:backgroundTint="@color/blue"
-                android:layout_gravity="center"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="30dp"/>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center">
+
+                <Button
+                    android:id="@+id/readycalibraionBtn"
+                    android:layout_width="140dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="1"
+                    android:visibility="visible"
+                    android:text="준비"
+                    android:textStyle="bold"
+                    android:textColor="@color/black_10"
+                    android:background="@drawable/sign_up"
+                    android:backgroundTint="@color/light_gray"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="30dp"/>
+
+                <Button
+                    android:id="@+id/calibraionBtn"
+                    android:layout_width="140dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="1"
+                    android:visibility="invisible"
+                    android:text="시작"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:background="@drawable/sign_up"
+                    android:backgroundTint="@color/blue"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="30dp"/>
+
+            </RelativeLayout>
+
+
+
 
         </LinearLayout>
 
