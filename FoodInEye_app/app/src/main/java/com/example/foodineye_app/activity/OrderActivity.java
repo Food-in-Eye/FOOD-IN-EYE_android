@@ -224,7 +224,7 @@ public class OrderActivity extends AppCompatActivity {
                             }
 
                             history_id = responseBody.getHistory_id();
-//                            data.setHistory_id(history_id);
+                            data.setHistory_id(history_id);
                             Log.d("OrderDetail", "orderdetail!!!!!!!: "+data.getHistory_id());
 
                         }else{
