@@ -167,9 +167,6 @@ public class LoginActivity extends AppCompatActivity {
 
                         Log.d("LoginActivity", "isOrder: "+data.isOrder());
 
-//                        //로그인 후 R_Token Handler 실행
-//                        startService(new Intent(getApplicationContext(), TokenRefreshservice.class));
-
                         // 로그인 후 R_Token Handler 실행
                         Intent serviceIntent = new Intent(getApplicationContext(), RefreshTokenService.class);
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {

@@ -90,11 +90,13 @@ public class HomeActivity extends AppCompatActivity {
                         //false
                         showDialog();
 
-                    }else{
+                    }else if(eye_permission == 0){
                         //null
                         //home -> camera
                         Intent cameraIntent = new Intent(getApplicationContext(), CameraActivity.class);
                         startActivity(cameraIntent);
+                    }else{
+                        Log.d("eye_permission", "eye_permission"+eye_permission);
                     }
                 }else{
 
