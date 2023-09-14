@@ -178,14 +178,15 @@ public class LoginActivity extends AppCompatActivity {
                         }
 
                         //------------------------------------------------------------
-                        if(postLoginResponse.getH_id() != null){
+                        if(!postLoginResponse.getH_id().isEmpty()){
                             //해당 user의 진행중인 주문이 있을 경우
                             h_id = postLoginResponse.getH_id();
                             data.setHistory_id(h_id);
 
                             Log.d("LoginActivity", "modify!!!!!!!!!login: "+data.getHistory_id());
 
-//                            getOrder(h_id);
+                            connectWebSocket(h_id);
+                            getOrder(h_id);
                         }
                         //------------------------------------------------------------
 
@@ -295,11 +296,10 @@ public class LoginActivity extends AppCompatActivity {
                         orderList1.add(newOrder);
                         data.setOrderList(orderList1);
 
-                        connectWebSocket(h_id);
+//                        connectWebSocket(h_id);
 
                     }
                 }else{
-                    show("현재 주문 내역이 없습니다.");
                 }
 
             }

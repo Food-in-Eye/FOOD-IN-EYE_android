@@ -328,6 +328,7 @@
                         android:background="@drawable/checkbox_bg">
 
                         <CheckBox
+                            android:id="@+id/setmyinfo_agree"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="동의함"
@@ -335,6 +336,7 @@
                             android:layout_marginRight="50dp"/>
 
                         <CheckBox
+                            android:id="@+id/setmyinfo_disagree"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="동의함하지 않음"/>

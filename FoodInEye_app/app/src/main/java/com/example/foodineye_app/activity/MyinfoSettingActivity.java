@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -45,6 +46,7 @@ public class MyinfoSettingActivity extends AppCompatActivity {
     TextView unavailPw;
 
     Button setInfoBtn;
+    CheckBox agreeCK, disagreeCK;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -202,6 +204,12 @@ public class MyinfoSettingActivity extends AppCompatActivity {
 
             }
         });
+
+    //시선 수집 동의 여부
+        agreeCK = (CheckBox) findViewById(R.id.setmyinfo_agree);
+        disagreeCK = (CheckBox) findViewById(R.id.setmyinfo_disagree);
+
+
 
     //내 정보 수정 버튼 클릭
         setInfoBtn = (Button) findViewById(R.id.setmyinfo_Btn);

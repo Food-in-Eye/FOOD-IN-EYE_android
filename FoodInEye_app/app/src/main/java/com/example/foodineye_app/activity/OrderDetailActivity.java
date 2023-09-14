@@ -49,10 +49,12 @@ public class OrderDetailActivity extends AppCompatActivity {
         setToolBar(toolbar);
 
         data = (Data) getApplication();
-        h_id = data.getHistory_id();
-        getOrder(data.getHistory_id()); //h_id로 GET하기
 
-//        setOrderRecyclerview();
+        h_id = data.getHistory_id();
+//        Log.d("OrderDetail", "orderdetail: "+data.getHistory_id());
+//        getOrder(data.getHistory_id()); //h_id로 GET하기
+
+        setOrderRecyclerview();
 
     }
     //toolbar

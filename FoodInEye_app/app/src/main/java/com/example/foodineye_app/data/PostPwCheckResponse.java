@@ -21,6 +21,10 @@ public class PostPwCheckResponse {
     @Expose
     public int age;
 
+    @SerializedName("camera")
+    @Expose
+    public int eye_permission; //null 0, agree 1, disagree 2
+
     @Override
     public String toString() {
         return "PostPwCheckResponse{" +
