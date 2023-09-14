@@ -186,7 +186,7 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d("LoginActivity", "modify!!!!!!!!!login: "+data.getHistory_id());
 
                             connectWebSocket(h_id);
-                            getOrder(h_id);
+
                         }
                         //------------------------------------------------------------
 
@@ -246,6 +246,7 @@ public class LoginActivity extends AppCompatActivity {
         Log.d("WebSocket", "WebSocket 시도");
 
         WebSocketManager.getInstance(getApplicationContext()).connectWebSocket(history_id);
+        getOrder(h_id);
     }
 
     private void getOrder(String h_id){
@@ -296,7 +297,6 @@ public class LoginActivity extends AppCompatActivity {
                         orderList1.add(newOrder);
                         data.setOrderList(orderList1);
 
-//                        connectWebSocket(h_id);
 
                     }
                 }else{

@@ -193,9 +193,6 @@ public class OrderActivity extends AppCompatActivity {
                             //요청이 성공한 경우 처리할 작업
 
                             PostOrderResponse responseBody = response.body();
-                            history_id = responseBody.getHistory_id();
-                            data.setHistory_id(history_id);
-                            Log.d("OrderDetail", "orderdetail!!!!!!!: "+data.getHistory_id());
 
                             List<PostOrderResponse.Response> responseList;
                             responseList = responseBody.getResponse();
@@ -226,6 +223,10 @@ public class OrderActivity extends AppCompatActivity {
                                 putGaze();
                             }
 
+                            history_id = responseBody.getHistory_id();
+//                            data.setHistory_id(history_id);
+                            Log.d("OrderDetail", "orderdetail!!!!!!!: "+data.getHistory_id());
+
                         }else{
                             //요청이 실패한 경우 errorbody
                         }
@@ -242,6 +243,8 @@ public class OrderActivity extends AppCompatActivity {
 //                final Data data = (Data) getApplicationContext();
                 data.setOrderList(orderList);
                 data.setHistory_id(history_id);
+                Log.d("OrderDetail", "orderdetail!!!!!!!: "+data.getHistory_id());
+                // OrderActivity에서 history_id를 설정
 
                 //OrderDetial 화면으로 이동
                 Intent intent = new Intent(getApplicationContext(), OrderDetailActivity.class);

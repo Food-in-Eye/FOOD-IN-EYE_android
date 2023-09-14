@@ -93,9 +93,13 @@ public class Data extends Application {
 
     public void setOrderList(List<Order> orderList) {    this.orderList = orderList;   }
 
-    public String getHistory_id() {    return history_id;   }
+    public String getHistory_id() {
+        return history_id;
+    }
 
-    public void setHistory_id(String history_id) {    this.history_id = history_id;    }
+    public void setHistory_id(String history_id) {
+        this.history_id = history_id;
+    }
 
     public JSONArray getJsonArray() {
         if (jsonGazeArray == null) {

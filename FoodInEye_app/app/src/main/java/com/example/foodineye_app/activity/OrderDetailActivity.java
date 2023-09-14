@@ -50,8 +50,8 @@ public class OrderDetailActivity extends AppCompatActivity {
 
         data = (Data) getApplication();
 
-        h_id = data.getHistory_id();
-//        Log.d("OrderDetail", "orderdetail: "+data.getHistory_id());
+//        h_id = data.getHistory_id();
+        Log.d("OrderDetail", "orderdetail: "+data.getHistory_id());
 //        getOrder(data.getHistory_id()); //h_id로 GET하기
 
         setOrderRecyclerview();
@@ -98,8 +98,8 @@ public class OrderDetailActivity extends AppCompatActivity {
             public void onResponse(Call<GetOrder> call, Response<GetOrder> response) {
                 if(response.isSuccessful()){
 
-                    data.initializeAllVariables();
-                    data.setHistory_id(h_id);
+//                    data.initializeAllVariables();
+//                    data.setHistory_id(h_id);
                     // 총 주문 내역 불러오기
                     List<GetOrder.nOrder> orderList = response.body().orderLists;
                     List<Order> orderList1 = new ArrayList<>();
@@ -137,7 +137,6 @@ public class OrderDetailActivity extends AppCompatActivity {
                         Log.d("OrderDetailActivity", "modify!!!!!!!!!login: "+data.getOrderList());
                         setOrderRecyclerview();
 
-//                        connectWebSocket(h_id);
                     }
                 }else{
 //                    show("현재 주문 내역이 없습니다.");
