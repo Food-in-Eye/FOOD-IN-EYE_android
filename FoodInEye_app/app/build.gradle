@@ -63,7 +63,13 @@ dependencies {
     implementation project(path: ':gazetracker-release')
     implementation project(path: ':libgaze-release')
     implementation project(path: ':pagingbutton')
+    implementation project(path: ':luckywheel')
     testImplementation 'junit:junit:4.13.2'
+
+
+    //roulette
+//    implementation 'com.github.mmoamenn:LuckyWheel_Android:0.3.0'
+
 //    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
 //    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 

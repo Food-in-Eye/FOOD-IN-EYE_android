@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <!-- 커스텀 툴바 추가 -->
@@ -67,7 +68,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="15dp"
-            android:background="@drawable/roulette_bg2">
+            android:background="@drawable/roulette_bg2"
+            android:orientation="vertical">
 
             <!--설명-->
             <LinearLayout
@@ -184,8 +186,26 @@
             </LinearLayout>
 
             <!--룰렛-->
+            <Button
+                android:id="@+id/spin_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/luck_wheel"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="Start"
+                android:textColor="@android:color/white"
+                android:textSize="25sp"
+                android:layout_gravity="center"/>
 
-
+            <com.bluehomestudio.luckywheel.LuckyWheel
+                android:id="@+id/luck_wheel"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_centerInParent="true"
+                app:background_color="@android:color/white"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"/>
 
         </LinearLayout>
 
