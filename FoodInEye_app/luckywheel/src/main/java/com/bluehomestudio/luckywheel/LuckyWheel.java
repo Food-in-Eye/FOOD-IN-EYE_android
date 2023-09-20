@@ -13,6 +13,8 @@ import androidx.annotation.AttrRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.github.mmoamenn.R;
+
 import java.util.List;
 
 /**

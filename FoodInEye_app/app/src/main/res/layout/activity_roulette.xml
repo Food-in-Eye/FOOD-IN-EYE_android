@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -64,16 +65,17 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="15dp"
             android:background="@drawable/roulette_bg2"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            tools:ignore="ExtraText">
 
             <!--설명-->
             <LinearLayout
-                android:id="@+id/store_description"
+                android:id="@+id/roulette_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -186,28 +188,34 @@
             </LinearLayout>
 
             <!--룰렛-->
+
             <Button
                 android:id="@+id/spin_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/luck_wheel"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
+                android:layout_below="@+id/roulette_description"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="128dp"
                 android:text="Start"
                 android:textColor="@android:color/white"
-                android:textSize="25sp"
-                android:layout_gravity="center"/>
+                android:textSize="25sp" />
 
             <com.bluehomestudio.luckywheel.LuckyWheel
                 android:id="@+id/luck_wheel"
                 android:layout_width="300dp"
                 android:layout_height="300dp"
+                android:layout_below="@+id/spin_btn"
                 android:layout_centerInParent="true"
-                app:background_color="@android:color/white"
                 android:layout_gravity="center"
-                android:layout_margin="10dp"/>
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                app:background_color="@android:color/white" />
 
-        </LinearLayout>
+        </RelativeLayout>
 
 
 
