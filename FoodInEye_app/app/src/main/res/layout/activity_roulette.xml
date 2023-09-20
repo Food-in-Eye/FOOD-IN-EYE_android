@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- 커스텀 툴바 추가 -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/stolelist_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorOnPrimary"
+        android:elevation="4dp">
+
+        <!-- 사용자 정의 뒤로 가기 버튼 추가 -->
+        <ImageView
+            android:id="@+id/storelist_back"
+            android:layout_width="40dp"
+            android:layout_height="24dp"
+            android:layout_gravity="start"
+            android:src="@drawable/back_btn"
+            android:contentDescription="뒤로 가기" />
+
+        <TextView
+            android:id="@+id/storelist_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="주문하기"
+            android:fontFamily="@font/mice_gothic_bold"
+            android:textSize="20dp"
+            android:textColor="@color/black"/>
+
+<!--        <ImageView-->
+<!--            android:id="@+id/storelist_home"-->
+<!--            android:layout_width="24dp"-->
+<!--            android:layout_height="24dp"-->
+<!--            android:src="@drawable/home"-->
+<!--            android:layout_gravity="right"-->
+<!--            android:layout_marginRight="20dp"/>-->
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/roulette_bg">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="룰렛 돌리기"
+                android:textSize="20dp"
+                android:textColor="@color/black_10"
+                android:gravity="center"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="15dp"
+            android:background="@drawable/roulette_bg2">
+
+            <!--설명-->
+            <LinearLayout
+                android:id="@+id/store_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/gray_rec"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:elevation="10dp"
+                android:padding="15dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="000"
+                        android:textSize="16dp"
+                        android:textColor="@color/black_10"
+                        android:gravity="center"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="님은 "
+                        android:textSize="16dp"
+                        android:textColor="@color/black_10"
+                        android:gravity="center"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="메뉴 1"
+                        android:textSize="16dp"
+                        android:textColor="@color/black_10"
+                        android:gravity="center"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=", "
+                        android:textSize="16dp"
+                        android:textColor="@color/black_10"
+                        android:gravity="center"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="메뉴 2"
+                        android:textSize="16dp"
+                        android:textColor="@color/black_10"
+                        android:gravity="center"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=", "
+                        android:textSize="16dp"
+                        android:textColor="@color/black_10"
+                        android:gravity="center"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="메뉴 3"
+                        android:textSize="16dp"
+                        android:textColor="@color/black_10"
+                        android:gravity="center"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=", "
+                        android:textSize="16dp"
+                        android:textColor="@color/black_10"
+                        android:gravity="center"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="에서"
+                        android:textSize="16dp"
+                        android:textColor="@color/black_10"
+                        android:gravity="center"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="시선이 머물렀습니다."
+                    android:textSize="16dp"
+                    android:textColor="@color/black_10"
+                    android:gravity="center"
+                    android:layout_marginTop="3dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="룰렛을 돌려 메뉴를 골라보세요!"
+                    android:textSize="16dp"
+                    android:textColor="@color/black_10"
+                    android:gravity="center"
+                    android:layout_marginTop="3dp"/>
+
+            </LinearLayout>
+
+            <!--룰렛-->
+
+
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+</LinearLayout>
