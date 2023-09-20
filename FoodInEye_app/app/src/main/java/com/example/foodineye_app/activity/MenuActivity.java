@@ -2,6 +2,7 @@ package com.example.foodineye_app.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -12,7 +13,7 @@ import android.os.Bundle;
 import android.os.HandlerThread;
 import android.util.Log;
 import android.util.LruCache;
-import android.view.Menu;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -49,6 +51,8 @@ import visual.camp.sample.view.PointView;
 public class MenuActivity extends AppCompatActivity{
 
     Toolbar toolbar;
+    SharedPreferences sharedPreferences;
+    int eyePermission;
 
     TextView store_intro;
     TextView store_openTime;
@@ -79,7 +83,6 @@ public class MenuActivity extends AppCompatActivity{
     boolean isGazeTrackerRunning = false; // GazeTracker가 실행 중인지 여부를 저장하는 변수
 
     //-----------------------------------------------------------------------------------------
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +90,9 @@ public class MenuActivity extends AppCompatActivity{
 
         toolbar = findViewById(R.id.menu_toolbar);
         setToolBar(toolbar);
+
+        sharedPreferences = getSharedPreferences("test_token1", MODE_PRIVATE);
+        eyePermission = sharedPreferences.getInt("eye_permission", 0);
 
         TabLayout tabLayout = findViewById(R.id.store_tab);
 
@@ -120,11 +126,11 @@ public class MenuActivity extends AppCompatActivity{
             public void onGlobalLayout() {
                 store_description.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
-                int[] tabLocation = new int[2];
-                store_description.getLocationOnScreen(tabLocation);
+                int[] storeLocation = new int[2];
+                store_description.getLocationOnScreen(storeLocation);
 
-                int left = tabLocation[0]; // TabLayout의 왼쪽 좌표
-                int top = tabLocation[1]; // TabLayout의 위쪽 좌표
+                int left = storeLocation[0]; // TabLayout의 왼쪽 좌표
+                int top = storeLocation[1]; // TabLayout의 위쪽 좌표
                 int right = left + store_description.getWidth(); // TabLayout의 오른쪽 좌표
                 int bottom = top + store_description.getHeight(); // TabLayout의 아래쪽 좌표
 
@@ -143,7 +149,7 @@ public class MenuActivity extends AppCompatActivity{
         menuLayout = findViewById(R.id.menuLayout);
         viewpoint = findViewById(R.id.view_point_menu);
 
-        setGazeTrackerDataStorage();
+//        setGazeTrackerDataStorage();
 
         //menuRecyclerview
         menurecyclerView = findViewById(R.id.recyclerView_menuList);
@@ -210,8 +216,12 @@ public class MenuActivity extends AppCompatActivity{
 
     }
     public void showStore(String s_id, String m_id){
-        //retrofit2로 데이터 받아오기
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+        ApiClient apiClient = new ApiClient(getApplicationContext());
+        apiClient.initializeHttpClient();
+
+        ApiInterface apiInterface = apiClient.getClient().create(ApiInterface.class);
+
 
         Call<GetStoreList> call = apiInterface.getStore();
         call.enqueue(new Callback<GetStoreList>() {
@@ -272,11 +282,11 @@ public class MenuActivity extends AppCompatActivity{
                             int selectedTabIndex = tab.getPosition();
                             if (selectedTabIndex != previousTabIndex) {
                                 // 이전 탭에서 GazeTracker 중지
-                                stopGazeTracker();
 
-                                // 선택된 탭에서 GazeTracker 시작
-                                setGazeTrackerDataStorage();
-                                Log.d("gazetrackerrunning", "onTabselected: " + isGazeTrackerRunning);
+                                if(eyePermission == 1){
+                                    stopGazeTracker();
+                                    setGazeTrackerDataStorage();
+                                }
 
                                 // 최근 선택된 탭의 인덱스 업데이트
                                 previousTabIndex = selectedTabIndex;
@@ -301,7 +311,9 @@ public class MenuActivity extends AppCompatActivity{
                                         recent_sNum = sNum;
 
                                         // 선택된 탭에서 GazeTracker 시작
-                                        setGazeTrackerDataStorage();
+                                        if(eyePermission == 1){ //true
+                                            setGazeTrackerDataStorage();
+                                        }
                                         break;
                                     }
                                 }
@@ -322,7 +334,9 @@ public class MenuActivity extends AppCompatActivity{
                             // 다시 선택
                             // 동일한 탭에서 GazeTracker 재시작
                             int selectedTabIndex = tab.getPosition();
-                            setGazeTrackerDataStorage();
+                            if(eyePermission == 1){ //true
+                                setGazeTrackerDataStorage();
+                            }
 
                         }
                     });
@@ -341,7 +355,10 @@ public class MenuActivity extends AppCompatActivity{
     @Override
     protected void onStart() {
         super.onStart();
-        setGazeTrackerDataStorage();
+        //시선 권한 동의 여부 확인
+        if(eyePermission == 1){ //true
+            setGazeTrackerDataStorage();
+        }
     }
 
     @Override
@@ -349,14 +366,21 @@ public class MenuActivity extends AppCompatActivity{
         super.onStop();
         captureFullScreenshot();
 
-        gazeTrackerDataStorage.stopGazeTracker("store_menu", recent_sNum, 0);
+        if(eyePermission == 1){
+            gazeTrackerDataStorage.stopGazeTracker("store_menu", recent_sNum, 0);
+        }
+
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        gazeTrackerDataStorage.quitBackgroundThread();
-        backgroundThread.quitSafely();
+
+        if(eyePermission == 1){
+            gazeTrackerDataStorage.quitBackgroundThread();
+            backgroundThread.quitSafely();
+        }
     }
 
     @Override
@@ -476,7 +500,7 @@ public class MenuActivity extends AppCompatActivity{
 
         // 캡쳐한 비트맵을 합성
         int combinedWidth = Math.max(fullScreenshot.getWidth(), recyclerViewScreenshot.getWidth());
-        int combinedHeight = 868 + recyclerViewScreenshot.getHeight();
+        int combinedHeight = 822 + recyclerViewScreenshot.getHeight();
         Log.d("screenshot", "recyclerViewScreenshot_height: " + recyclerViewScreenshot.getHeight());
 
         Bitmap combinedBitmap = Bitmap.createBitmap(combinedWidth, combinedHeight, Bitmap.Config.ARGB_8888);
@@ -485,7 +509,7 @@ public class MenuActivity extends AppCompatActivity{
 
         // recyclerViewScreenshot을 그릴 위치 계산
         int recyclerViewLeft = 26;
-        int recyclerViewTop = 817;
+        int recyclerViewTop = 822;
 
         // 배경을 하얀색으로 그리기
         canvas.drawColor(Color.WHITE);
@@ -517,10 +541,10 @@ public class MenuActivity extends AppCompatActivity{
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
             fos.close();
 
-            show("save success");
+//            show("save success");
 
         } catch (Exception e){
-            show("save fail");
+//            show("save fail");
             e.printStackTrace();
         }
     }
@@ -610,8 +634,9 @@ public class MenuActivity extends AppCompatActivity{
     }
 
     //---------------------------------------------------------------------------------------------------
-    //툴바
-    public void setToolBar(Toolbar toolbar){
+    //toolbar
+    private void setToolBar(androidx.appcompat.widget.Toolbar toolbar){
+
         // 툴바를 액션바로 설정
         setSupportActionBar(toolbar);
 
@@ -625,26 +650,69 @@ public class MenuActivity extends AppCompatActivity{
             }
         });
 
+        ImageView homeBtn = (ImageView) findViewById(R.id.menu_home);
+        homeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //-> home
+                if(eyePermission == 1){
+                    gazeTrackerDataStorage.stopGazeDataCapturing();
+                }
+                showDialog();
+            }
+        });
+
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_back, menu);
-        return true;
+    //home_dialog
+    public void showDialog(){
+
+        LayoutInflater layoutInflater = LayoutInflater.from(MenuActivity.this);
+        View view = layoutInflater.inflate(R.layout.alert_dialog_home, null);
+
+        AlertDialog alertDialog = new AlertDialog.Builder(MenuActivity.this, R.style.CustomAlertDialog)
+                .setView(view)
+                .create();
+
+        TextView homeTxt = view.findViewById(R.id.home_alert_home);
+        TextView orderTxt = view.findViewById(R.id.home_alert_order);
+        ImageView delete = view.findViewById(R.id.home_alert_delete);
+
+        //홈 화면 이동
+        homeTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //storelist
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(intent);
+                //현재 데이터 삭제하기
+                Data data = (Data) getApplication();
+                data.initializeAllVariables();
+
+            }
+        });
+
+        //계속 주문하기
+        orderTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(eyePermission == 1){
+                    gazeTrackerDataStorage.startGazeDataCapturing();
+                }
+                alertDialog.dismiss();
+            }
+        });
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(eyePermission == 1){
+                    gazeTrackerDataStorage.startGazeDataCapturing();
+                }
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.show();
     }
-
-    @Override
-    public boolean onOptionsItemSelected(android.view.MenuItem item) {
-        // 메뉴 항목을 클릭했을 때의 동작을 처리합니다.
-        switch (item.getItemId()) {
-            case R.id.action_back:
-                show("뒤로가기 버튼");
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    //---------------------------------------------------------------------------------------------------
-
 }

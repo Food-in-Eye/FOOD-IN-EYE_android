@@ -14,7 +14,7 @@
 
         <!-- 커스텀 툴바 추가 -->
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/menu_toolbar"
+            android:id="@+id/menu_detail_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorOnPrimary"
@@ -22,7 +22,7 @@
 
             <!-- 사용자 정의 뒤로 가기 버튼 추가 -->
             <ImageView
-                android:id="@+id/menu_back"
+                android:id="@+id/menu_detail_back"
                 android:layout_width="40dp"
                 android:layout_height="24dp"
                 android:layout_gravity="start"
@@ -30,13 +30,21 @@
                 android:contentDescription="뒤로 가기" />
 
             <TextView
-                android:id="@+id/toolbar_title"
+                android:id="@+id/menu_detail_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="주문 하기"
                 android:fontFamily="@font/mice_gothic_bold"
                 android:textSize="20dp"
                 android:textColor="@color/black"/>
+
+            <ImageView
+                android:id="@+id/menu_detail_home"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/home"
+                android:layout_gravity="right"
+                android:layout_marginRight="20dp"/>
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -47,19 +55,18 @@
             android:background="@drawable/menu_detail_bg"
             android:elevation="10dp">
 
-
             <TextView
                 android:id="@+id/menuD_name"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
+                android:layout_width="250dp"
+                android:layout_height="60dp"
                 android:text="메뉴 1"
-                android:textSize="30dp"
-                android:textColor="@color/navy"
-                android:textStyle="bold"
+                android:textSize="20dp"
+                android:textColor="@color/black_10"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:layout_marginRight="5dp"
-                android:layout_marginTop="30dp"/>
+                android:layout_marginTop="20dp"
+                android:background="@drawable/tape_orange"/>
 
             <ImageView
                 android:id="@+id/menuD_img"
@@ -88,13 +95,14 @@
                 android:layout_marginTop="3dp"
                 android:layout_marginBottom="3dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp">
+                android:layout_marginRight="10dp"
+                android:padding="5dp">
 
                 <TextView
                     android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_height="match_parent"
                     android:text="📌"
-                    android:textColor="@color/black"
+                    android:textSize="18dp"
                     android:textStyle="bold"
                     android:layout_gravity="center"
                     android:layout_marginLeft="5dp"
@@ -102,9 +110,9 @@
                 <TextView
                     android:id="@+id/menuD_desc"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:text="메뉴 한 줄 소개\n메뉴 한 줄 소개"
-                    android:textColor="@color/black"
+                    android:textColor="@color/black_10"
                     android:textSize="18dp"
                     android:textStyle="bold"
                     android:layout_gravity="center"/>
@@ -118,13 +126,15 @@
                 android:layout_marginTop="3dp"
                 android:layout_marginBottom="3dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp">
+                android:layout_marginRight="10dp"
+                android:padding="5dp">
 
                 <TextView
                     android:layout_width="50dp"
-                    android:layout_height="20dp"
+                    android:layout_height="match_parent"
                     android:text="알러지: "
-                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:textColor="@color/black_10"
                     android:textStyle="bold"
                     android:layout_gravity="center"
                     android:layout_marginLeft="5dp"
@@ -132,10 +142,10 @@
                 <TextView
                     android:id="@+id/menuD_allergy"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:text="메뉴 알러지\n메뉴 알러지"
-                    android:textColor="@color/black"
                     android:textSize="15dp"
+                    android:textColor="@color/black_10"
                     android:textStyle="bold"
                     android:layout_gravity="center"/>
 
@@ -148,13 +158,15 @@
                 android:layout_marginTop="3dp"
                 android:layout_marginBottom="3dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp">
+                android:layout_marginRight="10dp"
+                android:padding="5dp">
 
                 <TextView
                     android:layout_width="50dp"
-                    android:layout_height="20dp"
+                    android:layout_height="match_parent"
                     android:text="원산지: "
-                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:textColor="@color/black_10"
                     android:textStyle="bold"
                     android:layout_gravity="center"
                     android:layout_marginLeft="5dp"
@@ -162,9 +174,10 @@
                 <TextView
                     android:id="@+id/menuD_origin"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:text="메뉴 원산지"
-                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:textColor="@color/black_10"
                     android:textStyle="bold"
                     android:layout_gravity="center"/>
 
@@ -192,7 +205,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/white"
                 android:layout_gravity="center"
-                android:layout_marginLeft="30dp"/>
+                android:layout_marginLeft="35dp"/>
 
             <TextView
                 android:layout_width="wrap_content"

@@ -3,6 +3,7 @@ package com.example.foodineye_app.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.HandlerThread;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.bumptech.glide.Glide;
@@ -29,6 +31,10 @@ import java.io.FileOutputStream;
 import visual.camp.sample.view.PointView;
 
 public class MenuDetailActivity extends AppCompatActivity {
+
+    androidx.appcompat.widget.Toolbar toolbar;
+    SharedPreferences sharedPreferences;
+    int eyePermission;
 
     LinearLayout order_btn;
     ImageView menu_Img;
@@ -59,6 +65,13 @@ public class MenuDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_detail);
+
+        toolbar = (Toolbar) findViewById(R.id.menu_detail_toolbar);
+        setToolBar(toolbar);
+
+        //시선 권한 동의 여부 확인
+        sharedPreferences = getSharedPreferences("test_token1", MODE_PRIVATE);
+        eyePermission = sharedPreferences.getInt("eye_permission", 0);
 
         //-------------------------------------------------------------------------------------
         //screenshot
@@ -168,8 +181,6 @@ public class MenuDetailActivity extends AppCompatActivity {
         ctx = getApplicationContext();
         menuDetailLayout = findViewById(R.id.menuDetailLayout);
         viewpoint = findViewById(R.id.view_point_menuDetail);
-
-        setGazeTrackerDataStorage();
         //-------------------------------------------------------------------------------------
 
         order_btn = (LinearLayout) findViewById(R.id.menuD_btn);
@@ -224,6 +235,10 @@ public class MenuDetailActivity extends AppCompatActivity {
                 data.setRecentS_id(cart.s_id);
                 data.setRecentM_id(cart.m_id);
                 Log.d("MenuDetailActivity", "cart: "+cart.toString());
+
+                if(eyePermission == 1){
+                    gazeTrackerDataStorage.stopGazeDataCapturing();
+                }
                 showDialog();
             }
         });
@@ -232,22 +247,29 @@ public class MenuDetailActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        setGazeTrackerDataStorage();
+        if(eyePermission == 1){ //true
+            setGazeTrackerDataStorage();
+        }
     }
 
     @Override
     protected void onStop() {
-        takeAndSaveScreenShot();
+//        takeAndSaveScreenShot();
         super.onStop();
         Log.d("MenuDetailActivity", "onStop");
-        stopGazeTracker();
+
+        if(eyePermission == 1){
+            stopGazeTracker();
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        gazeTrackerDataStorage.quitBackgroundThread();
-        backgroundThread.quitSafely();
+        if(eyePermission == 1){
+            gazeTrackerDataStorage.quitBackgroundThread();
+            backgroundThread.quitSafely();
+        }
     }
 
 
@@ -291,7 +313,6 @@ public class MenuDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 isCartClicked = true;
-
                 Intent intent = new Intent(getApplicationContext(), ShoppingCartActivity.class);
                 startActivity(intent);
             }
@@ -300,6 +321,9 @@ public class MenuDetailActivity extends AppCompatActivity {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(eyePermission == 1){
+                    gazeTrackerDataStorage.startGazeDataCapturing();
+                }
                 alertDialog.dismiss();
             }
         });
@@ -370,11 +394,95 @@ public class MenuDetailActivity extends AppCompatActivity {
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
             fos.close();
 
-            show("save success");
+//            show("save success");
         } catch (Exception e) {
-            show("save fail");
+//            show("save fail");
             e.printStackTrace();
         }
+    }
+
+    //toolbar
+    private void setToolBar(androidx.appcompat.widget.Toolbar toolbar){
+
+        // 툴바를 액션바로 설정
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setTitle(""); // 툴바의 타이틀을 직접 설정
+        ImageView backBtn = (ImageView) findViewById(R.id.menu_detail_back);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 뒤로 가기 버튼 동작을 처리
+                onBackPressed();
+            }
+        });
+
+        ImageView homeBtn = (ImageView) findViewById(R.id.menu_detail_home);
+        homeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //-> home
+                if(eyePermission == 1){
+                    gazeTrackerDataStorage.stopGazeDataCapturing();
+                }
+                showDialoghome();
+
+
+            }
+        });
+
+    }
+
+    //home_dialog
+    public void showDialoghome(){
+
+        LayoutInflater layoutInflater = LayoutInflater.from(MenuDetailActivity.this);
+        View view = layoutInflater.inflate(R.layout.alert_dialog_home, null);
+
+        AlertDialog alertDialog = new AlertDialog.Builder(MenuDetailActivity.this, R.style.CustomAlertDialog)
+                .setView(view)
+                .create();
+
+        TextView homeTxt = view.findViewById(R.id.home_alert_home);
+        TextView orderTxt = view.findViewById(R.id.home_alert_order);
+        ImageView delete = view.findViewById(R.id.home_alert_delete);
+
+        //홈 화면 이동
+        homeTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //storelist
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(intent);
+                //현재 데이터 삭제하기
+                Data data = (Data) getApplication();
+                data.initializeAllVariables();
+
+            }
+        });
+
+        //계속 주문하기
+        orderTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(eyePermission == 1){
+                    gazeTrackerDataStorage.startGazeDataCapturing();
+                }
+                alertDialog.dismiss();
+            }
+        });
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(eyePermission == 1){
+                    gazeTrackerDataStorage.startGazeDataCapturing();
+                }
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.show();
     }
 
 }

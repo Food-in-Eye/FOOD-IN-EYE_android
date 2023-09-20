@@ -10,11 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.foodineye_app.R;
 import com.example.foodineye_app.data.GetStoreList;
 
@@ -51,6 +53,15 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.MyViewHolder
 
         //Bind the data for each item in the list
         GetStoreList.Stores store = storesList.get(position);
+
+        //image 불러오기
+        String imageUrl = "https://foodineye2.s3.ap-northeast-2.amazonaws.com/" + store.getImg_key();
+        Glide.with(holder.itemView.getContext())
+                .load(imageUrl)
+                .circleCrop()
+                .into(holder.storeImage);
+
+
         holder.storeName.setText(store.getName());
 
         //Set the background color for each item in the list
@@ -159,12 +170,15 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.MyViewHolder
 
     //ViewHolder 정의
     public class MyViewHolder extends RecyclerView.ViewHolder{
+
+        ImageView storeImage;
         TextView storeName;
         Button storeBtn;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            storeImage = (ImageView)itemView.findViewById(R.id.storelist_img);
             storeName = (TextView)itemView.findViewById(R.id.store_name);
             storeBtn = (Button)itemView.findViewById(R.id.sBtn);
         }

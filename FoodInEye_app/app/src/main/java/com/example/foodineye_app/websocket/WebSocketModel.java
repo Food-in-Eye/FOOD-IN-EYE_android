@@ -2,6 +2,7 @@ package com.example.foodineye_app.websocket;
 
 import java.io.Serializable;
 
+//Response Websocket
 public class WebSocketModel implements Serializable {
 
     private String type;

@@ -28,6 +28,7 @@ public class Data extends Application {
     //calibration
     private CalibrationViewer viewCalibration;
 
+
     //-------------------------------------------------------------------------------------
     public CalibrationViewer getViewCalibration() {
         return viewCalibration;
@@ -39,6 +40,10 @@ public class Data extends Application {
 
     //orderList
     public List<Order> getOrderList(){ return orderList; }
+    public void setOrderList(){
+
+    }
+
 
     //carList
     @Override
@@ -88,9 +93,13 @@ public class Data extends Application {
 
     public void setOrderList(List<Order> orderList) {    this.orderList = orderList;   }
 
-    public String getHistory_id() {    return history_id;   }
+    public String getHistory_id() {
+        return history_id;
+    }
 
-    public void setHistory_id(String history_id) {    this.history_id = history_id;    }
+    public void setHistory_id(String history_id) {
+        this.history_id = history_id;
+    }
 
     public JSONArray getJsonArray() {
         if (jsonGazeArray == null) {
@@ -113,6 +122,69 @@ public class Data extends Application {
 
     public static void addGazeList(PostGaze postGaze) {
         GazeList.add(postGaze);
+    }
+
+
+    //초기화
+    public void initializeAllVariables() {
+        jsonGazeArray = new JSONArray();
+        GazeList = new ArrayList<>();
+        cartList = new ArrayList<>();
+        recentS_id = null;
+        recentM_id = null;
+        orderList = new ArrayList<>();
+        history_id = null;
+        viewCalibration = null;
+    }
+
+    @Override
+    public String toString() {
+        return "Data{" +
+                "cartList=" + cartList +
+                ", recentS_id='" + recentS_id + '\'' +
+                ", recentM_id='" + recentM_id + '\'' +
+                ", orderList=" + orderList +
+                ", history_id='" + history_id + '\'' +
+                ", viewCalibration=" + viewCalibration +
+                '}';
+    }
+
+    //orderList에 있는 모든 status == 2 인지 확인
+    public boolean checkStatus(){
+
+        boolean allStatusTwo = true;
+        for(Order o : orderList){
+            if (o.getStatus() != 2) {
+                allStatusTwo = false;
+                break;
+            }
+        }
+
+        if (allStatusTwo) {
+            return true;
+        }return false;
+    }
+
+    //orderList 돌면서 order_id에 해당하는 status update하기
+    public void updateStatus(String o_id, int status){
+
+        for(Order o : orderList){
+            if(o.getOrderId().equals(o_id)){
+                o.setStatus(status);
+                break;
+            }
+        }
+
+    }
+
+    //주문 가능한 상태인지 - history id가 있는지 확인
+    public String isOrder(){
+        if (history_id != null){
+            // 현재 진행중인 주문이 있음
+            return history_id;
+        }
+        // 진행중인 주문이 없을 경우 빈 문자열 반환
+        return "";
     }
 
 }

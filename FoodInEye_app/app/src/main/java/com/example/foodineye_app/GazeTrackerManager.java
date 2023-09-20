@@ -77,6 +77,12 @@ public class GazeTrackerManager {
         }
     }
 
+    public void removeGazeTracker() {
+        if (hasGazeTracker()) {
+            gazeTracker = null;
+        }
+    }
+
     public void setGazeTrackerCallbacks(GazeTrackerCallback... callbacks) {
         for(GazeTrackerCallback callback : callbacks) {
             if (callback instanceof GazeCallback) {

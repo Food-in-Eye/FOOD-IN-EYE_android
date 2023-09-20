@@ -11,29 +11,61 @@
         android:orientation="vertical">
 
         <!-- 커스텀 툴바 추가 -->
-        <include layout="@layout/toolbar_layout"/>
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/cart_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorOnPrimary"
+            android:elevation="4dp">
+
+            <!-- 사용자 정의 뒤로 가기 버튼 추가 -->
+            <ImageView
+                android:id="@+id/cart_back"
+                android:layout_width="40dp"
+                android:layout_height="24dp"
+                android:layout_gravity="start"
+                android:src="@drawable/back_btn"
+                android:contentDescription="뒤로 가기" />
+
+            <TextView
+                android:id="@+id/cart_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="장바구니"
+                android:fontFamily="@font/mice_gothic_bold"
+                android:textSize="20dp"
+                android:textColor="@color/black"/>
+
+            <ImageView
+                android:id="@+id/cart_home"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/home"
+                android:layout_gravity="right"
+                android:layout_marginRight="20dp"/>
+
+        </androidx.appcompat.widget.Toolbar>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="장바구니"
-            android:textSize="18dp"
-            android:textColor="@color/black"
-            android:textStyle="bold"
+            android:textSize="20dp"
+            android:textColor="@color/black_10"
             android:layout_gravity="center"
-            android:layout_marginTop="40dp"/>
+            android:layout_marginTop="35dp"/>
 
         <View
             android:layout_width="200dp"
             android:layout_height="1dp"
-            android:background="@color/navy"
+            android:background="@color/sygray"
             android:layout_gravity="center"/>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="500dp"
+            android:layout_height="550dp"
             android:orientation="vertical"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="15dp">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView_cartList"
@@ -49,15 +81,16 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/navy"
-            android:layout_gravity="center"/>
+            android:background="@color/sygray"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_gravity="center"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="15dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -65,7 +98,7 @@
                 android:text="총"
                 android:textSize="18dp"
                 android:textStyle="bold"
-                android:textColor="@color/black"
+                android:textColor="@color/black_10"
                 android:padding="10dp"
                 android:layout_gravity="center"/>
 
@@ -76,7 +109,7 @@
                 android:text="26,000"
                 android:textSize="18dp"
                 android:textStyle="bold"
-                android:textColor="@color/black"
+                android:textColor="@color/black_10"
                 android:layout_gravity="center"/>
 
             <TextView
@@ -85,7 +118,7 @@
                 android:text="원"
                 android:textSize="18dp"
                 android:textStyle="bold"
-                android:textColor="@color/black"
+                android:textColor="@color/black_10"
                 android:layout_gravity="center"
                 android:layout_marginRight="25dp"/>
 
@@ -96,7 +129,7 @@
                 android:text="주문하기"
                 android:textSize="18dp"
                 android:textStyle="bold"
-                android:textColor="@color/black"
+                android:textColor="@color/black_10"
                 android:background="@drawable/orange_srec_30"
                 android:padding="5dp"/>
 

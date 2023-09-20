@@ -3,6 +3,7 @@ package com.example.foodineye_app;
 import com.example.foodineye_app.activity.PostLoginResponse;
 import com.example.foodineye_app.data.GetHistoryDetail;
 import com.example.foodineye_app.data.GetMenu;
+import com.example.foodineye_app.data.GetOrder;
 import com.example.foodineye_app.data.GetStoreList;
 import com.example.foodineye_app.data.History;
 import com.example.foodineye_app.data.PostATokenResponse;
@@ -15,7 +16,9 @@ import com.example.foodineye_app.data.PostPwCheckResponse;
 import com.example.foodineye_app.data.PostRTokenResponse;
 import com.example.foodineye_app.data.PostSignup;
 import com.example.foodineye_app.data.PostSignupResponse;
+import com.example.foodineye_app.data.PutEyePermission;
 import com.example.foodineye_app.data.PutMyInfoSet;
+import com.example.foodineye_app.data.checkOrderResponse;
 import com.example.foodineye_app.gaze.PostGaze;
 import com.example.foodineye_app.gaze.PostGazeResponse;
 
@@ -100,4 +103,22 @@ public interface ApiInterface {
             @Header("Authorization") String authorizationHeader
     );
 
+    @PUT("api/v2/users/buyer/camera")
+    Call<Void> putEyePermission(
+            @Query("u_id") String u_id,
+            @Body PutEyePermission putEyePermission
+    );
+
+    //h_id로 현재 진행 주문 불러오기
+    @GET("api/v2/orders/order/h")
+    Call<GetOrder> getOrder(
+            @Query("id") String h_id
+    );
+
+
+    //h_id로 현재 주문이 끝났는지 true, 진행중인지
+    @GET("api/v2/orders/history/status")
+    Call<checkOrderResponse> checkOrderStatus(
+            @Query("id") String h_id
+    );
 }

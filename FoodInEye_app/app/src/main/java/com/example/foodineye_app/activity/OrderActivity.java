@@ -7,12 +7,16 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.HandlerThread;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -42,6 +46,9 @@ import retrofit2.Response;
 import visual.camp.sample.view.PointView;
 
 public class OrderActivity extends AppCompatActivity {
+    Data data;
+
+    Toolbar toolbar;
 
     List<Order> orderList = new ArrayList<>();
     List<SubOrder> subOrderList;
@@ -58,6 +65,7 @@ public class OrderActivity extends AppCompatActivity {
     PostOrder postOrder;
 
     SharedPreferences sharedPreferences;
+    int eyePermission;
     String u_id;
     String history_id;
 
@@ -78,13 +86,21 @@ public class OrderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
 
+        toolbar = (Toolbar) findViewById(R.id.order_toolbar);
+        setToolBar(toolbar);
+
+        data = (Data) getApplication();
+        //u_id
+        sharedPreferences = getSharedPreferences("test_token1", MODE_PRIVATE);
+        u_id = sharedPreferences.getString("u_id", null);
+
+        eyePermission = sharedPreferences.getInt("eye_permission", 0);
+
         //-------------------------------------------------------------------------------------
         //start-gaze-tracking
         ctx = getApplicationContext();
         orderLayout = findViewById(R.id.orderLayout);
         viewpoint = findViewById(R.id.view_point_order);
-
-        setGazeTrackerDataStorage();
 
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MODE_PRIVATE);
         //-------------------------------------------------------------------------------------
@@ -153,9 +169,6 @@ public class OrderActivity extends AppCompatActivity {
 
         ApiInterface apiInterface = apiClient.getClient().create(ApiInterface.class);
 
-        //u_id
-        sharedPreferences = getSharedPreferences("test_token1", MODE_PRIVATE);
-        u_id = sharedPreferences.getString("u_id", null);
 
         //요청 바디에 들어가 PostOrder 객체 생성
         postOrder = new PostOrder(u_id, total, content);
@@ -166,6 +179,7 @@ public class OrderActivity extends AppCompatActivity {
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (gazeTrackerDataStorage != null) {
                     gazeTrackerDataStorage.stopGazeTracker("order", 0, 0);
                 }
@@ -179,7 +193,7 @@ public class OrderActivity extends AppCompatActivity {
                             //요청이 성공한 경우 처리할 작업
 
                             PostOrderResponse responseBody = response.body();
-                            history_id = responseBody.getHistory_id();
+
                             List<PostOrderResponse.Response> responseList;
                             responseList = responseBody.getResponse();
 
@@ -204,7 +218,14 @@ public class OrderActivity extends AppCompatActivity {
 
                             WebSocketManager.getInstance(getApplicationContext()).connectWebSocket(history_id);
 
-                            putGaze();
+                            //시선 권한 동의 여부 확인
+                            if(eyePermission == 1){ //true
+                                putGaze();
+                            }
+
+                            history_id = responseBody.getHistory_id();
+                            data.setHistory_id(history_id);
+                            Log.d("OrderDetail", "orderdetail!!!!!!!: "+data.getHistory_id());
 
                         }else{
                             //요청이 실패한 경우 errorbody
@@ -219,8 +240,11 @@ public class OrderActivity extends AppCompatActivity {
                 });
 
                 //Data orderList에 주문내용 추가하기
-                final Data data = (Data) getApplicationContext();
+//                final Data data = (Data) getApplicationContext();
                 data.setOrderList(orderList);
+                data.setHistory_id(history_id);
+                Log.d("OrderDetail", "orderdetail!!!!!!!: "+data.getHistory_id());
+                // OrderActivity에서 history_id를 설정
 
                 //OrderDetial 화면으로 이동
                 Intent intent = new Intent(getApplicationContext(), OrderDetailActivity.class);
@@ -234,26 +258,32 @@ public class OrderActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        setGazeTrackerDataStorage();
+        //시선 권한 동의 여부 확인
+        if(eyePermission == 1){ //true
+            setGazeTrackerDataStorage();
+        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        stopGazeTracker();
+        if(eyePermission == 1){
+            stopGazeTracker();
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        gazeTrackerDataStorage.quitBackgroundThread();
-        backgroundThread.quitSafely();
+        if(eyePermission == 1){
+            gazeTrackerDataStorage.quitBackgroundThread();
+            backgroundThread.quitSafely();
+        }
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
         finish();
     }
 
@@ -299,6 +329,7 @@ public class OrderActivity extends AppCompatActivity {
                     PostGazeResponse postGazeResponse = response.body();
                     Log.d("Response", "postGazeResponse: " +postGazeResponse.toString());
                     // postGazeResponse를 사용하여 원하는 작업 수행
+                    gazeTrackerDataStorage.removeGaze();
                 } else {
                     // 응답이 실패하거나 response.body()가 null인 경우
                     Log.e("Response", "Response is unsuccessful or body is null");
@@ -311,6 +342,91 @@ public class OrderActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+
+    //toolbar
+    private void setToolBar(androidx.appcompat.widget.Toolbar toolbar){
+
+        // 툴바를 액션바로 설정
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setTitle(""); // 툴바의 타이틀을 직접 설정
+        ImageView backBtn = (ImageView) findViewById(R.id.order_back);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 뒤로 가기 버튼 동작을 처리
+                onBackPressed();
+            }
+        });
+
+        ImageView homeBtn = (ImageView) findViewById(R.id.order_home);
+        homeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //-> home
+                if(eyePermission == 1){
+                    gazeTrackerDataStorage.stopGazeDataCapturing();
+                }
+                showDialog();
+            }
+        });
+
+    }
+
+    //home_dialog
+    public void showDialog(){
+
+        LayoutInflater layoutInflater = LayoutInflater.from(OrderActivity.this);
+        View view = layoutInflater.inflate(R.layout.alert_dialog_home, null);
+
+        AlertDialog alertDialog = new AlertDialog.Builder(OrderActivity.this, R.style.CustomAlertDialog)
+                .setView(view)
+                .create();
+
+        TextView homeTxt = view.findViewById(R.id.home_alert_home);
+        TextView orderTxt = view.findViewById(R.id.home_alert_order);
+        ImageView delete = view.findViewById(R.id.home_alert_delete);
+
+        //홈 화면 이동
+        homeTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //storelist
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(intent);
+                //현재 데이터 삭제하기
+                Data data = (Data) getApplication();
+                data.initializeAllVariables();
+
+            }
+        });
+
+        //계속 주문하기
+        orderTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(eyePermission == 1){
+                    gazeTrackerDataStorage.startGazeDataCapturing();
+                }
+                alertDialog.dismiss();
+            }
+        });
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(eyePermission == 1){
+                    gazeTrackerDataStorage.startGazeDataCapturing();
+                }
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.show();
     }
 
     //

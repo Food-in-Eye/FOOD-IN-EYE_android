@@ -6,8 +6,8 @@
     tools:context=".activity.PersonalActivity"
     android:orientation="vertical">
 
-<!--    &lt;!&ndash; 커스텀 툴바 추가 &ndash;&gt;-->
-<!--    <include layout="@layout/toolbar_layout"/>-->
+    <!-- 커스텀 툴바 추가 -->
+    <include layout="@layout/toolbar_layout"/>
 
 <!--    <LinearLayout-->
 <!--        android:id="@+id/school_food"-->

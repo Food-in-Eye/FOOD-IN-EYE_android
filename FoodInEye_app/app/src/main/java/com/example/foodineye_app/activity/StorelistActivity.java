@@ -2,16 +2,23 @@ package com.example.foodineye_app.activity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.HandlerThread;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,11 +42,16 @@ import visual.camp.sample.view.PointView;
 
 public class StorelistActivity extends AppCompatActivity {
 
+    Toolbar toolbar;
+
     GetStoreList storeList; //전체 가게 목록
     List<GetStoreList.Stores> storeInfo;
     RecyclerView recyclerView;
     StoreAdapter storeAdapter;
     ConstraintLayout storeLayout;
+
+    SharedPreferences sharedPreferences;
+    int eyePermission;
 
     //-----------------------------------------------------------------------------------------
     //gazeTracker
@@ -48,12 +60,17 @@ public class StorelistActivity extends AppCompatActivity {
     private final HandlerThread backgroundThread = new HandlerThread("background");
     PointView viewpoint;
 
-    //-----------------------------------------------------------------------------------------
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_storelist);
+
+        toolbar = (Toolbar) findViewById(R.id.stolelist_toolbar);
+        setToolBar(toolbar);
+
+        sharedPreferences = getSharedPreferences("test_token1", MODE_PRIVATE);
+        eyePermission = sharedPreferences.getInt("eye_permission", 0);
 
         //start-gaze-tracking
         ctx = getApplicationContext();
@@ -104,21 +121,31 @@ public class StorelistActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        setGazeTrackerDataStorage();
+
+        //시선 권한 동의 여부 확인
+        if(eyePermission == 1){ //true
+            setGazeTrackerDataStorage();
+        }
     }
 
     @Override
     protected void onStop() {
         takeAndSaveScreenShot();
+        dpToPixel();
         super.onStop();
-        stopGazeTracker();
+        if(eyePermission == 1){
+            stopGazeTracker();
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        gazeTrackerDataStorage.quitBackgroundThread();
-        backgroundThread.quitSafely();
+
+        if(eyePermission == 1){
+            gazeTrackerDataStorage.quitBackgroundThread();
+            backgroundThread.quitSafely();
+        }
     }
 
     @Override
@@ -158,8 +185,6 @@ public class StorelistActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<GetStoreList> call, Response<GetStoreList> response) {
                 if(response.isSuccessful()){
-
-
 
                     storeList = response.body();
                     storeInfo = storeList.response;
@@ -234,12 +259,104 @@ public class StorelistActivity extends AppCompatActivity {
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
             fos.close();
 
-            show("save success");
-
         } catch (Exception e){
-            show("save fail");
+//            show("save fail");
             e.printStackTrace();
         }
     }
+
+    //toolbar
+    private void setToolBar(androidx.appcompat.widget.Toolbar toolbar){
+
+        // 툴바를 액션바로 설정
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setTitle(""); // 툴바의 타이틀을 직접 설정
+        ImageView backBtn = (ImageView) findViewById(R.id.storelist_back);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 뒤로 가기 버튼 동작을 처리
+                onBackPressed();
+            }
+        });
+
+        ImageView homeBtn = (ImageView) findViewById(R.id.storelist_home);
+        homeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //-> home, gaze 일시정지
+                if(eyePermission == 1){ //true
+                    gazeTrackerDataStorage.stopGazeDataCapturing();
+                }
+
+                showDialog();
+            }
+        });
+
+    }
+
+    //home_dialog
+    public void showDialog(){
+
+        LayoutInflater layoutInflater = LayoutInflater.from(StorelistActivity.this);
+        View view = layoutInflater.inflate(R.layout.alert_dialog_home, null);
+
+        AlertDialog alertDialog = new AlertDialog.Builder(StorelistActivity.this, R.style.CustomAlertDialog)
+                .setView(view)
+                .create();
+
+        TextView homeTxt = view.findViewById(R.id.home_alert_home);
+        TextView orderTxt = view.findViewById(R.id.home_alert_order);
+        ImageView delete = view.findViewById(R.id.home_alert_delete);
+
+        //홈 화면 이동
+        homeTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //storelist
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(intent);
+                //현재 데이터 삭제하기
+                Data data = (Data) getApplication();
+                data.initializeAllVariables();
+
+                Log.d("Data 초기화: ", "data 초기화 : "+data.toString());
+            }
+        });
+
+        //계속 주문하기
+        orderTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // orderBtn 클릭 시 Gaze 데이터 수집 재개
+                if(eyePermission == 1){ //true
+                    gazeTrackerDataStorage.startGazeDataCapturing();
+                }
+
+                alertDialog.dismiss();
+            }
+        });
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(eyePermission == 1){ //true
+                    gazeTrackerDataStorage.startGazeDataCapturing();
+                }
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.show();
+    }
+
+    private void dpToPixel(){
+        float dpValue = 230; // 변환하려는 dp 값
+        float density = getResources().getDisplayMetrics().density;
+        int pixelValue = (int) (dpValue * density + 0.5f);
+        Log.d("location", "pixelToDP"+pixelValue);
+    }
+
 
 }

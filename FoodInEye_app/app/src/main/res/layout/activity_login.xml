@@ -38,19 +38,6 @@
             android:background="@drawable/edittext_shape"
             android:layout_marginTop="5dp"/>
 
-        <TextView
-            android:id="@+id/login_availableId"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
-            android:text="아이디가 존재하지 않습니다"
-            android:textSize="13dp"
-            android:textColor="@color/red"
-            android:textStyle="bold"
-            android:layout_marginTop="2dp"
-            android:visibility="gone"/>
-
     </LinearLayout>
 
     <LinearLayout
@@ -79,19 +66,6 @@
             android:background="@drawable/edittext_shape"
             android:layout_marginTop="5dp"
             android:inputType="textPassword"/>
-
-        <TextView
-            android:id="@+id/login_availablePw"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
-            android:text="비밀번호가 일치하지 않습니다."
-            android:textSize="13dp"
-            android:textColor="@color/red"
-            android:textStyle="bold"
-            android:layout_marginTop="2dp"
-            android:visibility="gone"/>
 
     </LinearLayout>
 

@@ -2,15 +2,20 @@ package com.example.foodineye_app.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.foodineye_app.GazeTrackerManager;
 import com.example.foodineye_app.R;
@@ -23,7 +28,14 @@ import camp.visual.gazetracker.util.ViewLayoutChecker;
 import visual.camp.sample.view.CalibrationViewer;
 import visual.camp.sample.view.PointView;
 
-public class Calibration extends AppCompatActivity {
+public class CalibrationActivity extends AppCompatActivity {
+
+    SharedPreferences sharedPreferences;
+    String name;
+    TextView nameTxt;
+    Toolbar toolbar, toolbarfinish;
+    ImageView backBtn, homeBtn;
+    ImageView backBtnf, homeBtnf;
 
     //-----------------------------------------------------------------------------------------
     //gazetracker
@@ -36,8 +48,8 @@ public class Calibration extends AppCompatActivity {
     Context context;
     //-----------------------------------------------------------------------------------------
     //calibration
-    LinearLayout calibrationBtn;
-    LinearLayout calibration;
+    Button calibrationBtn, readyBtn, goStoreBtn;
+    LinearLayout calibration, calibrationFinish;
     ViewLayoutChecker viewLayoutChecker = new ViewLayoutChecker();
 
     @Override
@@ -47,13 +59,36 @@ public class Calibration extends AppCompatActivity {
 
         context = getApplicationContext();
 
+        sharedPreferences = getSharedPreferences("test_token1", MODE_PRIVATE);
+        name = sharedPreferences.getString("name", null);
+
+        nameTxt = (TextView) findViewById(R.id.calibration_name);
+        nameTxt.setText(name);
+
+        toolbar = (Toolbar) findViewById(R.id.calibration_toolbar);
+        backBtn = (ImageView) findViewById(R.id.calibration_back);
+        homeBtn = (ImageView) findViewById(R.id.calibration_home);
+
+        setToolBar(toolbar, backBtn, homeBtn);
+
         //-----------------------------------------------------------------------------------------
         //calibration
 
         gazeTracker = GazeTrackerManager.makeNewInstance(this);
 
-        calibrationBtn = (LinearLayout) findViewById(R.id.calibrationBtn);
+        calibrationBtn = (Button) findViewById(R.id.calibraionBtn);
+        readyBtn = (Button) findViewById(R.id.readycalibraionBtn);
+
+        readyBtn.setVisibility(View.VISIBLE);
+        calibrationBtn.setVisibility(View.INVISIBLE);
+
+        //준비 2초동안은 readyBtn -> 그 후, calibrationBtn
+
+
         calibration = (LinearLayout) findViewById(R.id.calibration);
+        calibrationFinish = (LinearLayout) findViewById(R.id.calibration_to_store);
+        goStoreBtn = (Button) findViewById(R.id.to_storeBtn);
+
         initTrackerView();
         initHandler();
 
@@ -69,7 +104,7 @@ public class Calibration extends AppCompatActivity {
         calibrationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                show("start-calibration");
+//                show("calibration");
                 runOnUiThread(()->calibration.setVisibility(View.INVISIBLE));
                 // 타이틀바 숨기기
                 hideNavigationBar();
@@ -79,17 +114,13 @@ public class Calibration extends AppCompatActivity {
             }
         });
 
-        LinearLayout orderBtn = (LinearLayout) findViewById(R.id.real_home_order);
-        orderBtn.setOnClickListener(new View.OnClickListener() {
+        goStoreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                //home -> storelist
-                Intent intent = new Intent(getApplicationContext(), StorelistActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                finish();
+            public void onClick(View v) {
+                startStorelistActivity();
             }
         });
+
 
         //-----------------------------------------------------------------------------------------
 
@@ -104,9 +135,22 @@ public class Calibration extends AppCompatActivity {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
             gazeTracker.startGazeTracking();
+
+            // UI 스레드에서 실행하도록 변경
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    readyBtn.setVisibility(View.INVISIBLE);
+                    calibrationBtn.setVisibility(View.VISIBLE);
+                    calibrationBtn.setEnabled(true);
+                }
+            });
+
         }).start();
     }
+
 
     private void initTrackerView() {
         viewPoint = findViewById(R.id.view_point);
@@ -125,7 +169,10 @@ public class Calibration extends AppCompatActivity {
                 Log.d("Calibration", "Gaze Tracker Is NULL NULL NULL");
             } else {
                 Log.d("Calibration", "Gaze Tracker INIT SUCCESS");
-                show("Gaze Tracker INIT SUCCESS");
+//                show("햄버거 생성중 🍞 🍅 🥬 🥓");
+//                calibrationBtn.setBackgroundColor(Color.LTGRAY);
+                calibrationBtn.setEnabled(false);
+
             }
         }, userStatusOption);
     }
@@ -162,10 +209,18 @@ public class Calibration extends AppCompatActivity {
         public void onCalibrationFinished(double[] calibrationData) {
             // When calibration is finished, calibration data is stored to SharedPreference
             runOnUiThread(() -> viewCalibration.setVisibility(View.INVISIBLE));
-            runOnUiThread(() -> calibration.setVisibility(View.VISIBLE));
-            showNavigationBar();
+            runOnUiThread(() -> calibrationFinish.setVisibility(View.VISIBLE));
+            runOnUiThread(() -> calibration.setVisibility(View.INVISIBLE));
+//            showNavigationBar();
+
+            toolbarfinish = findViewById(R.id.calibrationfinish_toolbar);
+            backBtnf = (ImageView) findViewById(R.id.calibrationfinish_back);
+            homeBtnf = (ImageView) findViewById(R.id.calibrationfinish_home);
+            setToolBar(toolbarfinish, backBtnf, homeBtnf);
+
+
             gazeTracker.setCalibrationData(calibrationData);
-            show("calibrationFinished");
+//            show("calibrationFinished");
         }
     };
 
@@ -198,5 +253,43 @@ public class Calibration extends AppCompatActivity {
                 viewCalibration.setOffset(x, y);
             }
         });
+    }
+
+    public void startStorelistActivity(){
+        //calibraion -> storelist
+        Intent intent = new Intent(getApplicationContext(), StorelistActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+        finish();
+    }
+
+    //toolbar
+    public void setToolBar(androidx.appcompat.widget.Toolbar toolbar, ImageView backBtn, ImageView homeBtn){
+
+        // 툴바를 액션바로 설정
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setTitle(""); // 툴바의 타이틀을 직접 설정
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 뒤로 가기 버튼 동작을 처리
+//                onBackPressed();
+                //home -> calibration
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        homeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //-> home
+                Intent loginIntent = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(loginIntent);
+                finish();
+            }
+        });
+
     }
 }

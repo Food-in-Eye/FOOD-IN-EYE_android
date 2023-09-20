@@ -1,10 +1,13 @@
 package com.example.foodineye_app;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -14,6 +17,7 @@ import android.webkit.WebView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.example.foodineye_app.activity.CustomLoading;
 import com.example.foodineye_app.activity.Data;
 import com.example.foodineye_app.activity.StorelistActivity;
 import com.example.foodineye_app.gaze.PostGaze;
@@ -36,6 +40,7 @@ import visual.camp.sample.view.PointView;
 
 public class GazeTrackerDataStorage {
     private Context context;
+
     public GazeTrackerDataStorage(Context context) {
         this.context = context;
     }
@@ -70,6 +75,11 @@ public class GazeTrackerDataStorage {
     //scroll change
     private int scroll;
     private ArrayList list_scroll = new ArrayList();
+
+    //-----------------------------------------------------------------------------------------
+    //Handler!!!!!!!!!!
+    private boolean gazeDataCapturing = true; // 클릭 시 데이터 수집 여부
+
     //-----------------------------------------------------------------------------------------
 
     public void setGazeTracker(Context context, ConstraintLayout constraintLayout, PointView viewPoint){
@@ -114,15 +124,97 @@ public class GazeTrackerDataStorage {
     }
 
 
+//    private void runGazeTracker() {
+//        new Thread(() -> {
+//            initGazeTracker();
+//            try {
+//                Thread.sleep(2000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            synchronized (list_gazeInfo){
+//                gazeTracker.startGazeTracking();
+//                show("start gaze tracking");
+//            }
+//        }).start();
+//    }
+
+    private ProgressDialog progressDialog;
+
+    private final Handler uiHandler = new Handler(Looper.getMainLooper());
+
+//    private void runGazeTracker() {
+//        new Thread(() -> {
+//            // 로딩창 표시
+//            uiHandler.post(new Runnable() {
+//                @Override
+//                public void run() {
+//                    // UI 작업을 여기에서 수행
+//                    progressDialog = new ProgressDialog(context);
+//                    progressDialog.setMessage("로딩 중...");
+//                    progressDialog.setCancelable(false); // 사용자가 취소하지 못하도록 설정
+//                    progressDialog.show();
+//                }
+//            });
+//
+//            initGazeTracker();
+//            try {
+//                Thread.sleep(2000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//
+//            synchronized (list_gazeInfo) {
+//                // 로딩창 닫기
+//                uiHandler.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        if (progressDialog != null && progressDialog.isShowing()) {
+//                            progressDialog.dismiss();
+//                        }
+//                    }
+//                });
+//                gazeTracker.startGazeTracking();
+//                show("start gaze tracking");
+//            }
+//        }).start();
+//    }
+
+    //loading custom
+
     private void runGazeTracker() {
+        CustomLoading loadingDialog = new CustomLoading(context);
         new Thread(() -> {
+            // 로딩창 표시
+            uiHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    // UI 작업을 여기에서 수행
+                    //    로딩창을 투명하게
+                    loadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                    loadingDialog.show();
+                }
+            });
+
             initGazeTracker();
+
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            synchronized (list_gazeInfo){
+
+            synchronized (list_gazeInfo) {
+                // 로딩창 닫기
+                uiHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        if (loadingDialog != null || loadingDialog.isShowing()) {
+                            loadingDialog.dismiss();
+                        }
+                    }
+                });
                 gazeTracker.startGazeTracking();
                 show("start gaze tracking");
             }
@@ -233,6 +325,10 @@ public class GazeTrackerDataStorage {
         gazeTracker.deinitGazeTracker();
     }
 
+    public void removeGaze(){
+        gazeTracker.removeGazeTracker();
+    }
+
     private void setCalibration() {
         GazeTrackerManager.LoadCalibrationResult result = gazeTracker.loadCalibrationData();
         switch (result) {
@@ -280,9 +376,12 @@ public class GazeTrackerDataStorage {
 //        });
 
         //save gazeInfo in arraylist -----
-        Log.d("GazeTrackerDataStorage", "list_gazeInfo"+list_gazeInfo.toString());
-        list_gazeInfo.add(gazeInfo);
-        list_scroll.add(scroll);
+        Log.d("!!!!!!!!!!gazeDataCapturing", "gazeDataCapturing: "+gazeDataCapturing);
+        if(gazeDataCapturing){
+
+            list_gazeInfo.add(gazeInfo);
+            list_scroll.add(scroll);
+        }
     };
 
 
@@ -450,8 +549,16 @@ public class GazeTrackerDataStorage {
         postGaze = new PostGaze(layoutName, s_num, f_num, gazeArrayList);
         Log.d("Gaze", "gaze: "+postGaze);
         Data.addGazeList(postGaze);
-
     }
+
+    public void stopGazeDataCapturing() {
+        gazeDataCapturing = false;
+    }
+
+    public void startGazeDataCapturing() {
+        gazeDataCapturing = true;
+    }
+
 
     private void modelInfo(){
 
