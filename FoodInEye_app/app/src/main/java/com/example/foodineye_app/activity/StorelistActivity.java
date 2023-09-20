@@ -131,6 +131,7 @@ public class StorelistActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         takeAndSaveScreenShot();
+        dpToPixel();
         super.onStop();
         if(eyePermission == 1){
             stopGazeTracker();
@@ -348,6 +349,13 @@ public class StorelistActivity extends AppCompatActivity {
         });
 
         alertDialog.show();
+    }
+
+    private void dpToPixel(){
+        float dpValue = 230; // 변환하려는 dp 값
+        float density = getResources().getDisplayMetrics().density;
+        int pixelValue = (int) (dpValue * density + 0.5f);
+        Log.d("location", "pixelToDP"+pixelValue);
     }
 
 

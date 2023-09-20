@@ -364,7 +364,7 @@ public class MenuActivity extends AppCompatActivity{
     @Override
     protected void onStop() {
         super.onStop();
-//        captureFullScreenshot();
+        captureFullScreenshot();
 
         if(eyePermission == 1){
             gazeTrackerDataStorage.stopGazeTracker("store_menu", recent_sNum, 0);
