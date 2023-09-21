@@ -130,7 +130,7 @@ public class StorelistActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        takeAndSaveScreenShot();
+//        takeAndSaveScreenShot();
         dpToPixel();
         super.onStop();
         if(eyePermission == 1){

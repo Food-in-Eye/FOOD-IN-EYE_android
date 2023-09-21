@@ -1,18 +1,15 @@
 package com.example.foodineye_app.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.HandlerThread;
 import android.util.Log;
-import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -149,13 +146,34 @@ public class MenuActivity extends AppCompatActivity{
         menuLayout = findViewById(R.id.menuLayout);
         viewpoint = findViewById(R.id.view_point_menu);
 
-//        setGazeTrackerDataStorage();
 
         //menuRecyclerview
         menurecyclerView = findViewById(R.id.recyclerView_menuList);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
         menurecyclerView.setLayoutManager(gridLayoutManager);
+
+        //recyclerview
+        tabLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                menurecyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+                int[] storeLocation = new int[2];
+                menurecyclerView.getLocationOnScreen(storeLocation);
+
+                int left = storeLocation[0]; // TabLayout의 왼쪽 좌표
+                int top = storeLocation[1]; // TabLayout의 위쪽 좌표
+                int right = left + menurecyclerView.getWidth(); // TabLayout의 오른쪽 좌표
+                int bottom = top + menurecyclerView.getHeight(); // TabLayout의 아래쪽 좌표
+
+                // 결과 출력
+                Log.d("location", "recyclerview - Left: " + left);
+                Log.d("location", "recyclerview - Top: " + top);
+                Log.d("location", "recyclerview - Right: " + right);
+                Log.d("location", "recyclerview - Bottom: " + bottom);
+            }
+        });
 
 
         //가게 한줄소개, 운영시간, 공지사항
@@ -364,7 +382,8 @@ public class MenuActivity extends AppCompatActivity{
     @Override
     protected void onStop() {
         super.onStop();
-        captureFullScreenshot();
+//        captureFullScreenshot();
+//        takeAndSaveScreenShot();
 
         if(eyePermission == 1){
             gazeTrackerDataStorage.stopGazeTracker("store_menu", recent_sNum, 0);
@@ -412,118 +431,28 @@ public class MenuActivity extends AppCompatActivity{
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
+    //-------------------
     //screenshot
-    private Bitmap captureScreen() {
-        View rootView = getWindow().getDecorView().getRootView();
-        rootView.setDrawingCacheEnabled(true);
-        return rootView.getDrawingCache();
+    private void takeAndSaveScreenShot(){
+        Bitmap bitmap = getBitmapFromRootView(MenuActivity.this);
+        saveImage(bitmap);
     }
 
-    public Bitmap captureRecyclerView(RecyclerView recyclerView) {
-        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-        RecyclerView.Adapter adapter = recyclerView.getAdapter();
+    private Bitmap getBitmapFromRootView(Activity context){
+        View root = context.getWindow().getDecorView().getRootView();
+        root.setDrawingCacheEnabled(true);
+        root.buildDrawingCache();
+        //루트뷰의 캐시를 가져옴
+        Bitmap screenshot = root.getDrawingCache();
 
-        if (layoutManager instanceof GridLayoutManager && adapter != null) {
-            GridLayoutManager gridLayoutManager = (GridLayoutManager) layoutManager;
-            int spanCount = gridLayoutManager.getSpanCount();
+        // get view coordinates
+        int[] location = new int[2];
+        root.getLocationInWindow(location);
 
-            int itemCount = adapter.getItemCount();
-            int columns = spanCount;
+        // 이미지를 자를 수 있으나 전체 화면을 캡쳐 하도록 함
+        Bitmap bmp = Bitmap.createBitmap(screenshot, location[0], location[1], root.getWidth(), root.getHeight(), null, false);
 
-            int width = recyclerView.getWidth();
-            int height = 0;
-            Paint paint = new Paint();
-            int iHeight = 0;
-            final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
-            final int cacheSize = maxMemory / 8;
-            LruCache<String, Bitmap> bitmapCache = new LruCache<>(cacheSize);
-
-            for (int i = 0; i < itemCount; i++) {
-                int column = i % columns;
-                int row = i / columns;
-
-                RecyclerView.ViewHolder holder = adapter.createViewHolder(recyclerView, adapter.getItemViewType(i));
-                adapter.onBindViewHolder(holder, i);
-                holder.itemView.measure(
-                        View.MeasureSpec.makeMeasureSpec(width / columns, View.MeasureSpec.EXACTLY),
-                        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-                holder.itemView.layout(
-                        column * (width / columns),
-                        row * holder.itemView.getMeasuredHeight(),
-                        (column + 1) * (width / columns),
-                        (row + 1) * holder.itemView.getMeasuredHeight());
-                holder.itemView.setDrawingCacheEnabled(true);
-                holder.itemView.buildDrawingCache();
-                Bitmap drawingCache = holder.itemView.getDrawingCache();
-                if (drawingCache != null) {
-                    bitmapCache.put(String.valueOf(i), drawingCache);
-                }
-
-                // 계산된 높이
-                if (column == 0) {
-                    height += holder.itemView.getMeasuredHeight();
-                }
-            }
-
-            Bitmap bigBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-            Canvas bigCanvas = new Canvas(bigBitmap);
-            Drawable backgroundDrawable = recyclerView.getBackground();
-            if (backgroundDrawable != null) {
-                backgroundDrawable.draw(bigCanvas);
-            } else {
-                bigCanvas.drawColor(Color.WHITE);
-            }
-
-            for (int i = 0; i < itemCount; i++) {
-                Bitmap bitmap = bitmapCache.get(String.valueOf(i));
-                bigCanvas.drawBitmap(bitmap, (i % columns) * (width / columns), iHeight, paint);
-
-                // 계산된 높이
-                if ((i + 1) % columns == 0) {
-                    iHeight += bitmap.getHeight();
-                }
-
-                bitmap.recycle();
-            }
-            return bigBitmap;
-        }
-
-        return null;
-    }
-
-    private void captureFullScreenshot() {
-        // 전체 화면 캡쳐
-        Bitmap fullScreenshot = captureScreen();
-
-        // RecyclerView의 모든 아이템을 포함하는 비트맵 캡쳐
-        Bitmap recyclerViewScreenshot = captureRecyclerView(menurecyclerView);
-
-        // 캡쳐한 비트맵을 합성
-        int combinedWidth = Math.max(fullScreenshot.getWidth(), recyclerViewScreenshot.getWidth());
-        int combinedHeight = 822 + recyclerViewScreenshot.getHeight();
-        Log.d("screenshot", "recyclerViewScreenshot_height: " + recyclerViewScreenshot.getHeight());
-
-        Bitmap combinedBitmap = Bitmap.createBitmap(combinedWidth, combinedHeight, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(combinedBitmap);
-        canvas.drawBitmap(fullScreenshot, 0, 0, null);
-
-        // recyclerViewScreenshot을 그릴 위치 계산
-        int recyclerViewLeft = 26;
-        int recyclerViewTop = 822;
-
-        // 배경을 하얀색으로 그리기
-        canvas.drawColor(Color.WHITE);
-
-        // 이미지 그리기
-        canvas.drawBitmap(fullScreenshot, 0, 0, null);
-        canvas.drawBitmap(recyclerViewScreenshot, recyclerViewLeft, recyclerViewTop, null);
-
-        // 필요에 따라 비트맵을 저장하거나 처리할 수 있습니다.
-        saveImage(combinedBitmap);
-
-        // 메모리 해제
-        fullScreenshot.recycle();
-        recyclerViewScreenshot.recycle();
+        return bmp;
     }
 
     private void saveImage(Bitmap bitmap){
@@ -535,19 +464,154 @@ public class MenuActivity extends AppCompatActivity{
         try {
 
             if (!file.exists()) { file.createNewFile(); }
-
             FileOutputStream fos = new FileOutputStream(file);
-
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
             fos.close();
-
-//            show("save success");
 
         } catch (Exception e){
 //            show("save fail");
             e.printStackTrace();
         }
     }
+
+    //-------------------
+
+//    //screenshot
+//    private Bitmap captureScreen() {
+//        View rootView = getWindow().getDecorView().getRootView();
+//        rootView.setDrawingCacheEnabled(true);
+//        return rootView.getDrawingCache();
+//    }
+//
+//    public Bitmap captureRecyclerView(RecyclerView recyclerView) {
+//        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+//        RecyclerView.Adapter adapter = recyclerView.getAdapter();
+//
+//        if (layoutManager instanceof GridLayoutManager && adapter != null) {
+//            GridLayoutManager gridLayoutManager = (GridLayoutManager) layoutManager;
+//            int spanCount = gridLayoutManager.getSpanCount();
+//
+//            int itemCount = adapter.getItemCount();
+//            int columns = spanCount;
+//
+//            int width = recyclerView.getWidth();
+//            int height = 0;
+//            Paint paint = new Paint();
+//            int iHeight = 0;
+//            final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+//            final int cacheSize = maxMemory / 8;
+//            LruCache<String, Bitmap> bitmapCache = new LruCache<>(cacheSize);
+//
+//            for (int i = 0; i < itemCount; i++) {
+//                int column = i % columns;
+//                int row = i / columns;
+//
+//                RecyclerView.ViewHolder holder = adapter.createViewHolder(recyclerView, adapter.getItemViewType(i));
+//                adapter.onBindViewHolder(holder, i);
+//                holder.itemView.measure(
+//                        View.MeasureSpec.makeMeasureSpec(width / columns, View.MeasureSpec.EXACTLY),
+//                        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+//                holder.itemView.layout(
+//                        column * (width / columns),
+//                        row * holder.itemView.getMeasuredHeight(),
+//                        (column + 1) * (width / columns),
+//                        (row + 1) * holder.itemView.getMeasuredHeight());
+//                holder.itemView.setDrawingCacheEnabled(true);
+//                holder.itemView.buildDrawingCache();
+//                Bitmap drawingCache = holder.itemView.getDrawingCache();
+//                if (drawingCache != null) {
+//                    bitmapCache.put(String.valueOf(i), drawingCache);
+//                }
+//
+//                // 계산된 높이
+//                if (column == 0) {
+//                    height += holder.itemView.getMeasuredHeight();
+//                }
+//            }
+//
+//            Bitmap bigBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+//            Canvas bigCanvas = new Canvas(bigBitmap);
+//            Drawable backgroundDrawable = recyclerView.getBackground();
+//            if (backgroundDrawable != null) {
+//                backgroundDrawable.draw(bigCanvas);
+//            } else {
+//                bigCanvas.drawColor(Color.WHITE);
+//            }
+//
+//            for (int i = 0; i < itemCount; i++) {
+//                Bitmap bitmap = bitmapCache.get(String.valueOf(i));
+//                bigCanvas.drawBitmap(bitmap, (i % columns) * (width / columns), iHeight, paint);
+//
+//                // 계산된 높이
+//                if ((i + 1) % columns == 0) {
+//                    iHeight += bitmap.getHeight();
+//                }
+//
+//                bitmap.recycle();
+//            }
+//            return bigBitmap;
+//        }
+//
+//        return null;
+//    }
+//
+//    private void captureFullScreenshot() {
+//        // 전체 화면 캡쳐
+//        Bitmap fullScreenshot = captureScreen();
+//
+//        // RecyclerView의 모든 아이템을 포함하는 비트맵 캡쳐
+//        Bitmap recyclerViewScreenshot = captureRecyclerView(menurecyclerView);
+//
+//        // 캡쳐한 비트맵을 합성
+//        int combinedWidth = Math.max(fullScreenshot.getWidth(), recyclerViewScreenshot.getWidth());
+//        int combinedHeight = 802 + recyclerViewScreenshot.getHeight();
+//        Log.d("screenshot", "recyclerViewScreenshot_height: " + recyclerViewScreenshot.getHeight());
+//
+//        Bitmap combinedBitmap = Bitmap.createBitmap(combinedWidth, combinedHeight, Bitmap.Config.ARGB_8888);
+//        Canvas canvas = new Canvas(combinedBitmap);
+//        canvas.drawBitmap(fullScreenshot, 0, 0, null);
+//
+//        // recyclerViewScreenshot을 그릴 위치 계산
+//        int recyclerViewLeft = 26;
+//        int recyclerViewTop = 802;
+//
+//        // 배경을 하얀색으로 그리기
+//        canvas.drawColor(Color.WHITE);
+//
+//        // 이미지 그리기
+//        canvas.drawBitmap(fullScreenshot, 0, 0, null);
+//        canvas.drawBitmap(recyclerViewScreenshot, recyclerViewLeft, recyclerViewTop, null);
+//
+//        // 필요에 따라 비트맵을 저장하거나 처리할 수 있습니다.
+//        saveImage(combinedBitmap);
+//
+//        // 메모리 해제
+//        fullScreenshot.recycle();
+//        recyclerViewScreenshot.recycle();
+//    }
+//
+//    private void saveImage(Bitmap bitmap){
+//        String fileTitle = "ScreenAll.png";
+//
+//        File file = new File(this.getFilesDir(), fileTitle);
+//        Log.d("screenshot", "fileDir"+getFilesDir());
+//
+//        try {
+//
+//            if (!file.exists()) { file.createNewFile(); }
+//
+//            FileOutputStream fos = new FileOutputStream(file);
+//
+//            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+//            fos.close();
+//
+////            show("save success");
+//
+//        } catch (Exception e){
+////            show("save fail");
+//            e.printStackTrace();
+//        }
+//    }
 
     //tab custom
     public void customTab(TabLayout tabLayout){
