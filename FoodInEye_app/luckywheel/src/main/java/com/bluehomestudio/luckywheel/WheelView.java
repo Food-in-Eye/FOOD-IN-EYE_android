@@ -10,6 +10,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -46,10 +47,13 @@ final class WheelView extends View {
         archPaint.setDither(true);
         //text paint object
         textPaint = new Paint();
-        textPaint.setColor(Color.WHITE);
+        textPaint.setColor(Color.DKGRAY);
         textPaint.setAntiAlias(true);
         textPaint.setDither(true);
-        textPaint.setTextSize(30);
+        textPaint.setTextSize(40);
+        textPaint.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+        textPaint.setLetterSpacing(0.3f);
+
         //rect rang of the arc
         range = new RectF(padding, padding, padding + radius, padding + radius);
     }
@@ -130,7 +134,7 @@ final class WheelView extends View {
         float px = rect.exactCenterX();
         float py = rect.exactCenterY();
         Matrix matrix = new Matrix();
-        matrix.postTranslate(-bitmap.getWidth() / 2, -bitmap.getHeight() / 2);
+//        matrix.postTranslate(-bitmap.getWidth() / 2, -bitmap.getHeight() / 2);
         matrix.postRotate(tempAngle + 120);
         matrix.postTranslate(px, py);
         canvas.drawBitmap(bitmap, matrix, new Paint( Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG | Paint.FILTER_BITMAP_FLAG ));
@@ -242,7 +246,7 @@ final class WheelView extends View {
         for (int i = 0; i < mWheelItems.size(); i++) {
             archPaint.setColor(mWheelItems.get(i).color);
             canvas.drawArc(range, tempAngle, sweepAngle, true, archPaint);
-            drawImage(canvas, tempAngle, mWheelItems.get(i).bitmap);
+//            drawImage(canvas, tempAngle, mWheelItems.get(i).bitmap);
             drawText(canvas, tempAngle, sweepAngle, mWheelItems.get(i).text == null ? "" : mWheelItems.get(i).text);
             tempAngle += sweepAngle;
         }

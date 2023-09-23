@@ -71,7 +71,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="선택의 결과는?"
+                android:text="오늘 뭐 먹지? 👀"
                 android:textSize="30dp"
                 android:textColor="@color/black_10"
                 android:gravity="center"
@@ -110,7 +110,15 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="시선을 통해 본 결과 "
+                        android:text="시선"
+                        android:textSize="16dp"
+                        android:textColor="@color/blue"
+                        android:gravity="center"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="을 통해 본 결과 "
                         android:textSize="16dp"
                         android:textColor="@color/black_10"
                         android:gravity="center"/>
@@ -156,32 +164,31 @@
 
             <!--룰렛-->
 
-            <Button
-                android:id="@+id/spin_btn"
-                android:layout_width="120dp"
-                android:layout_height="80dp"
-                android:layout_below="@+id/roulette_description"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="120dp"
-                android:text="Start"
-                android:textColor="@android:color/white"
-                android:textSize="20dp"
-                android:background="@drawable/roulette_start"
-                android:paddingBottom="10dp"/>
-
             <com.bluehomestudio.luckywheel.LuckyWheel
                 android:id="@+id/luck_wheel"
                 android:layout_width="300dp"
                 android:layout_height="300dp"
-                android:layout_below="@+id/spin_btn"
-                android:layout_centerInParent="true"
+                android:layout_below="@+id/roulette_description"
+                android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="35dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
+                app:arrow_image="@drawable/pin"
                 app:background_color="@color/white" />
+
+            <Button
+                android:id="@+id/spin_btn"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:layout_below="@+id/luck_wheel"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/roulette_startbg"
+                android:text="Start"
+                android:textColor="@android:color/white"
+                android:textSize="20dp" />
 
         </RelativeLayout>
 
