@@ -98,9 +98,9 @@
                 android:layout_margin="100dp"
                 android:fontFamily="@font/bmjua"
                 android:gravity="center"
-                android:text="👀한 눈에 학식"
+                android:text="👀[한 눈에 학식] 앱 소개"
                 android:textColor="@color/black_2"
-                android:textSize="20dp"
+                android:textSize="18dp"
                 android:textStyle="bold" />
 
         </LinearLayout>

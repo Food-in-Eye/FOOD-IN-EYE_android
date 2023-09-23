@@ -127,7 +127,7 @@
                         android:id="@+id/roulette_nick"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="000"
+                        android:text="김사보"
                         android:textSize="16dp"
                         android:textColor="@color/black_10"
                         android:gravity="center"/>
