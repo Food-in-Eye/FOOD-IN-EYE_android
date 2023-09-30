@@ -127,10 +127,10 @@ public class CalibrationViewer extends ViewGroup {
     float px =  x - offsetX;
     float py =  y - offsetY + getStatusBarHeight(); // 타이틀바의 높이를 추가로 더해준다.
     calibrationPoint.layout(
-            (int)px - 20,
-            (int)py - 20,
-            (int)px + 20,
-            (int)py + 20);
+            (int)px - 40,
+            (int)py - 40,
+            (int)px + 40,
+            (int)py + 40);
     invalidate();
   }
 
@@ -160,7 +160,7 @@ public class CalibrationViewer extends ViewGroup {
   }
 
   private class CalibrationPoint extends View {
-    private static final float default_radius = 40;
+    private static final float default_radius = 80;
     private static final float default_rotate = 80;
 
     private float animation_power;
