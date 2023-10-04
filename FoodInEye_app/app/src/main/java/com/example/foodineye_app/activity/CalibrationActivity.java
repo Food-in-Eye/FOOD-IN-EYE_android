@@ -172,7 +172,6 @@ public class CalibrationActivity extends AppCompatActivity {
 //                show("햄버거 생성중 🍞 🍅 🥬 🥓");
 //                calibrationBtn.setBackgroundColor(Color.LTGRAY);
                 calibrationBtn.setEnabled(false);
-
             }
         }, userStatusOption);
     }

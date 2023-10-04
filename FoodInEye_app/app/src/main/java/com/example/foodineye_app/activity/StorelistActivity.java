@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.foodineye_app.ApiClient;
 import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.GazeTrackerDataStorage;
+import com.example.foodineye_app.GazeTrackerManager;
 import com.example.foodineye_app.R;
 import com.example.foodineye_app.data.GetStoreList;
 
@@ -59,6 +60,8 @@ public class StorelistActivity extends AppCompatActivity {
     GazeTrackerDataStorage gazeTrackerDataStorage;
     private final HandlerThread backgroundThread = new HandlerThread("background");
     PointView viewpoint;
+
+    private GazeTrackerManager gazeTracker;
 
 
     @Override
@@ -124,7 +127,8 @@ public class StorelistActivity extends AppCompatActivity {
 
         //시선 권한 동의 여부 확인
         if(eyePermission == 1){ //true
-            setGazeTrackerDataStorage();
+            gazeTracker.setGazeTrackerCallbacks();
+
         }
     }
 
@@ -358,5 +362,17 @@ public class StorelistActivity extends AppCompatActivity {
         Log.d("location", "pixelToDP"+pixelValue);
     }
 
+    //-------------------------------------------------------
+    private void startGaze(){
+        gazeTracker = GazeTrackerManager.makeNewInstance(ctx);
+        if(gazeTracker.startGazeTracking()){
+            //성공 -> onStarted -> 컨텐츠 진행
+
+        }else{
+            //false -> onStopped -> 에러 파악 및 재시도
+
+        }
+    }
+    //-------------------------------------------------------
 
 }
