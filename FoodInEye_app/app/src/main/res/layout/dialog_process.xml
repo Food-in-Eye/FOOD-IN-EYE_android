@@ -12,13 +12,13 @@
 <!--        android:indeterminateDrawable="@drawable/progress_image" />-->
 
     <!--face&question-->
-    <com.airbnb.lottie.LottieAnimationView
-        android:layout_width="160dp"
-        android:layout_height="match_parent"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/loading5"
-        android:layout_gravity="center"/>
+<!--    <com.airbnb.lottie.LottieAnimationView-->
+<!--        android:layout_width="160dp"-->
+<!--        android:layout_height="match_parent"-->
+<!--        app:lottie_autoPlay="true"-->
+<!--        app:lottie_loop="true"-->
+<!--        app:lottie_rawRes="@raw/loading5"-->
+<!--        android:layout_gravity="center"/>-->
 
     <!--simple-->
 <!--    <com.airbnb.lottie.LottieAnimationView-->
@@ -40,6 +40,25 @@
 <!--        android:textSize="16dp" />-->
 
     <!--fork and spoon-->
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="240dp"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/loading6" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Loading..."
+            android:textStyle="bold"
+            android:textColor="@color/black_10"
+            android:textSize="18dp" />
+
+    <!--pacman-->
 <!--    <com.airbnb.lottie.LottieAnimationView-->
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="180dp"-->
@@ -47,16 +66,16 @@
 <!--        android:layout_marginTop="240dp"-->
 <!--        app:lottie_autoPlay="true"-->
 <!--        app:lottie_loop="true"-->
-<!--        app:lottie_rawRes="@raw/loading6" />-->
+<!--        app:lottie_rawRes="@raw/loading7" />-->
 
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:text="Loading..."-->
-<!--            android:textStyle="bold"-->
-<!--            android:textColor="@color/black_10"-->
-<!--            android:textSize="18dp" />-->
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:text="Loading..."-->
+<!--                android:textStyle="bold"-->
+<!--                android:textColor="@color/black_10"-->
+<!--                android:textSize="18dp" />-->
 
 
 </LinearLayout>
