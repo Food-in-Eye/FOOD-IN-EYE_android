@@ -20,9 +20,14 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.foodineye_app.GazeTrackerManager;
 import com.example.foodineye_app.R;
 
+import camp.visual.gazetracker.GazeTracker;
 import camp.visual.gazetracker.callback.CalibrationCallback;
+import camp.visual.gazetracker.callback.InitializationCallback;
+import camp.visual.gazetracker.callback.StatusCallback;
 import camp.visual.gazetracker.constant.AccuracyCriteria;
 import camp.visual.gazetracker.constant.CalibrationModeType;
+import camp.visual.gazetracker.constant.InitializationErrorType;
+import camp.visual.gazetracker.constant.StatusErrorType;
 import camp.visual.gazetracker.constant.UserStatusOption;
 import camp.visual.gazetracker.util.ViewLayoutChecker;
 import visual.camp.sample.view.CalibrationViewer;
@@ -40,7 +45,9 @@ public class CalibrationActivity extends AppCompatActivity {
     //-----------------------------------------------------------------------------------------
     //gazetracker
     PointView viewPoint;
-    GazeTrackerManager gazeTracker;
+
+    GazeTrackerManager gazeTrackerManager;
+    GazeTracker gazeTracker;
 
     CalibrationViewer viewCalibration;
     Handler backgroundHandler;
@@ -74,7 +81,7 @@ public class CalibrationActivity extends AppCompatActivity {
         //-----------------------------------------------------------------------------------------
         //calibration
 
-        gazeTracker = GazeTrackerManager.makeNewInstance(this);
+        gazeTrackerManager = GazeTrackerManager.makeNewInstance(this);
 
         calibrationBtn = (Button) findViewById(R.id.calibraionBtn);
         readyBtn = (Button) findViewById(R.id.readycalibraionBtn);
@@ -82,35 +89,26 @@ public class CalibrationActivity extends AppCompatActivity {
         readyBtn.setVisibility(View.VISIBLE);
         calibrationBtn.setVisibility(View.INVISIBLE);
 
-        //준비 2초동안은 readyBtn -> 그 후, calibrationBtn
-
-
         calibration = (LinearLayout) findViewById(R.id.calibration);
         calibrationFinish = (LinearLayout) findViewById(R.id.calibration_to_store);
         goStoreBtn = (Button) findViewById(R.id.to_storeBtn);
 
-        initTrackerView();
-        initHandler();
-
         final Data data = (Data) getApplication();
         data.setViewCalibration(viewCalibration);
 
-        // gazeTracker 객체 초기화 후 콜백 등록
-        gazeTracker.setGazeTrackerCallbacks(calibrationCallback);
-        runGazeTracker();
+        initTrackerView();
+        initHandler();
 
+        runGazeTracker();
         setOffsetOfView();
 
         calibrationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                show("calibration");
                 runOnUiThread(()->calibration.setVisibility(View.INVISIBLE));
                 // 타이틀바 숨기기
                 hideNavigationBar();
-                gazeTracker.startCalibration(CalibrationModeType.DEFAULT, AccuracyCriteria.DEFAULT);
-                Log.d("Calibration", "startCalibration: "+ gazeTracker.startCalibration(CalibrationModeType.DEFAULT, AccuracyCriteria.DEFAULT));
-//                gazeTracker.startCalibration(CalibrationModeType.DEFAULT, AccuracyCriteria.DEFAULT, 20.000001, 100.00001, 1050.01, 2000.01);
+                gazeTrackerManager.startCalibration(CalibrationModeType.DEFAULT, AccuracyCriteria.DEFAULT);
             }
         });
 
@@ -121,22 +119,45 @@ public class CalibrationActivity extends AppCompatActivity {
             }
         });
 
-
-        //-----------------------------------------------------------------------------------------
-
     }
+
+    //-----------------------------------------------------------------------------------------
+
+//    private void runGazeTracker() {
+//        Log.d("CalibrationActivity", "runGazeTracker");
+//
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                initGaze();
+//                gazeTrackerManager.startGazeTracking();
+//
+//                // UI 스레드에서 실행하도록 변경
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        readyBtn.setVisibility(View.INVISIBLE);
+//                        calibrationBtn.setVisibility(View.VISIBLE);
+//                        calibrationBtn.setEnabled(true);
+//                    }
+//                });
+//            }
+//        }).start();
+//
+//    }
 
     private void runGazeTracker() {
         Log.d("Calibration", "startGazeTracking");
         new Thread(() -> {
-            initGazeTracker();
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            initGaze();
 
-            gazeTracker.startGazeTracking();
+//            try {
+//                Thread.sleep(3000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+
+            gazeTrackerManager.startGazeTracking();
 
             // UI 스레드에서 실행하도록 변경
             runOnUiThread(new Runnable() {
@@ -152,6 +173,51 @@ public class CalibrationActivity extends AppCompatActivity {
     }
 
 
+    private void initGaze(){
+
+        //initGazeTracker
+        Log.d("!CalibrationActivity", "initGaze");
+        UserStatusOption userStatusOption = new UserStatusOption();
+        gazeTrackerManager.initGazeTracker(initializationCallback, userStatusOption);
+
+    }
+
+    private final InitializationCallback initializationCallback = new InitializationCallback() {
+        @Override
+        public void onInitialized(GazeTracker gazeTracker, InitializationErrorType error) {
+            if (gazeTracker != null) {
+                //gazeTrakcer init success
+                Log.d("!CalibrationActivity", "CalibrationActivity initSuccess");
+
+                //set StatusCallback
+                gazeTrackerManager.setGazeTrackerCallbacks(statusCallback);
+
+                //startTracking
+                gazeTrackerManager.stopGazeTracking();
+
+            }
+            else {
+                //gazeTrakcer init fail -> 재시도
+                Log.d("!CalibrationActivity", "CalibrationActivity initFail");
+
+            }
+        }
+    };
+
+    private StatusCallback statusCallback = new StatusCallback() {
+        @Override
+        public void onStarted() {
+            // gazeTracker.startTracking() Success
+            Log.d("!CalibrationActivity", "calibrationCallback");
+            gazeTrackerManager.setGazeTrackerCallbacks(calibrationCallback);
+        }
+
+        @Override
+        public void onStopped(final StatusErrorType error) {
+            // gazeTracker.startTracking() Fail
+        }
+    };
+
     private void initTrackerView() {
         viewPoint = findViewById(R.id.view_point);
         viewCalibration = findViewById(R.id.view_calibration);
@@ -162,32 +228,14 @@ public class CalibrationActivity extends AppCompatActivity {
         backgroundHandler = new Handler(backgroundThread.getLooper());
     }
 
-    private void initGazeTracker() {
-        UserStatusOption userStatusOption = new UserStatusOption();
-        gazeTracker.initGazeTracker((tracker, error) -> {
-            if (tracker == null) {
-                Log.d("Calibration", "Gaze Tracker Is NULL NULL NULL");
-            } else {
-                Log.d("Calibration", "Gaze Tracker INIT SUCCESS");
-//                show("햄버거 생성중 🍞 🍅 🥬 🥓");
-//                calibrationBtn.setBackgroundColor(Color.LTGRAY);
-                calibrationBtn.setEnabled(false);
-            }
-        }, userStatusOption);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        gazeTracker.setGazeTrackerCallbacks(calibrationCallback);
-    }
-
     //
     // callbacks - calibration
     //
     private final CalibrationCallback calibrationCallback = new CalibrationCallback() {
+
         @Override
         public void onCalibrationProgress(float progress) {
+            Log.d("!CalibrationActivity", "calibraionProgress");
             runOnUiThread(() -> viewCalibration.setPointAnimationPower(progress));
         }
 
@@ -210,7 +258,6 @@ public class CalibrationActivity extends AppCompatActivity {
             runOnUiThread(() -> viewCalibration.setVisibility(View.INVISIBLE));
             runOnUiThread(() -> calibrationFinish.setVisibility(View.VISIBLE));
             runOnUiThread(() -> calibration.setVisibility(View.INVISIBLE));
-//            showNavigationBar();
 
             toolbarfinish = findViewById(R.id.calibrationfinish_toolbar);
             backBtnf = (ImageView) findViewById(R.id.calibrationfinish_back);
@@ -218,25 +265,18 @@ public class CalibrationActivity extends AppCompatActivity {
             setToolBar(toolbarfinish, backBtnf, homeBtnf);
 
 
-            gazeTracker.setCalibrationData(calibrationData);
-//            show("calibrationFinished");
+            gazeTrackerManager.setCalibrationData(calibrationData);
         }
     };
 
     private boolean startCollectSamples() {
-        boolean isSuccess = gazeTracker.startCollectingCalibrationSamples();
+        boolean isSuccess = gazeTrackerManager.startCollectingCalibrationSamples();
         return isSuccess;
     }
 
     private void hideNavigationBar() {
         View decorView = getWindow().getDecorView();
         int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN;
-        decorView.setSystemUiVisibility(uiOptions);
-    }
-
-    private void showNavigationBar() {
-        View decorView = getWindow().getDecorView();
-        int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
     }
 
@@ -291,4 +331,5 @@ public class CalibrationActivity extends AppCompatActivity {
         });
 
     }
+
 }
