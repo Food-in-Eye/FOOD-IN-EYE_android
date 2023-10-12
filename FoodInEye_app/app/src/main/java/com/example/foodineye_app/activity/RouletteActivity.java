@@ -1,11 +1,16 @@
 package com.example.foodineye_app.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bluehomestudio.luckywheel.LuckyWheel;
@@ -51,7 +56,8 @@ public class RouletteActivity extends AppCompatActivity {
                 //아이템 텍스트 변수에 담기
                 String menu = wheelItem.text;
 
-                show(menu);
+                //show(menu);
+                showDialog(menu); //결과 보여주기
             }
         });
 
@@ -84,6 +90,51 @@ public class RouletteActivity extends AppCompatActivity {
         //데이터 넣기
         luckyWheel.addWheelItems(wheelItems);
 
+    }
+
+    //show dialog
+    public void showDialog(String m_name){
+
+        LayoutInflater layoutInflater = LayoutInflater.from(RouletteActivity.this);
+        View view = layoutInflater.inflate(R.layout.alert_dialog_roulette, null);
+
+        AlertDialog alertDialog = new AlertDialog.Builder(RouletteActivity.this, R.style.CustomAlertDialog)
+                .setView(view)
+                .create();
+
+        TextView menuName = view.findViewById(R.id.alert_roulette_menuName);
+        TextView toRoulette = view.findViewById(R.id.alert_roulette_toMenu);
+        TextView toCart = view.findViewById(R.id.alert_roulette_toCart);
+        ImageView delete = view.findViewById(R.id.alert_roulette_delete);
+
+        menuName.setText(m_name);
+        toRoulette.setText("다시 돌리러 가기");
+        toCart.setText("장바구니 가기");
+
+        toRoulette.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), RouletteActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        toCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ShoppingCartActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.show();
     }
 
     private void show(String message) {
