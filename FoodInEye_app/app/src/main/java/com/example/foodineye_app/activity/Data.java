@@ -28,6 +28,42 @@ public class Data extends Application {
     //calibration
     private CalibrationViewer viewCalibration;
 
+    //roulette을 위한 list
+    private int[][] gazeCountList = {
+            {0, 0, 0, 0, 0, 0, 0},       // 하울
+            {0, 0, 0, 0, 0, 0, 0, 0},    // 파스타
+            {0, 0, 0, 0, 0, 0},          // 비빔밥
+            {0, 0, 0, 0, 0, 0},          // 해장국
+            {0, 0, 0, 0}                 // 니나노 덮밥
+    };
+
+    private int[] top5List = {0, 0, 0, 0, 0};
+    private int totalCount;
+
+    //-------------------------------------------------------------------------------------
+    public int[][] getGazeCountList() {
+        return gazeCountList;
+    }
+
+    public void setGazeCountList(int[][] gazeCountList) {
+        this.gazeCountList = gazeCountList;
+    }
+
+    public int[] getTop5List() {
+        return top5List;
+    }
+
+    public void setTop5List(int[] top5List) {
+        this.top5List = top5List;
+    }
+
+    public int getTotalCount() {
+        return totalCount;
+    }
+
+    public void setTotalCount(int totalCount) {
+        this.totalCount = totalCount;
+    }
 
     //-------------------------------------------------------------------------------------
     public CalibrationViewer getViewCalibration() {

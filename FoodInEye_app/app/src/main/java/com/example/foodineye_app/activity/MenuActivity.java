@@ -386,7 +386,7 @@ public class MenuActivity extends AppCompatActivity{
 //        takeAndSaveScreenShot();
 
         if(eyePermission == 1){
-            gazeTrackerDataStorage.stopGazeTracker("store_menu", recent_sNum, 0);
+            gazeTrackerDataStorage.stopGazeTracker(ctx,"store_menu", recent_sNum, 0);
         }
     }
 
@@ -411,13 +411,13 @@ public class MenuActivity extends AppCompatActivity{
         gazeTrackerDataStorage.setContext(this);
 
         if (gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.setGazeTracker(ctx, menuLayout, viewpoint, recent_sNum, 0);
+            gazeTrackerDataStorage.setGazeTracker(ctx, menuLayout, viewpoint,"store_menu", recent_sNum, 0);
         }
     }
 
     private void stopGazeTracker(){
         if (gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.stopGazeTracker("store_menu", recent_sNum, 0);
+            gazeTrackerDataStorage.stopGazeTracker(ctx,"store_menu", recent_sNum, 0);
         }
     }
 

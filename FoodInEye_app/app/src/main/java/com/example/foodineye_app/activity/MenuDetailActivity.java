@@ -254,7 +254,7 @@ public class MenuDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        takeAndSaveScreenShot();
+//        takeAndSaveScreenShot();
         super.onStop();
         Log.d("MenuDetailActivity", "onStop");
 
@@ -337,13 +337,13 @@ public class MenuDetailActivity extends AppCompatActivity {
         gazeTrackerDataStorage.setContext(this);
 
         if (gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.setGazeTracker(ctx, menuDetailLayout, viewpoint, s_num, f_num);
+            gazeTrackerDataStorage.setGazeTracker(ctx, menuDetailLayout, viewpoint,"menu_detail",  s_num, f_num);
         }
     }
 
     private void stopGazeTracker(){
         if (gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.stopGazeTracker("menu_detail", s_num, f_num);
+            gazeTrackerDataStorage.stopGazeTracker(ctx,"menu_detail", s_num, f_num);
         }
     }
 

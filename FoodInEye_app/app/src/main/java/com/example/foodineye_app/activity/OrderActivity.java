@@ -181,7 +181,7 @@ public class OrderActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (gazeTrackerDataStorage != null) {
-                    gazeTrackerDataStorage.stopGazeTracker("order", 0, 0);
+                    gazeTrackerDataStorage.stopGazeTracker(ctx,"order", 0, 0);
                 }
                 Log.d("OrderActivity", "결제하기!");
                 Call<PostOrderResponse> call = apiInterface.createOrder(postOrder);
@@ -293,13 +293,13 @@ public class OrderActivity extends AppCompatActivity {
         gazeTrackerDataStorage.setContext(this);
 
         if (gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.setGazeTracker(ctx, orderLayout, viewpoint, 0, 0);
+            gazeTrackerDataStorage.setGazeTracker(ctx, orderLayout, viewpoint,"order", 0, 0);
         }
     }
 
     private void stopGazeTracker(){
         if (gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.stopGazeTracker("order", 0, 0);
+            gazeTrackerDataStorage.stopGazeTracker(ctx,"order", 0, 0);
         }
     }
 

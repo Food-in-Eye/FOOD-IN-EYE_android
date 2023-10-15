@@ -82,11 +82,35 @@ public class GazeTrackerDataStorage {
 
     //-----------------------------------------------------------------------------------------
 
-    public void setGazeTracker(Context context, ConstraintLayout constraintLayout, PointView viewPoint, int store_num, int food_num){
+    private String layout_name;
+    private int store_num;
+    private int food_num;
+
+//    int[][] recentGazeCountList = {
+//            {0, 0, 0, 0, 0, 0, 0},       // 하울
+//            {0, 0, 0, 0, 0, 0, 0, 0},    // 파스타
+//            {0, 0, 0, 0, 0, 0},          // 비빔밥
+//            {0, 0, 0, 0, 0, 0},          // 해장국
+//            {0, 0, 0, 0}                 // 니나노 덮밥
+//    };
+//
+//    int[] recentTop5List = {0, 0, 0, 0, 0};
+
+    int[][] recentGazeCountList;
+    int[] recentTop5List;
+
+    public void setGazeTracker(Context context, ConstraintLayout constraintLayout, PointView viewPoint,String layout_name, int store_num, int food_num){
 
         GazeTrackerManager gazeTrackerManager = new GazeTrackerManager(context);
         setGazeTracker(gazeTrackerManager);
         setconstraintLayout(constraintLayout);
+
+        setLayout_name(layout_name);
+        setStore_num(store_num);
+        setFood_num(store_num);
+
+        setRecentGazeCountList(((Data)context).getGazeCountList());
+        setRecentTop5List(((Data)context).getTop5List());
 
         initSpeedDial();
         setViewPoint(viewPoint);
@@ -110,7 +134,7 @@ public class GazeTrackerDataStorage {
 
     }
 
-    public void stopGazeTracker(String layout_name, int store_num, int food_num){
+    public void stopGazeTracker(Context context, String layout_name, int store_num, int food_num){
         Log.d("GazeTrackerDataStorage", "change layout, stopGazeTracking ");
         gazeTracker.stopGazeTracking();
         viewPoint.setPosition(0,0);
@@ -121,6 +145,25 @@ public class GazeTrackerDataStorage {
 
         gazeTracker.removeCallbacks(
                 gazeCallback, calibrationCallback, statusCallback, userStatusCallback);
+
+        // gazeCountList 설정
+        ((Data) context).setGazeCountList(recentGazeCountList);
+        // top5List 설정
+        ((Data) context).setTop5List(recentTop5List);
+
+
+        // gazeCountList 출력
+        for (int i = 0; i < recentGazeCountList.length; i++) {
+            for (int j = 0; j < recentGazeCountList[i].length; j++) {
+                Log.d("MyApp", "gazeCountList[" + i + "][" + j + "] = " + recentGazeCountList[i][j]);
+            }
+        }
+
+        // top5List 출력
+        for (int i = 0; i < recentTop5List.length; i++) {
+            Log.d("MyApp", "top5List[" + i + "] = " + recentTop5List[i]);
+        }
+
     }
 
 
@@ -224,6 +267,26 @@ public class GazeTrackerDataStorage {
     //-----------------------------------------------------------------------------------------
 
     //setter
+    public void setRecentGazeCountList(int[][] gazeCountList) {
+        this.recentGazeCountList = gazeCountList;
+    }
+
+    public void setRecentTop5List(int[] top5List) {
+        this.recentTop5List = top5List;
+    }
+
+    public void setLayout_name(String layout_name) {
+        this.layout_name = layout_name;
+    }
+
+    public void setStore_num(int store_num) {
+        this.store_num = store_num;
+    }
+
+    public void setFood_num(int food_num) {
+        this.food_num = food_num;
+    }
+
     public void setGazeTracker(GazeTrackerManager gazeTracker) {
         this.gazeTracker = gazeTracker;
     }
@@ -604,6 +667,84 @@ public class GazeTrackerDataStorage {
     /// (x, y)으로  s_num, f_num 파악하기-------------------------------------------------------------
     public void find(float x, float y){
 
+        if(layout_name.equals("store_list")){
+
+
+        }else if (layout_name.equals("store_menu")){
+
+            //어떤 가게 어떤 음식 보는지
+            findStoreFood(x, y);
+
+        }else if(layout_name.equals("menu_detail")){
+
+            //어떤 가게 어떤 음식 보는지 -> 해당 페이지에서의 gazeCount/2를 해당하는 배열 값에 넣어주기
+
+        }else if (layout_name.equals("cart")){
+
+        }else if(layout_name.equals("order")){
+
+        }else{
+
+        }
+
+
     }
 
+    public void findStoreFood(float x, float y){
+
+        int recent_food_num;
+        recent_food_num = findFood(x, y);
+
+        switch (store_num){
+            case 1:
+                recentGazeCountList[0][recent_food_num-1] += 1;
+                break;
+            case 2:
+                recentGazeCountList[1][recent_food_num-1] += 1;
+                break;
+            case 3:
+                recentGazeCountList[2][recent_food_num-1] += 1;
+                break;
+            case 4:
+                recentGazeCountList[3][recent_food_num-1] += 1;
+                break;
+            case 5:
+                recentGazeCountList[4][recent_food_num-1] += 1;
+                break;
+            default:
+                break;
+        }
+    }
+
+    public int findFood(float x, float y){
+
+        if (x >= 26 && x <= 369 && y >= 884 && y <= 1409) {
+            return 1;
+
+        }else if(x >= 369 && x <= 711 && y >= 884 && y <= 1409){
+            return 2;
+
+        }else if(x >= 711 && x <= 1054 && y >= 884 && y <= 1409) {
+            return 3;
+
+        }else if(x >= 26 && x <= 369 && y >= 1409 && y <= 1934) {
+            return 4;
+
+        }else if(x >= 369 && x <= 711 && y >= 1409 && y <= 1934){
+            return 5;
+
+        }else if(x >= 711 && x <= 1054 && y >= 1409 && y <= 1934) {
+            return 6;
+
+        }else if(x >= 26 && x <= 369 && y >= 1934 && y <= 2459) {
+            return 7;
+
+        }else if(x >= 369 && x <= 711 && y >= 1934 && y <= 2459){
+            return 8;
+
+        }
+        else{
+            return 0;
+        }
+    }
 }
