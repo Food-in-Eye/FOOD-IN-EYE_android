@@ -105,13 +105,6 @@ public class GazeTrackerDataStorage {
         recentTop5List = ((Data)context).getTop5List();
         totalCount = ((Data)context).getTotalCount();
 
-        // gazeCountList 출력
-        for (int i = 0; i < recentGazeCountList.length; i++) {
-            for (int j = 0; j < recentGazeCountList[i].length; j++) {
-                Log.d("MyApp", "Data_gazeCountList[" + i + "][" + j + "] = " + recentGazeCountList[i][j]);
-            }
-        }
-
         // top5List 출력
 
 
@@ -449,9 +442,19 @@ public class GazeTrackerDataStorage {
 
             //(gx, gy)좌표로 가게, 음식 찾기
             // gazeCountList 출력
-            Log.d("MyApp", "gaze[" + gx + ", " + gy+scroll + "]");
+//            Log.d("MyApp", "gaze[" + gx + ", " + gy+scroll + "]");
 
-            find(gx, gy+scroll);
+            find(gx, gy + scroll);
+
+            //recentGazeCountList 배열을 이용하여 확인하고 findTopList() 함수 실행
+            for (int i = 0; i < recentGazeCountList.length; i++) {
+                for (int j = 0; j < recentGazeCountList[i].length; j++) {
+                    if (((recentGazeCountList[i][j] % 50) == 0) && (recentGazeCountList[i][j] >= 50)) {
+                        Log.d("MyApp", "findTopList!!!!" + recentGazeCountList[i][j]);
+                        findTopList();
+                    }
+                }
+            }
 
             list_gazeInfo.add(gazeInfo);
             list_scroll.add(scroll);
@@ -678,7 +681,6 @@ public class GazeTrackerDataStorage {
         totalCount++;
 
         if (layout_name.equals("store_menu")){
-            Log.d("MyApp", "find!!!!store_menu");
 
             //어떤 가게 어떤 음식 보는지
             findStoreFood(x, y);
@@ -689,47 +691,39 @@ public class GazeTrackerDataStorage {
     }
 
     public void findStoreFood(float x, float y){
-        Log.d("MyApp", "findStoreFood!!!!");
 
         int recent_food_num = 0;
-        recent_food_num = findFood(x, y) + 1;
-        Log.d("MyApp", "store_num!!!!"+store_num);
+        recent_food_num = findFood(x, y) - 1;
 
-        if(recent_food_num == 0){
-
-        }else{
+        if(recent_food_num >= 0){
             switch (store_num){
                 case 1:
                     recentGazeCountList[0][recent_food_num] += 1;
-                    Log.d("MyApp", "recentGazeCountList[" + 0 + "][" + recent_food_num + "] = "+recentGazeCountList[0][recent_food_num-1]);
+                    Log.d("MyApp", "recentGazeCountList[" + 0 + "][" + recent_food_num + "] = "+recentGazeCountList[0][recent_food_num]);
                     break;
                 case 2:
                     recentGazeCountList[1][recent_food_num] += 1;
-                    Log.d("MyApp", "recentGazeCountList[" + 0 + "][" + recent_food_num + "] = "+recentGazeCountList[0][recent_food_num-1]);
+                    Log.d("MyApp", "recentGazeCountList[" + 1 + "][" + recent_food_num + "] = "+recentGazeCountList[1][recent_food_num]);
                     break;
                 case 3:
                     recentGazeCountList[2][recent_food_num] += 1;
-                    Log.d("MyApp", "recentGazeCountList[" + 0 + "][" + recent_food_num + "] = "+recentGazeCountList[0][recent_food_num-1]);
+                    Log.d("MyApp", "recentGazeCountList[" + 2 + "][" + recent_food_num + "] = "+recentGazeCountList[2][recent_food_num]);
                     break;
                 case 4:
                     recentGazeCountList[3][recent_food_num] += 1;
-                    Log.d("MyApp", "recentGazeCountList[" + 0 + "][" + recent_food_num + "] = "+recentGazeCountList[0][recent_food_num-1]);
+                    Log.d("MyApp", "recentGazeCountList[" + 3 + "][" + recent_food_num + "] = "+recentGazeCountList[3][recent_food_num]);
                     break;
                 case 5:
                     recentGazeCountList[4][recent_food_num] += 1;
-                    Log.d("MyApp", "recentGazeCountList[" + 0 + "][" + recent_food_num + "] = "+recentGazeCountList[0][recent_food_num-1]);
+                    Log.d("MyApp", "recentGazeCountList[" + 4 + "][" + recent_food_num + "] = "+recentGazeCountList[4][recent_food_num]);
                     break;
                 default:
                     break;
             }
-
-            //Top5에 들어가는지 확인
-            findTopList();
         }
     }
 
     public int findFood(float x, float y){
-        Log.d("MyApp", "findFood!!!!");
 
         if (x >= 26 && x <= 369 && y >= 884 && y <= 1409) {
             return 1;
@@ -766,16 +760,13 @@ public class GazeTrackerDataStorage {
         for (int i = 0; i < recentGazeCountList.length; i++) {
             for (int j = 0; j < recentGazeCountList[i].length; j++) {
 
-                if(recentGazeCountList[i][j] > 100){
-                    addTop5List(i, j);
-                }
-
-                Log.d("MyApp", "gazeCountList[" + i + "][" + j + "] = " + recentGazeCountList[i][j]);
+                addTop5List(i, j);
             }
         }
     }
 
     public void addTop5List(int i, int j) {
+        Log.d("MyApp", "addTop5List");
         int gazeCount = recentGazeCountList[i][j];
 
         int minGazeCountIndex = 0; // recentTop5List에서 최소 gazeCount를 가진 객체의 인덱스를 찾음
