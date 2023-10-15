@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.foodineye_app.data.Order;
 import com.example.foodineye_app.gaze.PostGaze;
+import com.example.foodineye_app.gaze.RouletteData;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -37,7 +38,7 @@ public class Data extends Application {
             {0, 0, 0, 0}                 // 니나노 덮밥
     };
 
-    private int[] top5List = {0, 0, 0, 0, 0};
+    private  RouletteData[] top5List = new RouletteData[5];
     private int totalCount;
 
     //-------------------------------------------------------------------------------------
@@ -49,11 +50,11 @@ public class Data extends Application {
         this.gazeCountList = gazeCountList;
     }
 
-    public int[] getTop5List() {
+    public RouletteData[] getTop5List() {
         return top5List;
     }
 
-    public void setTop5List(int[] top5List) {
+    public void setTop5List(RouletteData[] top5List) {
         this.top5List = top5List;
     }
 
