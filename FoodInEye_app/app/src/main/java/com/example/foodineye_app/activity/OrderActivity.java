@@ -293,7 +293,7 @@ public class OrderActivity extends AppCompatActivity {
         gazeTrackerDataStorage.setContext(this);
 
         if (gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.setGazeTracker(ctx, orderLayout, viewpoint);
+            gazeTrackerDataStorage.setGazeTracker(ctx, orderLayout, viewpoint, 0, 0);
         }
     }
 

@@ -82,7 +82,7 @@ public class GazeTrackerDataStorage {
 
     //-----------------------------------------------------------------------------------------
 
-    public void setGazeTracker(Context context, ConstraintLayout constraintLayout, PointView viewPoint){
+    public void setGazeTracker(Context context, ConstraintLayout constraintLayout, PointView viewPoint, int store_num, int food_num){
 
         GazeTrackerManager gazeTrackerManager = new GazeTrackerManager(context);
         setGazeTracker(gazeTrackerManager);
@@ -375,6 +375,9 @@ public class GazeTrackerDataStorage {
 //            Log.v("gaze", "x=" + gx + ", y=" + gy + "scroll=" + scroll);
 //        });
 
+        //(gx, gy)좌표로 가게, 음식 찾기
+        find(gx, gy+scroll);
+
         //save gazeInfo in arraylist -----
         Log.d("!!!!!!!!!!gazeDataCapturing", "gazeDataCapturing: "+gazeDataCapturing);
         if(gazeDataCapturing){
@@ -478,11 +481,6 @@ public class GazeTrackerDataStorage {
         webView.evaluateJavascript(cmd, s -> Log.e(TAG, ">>> " + s));
     }
 
-    private void setUserId() {
-        String cmd = "setUserId('" + userId + "')";
-        executeJs(cmd);
-    }
-
     private void writeTerm(String msg) {
         webView.evaluateJavascript("writeTerm('" + msg + "')", null);
     }
@@ -542,6 +540,10 @@ public class GazeTrackerDataStorage {
             long t = list_gazeInfo.get(j).timestamp;
             float x = list_gazeInfo.get(j).x;
             float y = (list_gazeInfo.get(j).y) + scroll;
+
+
+
+
             gaze = new PostGaze.Gaze(x, y, t);
             gazeArrayList.add(gaze);
         }
@@ -597,6 +599,11 @@ public class GazeTrackerDataStorage {
 
     public void quitBackgroundThread(){
         backgroundThread.quitSafely();
+    }
+
+    /// (x, y)으로  s_num, f_num 파악하기-------------------------------------------------------------
+    public void find(float x, float y){
+
     }
 
 }

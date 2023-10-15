@@ -388,8 +388,6 @@ public class MenuActivity extends AppCompatActivity{
         if(eyePermission == 1){
             gazeTrackerDataStorage.stopGazeTracker("store_menu", recent_sNum, 0);
         }
-
-
     }
 
     @Override
@@ -413,7 +411,7 @@ public class MenuActivity extends AppCompatActivity{
         gazeTrackerDataStorage.setContext(this);
 
         if (gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.setGazeTracker(ctx, menuLayout, viewpoint);
+            gazeTrackerDataStorage.setGazeTracker(ctx, menuLayout, viewpoint, recent_sNum, 0);
         }
     }
 

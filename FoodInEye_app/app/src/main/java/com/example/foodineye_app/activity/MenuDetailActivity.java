@@ -337,7 +337,7 @@ public class MenuDetailActivity extends AppCompatActivity {
         gazeTrackerDataStorage.setContext(this);
 
         if (gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.setGazeTracker(ctx, menuDetailLayout, viewpoint);
+            gazeTrackerDataStorage.setGazeTracker(ctx, menuDetailLayout, viewpoint, s_num, f_num);
         }
     }
 

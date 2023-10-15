@@ -160,7 +160,7 @@ public class StorelistActivity extends AppCompatActivity {
         gazeTrackerDataStorage.setContext(this);
 
         if (gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.setGazeTracker(ctx, storeLayout, viewpoint);
+            gazeTrackerDataStorage.setGazeTracker(ctx, storeLayout, viewpoint, 0, 0);
         }
     }
 
