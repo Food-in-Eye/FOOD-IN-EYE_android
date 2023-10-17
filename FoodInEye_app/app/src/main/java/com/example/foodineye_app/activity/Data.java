@@ -252,4 +252,15 @@ public class Data extends Application {
         }
         return -1; // 해당하는 sNum이나 index를 찾을 수 없을 때 예외 처리
     }
+
+    //s_num과 f_num으로 장바구니에 있는 음식 찾기
+    public boolean findFood(int s_num, int f_num){
+
+        for(Cart cart : cartList){
+            if((cart.s_num == s_num) && (cart.f_num == f_num)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

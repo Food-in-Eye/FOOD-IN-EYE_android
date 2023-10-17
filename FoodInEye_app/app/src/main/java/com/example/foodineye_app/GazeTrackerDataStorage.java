@@ -731,19 +731,23 @@ public class GazeTrackerDataStorage {
         }
     }
 
-    //Top5에 들어갈 값이 있는지 찾기
+    //Top5에 들어갈 수 있는지 찾기
     public void findTopList(int i, int j){
 
+        boolean inCart;
+        inCart = ((Data)context).findFood(i+1, j+1);
+
         //장바구니에 있는지 없는지 확인
-
-
-
-        //이미 Top5List에 있는지
-
-
-
-
-        addTop5List(i, j);
+        if(!inCart) {
+            //장바구니에 없음
+            //이미 Top5List에 있는지 확인
+            boolean inTopList;
+            inTopList = findFood(i+1, j+1);
+            if(!inTopList){
+                //Top5List에 없음
+                addTop5List(i, j);
+            }
+        }
     }
 
     public void addTop5List(int i, int j) {
@@ -777,5 +781,15 @@ public class GazeTrackerDataStorage {
         }
     }
 
+    public boolean findFood(int s_num, int f_num){
+
+        for(RouletteData rouletteData : recentTop5List){
+            if((rouletteData.getS_num() == s_num)&&(rouletteData.getF_num() == f_num)){
+                return true; //장바구니에 있음
+            }
+        }
+        return false; //장바구니에 없음
+
+    }
 
 }
