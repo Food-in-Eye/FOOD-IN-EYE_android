@@ -33,6 +33,7 @@ import com.example.foodineye_app.GazeTrackerDataStorage;
 import com.example.foodineye_app.R;
 import com.example.foodineye_app.data.GetMenu;
 import com.example.foodineye_app.data.GetStoreList;
+import com.example.foodineye_app.data.MetaInfoData;
 import com.google.android.material.tabs.TabLayout;
 
 import java.io.File;
@@ -47,6 +48,7 @@ import visual.camp.sample.view.PointView;
 
 public class MenuActivity extends AppCompatActivity{
 
+    MetaInfoData metaInfoData;
     Toolbar toolbar;
     SharedPreferences sharedPreferences;
     int eyePermission;
@@ -217,6 +219,9 @@ public class MenuActivity extends AppCompatActivity{
             public void onResponse(Call<GetMenu> call, Response<GetMenu> response) {
                 if(response.isSuccessful()){
                     menuInfo = response.body().getMenus();
+
+                    //메뉴 불러올 때 MetaInfoData를 넣기
+                    setMetaInfoData(s_num, menuInfo);
 
                     menuAdapter = new MenuAdapter(getApplicationContext(), menuInfo, m_id, tabs_id, s_name, s_num);
                     menurecyclerView.setAdapter(menuAdapter);
@@ -777,4 +782,15 @@ public class MenuActivity extends AppCompatActivity{
 
         alertDialog.show();
     }
+
+    public void setMetaInfoData(int sNum, List<GetMenu.Menus> menuInfo) {
+
+        int[] fNumList = new int[menuInfo.size()];
+        for (int i = 0; i < menuInfo.size(); i++) {
+            fNumList[i] = menuInfo.get(i).getNum();
+        }
+
+        metaInfoData = new MetaInfoData(sNum, fNumList);
+    }
+
 }

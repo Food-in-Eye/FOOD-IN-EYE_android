@@ -3,6 +3,8 @@ package com.example.foodineye_app.activity;
 import android.app.Application;
 import android.util.Log;
 
+import com.example.foodineye_app.data.GetMenu;
+import com.example.foodineye_app.data.MetaInfoData;
 import com.example.foodineye_app.data.Order;
 import com.example.foodineye_app.gaze.PostGaze;
 import com.example.foodineye_app.gaze.RouletteData;
@@ -40,6 +42,9 @@ public class Data extends Application {
 
     private  RouletteData[] top5List = new RouletteData[5];
     private int totalCount;
+    private List<GetMenu> infoList; //전체
+
+    private MetaInfoData metaInfoData; //s_num과 f_num의 전체 배열
 
     //-------------------------------------------------------------------------------------
     public int[][] getGazeCountList() {
@@ -64,6 +69,14 @@ public class Data extends Application {
 
     public void setTotalCount(int totalCount) {
         this.totalCount = totalCount;
+    }
+
+    public MetaInfoData getMetaInfoData() {
+        return metaInfoData;
+    }
+
+    public void setMetaInfoData(MetaInfoData metaInfoData) {
+        this.metaInfoData = metaInfoData;
     }
 
     //-------------------------------------------------------------------------------------

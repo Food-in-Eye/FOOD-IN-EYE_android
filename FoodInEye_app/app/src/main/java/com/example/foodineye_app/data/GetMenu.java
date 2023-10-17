@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+//각 가게의 메뉴들 정보
 public class GetMenu {
     @SerializedName("_id")
     @Expose
@@ -13,6 +14,10 @@ public class GetMenu {
     @SerializedName("s_id")
     @Expose
     public String s_id;
+
+    @SerializedName("s_num")
+    @Expose
+    public String s_num;
 
     @SerializedName("date")
     @Expose
@@ -29,6 +34,7 @@ public class GetMenu {
                 ", s_id='" + s_id + '\'' +
                 ", date='" + date + '\'' +
                 ", menus=" + menus +
+                ", s_num=" + s_num +
                 '}';
     }
 
@@ -70,8 +76,7 @@ public class GetMenu {
         private String origin;
         @SerializedName("num")
         @Expose
-        private int num;
-
+        private int f_num;
 
         @Override
         public String toString() {
@@ -83,7 +88,7 @@ public class GetMenu {
                     ", desc='" + desc + '\'' +
                     ", allergy='" + allergy + '\'' +
                     ", origin='" + origin + '\'' +
-                    ", num=" + num +
+                    ", f_num=" + f_num +
                     '}';
         }
 
@@ -119,7 +124,7 @@ public class GetMenu {
         }
 
         public int getNum() {
-            return num;
+            return f_num;
         }
     }
 }

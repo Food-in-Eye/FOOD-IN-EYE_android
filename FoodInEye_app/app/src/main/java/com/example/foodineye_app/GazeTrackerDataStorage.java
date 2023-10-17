@@ -90,6 +90,7 @@ public class GazeTrackerDataStorage {
     int[][] recentGazeCountList;
     private  RouletteData[] recentTop5List = new RouletteData[5]; // Top5를 저장할 배열
     int totalCount = 0;
+    int recentCount = 0;
 
     public void setGazeTracker(Context context, ConstraintLayout constraintLayout, PointView viewPoint,String layout_name, int store_num, int food_num){
 
@@ -148,6 +149,12 @@ public class GazeTrackerDataStorage {
         if(layout_name.equals("menu_detail")){
             int halfCount = totalCount/2;
             recentGazeCountList[store_num-1][food_num-1] += halfCount;
+            recentCount = recentGazeCountList[store_num-1][food_num-1];
+
+            // 업데이트된 recentCount 값으로 조건 확인
+            if ((recentCount % 50) == 0 && recentCount >= 50) {
+                findTopList(store_num-1, food_num-1);
+            }
         }
 
         // gazeCountList, top5List, totalCount 설정
@@ -186,45 +193,7 @@ public class GazeTrackerDataStorage {
 
     private final Handler uiHandler = new Handler(Looper.getMainLooper());
 
-//    private void runGazeTracker() {
-//        new Thread(() -> {
-//            // 로딩창 표시
-//            uiHandler.post(new Runnable() {
-//                @Override
-//                public void run() {
-//                    // UI 작업을 여기에서 수행
-//                    progressDialog = new ProgressDialog(context);
-//                    progressDialog.setMessage("로딩 중...");
-//                    progressDialog.setCancelable(false); // 사용자가 취소하지 못하도록 설정
-//                    progressDialog.show();
-//                }
-//            });
-//
-//            initGazeTracker();
-//            try {
-//                Thread.sleep(2000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//
-//            synchronized (list_gazeInfo) {
-//                // 로딩창 닫기
-//                uiHandler.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        if (progressDialog != null && progressDialog.isShowing()) {
-//                            progressDialog.dismiss();
-//                        }
-//                    }
-//                });
-//                gazeTracker.startGazeTracking();
-//                show("start gaze tracking");
-//            }
-//        }).start();
-//    }
-
     //loading custom
-
     private void runGazeTracker() {
         CustomLoading loadingDialog = new CustomLoading(context);
         new Thread(() -> {
@@ -441,20 +410,9 @@ public class GazeTrackerDataStorage {
         if(gazeDataCapturing){
 
             //(gx, gy)좌표로 가게, 음식 찾기
-            // gazeCountList 출력
-//            Log.d("MyApp", "gaze[" + gx + ", " + gy+scroll + "]");
+            //Log.d("MyApp", "gaze[" + gx + ", " + gy+scroll + "]");
 
             find(gx, gy + scroll);
-
-            //recentGazeCountList 배열을 이용하여 확인하고 findTopList() 함수 실행
-            for (int i = 0; i < recentGazeCountList.length; i++) {
-                for (int j = 0; j < recentGazeCountList[i].length; j++) {
-                    if (((recentGazeCountList[i][j] % 50) == 0) && (recentGazeCountList[i][j] >= 50)) {
-                        Log.d("MyApp", "findTopList!!!!" + recentGazeCountList[i][j]);
-                        findTopList();
-                    }
-                }
-            }
 
             list_gazeInfo.add(gazeInfo);
             list_scroll.add(scroll);
@@ -680,14 +638,11 @@ public class GazeTrackerDataStorage {
 
         totalCount++;
 
-        if (layout_name.equals("store_menu")){
+        if (layout_name.equals("store_menu")) {
 
             //어떤 가게 어떤 음식 보는지
             findStoreFood(x, y);
-        }else{
-
         }
-
     }
 
     public void findStoreFood(float x, float y){
@@ -696,29 +651,39 @@ public class GazeTrackerDataStorage {
         recent_food_num = findFood(x, y) - 1;
 
         if(recent_food_num >= 0){
+            int recent_store_num = store_num - 1;
             switch (store_num){
                 case 1:
                     recentGazeCountList[0][recent_food_num] += 1;
+                    recentCount = recentGazeCountList[0][recent_food_num];
                     Log.d("MyApp", "recentGazeCountList[" + 0 + "][" + recent_food_num + "] = "+recentGazeCountList[0][recent_food_num]);
                     break;
                 case 2:
                     recentGazeCountList[1][recent_food_num] += 1;
+                    recentCount = recentGazeCountList[1][recent_food_num];
                     Log.d("MyApp", "recentGazeCountList[" + 1 + "][" + recent_food_num + "] = "+recentGazeCountList[1][recent_food_num]);
                     break;
                 case 3:
                     recentGazeCountList[2][recent_food_num] += 1;
+                    recentCount = recentGazeCountList[2][recent_food_num];
                     Log.d("MyApp", "recentGazeCountList[" + 2 + "][" + recent_food_num + "] = "+recentGazeCountList[2][recent_food_num]);
                     break;
                 case 4:
                     recentGazeCountList[3][recent_food_num] += 1;
+                    recentCount = recentGazeCountList[3][recent_food_num];
                     Log.d("MyApp", "recentGazeCountList[" + 3 + "][" + recent_food_num + "] = "+recentGazeCountList[3][recent_food_num]);
                     break;
                 case 5:
                     recentGazeCountList[4][recent_food_num] += 1;
+                    recentCount = recentGazeCountList[4][recent_food_num];
                     Log.d("MyApp", "recentGazeCountList[" + 4 + "][" + recent_food_num + "] = "+recentGazeCountList[4][recent_food_num]);
                     break;
                 default:
                     break;
+            }
+            // 업데이트된 recentCount 값으로 조건 확인
+            if ((recentCount % 50) == 0 && recentCount >= 50) {
+                findTopList(recent_store_num, recent_food_num);
             }
         }
     }
@@ -755,18 +720,24 @@ public class GazeTrackerDataStorage {
     }
 
     //Top5에 들어갈 값이 있는지 찾기
-    public void findTopList(){
+    public void findTopList(int i, int j){
 
-        for (int i = 0; i < recentGazeCountList.length; i++) {
-            for (int j = 0; j < recentGazeCountList[i].length; j++) {
+        //장바구니에 있는지 없는지 확인
 
-                addTop5List(i, j);
-            }
-        }
+
+
+        //이미 Top5List에 있는지
+
+
+
+
+        addTop5List(i, j);
     }
 
     public void addTop5List(int i, int j) {
+
         Log.d("MyApp", "addTop5List");
+
         int gazeCount = recentGazeCountList[i][j];
 
         int minGazeCountIndex = 0; // recentTop5List에서 최소 gazeCount를 가진 객체의 인덱스를 찾음
@@ -774,6 +745,7 @@ public class GazeTrackerDataStorage {
 
         for (int k = 0; k < 5; k++) {
             if (recentTop5List[k] == null) {
+
                 // 요소가 null이면 아직 채워지지 않았으므로 새 객체를 추가할 수 있음
                 recentTop5List[k] = new RouletteData(i+1, j+1, gazeCount);
                 Log.d("MyApp", "addTop5List!!!!recentTop5List: " + recentTop5List[k]);
@@ -781,7 +753,7 @@ public class GazeTrackerDataStorage {
 
             } else if (recentTop5List[k].getRecentGazeCountListValue() < minGazeCount) {
                 minGazeCount = recentTop5List[k].getRecentGazeCountListValue();
-                minGazeCountIndex = k;
+                minGazeCountIndex = k; //최솟값 기억
             }
         }
 
