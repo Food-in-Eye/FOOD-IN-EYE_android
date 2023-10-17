@@ -786,11 +786,12 @@ public class MenuActivity extends AppCompatActivity{
     public void setMetaInfoData(int sNum, List<GetMenu.Menus> menuInfo) {
 
         int[] fNumList = new int[menuInfo.size()];
+
         for (int i = 0; i < menuInfo.size(); i++) {
             fNumList[i] = menuInfo.get(i).getNum();
         }
 
         metaInfoData = new MetaInfoData(sNum, fNumList);
+        ((Data)ctx).addMetaInfoData(metaInfoData);
     }
-
 }

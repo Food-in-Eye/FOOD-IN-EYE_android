@@ -11,4 +11,20 @@ public class MetaInfoData {
         this.sNum = sNum;
         this.fNumList = fNumList;
     }
+
+    public int getsNum() {
+        return sNum;
+    }
+
+    public void setsNum(int sNum) {
+        this.sNum = sNum;
+    }
+
+    public int[] getfNumList() {
+        return fNumList;
+    }
+
+    public void setfNumList(int[] fNumList) {
+        this.fNumList = fNumList;
+    }
 }

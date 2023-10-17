@@ -1,8 +1,6 @@
 package com.example.foodineye_app.activity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Cart implements Serializable {
 
@@ -15,7 +13,10 @@ public class Cart implements Serializable {
     String m_imageKey;
     int m_count;
 
-    public Cart(String s_id, String s_name, String m_id, String f_id, String m_name, int m_price, String m_imageKey) {
+    int s_num;
+    int f_num;
+
+    public Cart(String s_id, String s_name, String m_id, String f_id, String m_name, int m_price, String m_imageKey, int s_num, int f_num) {
         this.s_id = s_id;
         this.s_name = s_name;
         this.m_id = m_id;
@@ -24,6 +25,8 @@ public class Cart implements Serializable {
         this.m_price = m_price;
         this.m_imageKey = m_imageKey;
         m_count = 1;
+        this.s_num = s_num;
+        this.f_num = f_num;
     }
 
     public String toString(){return "s_id: "+ s_id+ " m_id: "+m_id+" f_id: "+f_id +"m_count"+m_count;}

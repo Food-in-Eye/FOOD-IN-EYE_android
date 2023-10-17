@@ -44,7 +44,7 @@ public class Data extends Application {
     private int totalCount;
     private List<GetMenu> infoList; //전체
 
-    private MetaInfoData metaInfoData; //s_num과 f_num의 전체 배열
+    private List<MetaInfoData> metaInfoDataList; //s_num과 f_num의 전체 배열
 
     //-------------------------------------------------------------------------------------
     public int[][] getGazeCountList() {
@@ -71,12 +71,12 @@ public class Data extends Application {
         this.totalCount = totalCount;
     }
 
-    public MetaInfoData getMetaInfoData() {
-        return metaInfoData;
+    public List<MetaInfoData> getMetaInfoDataList() {
+        return metaInfoDataList;
     }
 
-    public void setMetaInfoData(MetaInfoData metaInfoData) {
-        this.metaInfoData = metaInfoData;
+    public void setMetaInfoDataList(List<MetaInfoData> metaInfoDataList) {
+        this.metaInfoDataList = metaInfoDataList;
     }
 
     //-------------------------------------------------------------------------------------
@@ -93,7 +93,6 @@ public class Data extends Application {
     public void setOrderList(){
 
     }
-
 
     //carList
     @Override
@@ -237,4 +236,20 @@ public class Data extends Application {
         return "";
     }
 
+    public void addMetaInfoData(MetaInfoData metaInfoData){
+        metaInfoDataList.add(metaInfoData);
+    }
+
+    //sNum을 알 때 index의 위치를 알 때 f_num 값 return 하기
+    public int getFNumBySNum(int sNum, int index) {
+        for (MetaInfoData metaInfoData : metaInfoDataList) {
+            if (metaInfoData.getsNum() == sNum) {
+                int[] fNumList = metaInfoData.getfNumList();
+                if (index >= 0 && index < fNumList.length) {
+                    return fNumList[index];
+                }
+            }
+        }
+        return -1; // 해당하는 sNum이나 index를 찾을 수 없을 때 예외 처리
+    }
 }

@@ -20,10 +20,12 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.example.foodineye_app.activity.CustomLoading;
 import com.example.foodineye_app.activity.Data;
 import com.example.foodineye_app.activity.StorelistActivity;
+import com.example.foodineye_app.data.MetaInfoData;
 import com.example.foodineye_app.gaze.PostGaze;
 import com.example.foodineye_app.gaze.RouletteData;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import camp.visual.gazetracker.callback.CalibrationCallback;
 import camp.visual.gazetracker.callback.GazeCallback;
@@ -91,6 +93,7 @@ public class GazeTrackerDataStorage {
     private  RouletteData[] recentTop5List = new RouletteData[5]; // Top5를 저장할 배열
     int totalCount = 0;
     int recentCount = 0;
+    List<MetaInfoData> metaInfoDataList; //s_num과 f_num의 전체 배열
 
     public void setGazeTracker(Context context, ConstraintLayout constraintLayout, PointView viewPoint,String layout_name, int store_num, int food_num){
 
@@ -105,6 +108,7 @@ public class GazeTrackerDataStorage {
         recentGazeCountList = ((Data)context).getGazeCountList();
         recentTop5List = ((Data)context).getTop5List();
         totalCount = ((Data)context).getTotalCount();
+        metaInfoDataList = ((Data)context).getMetaInfoDataList();
 
         // top5List 출력
 
@@ -648,10 +652,10 @@ public class GazeTrackerDataStorage {
     public void findStoreFood(float x, float y){
 
         int recent_food_num = 0;
-        recent_food_num = findFood(x, y) - 1;
+        recent_food_num = findFood(x, y) - 1; //실제 f_num-1은 index
 
         if(recent_food_num >= 0){
-            int recent_store_num = store_num - 1;
+            int recent_store_num = store_num - 1; //실제 s_num-1은 index
             switch (store_num){
                 case 1:
                     recentGazeCountList[0][recent_food_num] += 1;
@@ -691,28 +695,36 @@ public class GazeTrackerDataStorage {
     public int findFood(float x, float y){
 
         if (x >= 26 && x <= 369 && y >= 884 && y <= 1409) {
-            return 1;
+            int f_num = ((Data)context).getFNumBySNum(store_num, 0);
+            return f_num; //실제 food의 고유한 f_num
 
         }else if(x >= 369 && x <= 711 && y >= 884 && y <= 1409){
-            return 2;
+            int f_num = ((Data)context).getFNumBySNum(store_num, 1);
+            return f_num;
 
         }else if(x >= 711 && x <= 1054 && y >= 884 && y <= 1409) {
-            return 3;
+            int f_num = ((Data)context).getFNumBySNum(store_num, 2);
+            return f_num;
 
         }else if(x >= 26 && x <= 369 && y >= 1409 && y <= 1934) {
-            return 4;
+            int f_num = ((Data)context).getFNumBySNum(store_num, 3);
+            return f_num;
 
         }else if(x >= 369 && x <= 711 && y >= 1409 && y <= 1934){
-            return 5;
+            int f_num = ((Data)context).getFNumBySNum(store_num, 4);
+            return f_num;
 
         }else if(x >= 711 && x <= 1054 && y >= 1409 && y <= 1934) {
-            return 6;
+            int f_num = ((Data)context).getFNumBySNum(store_num, 5);
+            return f_num;
 
         }else if(x >= 26 && x <= 369 && y >= 1934 && y <= 2459) {
-            return 7;
+            int f_num = ((Data)context).getFNumBySNum(store_num, 6);
+            return f_num;
 
         }else if(x >= 369 && x <= 711 && y >= 1934 && y <= 2459){
-            return 8;
+            int f_num = ((Data)context).getFNumBySNum(store_num, 7);
+            return f_num;
         }
         else{
             return 0;
