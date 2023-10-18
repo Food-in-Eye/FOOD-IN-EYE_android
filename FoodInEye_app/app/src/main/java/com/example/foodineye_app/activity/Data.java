@@ -46,6 +46,7 @@ public class Data extends Application {
 
     private List<MetaInfoData> metaInfoDataList = new ArrayList<>(); //s_num과 f_num의 전체 배열
     private List<GetMenu> allMenuList; //모든 가게 s_num과 food 정보들의 배열
+    private int sNum;
 
     //-------------------------------------------------------------------------------------
     public int[][] getGazeCountList() {
@@ -78,6 +79,10 @@ public class Data extends Application {
 
     public void setMetaInfoDataList(List<MetaInfoData> metaInfoDataList) {
         this.metaInfoDataList = metaInfoDataList;
+    }
+
+    public void setsNum(int sNum) {
+        this.sNum = sNum;
     }
 
     //-------------------------------------------------------------------------------------

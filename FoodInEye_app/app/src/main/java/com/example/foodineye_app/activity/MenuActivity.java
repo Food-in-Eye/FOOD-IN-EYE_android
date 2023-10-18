@@ -319,7 +319,6 @@ public class MenuActivity extends AppCompatActivity{
                                 // 최근 선택된 탭의 인덱스 업데이트
                                 previousTabIndex = selectedTabIndex;
 
-                                // 나머지 코드 생략...
                                 //선택
                                 String store_name = null;
                                 int position = tab.getPosition();
@@ -421,7 +420,7 @@ public class MenuActivity extends AppCompatActivity{
         gazeTrackerDataStorage.setContext(this);
 
         if (gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.setGazeTracker(ctx, menuLayout, viewpoint,"store_menu", sNum, 0);
+            gazeTrackerDataStorage.setGazeTracker(ctx, menuLayout, viewpoint,"store_menu", recent_sNum, 0);
             gazeTrackerDataStorage.setLottieAnimationView(lottieAnimationView);
         }
     }
@@ -804,8 +803,10 @@ public class MenuActivity extends AppCompatActivity{
         metaInfoData = new MetaInfoData(sNum, fNumList);
         Log.d("MyApp", "MenuActivity_metaInfoData: "+metaInfoData.toString());
         ((Data) ctx).addMetaInfoData(metaInfoData);
+        ((Data) ctx).setsNum(sNum);
         if(eyePermission == 1){
             gazeTrackerDataStorage.setMetaInfoDataList(((Data)ctx).getMetaInfoDataList());
+            gazeTrackerDataStorage.setStore_num(sNum);
         }
     }
 

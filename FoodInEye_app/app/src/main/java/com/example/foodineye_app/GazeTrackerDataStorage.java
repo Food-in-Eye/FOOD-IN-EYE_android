@@ -27,6 +27,7 @@ import com.example.foodineye_app.gaze.PostGaze;
 import com.example.foodineye_app.gaze.RouletteData;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import camp.visual.gazetracker.callback.CalibrationCallback;
@@ -792,7 +793,7 @@ public class GazeTrackerDataStorage {
             //장바구니에 없음
             //이미 Top5List에 있는지 확인
             boolean inTopList;
-            inTopList = findFood(i+1, j+1);
+            inTopList = findTop(i+1, j+1);
             if(!inTopList){
                 Log.d("MyApp", "Top5List에 없음" + inTopList);
                 //Top5List에 없음
@@ -816,6 +817,7 @@ public class GazeTrackerDataStorage {
                 // 요소가 null이면 아직 채워지지 않았으므로 새 객체를 추가할 수 있음
                 recentTop5List[k] = new RouletteData(i+1, j+1, gazeCount);
                 Log.d("MyApp", "addTop5List!!!!recentTop5List: " + recentTop5List[k]);
+                Log.d("MyApp", "addTop5List!!!!recentTop5List: " + Arrays.toString(recentTop5List));
                 return;
 
             } else if (recentTop5List[k].getRecentGazeCountListValue() < minGazeCount) {
@@ -830,17 +832,22 @@ public class GazeTrackerDataStorage {
             // 최소 gazeCount를 가진 객체를 새 RouletteData 객체로 교체
             recentTop5List[minGazeCountIndex] = rouletteData;
         }
+
+        Log.d("MyApp", "addTop5List!!!!recentTop5List: " + Arrays.toString(recentTop5List));
     }
 
-    public boolean findFood(int s_num, int f_num){
+    public boolean findTop(int s_num, int f_num) {
 
-        for(RouletteData rouletteData : recentTop5List){
-            if((rouletteData.getS_num() == s_num)&&(rouletteData.getF_num() == f_num)){
-                return true; //장바구니에 있음
+        if (recentTop5List != null) { // recentTop5List가 null이 아닌지 확인
+            for (RouletteData rouletteData : recentTop5List) {
+                if (rouletteData != null) { // rouletteData가 null이 아닌지 확인
+                    if (rouletteData.getS_num() == s_num && rouletteData.getF_num() == f_num) {
+                        return true; // 장바구니에 있음
+                    }
+                }
             }
         }
-        return false; //장바구니에 없음
-
+        return false; // 장바구니에 없음
     }
 
     //룰렛 생성 트리거
