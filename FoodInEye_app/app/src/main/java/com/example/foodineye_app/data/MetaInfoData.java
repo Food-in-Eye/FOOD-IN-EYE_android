@@ -1,6 +1,8 @@
 package com.example.foodineye_app.data;
 
 
+import java.util.Arrays;
+
 //가게의 s_num과 그 가게의 해당하는 f_num의 배열이 존재
 public class MetaInfoData {
 
@@ -26,5 +28,13 @@ public class MetaInfoData {
 
     public void setfNumList(int[] fNumList) {
         this.fNumList = fNumList;
+    }
+
+    @Override
+    public String toString() {
+        return "MetaInfoData{" +
+                "sNum=" + sNum +
+                ", fNumList=" + Arrays.toString(fNumList) +
+                '}';
     }
 }

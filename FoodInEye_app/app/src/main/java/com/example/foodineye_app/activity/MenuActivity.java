@@ -27,6 +27,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.foodineye_app.ApiClient;
 import com.example.foodineye_app.ApiInterface;
 import com.example.foodineye_app.GazeTrackerDataStorage;
@@ -48,6 +49,7 @@ import visual.camp.sample.view.PointView;
 
 public class MenuActivity extends AppCompatActivity{
 
+    LottieAnimationView lottieAnimationView;
     MetaInfoData metaInfoData;
     Toolbar toolbar;
     SharedPreferences sharedPreferences;
@@ -86,6 +88,9 @@ public class MenuActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
+        lottieAnimationView = findViewById(R.id.menu_roulette_ani2);
+        lottieAnimationView.pauseAnimation();
 
         toolbar = findViewById(R.id.menu_toolbar);
         setToolBar(toolbar);
@@ -416,7 +421,8 @@ public class MenuActivity extends AppCompatActivity{
         gazeTrackerDataStorage.setContext(this);
 
         if (gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.setGazeTracker(ctx, menuLayout, viewpoint,"store_menu", recent_sNum, 0);
+            gazeTrackerDataStorage.setGazeTracker(ctx, menuLayout, viewpoint,"store_menu", sNum, 0);
+            gazeTrackerDataStorage.setLottieAnimationView(lottieAnimationView);
         }
     }
 
@@ -784,14 +790,25 @@ public class MenuActivity extends AppCompatActivity{
     }
 
     public void setMetaInfoData(int sNum, List<GetMenu.Menus> menuInfo) {
-
         int[] fNumList = new int[menuInfo.size()];
 
         for (int i = 0; i < menuInfo.size(); i++) {
             fNumList[i] = menuInfo.get(i).getNum();
         }
 
+        // fNumList의 전체 값을 로그로 출력
+        for (int num : fNumList) {
+            Log.d("MetaInfoData", "fNumList value: " + num);
+        }
+
         metaInfoData = new MetaInfoData(sNum, fNumList);
-        ((Data)ctx).addMetaInfoData(metaInfoData);
+        Log.d("MyApp", "MenuActivity_metaInfoData: "+metaInfoData.toString());
+        ((Data) ctx).addMetaInfoData(metaInfoData);
+        if(eyePermission == 1){
+            gazeTrackerDataStorage.setMetaInfoDataList(((Data)ctx).getMetaInfoDataList());
+        }
     }
+
+
+
 }

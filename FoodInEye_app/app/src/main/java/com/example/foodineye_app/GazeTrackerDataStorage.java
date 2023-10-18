@@ -17,6 +17,8 @@ import android.webkit.WebView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.airbnb.lottie.LottieAnimationView;
+import com.example.foodineye_app.activity.Cart;
 import com.example.foodineye_app.activity.CustomLoading;
 import com.example.foodineye_app.activity.Data;
 import com.example.foodineye_app.activity.StorelistActivity;
@@ -85,35 +87,39 @@ public class GazeTrackerDataStorage {
 
     //-----------------------------------------------------------------------------------------
 
-    private String layout_name;
-    private int store_num;
-    private int food_num;
+    String layout_name;
+    int store_num;
+    int food_num;
 
     int[][] recentGazeCountList;
     private  RouletteData[] recentTop5List = new RouletteData[5]; // Top5를 저장할 배열
     int totalCount = 0;
     int recentCount = 0;
     List<MetaInfoData> metaInfoDataList; //s_num과 f_num의 전체 배열
+    List<Cart> cartList;
 
-    public void setGazeTracker(Context context, ConstraintLayout constraintLayout, PointView viewPoint,String layout_name, int store_num, int food_num){
+
+    LottieAnimationView lottieAnimationView;
+
+    public void setGazeTracker(Context context, ConstraintLayout constraintLayout, PointView viewPoint,String layout_name, int s_num, int f_num){
 
         GazeTrackerManager gazeTrackerManager = new GazeTrackerManager(context);
         setGazeTracker(gazeTrackerManager);
         setconstraintLayout(constraintLayout);
 
-        setLayout_name(layout_name);
-        setStore_num(store_num);
-        setFood_num(store_num);
-
         recentGazeCountList = ((Data)context).getGazeCountList();
         recentTop5List = ((Data)context).getTop5List();
         totalCount = ((Data)context).getTotalCount();
         metaInfoDataList = ((Data)context).getMetaInfoDataList();
+        cartList = ((Data)context).getCartList();
+
+        setLayout_name(layout_name);
+        Log.d("MyApp", "setGazeTracker: "+layout_name);
+        setStore_num(s_num);
+        Log.d("MyApp", "setGazeTracker: "+store_num);
+        setFood_num(f_num);
 
         // top5List 출력
-
-
-//        setRecentGazeCountList(((Data)context).getGazeCountList());
 
         initSpeedDial();
         setViewPoint(viewPoint);
@@ -154,6 +160,7 @@ public class GazeTrackerDataStorage {
             int halfCount = totalCount/2;
             recentGazeCountList[store_num-1][food_num-1] += halfCount;
             recentCount = recentGazeCountList[store_num-1][food_num-1];
+            Log.d("MyApp", "menud_detail_recentCount"+recentCount);
 
             // 업데이트된 recentCount 값으로 조건 확인
             if ((recentCount % 50) == 0 && recentCount >= 50) {
@@ -176,22 +183,6 @@ public class GazeTrackerDataStorage {
 
 
     }
-
-
-//    private void runGazeTracker() {
-//        new Thread(() -> {
-//            initGazeTracker();
-//            try {
-//                Thread.sleep(2000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            synchronized (list_gazeInfo){
-//                gazeTracker.startGazeTracking();
-//                show("start gaze tracking");
-//            }
-//        }).start();
-//    }
 
     private ProgressDialog progressDialog;
 
@@ -240,6 +231,15 @@ public class GazeTrackerDataStorage {
     //-----------------------------------------------------------------------------------------
 
     //setter
+
+    public void setMetaInfoDataList(List<MetaInfoData> metaInfoDataList) {
+        Log.d("MyApp", "metaInfoDataList"+metaInfoDataList.toString());
+    }
+
+    public void setLottieAnimationView(LottieAnimationView lottieAnimationView) {
+        this.lottieAnimationView = lottieAnimationView;
+    }
+
     public void setRecentGazeCountList(int[][] gazeCountList) {
         this.recentGazeCountList = gazeCountList;
     }
@@ -417,6 +417,7 @@ public class GazeTrackerDataStorage {
             //Log.d("MyApp", "gaze[" + gx + ", " + gy+scroll + "]");
 
             find(gx, gy + scroll);
+            totalCount++;
 
             list_gazeInfo.add(gazeInfo);
             list_scroll.add(scroll);
@@ -640,9 +641,8 @@ public class GazeTrackerDataStorage {
     /// (x, y)으로  s_num, f_num 파악하기-------------------------------------------------------------
     public void find(float x, float y){
 
-        totalCount++;
-
         if (layout_name.equals("store_menu")) {
+            checkAndPlayAnimation();
 
             //어떤 가게 어떤 음식 보는지
             findStoreFood(x, y);
@@ -653,6 +653,7 @@ public class GazeTrackerDataStorage {
 
         int recent_food_num = 0;
         recent_food_num = findFood(x, y) - 1; //실제 f_num-1은 index
+        Log.d("MyApp", "findStoreFood" + findFood(x, y));
 
         if(recent_food_num >= 0){
             int recent_store_num = store_num - 1; //실제 s_num-1은 index
@@ -686,44 +687,89 @@ public class GazeTrackerDataStorage {
                     break;
             }
             // 업데이트된 recentCount 값으로 조건 확인
+            Log.d("MyApp", "store_menu_recentCount"+recentCount);
+
             if ((recentCount % 50) == 0 && recentCount >= 50) {
+
                 findTopList(recent_store_num, recent_food_num);
             }
         }
     }
 
+//    public int findFood(float x, float y){
+//        Log.d("MyApp", "findFood!!!!!!!!!!!!!!!!!!");
+//
+//        if (x >= 26 && x <= 369 && y >= 884 && y <= 1409) {
+//            int f_num = ((Data)context).getFNumBySNum(store_num, 0);
+//            return f_num; //실제 food의 고유한 f_num
+//
+//        }else if(x >= 369 && x <= 711 && y >= 884 && y <= 1409){
+//            int f_num = ((Data)context).getFNumBySNum(store_num, 1);
+//            return f_num;
+//
+//        }else if(x >= 711 && x <= 1054 && y >= 884 && y <= 1409) {
+//            int f_num = ((Data)context).getFNumBySNum(store_num, 2);
+//            return f_num;
+//
+//        }else if(x >= 26 && x <= 369 && y >= 1409 && y <= 1934) {
+//            int f_num = ((Data)context).getFNumBySNum(store_num, 3);
+//            return f_num;
+//
+//        }else if(x >= 369 && x <= 711 && y >= 1409 && y <= 1934){
+//            int f_num = ((Data)context).getFNumBySNum(store_num, 4);
+//            return f_num;
+//
+//        }else if(x >= 711 && x <= 1054 && y >= 1409 && y <= 1934) {
+//            int f_num = ((Data)context).getFNumBySNum(store_num, 5);
+//            return f_num;
+//
+//        }else if(x >= 26 && x <= 369 && y >= 1934 && y <= 2459) {
+//            int f_num = ((Data)context).getFNumBySNum(store_num, 6);
+//            return f_num;
+//
+//        }else if(x >= 369 && x <= 711 && y >= 1934 && y <= 2459){
+//            int f_num = ((Data)context).getFNumBySNum(store_num, 7);
+//            return f_num;
+//        }
+//        else{
+//            return 0;
+//        }
+//    }
+
     public int findFood(float x, float y){
+        Log.d("MyApp", "findFood!!!!!!!!!!!!!!!!!!");
+        Log.d("MyApp", "findFood_store_num: "+store_num);
 
         if (x >= 26 && x <= 369 && y >= 884 && y <= 1409) {
-            int f_num = ((Data)context).getFNumBySNum(store_num, 0);
+            int f_num = getFNumBySNum(store_num, 0);
             return f_num; //실제 food의 고유한 f_num
 
         }else if(x >= 369 && x <= 711 && y >= 884 && y <= 1409){
-            int f_num = ((Data)context).getFNumBySNum(store_num, 1);
+            int f_num = getFNumBySNum(store_num, 1);
             return f_num;
 
         }else if(x >= 711 && x <= 1054 && y >= 884 && y <= 1409) {
-            int f_num = ((Data)context).getFNumBySNum(store_num, 2);
+            int f_num = getFNumBySNum(store_num, 2);
             return f_num;
 
         }else if(x >= 26 && x <= 369 && y >= 1409 && y <= 1934) {
-            int f_num = ((Data)context).getFNumBySNum(store_num, 3);
+            int f_num = getFNumBySNum(store_num, 3);
             return f_num;
 
         }else if(x >= 369 && x <= 711 && y >= 1409 && y <= 1934){
-            int f_num = ((Data)context).getFNumBySNum(store_num, 4);
+            int f_num = getFNumBySNum(store_num, 4);
             return f_num;
 
         }else if(x >= 711 && x <= 1054 && y >= 1409 && y <= 1934) {
-            int f_num = ((Data)context).getFNumBySNum(store_num, 5);
+            int f_num = getFNumBySNum(store_num, 5);
             return f_num;
 
         }else if(x >= 26 && x <= 369 && y >= 1934 && y <= 2459) {
-            int f_num = ((Data)context).getFNumBySNum(store_num, 6);
+            int f_num = getFNumBySNum(store_num, 6);
             return f_num;
 
         }else if(x >= 369 && x <= 711 && y >= 1934 && y <= 2459){
-            int f_num = ((Data)context).getFNumBySNum(store_num, 7);
+            int f_num = getFNumBySNum(store_num, 7);
             return f_num;
         }
         else{
@@ -731,19 +777,24 @@ public class GazeTrackerDataStorage {
         }
     }
 
+
+
     //Top5에 들어갈 수 있는지 찾기
     public void findTopList(int i, int j){
+        Log.d("MyApp", "findTopList");
 
         boolean inCart;
-        inCart = ((Data)context).findFood(i+1, j+1);
+        inCart = findFoodCart(i+1, j+1);
 
         //장바구니에 있는지 없는지 확인
         if(!inCart) {
+            Log.d("MyApp", "장바구니에 없음" + inCart);
             //장바구니에 없음
             //이미 Top5List에 있는지 확인
             boolean inTopList;
             inTopList = findFood(i+1, j+1);
             if(!inTopList){
+                Log.d("MyApp", "Top5List에 없음" + inTopList);
                 //Top5List에 없음
                 addTop5List(i, j);
             }
@@ -792,4 +843,36 @@ public class GazeTrackerDataStorage {
 
     }
 
+    //룰렛 생성 트리거
+    public void checkAndPlayAnimation() {
+
+        if (totalCount > 30 && recentTop5List != null && recentTop5List.length >= 2) {
+            lottieAnimationView.playAnimation();
+//            lottieAnimationView.resumeAnimation();
+        }
+    }
+
+    //sNum을 알 때 index의 위치를 알 때 f_num 값 return 하기
+    public int getFNumBySNum(int sNum, int index) {
+        for (MetaInfoData metaInfoData : metaInfoDataList) {
+            if (metaInfoData.getsNum() == sNum) {
+                int[] fNumList = metaInfoData.getfNumList();
+                if (index >= 0 && index < fNumList.length) {
+                    return fNumList[index];
+                }
+            }
+        }
+        return -1; // 해당하는 sNum이나 index를 찾을 수 없을 때 예외 처리
+    }
+
+    //s_num과 f_num으로 장바구니에 있는 음식 찾기
+    public boolean findFoodCart(int s_num, int f_num){
+
+        for(Cart cart : cartList){
+            if((cart.getS_num() == s_num) && (cart.getF_num() == f_num)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

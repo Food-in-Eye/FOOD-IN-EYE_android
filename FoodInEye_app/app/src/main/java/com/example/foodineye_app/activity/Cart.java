@@ -13,7 +13,7 @@ public class Cart implements Serializable {
     String m_imageKey;
     int m_count;
 
-    int s_num;
+    public int s_num;
     int f_num;
 
     public Cart(String s_id, String s_name, String m_id, String f_id, String m_name, int m_price, String m_imageKey, int s_num, int f_num) {
@@ -69,5 +69,13 @@ public class Cart implements Serializable {
 
     public int getM_TotalPrice(){
         return m_price*m_count;
+    }
+
+    public int getS_num() {
+        return s_num;
+    }
+
+    public int getF_num() {
+        return f_num;
     }
 }

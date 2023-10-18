@@ -17,7 +17,7 @@ public class GetMenu {
 
     @SerializedName("s_num")
     @Expose
-    public String s_num;
+    public int s_num;
 
     @SerializedName("date")
     @Expose

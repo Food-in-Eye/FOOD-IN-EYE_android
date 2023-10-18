@@ -44,7 +44,8 @@ public class Data extends Application {
     private int totalCount;
     private List<GetMenu> infoList; //전체
 
-    private List<MetaInfoData> metaInfoDataList; //s_num과 f_num의 전체 배열
+    private List<MetaInfoData> metaInfoDataList = new ArrayList<>(); //s_num과 f_num의 전체 배열
+    private List<GetMenu> allMenuList; //모든 가게 s_num과 food 정보들의 배열
 
     //-------------------------------------------------------------------------------------
     public int[][] getGazeCountList() {
@@ -236,8 +237,16 @@ public class Data extends Application {
         return "";
     }
 
-    public void addMetaInfoData(MetaInfoData metaInfoData){
+//    public void addMetaInfoData(MetaInfoData metaInfoData){
+//        metaInfoDataList.add(metaInfoData);
+//    }
+
+    public void addMetaInfoData(MetaInfoData metaInfoData) {
+        if (metaInfoDataList == null) {
+            metaInfoDataList = new ArrayList<>();
+        }
         metaInfoDataList.add(metaInfoData);
+        Log.d("MyApp", "Data_addMetaInfoData: "+metaInfoDataList.toString());
     }
 
     //sNum을 알 때 index의 위치를 알 때 f_num 값 return 하기
@@ -254,13 +263,13 @@ public class Data extends Application {
     }
 
     //s_num과 f_num으로 장바구니에 있는 음식 찾기
-    public boolean findFood(int s_num, int f_num){
-
-        for(Cart cart : cartList){
-            if((cart.s_num == s_num) && (cart.f_num == f_num)) {
-                return true;
-            }
-        }
-        return false;
-    }
+//    public boolean findFood(int s_num, int f_num){
+//
+//        for(Cart cart : cartList){
+//            if((cart.s_num == s_num) && (cart.f_num == f_num)) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 }
