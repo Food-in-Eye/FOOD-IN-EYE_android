@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent startIntent = new Intent(getApplicationContext(), LoginActivity.class);
-//                Intent startIntent = new Intent(getApplicationContext(), RouletteActivity.class);
                 startActivity(startIntent);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 finish();

@@ -49,6 +49,8 @@ import visual.camp.sample.view.PointView;
 
 public class MenuActivity extends AppCompatActivity{
 
+    LinearLayout rouletteView;
+
     LottieAnimationView lottieAnimationView;
     MetaInfoData metaInfoData;
     Toolbar toolbar;
@@ -88,6 +90,8 @@ public class MenuActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
+        rouletteView = findViewById(R.id.menu_roulette_bg);
 
         lottieAnimationView = findViewById(R.id.menu_roulette_ani2);
         lottieAnimationView.pauseAnimation();
@@ -422,6 +426,7 @@ public class MenuActivity extends AppCompatActivity{
         if (gazeTrackerDataStorage != null) {
             gazeTrackerDataStorage.setGazeTracker(ctx, menuLayout, viewpoint,"store_menu", recent_sNum, 0);
             gazeTrackerDataStorage.setLottieAnimationView(lottieAnimationView);
+            gazeTrackerDataStorage.setRouletteView(rouletteView);
         }
     }
 

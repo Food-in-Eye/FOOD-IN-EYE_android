@@ -3,6 +3,7 @@ package com.example.foodineye_app;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Handler;
@@ -12,15 +13,19 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.WindowManager;
 import android.webkit.WebView;
+import android.widget.LinearLayout;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.airbnb.lottie.LottieDrawable;
 import com.example.foodineye_app.activity.Cart;
 import com.example.foodineye_app.activity.CustomLoading;
 import com.example.foodineye_app.activity.Data;
+import com.example.foodineye_app.activity.RouletteActivity;
 import com.example.foodineye_app.activity.StorelistActivity;
 import com.example.foodineye_app.data.MetaInfoData;
 import com.example.foodineye_app.gaze.PostGaze;
@@ -101,6 +106,7 @@ public class GazeTrackerDataStorage {
 
 
     LottieAnimationView lottieAnimationView;
+    LinearLayout rouletteView;
 
     public void setGazeTracker(Context context, ConstraintLayout constraintLayout, PointView viewPoint,String layout_name, int s_num, int f_num){
 
@@ -232,6 +238,9 @@ public class GazeTrackerDataStorage {
     //-----------------------------------------------------------------------------------------
 
     //setter
+    public void setRouletteView(LinearLayout rouletteView) {
+        this.rouletteView = rouletteView;
+    }
 
     public void setMetaInfoDataList(List<MetaInfoData> metaInfoDataList) {
         Log.d("MyApp", "metaInfoDataList"+metaInfoDataList.toString());
@@ -853,9 +862,22 @@ public class GazeTrackerDataStorage {
     //룰렛 생성 트리거
     public void checkAndPlayAnimation() {
 
-        if (totalCount > 30 && recentTop5List != null && recentTop5List.length >= 2) {
+        if (totalCount > 300 && recentTop5List != null && recentTop5List.length >= 2) {
+            rouletteView.setVisibility(View.VISIBLE);
+            lottieAnimationView.setRepeatCount(LottieDrawable.INFINITE); // 무한 반복
             lottieAnimationView.playAnimation();
-//            lottieAnimationView.resumeAnimation();
+
+            //룰렛 클릭했을 때,
+            rouletteView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    //룰렛페이지로 이동할 때, recentTop5List만 넘겨주면 됨
+                    Intent rouletteIntent = new Intent(context, RouletteActivity.class);
+                    rouletteIntent.putExtra("roulette_Top5List", recentTop5List);
+                    context.startActivity(rouletteIntent);
+                }
+            });
         }
     }
 
