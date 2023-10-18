@@ -49,6 +49,37 @@ public class Data extends Application {
     private int sNum;
 
     //-------------------------------------------------------------------------------------
+
+    public List<GetMenu> getAllMenuList() {
+        return allMenuList;
+    }
+
+    public void setAllMenuList(List<GetMenu> allMenuList) {
+        this.allMenuList = allMenuList;
+    }
+
+    public void addAllMenuList(GetMenu getMenu){
+        if (allMenuList == null) {
+            allMenuList = new ArrayList<>();
+        }
+        allMenuList.add(getMenu);
+        Log.d("MyApp", "Data_allMenuList: "+allMenuList.toString());
+    }
+
+    //s_num과 f_num을 알 때, f_name 반환
+    public Cart findMenu(int sNum, int fNum){
+        for (GetMenu getMenu : allMenuList){
+            if(getMenu.s_num == sNum){
+
+                if(getMenu.findMenu(getMenu.s_id, getMenu.s_name, sNum, getMenu._id, fNum) != null){
+                    return getMenu.findMenu(getMenu.s_id, getMenu.s_name, sNum, getMenu._id, fNum);
+                }
+
+            }
+        }
+        return null;
+    }
+
     public int[][] getGazeCountList() {
         return gazeCountList;
     }

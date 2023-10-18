@@ -21,4 +21,12 @@ public class WheelItem {
         this.color = color;
         this.text = text;
     }
+
+    public void setColor(int parseColor) {
+        color = parseColor;
+    }
+
+    public void setName(String foodName) {
+        text = foodName;
+    }
 }

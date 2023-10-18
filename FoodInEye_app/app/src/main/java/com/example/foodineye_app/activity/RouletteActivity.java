@@ -3,6 +3,7 @@ package com.example.foodineye_app.activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +18,7 @@ import com.bluehomestudio.luckywheel.LuckyWheel;
 import com.bluehomestudio.luckywheel.OnLuckyWheelReachTheTarget;
 import com.bluehomestudio.luckywheel.WheelItem;
 import com.example.foodineye_app.R;
+import com.example.foodineye_app.gaze.RouletteData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,10 +31,18 @@ public class RouletteActivity extends AppCompatActivity {
     String point;
     Button startBtn;
 
+    RouletteData[] receivedTop5List;
+
+    List<Cart> cartCandList = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_roulette);
+
+        // top5List 데이터가져옴
+        receivedTop5List = (RouletteData[]) getIntent().getSerializableExtra("top5List");
+        Log.d("룰렛", "receivedTop5List: "+receivedTop5List.toString());
 
         luckyWheel = findViewById(R.id.luck_wheel);
         startBtn = findViewById(R.id.spin_btn);
@@ -43,21 +53,26 @@ public class RouletteActivity extends AppCompatActivity {
     public void setRoulette(){
 
         //점수판 데이터 생성
-        generateWheelItems();
+        findNamesForTop5List();
 
         //점수판 타겟 정해지면 이벤트 발생
         luckyWheel.setLuckyWheelReachTheTarget(new OnLuckyWheelReachTheTarget() {
             @Override
             public void onReachTarget() {
 
-                //아이템 변수에 담기
-                WheelItem wheelItem = wheelItems.get(Integer.parseInt(point)-1);
+                if (point != null && !point.isEmpty()) {
+                    int pointValue = Integer.parseInt(point) - 1;
+                    if (pointValue >= 0 && pointValue < wheelItems.size()) {
+                        WheelItem wheelItem = wheelItems.get(pointValue);
+                        String menu = wheelItem.text;
+                        showDialog(menu);
+                    } else {
+                        // 처리할 수 없는 인덱스
+                    }
+                } else {
+                    // point 값이 비어있거나 null인 경우 처리
+                }
 
-                //아이템 텍스트 변수에 담기
-                String menu = wheelItem.text;
-
-                //show(menu);
-                showDialog(menu); //결과 보여주기
             }
         });
 
@@ -71,24 +86,6 @@ public class RouletteActivity extends AppCompatActivity {
                 luckyWheel.rotateWheelTo(Integer.parseInt(point));
             }
         });
-
-    }
-
-    public void generateWheelItems(){
-
-        wheelItems = new ArrayList<>();
-        wheelItems.add(new WheelItem(Color.parseColor("#7892B5"), "시오라멘"));
-
-        wheelItems.add(new WheelItem(Color.parseColor("#E9B9AA"), "뚝배기 불고기"));
-
-        wheelItems.add(new WheelItem(Color.parseColor("#D98481"), "해장 라면"));
-
-        wheelItems.add(new WheelItem(Color.parseColor("#EDCA7F"), "순두부 찌개"));
-
-        wheelItems.add(new WheelItem(Color.parseColor("#91B5A9"), "바질 새우 파스타"));
-
-        //데이터 넣기
-        luckyWheel.addWheelItems(wheelItems);
 
     }
 
@@ -108,20 +105,27 @@ public class RouletteActivity extends AppCompatActivity {
         ImageView delete = view.findViewById(R.id.alert_roulette_delete);
 
         menuName.setText(m_name);
-        toRoulette.setText("다시 돌리러 가기");
+        toRoulette.setText("한 번 더");
         toCart.setText("장바구니 가기");
 
         toRoulette.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), RouletteActivity.class);
-                startActivity(intent);
+                alertDialog.dismiss();
             }
         });
 
         toCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                for(Cart cart: cartCandList){
+                    if(cart.m_name.equals(m_name)){
+                        Data data = (Data) getApplicationContext();
+                        data.setCartList(cart);
+                    }
+                }
+
                 Intent intent = new Intent(getApplicationContext(), ShoppingCartActivity.class);
                 startActivity(intent);
             }
@@ -135,6 +139,35 @@ public class RouletteActivity extends AppCompatActivity {
         });
 
         alertDialog.show();
+    }
+
+    //s_num, f_num으로 f_name 찾기
+    private void findNamesForTop5List() {
+        if (receivedTop5List != null) {
+            wheelItems = new ArrayList<>(); // 새 ArrayList로 초기화
+
+            // 나머지 코드는 그대로 유지
+            String[] colors = new String[]{"#7892B5", "#E9B9AA", "#D98481", "#EDCA7F", "#91B5A9"};
+            for (int i = 0; i < receivedTop5List.length; i++) {
+                RouletteData rouletteData = receivedTop5List[i];
+                if (rouletteData != null) {
+                    int s_num = rouletteData.getS_num();
+                    int f_num = rouletteData.getF_num();
+                    Cart cartCand = ((Data)getApplication()).findMenu(s_num, f_num);
+                    cartCandList.add(cartCand);
+                    String foodName = cartCand.m_name;
+
+                    if (foodName != null) {
+                        String color = colors[i % colors.length];
+                        WheelItem wheelItem = new WheelItem(Color.parseColor(color), foodName);
+                        wheelItems.add(wheelItem);
+                    }
+                }
+            }
+
+            // 색상 및 음식 이름이 추가된 wheelItems를 설정
+            luckyWheel.addWheelItems(wheelItems);
+        }
     }
 
     private void show(String message) {

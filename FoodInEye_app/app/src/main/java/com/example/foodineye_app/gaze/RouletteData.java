@@ -1,6 +1,8 @@
 package com.example.foodineye_app.gaze;
 
-public class RouletteData {
+import java.io.Serializable;
+
+public class RouletteData implements Serializable {
     private int s_num;
     private int f_num;
     private int recentGazeCountListValue; //recenGazeCount[s_num-1][f_num-1]

@@ -824,7 +824,7 @@ public class GazeTrackerDataStorage {
             if (recentTop5List[k] == null) {
 
                 // 요소가 null이면 아직 채워지지 않았으므로 새 객체를 추가할 수 있음
-                recentTop5List[k] = new RouletteData(i+1, j+1, gazeCount);
+                recentTop5List[k] = new RouletteData(i+1, j+1, recentGazeCountList[i][j]);
                 Log.d("MyApp", "addTop5List!!!!recentTop5List: " + recentTop5List[k]);
                 Log.d("MyApp", "addTop5List!!!!recentTop5List: " + Arrays.toString(recentTop5List));
                 return;
@@ -874,8 +874,9 @@ public class GazeTrackerDataStorage {
 
                     //룰렛페이지로 이동할 때, recentTop5List만 넘겨주면 됨
                     Intent rouletteIntent = new Intent(context, RouletteActivity.class);
-                    rouletteIntent.putExtra("roulette_Top5List", recentTop5List);
+                    rouletteIntent.putExtra("top5List", recentTop5List);
                     context.startActivity(rouletteIntent);
+
                 }
             });
         }

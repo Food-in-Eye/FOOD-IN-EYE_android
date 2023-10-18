@@ -232,6 +232,9 @@ public class MenuActivity extends AppCompatActivity{
                     //메뉴 불러올 때 MetaInfoData를 넣기
                     setMetaInfoData(s_num, menuInfo);
 
+                    //Data클래스에 저장
+                    ((Data) ctx).addAllMenuList(response.body());
+
                     menuAdapter = new MenuAdapter(getApplicationContext(), menuInfo, m_id, tabs_id, s_name, s_num);
                     menurecyclerView.setAdapter(menuAdapter);
                 }else{

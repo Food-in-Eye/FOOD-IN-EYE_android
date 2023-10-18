@@ -1,5 +1,6 @@
 package com.example.foodineye_app.data;
 
+import com.example.foodineye_app.activity.Cart;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -19,13 +20,17 @@ public class GetMenu {
     @Expose
     public int s_num;
 
+    @SerializedName("s_name")
+    @Expose
+    public String s_name;
+
     @SerializedName("date")
     @Expose
     public String date;
 
     @SerializedName("f_list")
     @Expose
-    public List<Menus> menus;
+    public List<Menus> menusList;
 
     @Override
     public String toString() {
@@ -33,7 +38,7 @@ public class GetMenu {
                 "_id='" + _id + '\'' +
                 ", s_id='" + s_id + '\'' +
                 ", date='" + date + '\'' +
-                ", menus=" + menus +
+                ", menus=" + menusList +
                 ", s_num=" + s_num +
                 '}';
     }
@@ -48,7 +53,17 @@ public class GetMenu {
     }
 
     public List<Menus> getMenus() {
-        return menus;
+        return menusList;
+    }
+
+    public Cart findMenu(String s_id, String s_name, int s_num, String m_id, int fNum){
+        for(Menus menus : menusList){
+            if(menus.f_num == fNum){
+                Cart cartCand = new Cart(s_id, s_name, m_id, menus.f_id, menus.name, menus.price, menus.img_key, s_num,fNum);
+                return cartCand;
+            }
+        }
+        return null;
     }
 
     public class Menus{
