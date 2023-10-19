@@ -1,5 +1,6 @@
 package com.example.foodineye_app.activity;
 
+import android.animation.Animator;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.bluehomestudio.luckywheel.LuckyWheel;
 import com.bluehomestudio.luckywheel.OnLuckyWheelReachTheTarget;
 import com.bluehomestudio.luckywheel.WheelItem;
@@ -91,6 +93,9 @@ public class RouletteActivity extends AppCompatActivity {
 
     //show dialog
     public void showDialog(String m_name){
+
+        LottieAnimationView animationView = findViewById(R.id.menu_roulette_ani2);
+
 
         LayoutInflater layoutInflater = LayoutInflater.from(RouletteActivity.this);
         View view = layoutInflater.inflate(R.layout.alert_dialog_roulette, null);
@@ -172,5 +177,57 @@ public class RouletteActivity extends AppCompatActivity {
 
     private void show(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    private void startAni(LottieAnimationView animationView){
+        animationView.addAnimatorListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                // 애니메이션이 시작할 때의 동작
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                // 애니메이션이 종료될 때의 동작
+                animationView.removeAnimatorListener(this); // 리스너 제거
+                // 2번 반복
+                animationView.setRepeatCount(1);
+                // 사라지게 함
+                animationView.addAnimatorListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                        // 애니메이션이 시작할 때의 동작
+                    }
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        // 애니메이션이 종료될 때의 동작
+                        animationView.setVisibility(View.GONE); // 뷰를 숨김
+                    }
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+                        // 애니메이션이 취소될 때의 동작
+                    }
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+                        // 애니메이션이 반복될 때의 동작
+                    }
+                });
+
+                // 다시 재생
+                animationView.playAnimation();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                // 애니메이션이 취소될 때의 동작
+            }
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+                // 애니메이션이 반복될 때의 동작
+            }
+        });
+
+        // 초기 애니메이션 실행
+        animationView.playAnimation();
     }
 }

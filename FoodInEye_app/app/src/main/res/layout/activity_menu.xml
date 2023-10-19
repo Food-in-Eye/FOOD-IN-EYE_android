@@ -69,7 +69,7 @@
                     android:orientation="horizontal"
                     android:layout_marginRight="5dp"
                     android:background="@drawable/roulette_bg_menu"
-                    android:backgroundTint="@color/sygray"
+                    android:backgroundTint="#FFF2CC"
                     android:visibility="invisible">
 
                     <com.airbnb.lottie.LottieAnimationView

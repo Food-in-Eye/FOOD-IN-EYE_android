@@ -411,7 +411,7 @@ public class GazeTrackerDataStorage {
         Log.d("GazeTrackerDataStorage", "gazeInfo_gy: "+gy);
 
         //화면에서 gazepoint 보여주기
-        showGazePoint(gx, gy, gazeInfo.screenState);
+//        showGazePoint(gx, gy, gazeInfo.screenState);
 
 //        context.runOnUiThread(() -> {
 //            onGazeEvent(gx, gy);

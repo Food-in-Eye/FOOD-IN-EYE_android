@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.example.foodineye_app.ApiClient;
 import com.example.foodineye_app.ApiClientEx;
@@ -212,6 +214,15 @@ public class LoginActivity extends AppCompatActivity {
 
                     // 여기서 오류 메시지를 해석하고 사용자에게 알맞은 안내를 제공합니다.
                     if (errorBody.contains("Logon failed.")) {
+
+                        //edittext 배경 stroke 색상 변경하기
+                        GradientDrawable background = (GradientDrawable) editId.getBackground();
+                        background.setStroke(3, ContextCompat.getColor(getApplicationContext(), R.color.red));
+
+                        //edittext 배경 stroke 색상 변경하기
+                        GradientDrawable background1 = (GradientDrawable) editPw.getBackground();
+                        background1.setStroke(3, ContextCompat.getColor(getApplicationContext(), R.color.red));
+
                         show("로그인에 실패했습니다!");
 
                     } else {
