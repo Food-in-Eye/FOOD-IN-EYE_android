@@ -128,6 +128,8 @@ public class RouletteActivity extends AppCompatActivity {
                     if(cart.m_name.equals(m_name)){
                         Data data = (Data) getApplicationContext();
                         data.setCartList(cart);
+                        data.setRecentM_id(cart.s_id);
+                        data.setRecentM_id(cart.m_id);
                     }
                 }
 
