@@ -7,7 +7,7 @@
 
     <!-- 커스텀 툴바 추가 -->
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/camera_toolbar"
+        android:id="@+id/intro_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorOnPrimary"
@@ -15,7 +15,7 @@
 
         <!-- 사용자 정의 뒤로 가기 버튼 추가 -->
         <ImageView
-            android:id="@+id/camera_back"
+            android:id="@+id/intro_back"
             android:layout_width="40dp"
             android:layout_height="24dp"
             android:layout_gravity="start"
@@ -23,7 +23,7 @@
             android:contentDescription="뒤로 가기" />
 
         <TextView
-            android:id="@+id/camera_title"
+            android:id="@+id/intro_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="한 눈에 학식"
@@ -32,7 +32,7 @@
             android:textColor="@color/black"/>
 
         <ImageView
-            android:id="@+id/camera_home"
+            android:id="@+id/intro_home"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/home"
@@ -54,43 +54,35 @@
         android:text="홈 화면"
         android:textSize="30dp"
         android:layout_gravity="center"
-        android:layout_marginTop="30dp"/>
-
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="홈 화면 설명"-->
-<!--            android:textSize="16dp"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:layout_marginTop="30dp"-->
-<!--            android:layout_marginBottom="30dp"/>-->
+        android:layout_marginTop="20dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:orientation="horizontal"
-        android:layout_marginTop="30dp">
+        android:layout_height="530dp"
+        android:orientation="vertical"
+        android:background="@drawable/rec_str10"
+        android:layout_margin="10dp"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="마이페이지, 현재 주문내역, 주문하기, 앱 소개 탭을 \n통해 사용자가 원하는 곳으로 이동할 수 있어요."
+            android:textSize="13dp"
+            android:layout_gravity="center"/>
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:src="@drawable/next"
+            android:layout_height="wrap_content"
+            android:src="@drawable/intro_home"
             android:layout_weight="1"
-            android:layout_marginTop="50dp"
-            android:layout_marginRight="2dp"/>
+            android:layout_marginTop="15dp"/>
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:src="@drawable/next"
-            android:layout_weight="1"
-            android:layout_marginTop="50dp"
-            android:layout_marginLeft="2dp"/>
 
     </LinearLayout>
 
     <Button
-        android:id="@+id/next_btn"
+        android:id="@+id/intro_next_btn"
         android:layout_width="140dp"
         android:layout_height="60dp"
         android:text="다음"
@@ -99,7 +91,7 @@
         android:background="@drawable/sign_up"
         android:backgroundTint="@color/blue"
         android:layout_gravity="center"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="30dp"/>
 
 </LinearLayout>

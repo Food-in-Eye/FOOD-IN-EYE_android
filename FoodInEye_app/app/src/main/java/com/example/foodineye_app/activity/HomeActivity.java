@@ -153,6 +153,8 @@ public class HomeActivity extends AppCompatActivity {
 
                 Intent introIntent = new Intent(getApplicationContext(), IntroActivity.class);
                 startActivity(introIntent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                finish();
 
             }
         });

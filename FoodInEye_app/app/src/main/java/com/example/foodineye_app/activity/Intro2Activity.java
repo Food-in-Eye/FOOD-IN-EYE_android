@@ -11,7 +11,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.foodineye_app.R;
 
-public class IntroActivity extends AppCompatActivity {
+public class Intro2Activity extends AppCompatActivity {
 
     Toolbar toolbar;
     Button nextBtn;
@@ -19,24 +19,23 @@ public class IntroActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_intro);
+        setContentView(R.layout.activity_intro2);
 
         //toolbar
-        toolbar = (Toolbar) findViewById(R.id.intro_toolbar);
+        toolbar = (androidx.appcompat.widget.Toolbar) findViewById(R.id.intro2_toolbar);
         setToolBar(toolbar);
 
         //nettBtn
-        nextBtn = (Button) findViewById(R.id.intro_next_btn);
+        nextBtn = (Button) findViewById(R.id.intro2_next_btn);
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent introIntent = new Intent(getApplicationContext(), Intro2Activity.class);
+                Intent introIntent = new Intent(getApplicationContext(), Intro3Activity.class);
                 startActivity(introIntent);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 finish();
             }
         });
-
     }
 
     //toolbar
@@ -46,7 +45,7 @@ public class IntroActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setTitle(""); // 툴바의 타이틀을 직접 설정
-        ImageView backBtn = (ImageView) findViewById(R.id.intro_back);
+        ImageView backBtn = (ImageView) findViewById(R.id.intro2_back);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,16 +54,14 @@ public class IntroActivity extends AppCompatActivity {
             }
         });
 
-        ImageView homeBtn = (ImageView) findViewById(R.id.intro_home);
+        ImageView homeBtn = (ImageView) findViewById(R.id.intro2_home);
         homeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //-> home
-                Intent loginIntent = new Intent(getApplicationContext(), HomeActivity.class);
+                Intent loginIntent = new Intent(getApplicationContext(), Intro3Activity.class);
                 startActivity(loginIntent);
                 finish();
-
-
             }
         });
 
