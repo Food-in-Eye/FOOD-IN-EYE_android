@@ -146,12 +146,14 @@ public class HomeActivity extends AppCompatActivity {
         });
 
 
-        LinearLayout calibrationBtn = (LinearLayout) findViewById(R.id.home_calibration);
-        calibrationBtn.setOnClickListener(new View.OnClickListener() {
+        LinearLayout introBtn = (LinearLayout) findViewById(R.id.home_app_intro);
+        introBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent calibrationIntent = new Intent(getApplicationContext(), CalibrationActivity.class);
-                startActivity(calibrationIntent);
+
+                Intent introIntent = new Intent(getApplicationContext(), IntroActivity.class);
+                startActivity(introIntent);
+
             }
         });
     }

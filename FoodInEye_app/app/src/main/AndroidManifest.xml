@@ -7,7 +7,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.ACCESS_SURFACE_FLINGER"
+    <uses-permission
+        android:name="android.permission.ACCESS_SURFACE_FLINGER"
         tools:ignore="ProtectedPermissions" />
 
     <application
@@ -22,6 +23,18 @@
         android:theme="@style/Theme.FoodInEye_app"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".Intro4Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Intro3Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Intro2Activity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.IntroActivity"
+            android:exported="false" />
         <activity
             android:name=".activity.MainActivity"
             android:exported="false" />

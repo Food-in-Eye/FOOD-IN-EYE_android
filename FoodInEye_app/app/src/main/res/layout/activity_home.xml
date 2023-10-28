@@ -82,7 +82,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/home_calibration"
+            android:id="@+id/home_app_intro"
             android:layout_width="300dp"
             android:layout_height="260dp"
             android:background="@drawable/orange_rec_30"
