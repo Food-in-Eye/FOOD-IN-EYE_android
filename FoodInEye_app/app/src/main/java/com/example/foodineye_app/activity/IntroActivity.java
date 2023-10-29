@@ -33,7 +33,6 @@ public class IntroActivity extends AppCompatActivity {
                 Intent introIntent = new Intent(getApplicationContext(), Intro2Activity.class);
                 startActivity(introIntent);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                finish();
             }
         });
 

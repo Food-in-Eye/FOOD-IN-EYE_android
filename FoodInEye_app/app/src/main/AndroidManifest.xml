@@ -24,7 +24,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".Intro0Activity"
+            android:name=".activity.Intro0Activity"
             android:exported="false" />
         <activity
             android:name=".activity.Intro4Activity"

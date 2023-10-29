@@ -67,7 +67,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" 사용자가 주문하기 전 시선 추적의 정확도를 높이기 위한 \n조정 작업입니다.\n 사용자의 시선에 맞게 시선 추적 기술과 관련된 기능을 이용할 수 있어요"
+            android:text="사용자가 주문하기 전 시선 추적의 정확도를 높이기 위한 \n조정 작업입니다.\n사용자의 시선에 맞게 시선 추적 기술과 관련된 기능을 이용할 수 있어요"
             android:textSize="13dp"
             android:lineSpacingExtra="3dp"
             android:layout_gravity="center"/>
@@ -79,7 +79,7 @@
             android:src="@drawable/intro_calibration"
             android:layout_weight="1"
             android:layout_marginTop="15dp"
-            android:layout_marginLeft="16dp"/>
+            android:layout_marginLeft="40dp"/>
 
 
     </LinearLayout>

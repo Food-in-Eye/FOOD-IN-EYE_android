@@ -151,7 +151,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent introIntent = new Intent(getApplicationContext(), IntroActivity.class);
+                Intent introIntent = new Intent(getApplicationContext(), Intro0Activity.class);
                 startActivity(introIntent);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 finish();
