@@ -726,46 +726,6 @@ public class GazeTrackerDataStorage {
         }
     }
 
-//    public int findFood(float x, float y){
-//        Log.d("MyApp", "findFood!!!!!!!!!!!!!!!!!!");
-//
-//        if (x >= 26 && x <= 369 && y >= 884 && y <= 1409) {
-//            int f_num = ((Data)context).getFNumBySNum(store_num, 0);
-//            return f_num; //실제 food의 고유한 f_num
-//
-//        }else if(x >= 369 && x <= 711 && y >= 884 && y <= 1409){
-//            int f_num = ((Data)context).getFNumBySNum(store_num, 1);
-//            return f_num;
-//
-//        }else if(x >= 711 && x <= 1054 && y >= 884 && y <= 1409) {
-//            int f_num = ((Data)context).getFNumBySNum(store_num, 2);
-//            return f_num;
-//
-//        }else if(x >= 26 && x <= 369 && y >= 1409 && y <= 1934) {
-//            int f_num = ((Data)context).getFNumBySNum(store_num, 3);
-//            return f_num;
-//
-//        }else if(x >= 369 && x <= 711 && y >= 1409 && y <= 1934){
-//            int f_num = ((Data)context).getFNumBySNum(store_num, 4);
-//            return f_num;
-//
-//        }else if(x >= 711 && x <= 1054 && y >= 1409 && y <= 1934) {
-//            int f_num = ((Data)context).getFNumBySNum(store_num, 5);
-//            return f_num;
-//
-//        }else if(x >= 26 && x <= 369 && y >= 1934 && y <= 2459) {
-//            int f_num = ((Data)context).getFNumBySNum(store_num, 6);
-//            return f_num;
-//
-//        }else if(x >= 369 && x <= 711 && y >= 1934 && y <= 2459){
-//            int f_num = ((Data)context).getFNumBySNum(store_num, 7);
-//            return f_num;
-//        }
-//        else{
-//            return 0;
-//        }
-//    }
-
     public int findFood(float x, float y){
         Log.d("MyApp", "findFood!!!!!!!!!!!!!!!!!!");
         Log.d("MyApp", "findFood_store_num: "+store_num);
@@ -849,7 +809,7 @@ public class GazeTrackerDataStorage {
                 Log.d("MyApp", "addTop5List!!!!recentTop5List: " + Arrays.toString(recentTop5List));
                 return;
 
-            } else if (recentTop5List[k].getRecentGazeCountListValue() < minGazeCount) {
+            } else if (recentGazeCountList[i][j] < minGazeCount) {
                 minGazeCount = recentTop5List[k].getRecentGazeCountListValue();
                 minGazeCountIndex = k; //최솟값 기억
             }
