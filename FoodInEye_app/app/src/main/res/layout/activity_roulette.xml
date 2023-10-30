@@ -6,44 +6,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <!-- 커스텀 툴바 추가 -->
-<!--    <androidx.appcompat.widget.Toolbar-->
-<!--        android:id="@+id/stolelist_toolbar"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="?attr/actionBarSize"-->
-<!--        android:background="?attr/colorOnPrimary"-->
-<!--        android:backgroundTint="@color/sygray"-->
-<!--        android:elevation="4dp">-->
-
-<!--        &lt;!&ndash; 사용자 정의 뒤로 가기 버튼 추가 &ndash;&gt;-->
-<!--        <ImageView-->
-<!--            android:id="@+id/storelist_back"-->
-<!--            android:layout_width="40dp"-->
-<!--            android:layout_height="24dp"-->
-<!--            android:layout_gravity="end"-->
-<!--            android:layout_marginRight="10dp"-->
-<!--            android:src="@drawable/delete_btn"-->
-<!--            android:contentDescription="뒤로 가기" />-->
-
-<!--&lt;!&ndash;        <TextView&ndash;&gt;-->
-<!--&lt;!&ndash;            android:id="@+id/storelist_title"&ndash;&gt;-->
-<!--&lt;!&ndash;            android:layout_width="wrap_content"&ndash;&gt;-->
-<!--&lt;!&ndash;            android:layout_height="wrap_content"&ndash;&gt;-->
-<!--&lt;!&ndash;            android:text="주문하기"&ndash;&gt;-->
-<!--&lt;!&ndash;            android:fontFamily="@font/mice_gothic_bold"&ndash;&gt;-->
-<!--&lt;!&ndash;            android:textSize="20dp"&ndash;&gt;-->
-<!--&lt;!&ndash;            android:textColor="@color/black" />&ndash;&gt;-->
-
-<!--&lt;!&ndash;        <ImageView&ndash;&gt;-->
-<!--&lt;!&ndash;            android:id="@+id/storelist_home"&ndash;&gt;-->
-<!--&lt;!&ndash;            android:layout_width="24dp"&ndash;&gt;-->
-<!--&lt;!&ndash;            android:layout_height="24dp"&ndash;&gt;-->
-<!--&lt;!&ndash;            android:src="@drawable/home"&ndash;&gt;-->
-<!--&lt;!&ndash;            android:layout_gravity="right"&ndash;&gt;-->
-<!--&lt;!&ndash;            android:layout_marginRight="20dp"/>&ndash;&gt;-->
-
-<!--    </androidx.appcompat.widget.Toolbar>-->
-
 
     <LinearLayout
         android:layout_width="match_parent"

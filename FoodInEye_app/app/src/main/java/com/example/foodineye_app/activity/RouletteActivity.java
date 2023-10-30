@@ -2,6 +2,7 @@ package com.example.foodineye_app.activity;
 
 import android.animation.Animator;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,6 +39,8 @@ public class RouletteActivity extends AppCompatActivity {
     List<Cart> cartCandList = new ArrayList<>();
     ImageView imageView;
 
+    TextView nickname;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +53,12 @@ public class RouletteActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+        SharedPreferences sharedPreferences = getSharedPreferences("test_token1", MODE_PRIVATE);
+        String name = sharedPreferences.getString("name", null);
+
+        nickname = (TextView) findViewById(R.id.roulette_nick);
+        nickname.setText(name);
 
         // top5List 데이터가져옴
         receivedTop5List = (RouletteData[]) getIntent().getSerializableExtra("top5List");
