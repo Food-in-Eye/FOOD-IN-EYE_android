@@ -36,11 +36,20 @@ public class RouletteActivity extends AppCompatActivity {
     RouletteData[] receivedTop5List;
 
     List<Cart> cartCandList = new ArrayList<>();
+    ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_roulette);
+
+        imageView = (ImageView)findViewById(R.id.roulette_back);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
         // top5List 데이터가져옴
         receivedTop5List = (RouletteData[]) getIntent().getSerializableExtra("top5List");

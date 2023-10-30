@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -107,13 +106,13 @@ public class OrderHistoryActivity extends AppCompatActivity {
             @Override
             public void onPageBefore(int now_page) {
                 lpb_buttonlist.addBottomPageButton(max_page, now_page);
-                Toast.makeText(OrderHistoryActivity.this, "onPageBefore" + now_page, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(OrderHistoryActivity.this, "onPageBefore" + now_page, Toast.LENGTH_SHORT).show();
                 getHistory(now_page);
             }
 
             @Override
             public void onPageCenter(int now_page) {
-                Toast.makeText(OrderHistoryActivity.this, "onPageCenter" + now_page, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(OrderHistoryActivity.this, "onPageCenter" + now_page, Toast.LENGTH_SHORT).show();
                 getHistory(now_page);
             }
 
@@ -121,7 +120,7 @@ public class OrderHistoryActivity extends AppCompatActivity {
             @Override
             public void onPageNext(int now_page) {
                 lpb_buttonlist.addBottomPageButton(max_page, now_page);
-                Toast.makeText(OrderHistoryActivity.this, "onPageNext" + now_page, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(OrderHistoryActivity.this, "onPageNext" + now_page, Toast.LENGTH_SHORT).show();
                 getHistory(now_page);
             }
         });
