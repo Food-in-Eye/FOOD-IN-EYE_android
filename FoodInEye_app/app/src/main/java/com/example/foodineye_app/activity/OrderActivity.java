@@ -211,14 +211,8 @@ public class OrderActivity extends AppCompatActivity {
                             Log.d("OrderActivity", "SubOrderList"+subOrderList.toString());
                             Log.d("OrderActivity", "OrderList"+orderList.toString());
 
-                            //시선 권한 동의 여부 확인
-                            if(eyePermission == 1){ //true
-                                putGaze();
-                            }
-
                             history_id = responseBody.getHistory_id();
                             data.setHistory_id(history_id);
-                            Log.d("OrderDetail", "orderdetail!!!!!!!: "+data.getHistory_id());
 
 
                             //웹소켓 연결하기
@@ -226,6 +220,11 @@ public class OrderActivity extends AppCompatActivity {
                             Log.d("WebSocket", "WebSocket 시도");
 
                             WebSocketManager.getInstance(getApplicationContext()).connectWebSocket(history_id);
+
+                            //시선 권한 동의 여부 확인
+                            if(eyePermission == 1){ //true
+                                putGaze(history_id);
+                            }
 
 
                         }else{
@@ -305,7 +304,7 @@ public class OrderActivity extends AppCompatActivity {
     }
 
     //POST gaze
-    public void putGaze(){
+    public void putGaze(String history_id){
 
         //websocket 연결 후에 gaze 보내기
         ApiClient apiClient = new ApiClient(getApplicationContext());
