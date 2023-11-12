@@ -842,7 +842,7 @@ public class GazeTrackerDataStorage {
     //룰렛 생성 트리거
     public void checkAndPlayAnimation() {
 
-        if (totalCount > 300 && recentTop5List != null && recentTop5List.length >= 2) {
+        if (totalCount > 200 && recentTop5List != null && recentTop5List.length >= 2) {
             rouletteView.setVisibility(View.VISIBLE);
             lottieAnimationView.setRepeatCount(LottieDrawable.INFINITE); // 무한 반복
             lottieAnimationView.playAnimation();
