@@ -33,6 +33,10 @@
         android:fontWeight="400"
         android:font="@font/ddag"/>
 
+    <font android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/giants"/>
+
 
 
 </font-family>

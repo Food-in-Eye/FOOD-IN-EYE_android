@@ -181,7 +181,7 @@ public class OrderActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (gazeTrackerDataStorage != null) {
-                    gazeTrackerDataStorage.stopGazeTracker("order", 0, 0);
+                    gazeTrackerDataStorage.stopGazeTracker(ctx,"order", 0, 0);
                 }
                 Log.d("OrderActivity", "결제하기!");
                 Call<PostOrderResponse> call = apiInterface.createOrder(postOrder);
@@ -211,6 +211,9 @@ public class OrderActivity extends AppCompatActivity {
                             Log.d("OrderActivity", "SubOrderList"+subOrderList.toString());
                             Log.d("OrderActivity", "OrderList"+orderList.toString());
 
+                            history_id = responseBody.getHistory_id();
+                            data.setHistory_id(history_id);
+
 
                             //웹소켓 연결하기
                             Log.d("WebSocket", "history_id: "+history_id);
@@ -220,12 +223,9 @@ public class OrderActivity extends AppCompatActivity {
 
                             //시선 권한 동의 여부 확인
                             if(eyePermission == 1){ //true
-                                putGaze();
+                                putGaze(history_id);
                             }
 
-                            history_id = responseBody.getHistory_id();
-                            data.setHistory_id(history_id);
-                            Log.d("OrderDetail", "orderdetail!!!!!!!: "+data.getHistory_id());
 
                         }else{
                             //요청이 실패한 경우 errorbody
@@ -293,18 +293,18 @@ public class OrderActivity extends AppCompatActivity {
         gazeTrackerDataStorage.setContext(this);
 
         if (gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.setGazeTracker(ctx, orderLayout, viewpoint);
+            gazeTrackerDataStorage.setGazeTracker(ctx, orderLayout, viewpoint,"order", 0, 0);
         }
     }
 
     private void stopGazeTracker(){
         if (gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.stopGazeTracker("order", 0, 0);
+            gazeTrackerDataStorage.stopGazeTracker(ctx,"order", 0, 0);
         }
     }
 
     //POST gaze
-    public void putGaze(){
+    public void putGaze(String history_id){
 
         //websocket 연결 후에 gaze 보내기
         ApiClient apiClient = new ApiClient(getApplicationContext());

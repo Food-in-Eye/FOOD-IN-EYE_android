@@ -97,61 +97,65 @@ public class HomeActivity extends AppCompatActivity {
                 }else{
 
 //                    데이터 수집 기간만 사용
-//                    data.initializeAllVariables();
-//
-//                    if(eye_permission == 1){
-//                        checkCameraPermission();
-//
-//                    }else if(eye_permission == 2){
-//                        //false
-//                        showDialog();
-//
-//                    }else{
-//                        //null
-//                        //home -> camera
-//                        Intent cameraIntent = new Intent(getApplicationContext(), CameraActivity.class);
-//                        startActivity(cameraIntent);
-//                    }
+                    data.initializeAllVariables();
+
+                    if(eye_permission == 1){
+                        checkCameraPermission();
+
+                    }else if(eye_permission == 2){
+                        //false
+                        showDialog();
+
+                    }else{
+                        //null
+                        //home -> camera
+                        Intent cameraIntent = new Intent(getApplicationContext(), CameraActivity.class);
+                        startActivity(cameraIntent);
+                    }
 
                     //----------------------------------------------------------
                     //history_id 로 주문이 완료인지 true, 진행중인지 false
-                    getOrderStatus();
-                    if(orderComplete){
-                        Log.d("modify!!!!!!!!!", "modify!!!!!!!!!주문완료 -> 초기화 ->  완료");
-                        //주문 완료 -> 초기화 -> 주문
-                        data.initializeAllVariables();
-
-                        if(eye_permission == 1){
-                            checkCameraPermission();
-
-                        }else if(eye_permission == 2){
-                            //false
-                            showDialog();
-
-                        }else{
-                            //null
-                            //home -> camera
-                            Intent cameraIntent = new Intent(getApplicationContext(), CameraActivity.class);
-                            startActivity(cameraIntent);
-                        }
-
-                    }else{
-                        Log.d("modify!!!!!!!!!", "modify!!!!!!!!!주문 진행중");
-                        //주문 진행 중 -> 주문 못함
-                        show("현재 진행 중인 주문이 있습니다. \n현재 주문 내역을 확인하세요!");
-                    }
+//                    getOrderStatus();
+//                    if(orderComplete){
+//                        Log.d("modify!!!!!!!!!", "modify!!!!!!!!!주문완료 -> 초기화 ->  완료");
+//                        //주문 완료 -> 초기화 -> 주문
+//                        data.initializeAllVariables();
+//
+//                        if(eye_permission == 1){
+//                            checkCameraPermission();
+//
+//                        }else if(eye_permission == 2){
+//                            //false
+//                            showDialog();
+//
+//                        }else{
+//                            //null
+//                            //home -> camera
+//                            Intent cameraIntent = new Intent(getApplicationContext(), CameraActivity.class);
+//                            startActivity(cameraIntent);
+//                        }
+//
+//                    }else{
+//                        Log.d("modify!!!!!!!!!", "modify!!!!!!!!!주문 진행중");
+//                        //주문 진행 중 -> 주문 못함
+//                        show("현재 진행 중인 주문이 있습니다. \n현재 주문 내역을 확인하세요!");
+//                    }
 
                 }
             }
         });
 
 
-        LinearLayout calibrationBtn = (LinearLayout) findViewById(R.id.home_calibration);
-        calibrationBtn.setOnClickListener(new View.OnClickListener() {
+        LinearLayout introBtn = (LinearLayout) findViewById(R.id.home_app_intro);
+        introBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent calibrationIntent = new Intent(getApplicationContext(), CalibrationActivity.class);
-                startActivity(calibrationIntent);
+
+                Intent introIntent = new Intent(getApplicationContext(), Intro0Activity.class);
+                startActivity(introIntent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                finish();
+
             }
         });
     }

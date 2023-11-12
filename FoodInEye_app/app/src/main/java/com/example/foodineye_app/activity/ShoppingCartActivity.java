@@ -157,13 +157,13 @@ public class ShoppingCartActivity extends AppCompatActivity implements CartAdapt
         gazeTrackerDataStorage.setContext(this);
 
         if (gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.setGazeTracker(ctx, storeLayout, viewpoint);
+            gazeTrackerDataStorage.setGazeTracker(ctx, storeLayout, viewpoint,"cart", 0, 0);
         }
     }
 
     private void stopGazeTracker() {
         if (gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.stopGazeTracker("cart", 0, 0);
+            gazeTrackerDataStorage.stopGazeTracker(ctx,"cart", 0, 0);
         }
     }
 

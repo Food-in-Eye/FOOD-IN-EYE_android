@@ -130,7 +130,7 @@ public class StorelistActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        takeAndSaveScreenShot();
+//        takeAndSaveScreenShot();
         dpToPixel();
         super.onStop();
         if(eyePermission == 1){
@@ -160,13 +160,13 @@ public class StorelistActivity extends AppCompatActivity {
         gazeTrackerDataStorage.setContext(this);
 
         if (gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.setGazeTracker(ctx, storeLayout, viewpoint);
+            gazeTrackerDataStorage.setGazeTracker(ctx, storeLayout, viewpoint, "store_list", 0, 0);
         }
     }
 
     private void stopGazeTracker(){
         if (gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.stopGazeTracker("store_list", 0, 0);
+            gazeTrackerDataStorage.stopGazeTracker(ctx,"store_list", 0, 0);
         }
     }
 

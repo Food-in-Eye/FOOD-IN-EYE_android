@@ -230,7 +230,7 @@ public class MenuDetailActivity extends AppCompatActivity {
         order_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cart = new Cart(s_Id, s_name, m_Id, f_Id, m_name, m_price, m_imageKey);
+                cart = new Cart(s_Id, s_name, m_Id, f_Id, m_name, m_price, m_imageKey, s_num, f_num);
                 data.setCartList(cart);
                 data.setRecentS_id(cart.s_id);
                 data.setRecentM_id(cart.m_id);
@@ -337,13 +337,13 @@ public class MenuDetailActivity extends AppCompatActivity {
         gazeTrackerDataStorage.setContext(this);
 
         if (gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.setGazeTracker(ctx, menuDetailLayout, viewpoint);
+            gazeTrackerDataStorage.setGazeTracker(ctx, menuDetailLayout, viewpoint,"menu_detail",  s_num, f_num);
         }
     }
 
     private void stopGazeTracker(){
         if (gazeTrackerDataStorage != null) {
-            gazeTrackerDataStorage.stopGazeTracker("menu_detail", s_num, f_num);
+            gazeTrackerDataStorage.stopGazeTracker(ctx,"menu_detail", s_num, f_num);
         }
     }
 

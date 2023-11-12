@@ -152,6 +152,34 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder> 
                 }
             });
         }
+
+        // 2번째 아이템인 경우
+        if (position == 2 && itemOLocation != null) {
+            View itemView = holder.itemView;
+
+            // 아이템 뷰의 위치와 크기를 가져오기 위해 ViewTreeObserver를 사용
+            itemView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    itemView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+                    int[] itemLocation = new int[2];
+                    itemView.getLocationOnScreen(itemLocation);
+
+                    int topOffset = itemOLocation[1]; // 아이템 뷰의 위쪽 좌표
+                    int left = itemLocation[0]; // 아이템 뷰의 왼쪽 좌표
+                    int top = itemLocation[1] - topOffset; // 아이템 뷰의 위쪽 좌표 - topOffset
+                    int right = left + itemView.getWidth(); // 아이템 뷰의 오른쪽 좌표
+                    int bottom = top + itemView.getHeight(); // 아이템 뷰의 아래쪽 좌표
+
+                    // 결과 출력
+                    Log.d("location", "Item 2 - Left: " + left);
+                    Log.d("location", "Item 2 - Top: " + top);
+                    Log.d("location", "Item 2 - Right: " + right);
+                    Log.d("location", "Item 2 - Bottom: " + bottom);
+                }
+            });
+        }
         //-----------------------------------------------------------------------------------------
 
     }
